@@ -18,6 +18,7 @@ class ExampleTest extends TestCase
 
     public function testBasicTest2()
     {
-        $this->assertTrue(true);
+        #expected to fail
+        $this->assertTrue(false);
     }
 }
