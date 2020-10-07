@@ -1,11 +1,10 @@
-name: Laravel
+name: CaravelCI SQLite fast
 
 on:
   push:
 
 jobs:
-  laravel-tests:
-
+  tests:
     runs-on: ubuntu-latest
 
     steps:
