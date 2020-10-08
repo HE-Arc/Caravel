@@ -3,5 +3,5 @@
   mode: chatops
   
   branches:
-  - label: *
+  - label: '*'
     name: develop
