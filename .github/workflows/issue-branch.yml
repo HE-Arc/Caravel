@@ -1,21 +1,5 @@
 
-name: Create Issue Branch (CIB) [chatops]
 mode: chatops
 branches:
   - label: '*'
     name: develop
-
-on:
-    issues:
-        types: [assigned]
-    issue_comment:
-        types: [created]
-
-jobs:
-    create_issue_branch_job:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Create Issue Branch
-          uses: robvanderleek/create-issue-branch@v1.3
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
