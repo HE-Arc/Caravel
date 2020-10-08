@@ -1,0 +1,4 @@
+mode: chatops
+branches:
+  - label: '*'
+    name: develop
