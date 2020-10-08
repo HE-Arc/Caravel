@@ -5,15 +5,16 @@ on:
         types: [assigned]
     issue_comment:
         types: [created]
-
 jobs:
     create_issue_branch_job:
+        mode: chatops
         runs-on: ubuntu-latest
         steps:
         - name: Create Issue Branch
           uses: robvanderleek/create-issue-branch@v1.3
-          mode: chatops
-          
-          branches:
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        branches:
           - label: '*'
             name: develop
