@@ -1,5 +1,5 @@
 
 mode: chatops
-branches:
-  - label: '*'
-    name: develop
+#branches:
+ # - label: '*'
+ #   name: develop
