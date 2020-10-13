@@ -19,8 +19,11 @@ class CreateSubjectsTable extends Migration
             $table->string('name', 150);
             $table->smallInteger('color')->default(0);
 
-            $table->unsignedInteger('group_id');
+            $table->bigInteger('group_id')->unsigned();
             $table->index('group_id');
+        });
+
+        Schema::table('subjects', function (Blueprint $table) {
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
     }

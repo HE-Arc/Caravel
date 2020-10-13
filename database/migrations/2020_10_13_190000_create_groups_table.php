@@ -18,7 +18,10 @@ class CreateGroupsTable extends Migration
             $table->string('name', 100);
             $table->string('picture');
             $table->timestamps();
-            $table->unsignedInteger('user_id')->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
+        });
+
+        Schema::table('groups', function($table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
