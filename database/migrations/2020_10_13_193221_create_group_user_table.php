@@ -18,10 +18,10 @@ class CreateGroupUserTable extends Migration
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unsignedInteger('groupe_id');
+            $table->unsignedInteger('group_id');
             $table->index('group_id');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
-            
+
             $table->timestamps();
             $table->boolean('isApprouved')->nullable(); // null -> pending, false -> refused, true accepted
         });
