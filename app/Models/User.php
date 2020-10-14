@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Comment');
     }
+
+    public function files()
+    {
+        return $this->hasMany('App\Models\File');
+    }
 }

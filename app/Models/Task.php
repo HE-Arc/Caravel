@@ -42,4 +42,9 @@ class Task extends Model
         return $this->belongsToMany('App\Models\Task', 'related_tasks', 'related_id', 'task_id');
     }
 
+    public function files()
+    {
+        return $this->hasMany('App\Models\File');
+    }
+
 }
