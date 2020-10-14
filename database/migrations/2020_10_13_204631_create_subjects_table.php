@@ -18,6 +18,7 @@ class CreateSubjectsTable extends Migration
             $table->timestamps();
             $table->string('name', 150);
             $table->smallInteger('color')->default(0);
+            $table->integer('number')->unsigned()->default(0);
 
             $table->bigInteger('group_id')->unsigned();
             $table->index('group_id');

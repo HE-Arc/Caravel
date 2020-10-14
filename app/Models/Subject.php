@@ -13,4 +13,9 @@ class Subject extends Model
     {
         return $this->belongsTo('App\Models\Group');
     }
+
+    public function tasks()
+    {
+        return $this->hasMany('App\Models\Task');
+    }
 }
