@@ -49,4 +49,9 @@ class User extends Authenticatable
                     ->as('subscription')
                     ->withTimestamps();
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
 }
