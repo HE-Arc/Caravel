@@ -1,4 +1,8 @@
+# allow dev to create a branch from comments
 mode: chatops
+# close on pull request
+autoCloseIssue: true
+# develop is the source branch for any label
 branches:
   - label: '*'
     name: develop

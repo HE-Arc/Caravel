@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'picture'
     ];
 
     /**
@@ -40,4 +41,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function groups()
+    {
+        return $this->belongsToMany('App\Models\Group')
+                    ->withPivot('isApprouved')
+                    ->as('subscription')
+                    ->withTimestamps();
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    public function files()
+    {
+        return $this->hasMany('App\Models\File');
+    }
 }
