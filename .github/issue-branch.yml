@@ -2,7 +2,7 @@
 mode: chatops
 # close on pull request
 autoCloseIssue: true
-# develop is the source branch for any label
+# set develop as the source branch for any label
 branches:
   - label: '*'
     name: develop
