@@ -21,9 +21,9 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($group)
     {
-        //
+        return view('group.task.create', ['group' => $group]);
     }
 
     /**
