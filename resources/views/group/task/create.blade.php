@@ -6,7 +6,7 @@
         'title' => __('Create a Task')
     ])   
 
-    <div class="container-fluid mt--7">
+    <div class="container mt--7">
         <div class="row">
             <div class="col-xl-12 order-xl-1">
                 <div class="card bg-secondary shadow">
@@ -114,7 +114,7 @@
                                     @endif
                                 </div>
 
-                                <div class="text-center">
+                                <div class="text-right">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
                                 </div>
                             </div>
