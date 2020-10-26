@@ -2,7 +2,7 @@
 
 @section('content')
     @include('users.partials.header', [
-        'title' => __('Create a Task')
+        'title' => __('Consult, join or create a group')
     ])   
 
     <div class="container-fluid mt--7">

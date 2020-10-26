@@ -19,6 +19,9 @@
         <link href="{{ asset('argon') }}/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
         <!-- Argon CSS -->
         <link type="text/css" href="{{ asset('argon') }}/css/argon.css?v=1.0.0" rel="stylesheet">
+        <!-- custom CSS -->
+        <link type="text/css" href="{{ asset('css/caravel.css') }}" rel="stylesheet">
+        @stack('css')
     </head>
     <body class="{{ $class ?? '' }}">
         @auth()
@@ -44,5 +47,7 @@
         
         <!-- Argon JS -->
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
+
+        @stack('script')
     </body>
 </html>
