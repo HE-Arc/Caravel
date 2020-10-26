@@ -1,6 +1,7 @@
 @extends('layouts.app', ['title' => __('User Profile')])
 
 @section('content')
+    
     @include('users.partials.header', [
         'title' => __('Create a Task')
     ])   
@@ -15,10 +16,10 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('groups.tasks.store', ['group' => $group]) }}" autocomplete="off">
+                        <form method="post" action="{{ route('groups.tasks.store', ['group' => $group]) }}" autocomplete="off" id="form-task">
+                            
                             @csrf
                             @method('post')
-
                             
                             @if (session('status'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,8 +30,8 @@
                                 </div>
                             @endif
 
-
                             <div class="pl-lg-4">
+
                                 <div class="form-group{{ $errors->has('title') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-title">{{ __('Title') }}</label>
                                     <input type="text" name="title" id="input-name" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title', '') }}" required autofocus>
@@ -45,8 +46,14 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group{{ $errors->has('subject_id') ? ' has-danger' : '' }}">
-                                            <input type="text" name="subject_id" id="input-name" class="form-control form-control-alternative{{ $errors->has('subject_id') ? ' is-invalid' : '' }}" placeholder="{{ __('Subject') }}" value="" required autofocus>
-        
+                                            
+                                            <select class="form-control form-control-alternative{{ $errors->has('subject_id') ? ' is-invalid' : '' }}" id="subjectid" name="subject_id">
+                                                <option value="">{{__('Select a subject')}}</option>
+                                                @foreach ($subjects as $subject)
+                                                    <option value="{{$subject->id}}">{{$subject->name}}</option>
+                                                @endforeach
+                                            </select>
+
                                             @if ($errors->has('subject_id'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('subject_id') }}</strong>
@@ -71,11 +78,21 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="taskType">{{__('Type')}}</label>
+                                    <select class="form-control form-control-alternative{{ $errors->has('tasktype_id') ? ' is-invalid' : '' }}" id="taskType" name="tasktype_id">
+                                        <option value="">{{__('Select a type')}}</option>
+                                        @foreach ($types as $type)
+                                            <option value="{{$type->id}}">{{$type->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                     
                                 <div class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-description">{{ __('Description') }}</label>
-                                    <input type="text" name="description" id="input-name" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title', '') }}" required autofocus>
-                                    <textarea class="form-control form-control-alternative" rows="3" placeholder="{{ __('Description') }}"></textarea>
+                                
+                                    <textarea id="editor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Description') }}" name="description"></textarea>
 
                                     @if ($errors->has('description'))
                                         <span class="invalid-feedback" role="alert">
@@ -84,13 +101,49 @@
                                     @endif
                                 </div>
 
+                                <div class="form-group{{ $errors->has('isPrivate') ? ' has-danger' : '' }}">
+                                    <div class="custom-control custom-control-alternative custom-checkbox mb-3">
+                                        <input class="custom-control-input {{ $errors->has('isPrivate') ? ' is-invalid' : '' }}" id="customCheck5" type="checkbox" name="isPrivate">
+                                        <label class="custom-control-label" for="customCheck5">{{__('Make this task private')}}</label>
+                                    </div>
+
+                                    @if ($errors->has('isPrivate'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('isPrivate') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
                                 </div>
                             </div>
-
+                            
                         </form>
                         
+                        @push('js')
+                            <script src="{{ asset('argon') }}/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+                            @include('Smartmd::head')
+                        @endpush
+                        @push('script')
+                            <script>
+                                var editor = new Smartmd({
+                                    el: "#editor",
+                                    height: "40vh",
+                                    isFullScreen: false,
+                                    isPreviewActive: true,
+                                    uploads: {
+                                        type: ['jpeg', 'png', 'bmp', 'gif', 'jpg', 'pdf'],
+                                        maxSize: 4096,
+                                        typeError: 'Support format {type}.',
+                                        sizeError: 'File size is more than {maxSize} kb.',
+                                        serverError: 'Upload failed on {msg}',
+                                        url: "{{ route('groups.upload', ['group' => $group]) }}"
+                                    }
+                                });
+                               
+                          </script>
+                        @endpush
                         
                     </div>
                 </div>

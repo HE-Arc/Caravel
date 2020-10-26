@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\TaskType;
+use App\Models\Subject;
+use App\Models\Task;
+use App\Models\Group;
+use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
@@ -23,7 +28,10 @@ class TaskController extends Controller
      */
     public function create($group)
     {
-        return view('group.task.create', ['group' => $group]);
+        return view('group.task.create', ['group' => $group,
+                                          'types' => TaskType::all(),
+                                          'subjects' => Subject::all()
+        ]);
     }
 
     /**
@@ -32,9 +40,40 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $group)
     {
-        //
+        $rules = [
+            'title' => 'required|unique:tasks|max:255',
+            'subject_id' => 'required|integer',
+            'tasktype_id' => 'required|integer',
+            'due_at' => 'required|date|after_or_equal:today',
+            'description' => 'required',
+            'isPrivate' => 'boolean'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        // process the login
+        if ($validator->fails()) {
+            return redirect()
+                    ->route('groups.tasks.create', ['group' => $group])
+                    ->withErrors($validator)
+                    ->withInput();
+        } else {
+            // store
+            $task = new Task();
+            $task->title           = $request->get('title');
+            $task->subject_id      = $request->get('subject_id');
+            $task->tasktype_id     = $request->get('tasktype_id');
+            $task->due_at          = $request->get('due_at');
+            $task->description     = $request->get('description');
+            $task->isPrivate       = $request->get('isPrivate');
+            $task->save();
+
+            // redirect
+            $request->session()->flash('status', 'Task was created successfully!');
+            return redirect()
+                    ->route('groups.tasks.show', ['group' => $group,
+                                                 'task' => $task->id]);
+        }
     }
 
     /**
@@ -43,9 +82,11 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Group $group, Task $task)
     {
-        //
+        return view('group.task.show', ['group' => $group,
+                                        'task' => $task
+        ]);
     }
 
     /**

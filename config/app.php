@@ -226,7 +226,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'TaskType' => App\Models\TaskType::class,
+        'Subject' => App\Models\Subject::class,
+        'Task' => App\Models\Task::class,
+        'Group' => App\Models\Group::class
     ],
 
 ];
