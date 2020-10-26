@@ -14,14 +14,14 @@
 
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-center">
-                    <input type="text" id="class-input" class="form-control w-75 p-3" placeholder="ide1-a, inf3-dlm..." aria-label="Field to input the class">
+                    <input type="text" id="groupInput" class="form-control w-75 p-3" placeholder="ide1-a, inf3-dlm..." aria-label="Field to input the class">
                 </div>
 
                 <div class="d-flex flex-column justify-content-start align-items-center my-4"> 
                     <div class="card bg-white w-50 p-3 dashed-bottom">
                         <div class="d-flex flex-row justify-content-between align-items-center">
-                            <h1>{{__("Test class 1")}}</h1>
-                            <button type="submit" class="btn btn-primary">{{ __('Create') }}</button>
+                            <h1 id="createClassName"></h1>
+                            <button type="submit" id="createButton" class="btn btn-primary">{{ __('Create') }}</button>
                         </div>
                     </div>
                     <div class="card bg-white w-50 p-3">
@@ -42,3 +42,17 @@
         @include('layouts.footers.auth')
     </div>
 @endsection
+
+@push('script')
+<script>
+    //Script that takes the input group field and place it into the "create group" name
+    $("#groupInput").on('input', function(){
+        let groupName = $("#groupInput").val()
+        $("#createClassName").text(groupName)
+        if(!groupName){
+            $("#createClassName").text("Empty")
+        }
+    }); 
+    $("#createClassName").text("Empty")
+</script>
+@endpush
