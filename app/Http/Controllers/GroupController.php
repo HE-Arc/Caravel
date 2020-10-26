@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\User;
+
 
 class GroupController extends Controller
 {
@@ -87,10 +89,18 @@ class GroupController extends Controller
      * @returns JSON containing groups
      */
     public function filtered(String $str){
+        //get all groups corresponding to the requested string (regex)
         $groups = Group::where('name', 'LIKE', "%$str%")
             //->orderBy('name') //TODO : Add a good order by, DONT FORGET N+1 problem
             ->take(10)
             ->get();
+        //fetch current user
+        $userID = Auth::id();
+        if($userID){
+            //fetch all groups from current user
+            $groupsRequested = App\Models\User::find($userID)->groups();
+            $isApproved = $groupsRequested->subscription;
+        }
         return response()->json([$groups]);
     }
 }
