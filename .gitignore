@@ -3,8 +3,6 @@
 /public/storage
 /storage/*.key
 /vendor
-/public/argon
-/public/assets
 .env
 .env.backup
 .phpunit.result.cache
