@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Group;
 
 class GroupController extends Controller
 {
@@ -80,5 +81,16 @@ class GroupController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * @returns JSON containing groups
+     */
+    public function filtered(String $str){
+        $groups = Group::where('name', 'LIKE', "%$str%")
+            //->orderBy('name') //TODO : Add a good order by, DONT FORGET N+1 problem
+            ->take(10)
+            ->get();
+        return response()->json([$groups]);
     }
 }

@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::resource('groups', App\Http\Controllers\GroupController::class);
+Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
 Route::resource('groups.tasks', App\Http\Controllers\TaskController::class);
 Route::resource('groups.subjects', App\Http\Controllers\SubjectController::class);
 
@@ -36,4 +37,3 @@ Route::group(['middleware' => 'auth'], function () {
 	 Route::get('table-list', function () {return view('pages.tables');})->name('table');
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
 });
-
