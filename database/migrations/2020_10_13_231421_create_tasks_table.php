@@ -22,7 +22,7 @@ class CreateTasksTable extends Migration
             $table->integer('number')->unsigned()->default(0);
             $table->timestamps();
 
-            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned();
             $table->index('user_id');
 
             $table->bigInteger('tasktype_id')->unsigned();
@@ -33,7 +33,7 @@ class CreateTasksTable extends Migration
         });
 
         Schema::table('tasks', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('tasktype_id')->references('id')->on('tasktypes')->onDelete('cascade');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
         });

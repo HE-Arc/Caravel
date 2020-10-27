@@ -4,17 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Task extends Model
 {
     use HasFactory;
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'due_at',
+    ];
+
+    /**
      * Get the group's owner.
      */
     public function group()
     {
-        return $this->hasOneThrough('App\Models\Group', 'App\Models\Subject');
+        return $this->hasOneThrough('App\Models\Group', 'App\Models\Subject',
+                                    'group_id', // Foreign key on cars table...
+                                    'subject_id', // Foreign key on owners table...
+                                    'id', // Local key on mechanics table...
+                                    'id' // Local key on cars table...
+                                );
     }
 
     public function subject()
@@ -27,7 +42,7 @@ class Task extends Model
         return $this->belongsTo('App\Models\Tasktype');
     }
 
-    public function author()
+    public function user()
     {
         return $this->belongsTo('App\Models\User');
     }

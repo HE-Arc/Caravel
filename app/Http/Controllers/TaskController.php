@@ -8,6 +8,7 @@ use App\Models\Subject;
 use App\Models\Task;
 use App\Models\Group;
 use App\Models\Attachement;
+use App\Models\Comment;
 use Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -80,7 +81,7 @@ class TaskController extends Controller
                 foreach($request->file('attachement') as $upload)
                 {
                     $file = new Attachement();
-                    $file->path = $folder . '/' . $upload->hashName();
+                    $file->path = $upload->hashName();
                     $file->name =  $upload->getClientOriginalName();
                     $file->mimeType = $upload->getMimeType();
                     $file->task_id = $task->id;
@@ -104,9 +105,54 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function comment(Request $request, Group $group, Task $task)
+    {
+        $rules = [
+            'message' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()
+                    ->route('groups.tasks.show', [$group->id, $task->id])
+                    ->withErrors($validator)
+                    ->withInput();
+        } else {
+            $comment = new Comment();
+            $comment->user_id = auth()->user()->id;
+            $comment->task_id = $task->id;
+            $comment->message = $request->get('message');
+            $comment->save();
+        }
+
+        return redirect()->route('groups.tasks.show', [$group->id, $task->id]);
+    }
+
+      /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delComment(Request $request, Group $group, Task $task, Comment $comment)
+    {
+        if (auth()->user()->id==$comment->user->id) {
+            $comment->delete();
+            $request->session()->flash('status', 'Comment has been delete successfully!');
+        }
+
+        return redirect()->route('groups.tasks.show', [$group->id, $task->id]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show(Group $group, Task $task)
     {
-        # @TODO display
         return view('group.task.show', ['group' => $group,
                                         'task' => $task
         ]);
@@ -141,8 +187,13 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Group $group, Task $task)
     {
-        //
+        if (auth()->user()->id==$task->user->id) {
+            $task->delete();
+            $request->session()->flash('status', 'Task has been delete successfully!');
+        }
+
+        return redirect()->route('groups.show', [$group->id]);
     }
 }
