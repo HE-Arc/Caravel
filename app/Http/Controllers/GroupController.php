@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -89,21 +89,39 @@ class GroupController extends Controller
      * @returns JSON containing groups
      */
     public function filtered(String $str){
-        //get all groups corresponding to the requested string (regex)
-        $groups = Group::where('name', 'LIKE', "%$str%")
-            ->orderBy('created_at') //TODO : Add a good order by, DONT FORGET N+1 problem
-            ->take(6)
-            ->get();
-
         //fetch current user
         $userID = Auth::id();
 
-        if($userID){
-            //fetch all groups from current user
-            $groupsRequested = App\Models\User::find($userID)->groups();
-            $isApproved = $groupsRequested->subscription;
+        //get all groups corresponding to the requested string (regex) excluding the one already containing the user
+        $groups = Group::where('name', 'LIKE', "%$str%")
+            ->whereDoesntHave('users')
+            ->orWhere('name', 'LIKE', "%$str%")
+            ->WhereHas('users', function($q) use ($userID) {
+                $q->where("user_id", "<>", $userID)->orWhere("user_id", $userID)->where('isApprouved', FALSE);
+            })
+            ->orderBy('created_at') //TODO : Add a good order by relative to group activity, DONT FORGET N+1 problem
+            ->take(10);
+
+        //loop over groups, builds result array
+        $valid = !empty($str);
+        $groupsData = array();
+        foreach($groups->get() as $group){
+
+            if(strcasecmp($group->name,$str) == 0){
+                $valid = false;
+            }
+
+            //if user is in groups->users(), then it has already requested
+            $groupsData[] = [
+                "id" => $group->id, 
+                "name" => $group->name,
+                "requested" => $group->users()->find($userID) != null
+            ];
         }
 
-        return response()->json([$groups]);
+        return response()->json([
+            "valid" => $valid,
+            "groups"  => $groupsData,
+        ]);
     }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
     @include('users.partials.header', [
-        'title' => __('Create a Task')
+        'title' => __('Consult, join or create a group')
     ])
 
     <div class="container-fluid mt--7">
@@ -17,23 +17,19 @@
                     <input type="text" id="groupInput" class="form-control w-75 p-3" placeholder="ide1-a, inf3-dlm..." aria-label="Field to input the class">
                 </div>
 
-                <div class="d-flex flex-column justify-content-start align-items-center my-4"> 
-                    <div class="card bg-white w-50 p-3 dashed-bottom">
+                <div id="groupsContainer" class="d-flex flex-column justify-content-start align-items-center my-4"> 
+                    <div id="createGroupCard" class="card bg-white w-50 p-3 dashed-bottom">
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <h1 id="createClassName"></h1>
-                            <button type="submit" id="createButton" class="btn btn-primary">{{ __('Create') }}</button>
+                            <button type="submit" id="createButton" disabled="disabled" class="btn btn-primary">{{ __('Create') }}</button>
                         </div>
                     </div>
-                    <div class="card bg-white w-50 p-3">
+                    <div id="model" class="card bg-white w-50 p-3 d-none" data-id="-1">
                         <div class="d-flex flex-row justify-content-between align-items-center">
-                            <h1>{{__("Test class 2")}}</h1>
-                            <button type="submit" class="btn btn-info">{{ __('Requested') }}</button>
-                        </div>
-                    </div>
-                    <div class="card bg-white w-50 p-3">
-                        <div class="d-flex flex-row justify-content-between align-items-center">
-                            <h1>{{__("Test class 3")}}</h1>
-                            <button type="submit" class="btn btn-success">{{ __('Join') }}</button>
+                            <h1 class="groupName">{{__("Test class 2")}}</h1>
+                            @auth
+                            <button type="submit" class="btn groupButton">{{ __('Requested') }}</button>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -45,14 +41,72 @@
 
 @push('script')
 <script>
-    //Script that takes the input group field and place it into the "create group" name
-    $("#groupInput").on('input', function(){
-        let groupName = $("#groupInput").val()
+    //set timeout on live search
+    let timeout;
+    $("#groupInput").keyup(function () {
+        clearTimeout(timeout);
+        timeout = setTimeout(liveSearch, 250); 
+    });
+
+    function liveSearch(){
+        var groupName = $("#groupInput").val()
         $("#createClassName").text(groupName)
         if(!groupName){
-            $("#createClassName").text("Empty")
+            $("#createClassName").text("Type a group name");
+            buildListGroups();
+        } else {
+            $.ajax({
+                /* the route pointing to the post function */
+                url: "{{ route('groups.filtered', '') }}" + '/' + groupName,
+                type: 'GET',
+                dataType: 'JSON',
+                /* remind that 'data' is the response of the AjaxController */
+                success: function (data) {
+                    $("#createButton").prop("disabled", !data.valid);
+                    buildListGroups(data.groups);
+                }
+            });
         }
-    }); 
-    $("#createClassName").text("Empty")
+    }
+
+    function buildListGroups(groups){
+        //clean groups except "create" field
+        $("#groupsContainer").children().not("#createGroupCard, #model").remove();
+        //build groups
+        groups.forEach(group => {
+                buildGroup(group); //build groups on page
+        });
+    }
+
+    function buildGroup(group){
+        //clone model tweet
+        let groupBody = $("#model").clone();
+        //add data-id attribute
+        groupBody.attr("data-id", group.id);
+        //add group name
+        groupBody.find(".groupName").text(group.name);
+        //customize button
+        let buttonType; let buttonText;
+        console.log("requested : " + group.requested);
+        if(group.requested){
+            buttonType = "btn-info";
+            buttonText = "requested";
+        } else {
+            buttonType = "btn-success";
+            buttonText = "join";
+        }
+        groupBody.find(".groupButton").addClass(buttonType);
+        groupBody.find(".groupButton").html(buttonText);
+
+        //remove model-related tags
+        groupBody.removeClass("d-none");
+        groupBody.removeAttr("id");
+
+        //append : Ready to go !
+        $("#groupsContainer").append(groupBody[0]);
+    }
+
+    //init "create" group name
+    $("#createClassName").text("Type a group name")
 </script>
 @endpush
