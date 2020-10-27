@@ -30,11 +30,12 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($group)
+    public function create(Group $group)
     {
-        return view('group.task.create', ['group' => $group,
+        return view('group.task.createOrUpdate', ['group' => $group,
                                           'types' => TaskType::all(),
-                                          'subjects' => Subject::all()
+                                          'subjects' => Subject::all(),
+                                          'task' => new Task(),
         ]);
     }
 
@@ -44,59 +45,9 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $group)
+    public function store(Request $request, Group $group)
     {
-
-        $rules = [
-            'title' => 'required|unique:tasks|max:255',
-            'subject_id' => 'required|exists:subjects,id',
-            'tasktype_id' => 'required|exists:tasktypes,id',
-            'due_at' => 'required|date|after_or_equal:today',
-            'description' => 'required',
-            'filenames' => 'file|max:13312',
-        ];
-        $validator = Validator::make($request->all(), $rules);
-
-        
-        if ($validator->fails()) {
-            return redirect()
-                    ->route('groups.tasks.create', ['group' => $group])
-                    ->withErrors($validator)
-                    ->withInput();
-        } else {
-            // store
-            $task = new Task();
-            $task->title           = $request->get('title');
-            $task->subject_id      = $request->get('subject_id');
-            $task->tasktype_id     = $request->get('tasktype_id');
-            $task->due_at          = $request->get('due_at');
-            $task->description     = $request->get('description');
-            $task->isPrivate       = $request->get('isPrivate')=='on';
-            $task->save();
-
-            //process attachement
-            if($request->hasfile('attachement'))
-            {
-                $folder = config('smartmd.files.root') . '/groups\/' . $group;
-                foreach($request->file('attachement') as $upload)
-                {
-                    $file = new Attachement();
-                    $file->path = $upload->hashName();
-                    $file->name =  $upload->getClientOriginalName();
-                    $file->mimeType = $upload->getMimeType();
-                    $file->task_id = $task->id;
-                    $file->user_id = auth()->user()->id;
-                    $file->save();
-                    Storage::put($folder, $upload);
-                }
-            }
-
-            // redirect
-            $request->session()->flash('status', 'Task was created successfully!');
-            return redirect()
-                    ->route('groups.tasks.show', ['group' => $group,
-                                                 'task' => $task->id]);
-        }
+        return $this->persistData($request, $group, new Task());
     }
 
     /**
@@ -132,7 +83,10 @@ class TaskController extends Controller
       /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param Group $group
+     * @param Task $task
+     * @param Comment $comment
      * @return \Illuminate\Http\Response
      */
     public function delComment(Request $request, Group $group, Task $task, Comment $comment)
@@ -143,6 +97,32 @@ class TaskController extends Controller
         }
 
         return redirect()->route('groups.tasks.show', [$group->id, $task->id]);
+    }
+
+   /**
+     * Delete file linked to a task
+     *
+     * @param Request $request
+     * @param Group $group
+     * @param Task $task
+     * @param Attachement $file
+     * @return \Illuminate\Http\Response
+     */
+    public function delAttachement(Request $request, Group $group, Task $task, Attachement $file)
+    {
+        if (auth()->user()->id==$file->user->id) {
+            $file->delete();
+            return response()->json([
+                'status' => 'ok',
+                'message' => 'File has been delete successfully!',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'nok',
+                'message' => 'File has not been delete !',
+            ]);
+        }
+        
     }
 
     /**
@@ -164,21 +144,88 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Group $group, Task $task)
     {
-        //
+        return view('group.task.createOrUpdate', ['group' => $group,
+                                                'types' => TaskType::all(),
+                                                'subjects' => Subject::all(),
+                                                'task' => $task]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param Group $group
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Group $group, Task $task)
     {
-        //
+        $request['isPrivate'] = $task->isPrivate ? 'on' : 'off';
+        return $this->persistData($request, $group, $task);
+    }
+
+    /**
+     * Persist data to db the specified resource in storage.
+     *
+     * @param Request $request
+     * @param Group $group
+     * @param Task $task
+     * @return \Illuminate\Http\Response
+     */
+    private function persistData(Request $request, Group $group, Task $task)
+    {
+        $rules = [
+            'title' => 'required|max:255',
+            'subject_id' => 'required|exists:subjects,id',
+            'tasktype_id' => 'required|exists:tasktypes,id',
+            'due_at' => 'required|date|after_or_equal:today',
+            'description' => 'required',
+            'filenames' => 'file|max:13312',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        
+        if ($validator->fails()) {
+            return redirect()
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput();
+        } else {
+            // store
+            $task->title           = $request->get('title');
+            $task->subject_id      = $request->get('subject_id');
+            $task->tasktype_id     = $request->get('tasktype_id');
+            $task->due_at          = $request->get('due_at');
+            $task->user_id         = auth()->user()->id;
+            $task->description     = $request->get('description');
+            $task->isPrivate       = $request->get('isPrivate')=='on';
+            $task->save();
+
+            //process attachement
+            if($request->hasfile('attachement'))
+            {
+                $folder = config('smartmd.files.root') . '/groups\/' . $group->id;
+                foreach($request->file('attachement') as $upload)
+                {
+                    $file = new Attachement();
+                    $file->path = $upload->hashName();
+                    $file->name =  $upload->getClientOriginalName();
+                    $file->mimeType = $upload->getMimeType();
+                    $file->task_id = $task->id;
+                    $file->user_id = auth()->user()->id;
+                    $file->save();
+                    Storage::put($folder, $upload);
+                }
+            }
+
+            // redirect
+            $request->session()->flash('status', 'Action was made successfully!');
+            return redirect()
+                    ->route('groups.tasks.show', ['group' => $group->id,
+                                                 'task' => $task->id]);
+        }
     }
 
     /**
