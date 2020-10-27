@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('groups.tasks.store', ['group' => $group]) }}" autocomplete="off" id="form-task">
+                        <form method="post" action="{{ route('groups.tasks.store', ['group' => $group]) }}" autocomplete="off" id="form-task" enctype="multipart/form-data">
                             
                             @csrf
                             @method('post')
@@ -27,6 +27,15 @@
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
+                                </div>
+                            @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             @endif
 
@@ -50,7 +59,7 @@
                                             <select class="form-control form-control-alternative{{ $errors->has('subject_id') ? ' is-invalid' : '' }}" id="subjectid" name="subject_id">
                                                 <option value="">{{__('Select a subject')}}</option>
                                                 @foreach ($subjects as $subject)
-                                                    <option value="{{$subject->id}}">{{$subject->name}}</option>
+                                                    <option value="{{$subject->id}}" {{ old('subject_id', '-1')==$subject->id ? 'selected' : '' }}>{{$subject->name}}</option>
                                                 @endforeach
                                             </select>
 
@@ -67,7 +76,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                                 </div>
-                                                <input class="form-control datepicker" placeholder="Select date" type="text" value="" name="due_at">
+                                                <input class="form-control datepicker" placeholder="Select date" type="text" value="{{old('due_at', '')}}" name="due_at">
                                             </div>
 
                                             @if ($errors->has('due_at'))
@@ -84,15 +93,21 @@
                                     <select class="form-control form-control-alternative{{ $errors->has('tasktype_id') ? ' is-invalid' : '' }}" id="taskType" name="tasktype_id">
                                         <option value="">{{__('Select a type')}}</option>
                                         @foreach ($types as $type)
-                                            <option value="{{$type->id}}">{{$type->name}}</option>
+                                            <option value="{{$type->id}}" {{ old('tasktype_id', '-1')==$type->id ? 'selected' : '' }}>{{$type->name}}</option>
                                         @endforeach
                                     </select>
+
+                                    @if ($errors->has('tasktype_id'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('tasktype_id') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                     
                                 <div class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-description">{{ __('Description') }}</label>
                                 
-                                    <textarea id="editor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Description') }}" name="description"></textarea>
+                                    <textarea id="editor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Description') }}" name="description">{{old('description', '')}}</textarea>
 
                                     @if ($errors->has('description'))
                                         <span class="invalid-feedback" role="alert">
@@ -103,13 +118,24 @@
 
                                 <div class="form-group{{ $errors->has('isPrivate') ? ' has-danger' : '' }}">
                                     <div class="custom-control custom-control-alternative custom-checkbox mb-3">
-                                        <input class="custom-control-input {{ $errors->has('isPrivate') ? ' is-invalid' : '' }}" id="customCheck5" type="checkbox" name="isPrivate">
-                                        <label class="custom-control-label" for="customCheck5">{{__('Make this task private')}}</label>
+                                        <input class="custom-control-input {{ $errors->has('isPrivate') ? ' is-invalid' : '' }}" type="checkbox" id="isPrivate" name="isPrivate" {{old('isPrivate', '0')=='on' ? 'checked' : ''}}>
+                                        <label class="custom-control-label" for="isPrivate">{{__('Make this task private')}}</label>
                                     </div>
 
                                     @if ($errors->has('isPrivate'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('isPrivate') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group{{ $errors->has('attachement') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-files">{{ __('Files') }}</label>
+                                    <input type="file" name="attachement[]" id="input-files" class="form-control form-control-alternative{{ $errors->has('attachement') ? ' is-invalid' : '' }}" multiple>
+                                    
+                                    @if ($errors->has('attachement'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('attachement') }}</strong>
                                         </span>
                                     @endif
                                 </div>
@@ -129,9 +155,9 @@
                             <script>
                                 var editor = new Smartmd({
                                     el: "#editor",
-                                    height: "40vh",
+                                    height: "400px",
                                     isFullScreen: false,
-                                    isPreviewActive: true,
+                                    isPreviewActive: false,
                                     uploads: {
                                         type: ['jpeg', 'png', 'bmp', 'gif', 'jpg', 'pdf'],
                                         maxSize: 4096,

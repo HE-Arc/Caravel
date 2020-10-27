@@ -4,10 +4,10 @@ return [
         /*
          * like filesystem, Where do you like to place pictures?
          */
-        "root" => 'smartmd',
+        "root" => 'upload',
         /*
          * return public image path
          */
-        "url" => env('APP_URL').'/storage/smartmd',
+        "url" => env('APP_URL').'/storage/upload',
     ],
 ];
