@@ -1,9 +1,9 @@
-@extends('layouts.app', ['title' => __('User Profile')])
+@extends('layouts.app', ['title' => __('Tasks')])
 
 @section('content')
     
     @include('users.partials.header', [
-        'title' => __('Create a Task')
+        'title' => __(isset($task->user) ? 'Edit a task' : 'Create a task')
     ])   
 
     <div class="container mt--7">
@@ -16,10 +16,15 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('groups.tasks.store', ['group' => $group]) }}" autocomplete="off" id="form-task" enctype="multipart/form-data">
-                            
-                            @csrf
+                        @if (isset($task->id))
+                            <form method="post" action="{{ route('groups.tasks.update', ['group' => $group, 'task' => $task->id]) }}" autocomplete="off" id="form-task" enctype="multipart/form-data">
+                            @method('patch')
+                        @else
+                            <form method="post" action="{{ route('groups.tasks.store', ['group' => $group]) }}" autocomplete="off" id="form-task" enctype="multipart/form-data">
                             @method('post')
+                        @endif
+                        
+                            @csrf
                             
                             @if (session('status'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -43,7 +48,7 @@
 
                                 <div class="form-group{{ $errors->has('title') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-title">{{ __('Title') }}</label>
-                                    <input type="text" name="title" id="input-name" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title', '') }}" required autofocus>
+                                    <input type="text" name="title" id="input-name" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title', $task->title) }}" required autofocus>
 
                                     @if ($errors->has('title'))
                                         <span class="invalid-feedback" role="alert">
@@ -59,7 +64,7 @@
                                             <select class="form-control form-control-alternative{{ $errors->has('subject_id') ? ' is-invalid' : '' }}" id="subjectid" name="subject_id">
                                                 <option value="">{{__('Select a subject')}}</option>
                                                 @foreach ($subjects as $subject)
-                                                    <option value="{{$subject->id}}" {{ old('subject_id', '-1')==$subject->id ? 'selected' : '' }}>{{$subject->name}}</option>
+                                                    <option value="{{$subject->id}}" {{ old('subject_id', $task->subject_id)==$subject->id ? 'selected' : '' }}>{{$subject->name}}</option>
                                                 @endforeach
                                             </select>
 
@@ -76,7 +81,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                                 </div>
-                                                <input class="form-control datepicker" placeholder="Select date" type="text" value="{{old('due_at', '')}}" name="due_at">
+                                                <input class="form-control datepicker" placeholder="Select date" type="text" value="{{old('due_at', $task->due_at)}}" name="due_at">
                                             </div>
 
                                             @if ($errors->has('due_at'))
@@ -93,7 +98,7 @@
                                     <select class="form-control form-control-alternative{{ $errors->has('tasktype_id') ? ' is-invalid' : '' }}" id="taskType" name="tasktype_id">
                                         <option value="">{{__('Select a type')}}</option>
                                         @foreach ($types as $type)
-                                            <option value="{{$type->id}}" {{ old('tasktype_id', '-1')==$type->id ? 'selected' : '' }}>{{$type->name}}</option>
+                                            <option value="{{$type->id}}" {{ old('tasktype_id', $task->tasktype_id)==$type->id ? 'selected' : '' }}>{{$type->name}}</option>
                                         @endforeach
                                     </select>
 
@@ -107,7 +112,7 @@
                                 <div class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-description">{{ __('Description') }}</label>
                                 
-                                    <textarea id="editor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Description') }}" name="description">{{old('description', '')}}</textarea>
+                                    <textarea id="editor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Description') }}" name="description">{{old('description', $task->description)}}</textarea>
 
                                     @if ($errors->has('description'))
                                         <span class="invalid-feedback" role="alert">
@@ -116,21 +121,33 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group{{ $errors->has('isPrivate') ? ' has-danger' : '' }}">
-                                    <div class="custom-control custom-control-alternative custom-checkbox mb-3">
-                                        <input class="custom-control-input {{ $errors->has('isPrivate') ? ' is-invalid' : '' }}" type="checkbox" id="isPrivate" name="isPrivate" {{old('isPrivate', '0')=='on' ? 'checked' : ''}}>
-                                        <label class="custom-control-label" for="isPrivate">{{__('Make this task private')}}</label>
-                                    </div>
+                                @empty($task->id)
+                                    <div class="form-group{{ $errors->has('isPrivate') ? ' has-danger' : '' }}">
+                                        <div class="custom-control custom-control-alternative custom-checkbox mb-3">
+                                            <input class="custom-control-input {{ $errors->has('isPrivate') ? ' is-invalid' : '' }}" type="checkbox" id="isPrivate" name="isPrivate" {{old('isPrivate', $task->isPrivate? 'on' : 'off')=='on' ? 'checked' : ''}}>
+                                            <label class="custom-control-label" for="isPrivate">{{__('Make this task private')}}</label>
+                                        </div>
 
-                                    @if ($errors->has('isPrivate'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('isPrivate') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
+                                        @if ($errors->has('isPrivate'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('isPrivate') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                @endempty
 
                                 <div class="form-group{{ $errors->has('attachement') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-files">{{ __('Files') }}</label>
+                                    <i class="fas fa-paperclip"></i> <label class="form-control-label" for="input-files">{{ __('Files') }}</label>
+                                    @if ($task->attachements && count($task->attachements) > 0)
+                                        <ul>
+                                            @foreach ($task->attachements as $file)
+                                                <li>
+                                                    <a href="{{route('groups.files', ['group' => $group, 'file' => $file->path])}}">{{$file->name}}</a>
+                                                    <a class="btn btn-sm btn-outline-default delete-attachement" date-id="{{ $file->id }}" href="{{route('groups.tasks.attachement.delete', [$task->subject->group->id, $task->id, $file->id])}}"><i class="far fa-trash-alt"></i></a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
                                     <input type="file" name="attachement[]" id="input-files" class="form-control form-control-alternative{{ $errors->has('attachement') ? ' is-invalid' : '' }}" multiple>
                                     
                                     @if ($errors->has('attachement'))
@@ -167,8 +184,26 @@
                                         url: "{{ route('groups.upload', ['group' => $group]) }}"
                                     }
                                 });
-                               
-                          </script>
+                            </script>
+                        @endpush
+                        @push('script')
+                            <script>
+                                $(".delete-attachement").on('click', function( event ) {
+                                    event.preventDefault();
+                                    var self = $(this);
+                                    $.ajax({
+                                        url: self.attr('href'),
+                                        type: 'DELETE',
+                                        data:{
+                                            'id': self.attr('href'),
+                                            '_token': '{{ csrf_token() }}'
+                                        },
+                                        success: function(result) {
+                                            self.parent().remove();
+                                        }
+                                    });
+                                });
+                            </script>
                         @endpush
                         
                     </div>
