@@ -91,16 +91,19 @@ class GroupController extends Controller
     public function filtered(String $str){
         //get all groups corresponding to the requested string (regex)
         $groups = Group::where('name', 'LIKE', "%$str%")
-            //->orderBy('name') //TODO : Add a good order by, DONT FORGET N+1 problem
-            ->take(10)
+            ->orderBy('created_at') //TODO : Add a good order by, DONT FORGET N+1 problem
+            ->take(6)
             ->get();
+
         //fetch current user
         $userID = Auth::id();
+
         if($userID){
             //fetch all groups from current user
             $groupsRequested = App\Models\User::find($userID)->groups();
             $isApproved = $groupsRequested->subscription;
         }
+
         return response()->json([$groups]);
     }
 }
