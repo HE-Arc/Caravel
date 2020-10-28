@@ -30,15 +30,18 @@
                         <h2 class="mb-0">
                             {{ $task->title }}
                             <div class="float-right">
-                                <a class="btn btn-sm btn-outline-primary" href="{{ route('groups.tasks.edit', [$task->subject->group->id, $task->id])}}">{{__('Edit')}}</a>
-                                <form method="POST" class="float-right" action="{{ route('groups.tasks.destroy', [$task->subject->group->id, $task->id])}}">
-                                    @csrf
-                                    @method('DELETE')
-                            
-                                    <button class="btn btn-sm btn-outline-danger" >
-                                        {{__('Delete')}}
-                                    </button>
-                                </form>
+                                @if ($task->user->id == auth()->user()->id)
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ route('groups.tasks.edit', [$task->subject->group->id, $task->id])}}">{{__('Edit')}}</a>
+                                    <form method="POST" class="float-right" action="{{ route('groups.tasks.destroy', [$task->subject->group->id, $task->id])}}">
+                                        @csrf
+                                        @method('DELETE')
+                                
+                                        <button class="btn btn-sm btn-outline-danger" >
+                                            {{__('Delete')}}
+                                        </button>
+                                    </form>
+                                @endif
+                                
                             </div>
                         </h2>
                         <span class="mb-0">
@@ -85,7 +88,7 @@
                                         <span class="avatar avatar-sm rounded-circle float-left mt-1">
                                             <img alt="" src="{{$comment->user->picture}}">
                                         </span>
-                                        <div class="comment-wrapper ml-0 pl-0 ml-md-5 pl-md-3">
+                                        <div class="comment-wrapper ml-0 pl-0 ml-md-5 md-3">
                                             <div class="comment-header">
                                                 <span class=" font-weight-bold"> {{$comment->user->name }}</span>
                                                 @if ($task->user->id == $comment->user->id)
@@ -126,7 +129,7 @@
                             <div class="ml-0 pl-0 ml-md-5 pl-md-3">
                                 
                                 <div class="form-group{{ $errors->has('message') ? ' has-danger' : '' }}">
-                                    <textarea id="commentEditor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Live a comment...') }}" name="message">{{old('message', '')}}</textarea>
+                                    <textarea id="commentEditor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Leave a comment...') }}" name="message">{{old('message', '')}}</textarea>
 
                                     @if ($errors->has('message'))
                                         <span class="invalid-feedback" role="alert">
