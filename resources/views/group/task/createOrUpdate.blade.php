@@ -195,7 +195,6 @@
                                         url: self.attr('href'),
                                         type: 'DELETE',
                                         data:{
-                                            'id': self.attr('href'),
                                             '_token': '{{ csrf_token() }}'
                                         },
                                         success: function(result) {

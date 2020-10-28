@@ -10,19 +10,38 @@ use App\Models\Group;
 use App\Models\Attachement;
 use App\Models\Comment;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display next 30 task.
      *
+     * @param Request $request
+     * @param Group $group 
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Group $group)
     {
-        //
+        $tasks = Task::take(30)->orderBy('due_at', 'asc')->where('tasktype_id', '!=', TaskType::PROJECT)->whereDate('due_at', '>=', Carbon::now())->get();
+        $projects = Task::take(10)->orderBy('due_at', 'asc')->where('tasktype_id', '=', TaskType::PROJECT)->whereDate('due_at', '>=', Carbon::now())->get();
+
+        $tasksByDays = [];
+
+        foreach($tasks as $task) {
+            $days = $task->due_at->diffInDays(new Carbon());
+            if (!isset($tasksByDays[$days])) $tasksByDays[$days] = [];
+            $tasksByDays[$days][] = $task;
+        }
+
+        return view('group.task.upcoming', ['group' => $group,
+                                          'types' => TaskType::all(),
+                                          'subjects' => Subject::all(),
+                                          'tasksByDays' => $tasksByDays,
+                                          'projects' => $projects
+        ]);
     }
 
     /**

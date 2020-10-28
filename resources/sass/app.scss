@@ -4,5 +4,44 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+
+.tasks-list {
+    li {
+        width:100%;
+        display:inline-block;
+        padding: 10px;
+        border: 1px solid #acacc561;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+}
+
+.title-days {
+    width: 100%; 
+    border-bottom: 1px solid #e0e0e0; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+    font-weight: 300;
+    color: #717871;
+
+    span { 
+        background:#fff; 
+        padding:0 10px; 
+    }
+}
+
+.comment-wrapper {
+    border-radius: 5px;
+    border: 1px solid #d2d2d2;
+
+    .comment-display {
+        padding: 15px;
+    }
+
+    .comment-header {
+        padding: 10px;
+        background-color: #6772e50d;
+        border-bottom: 1px solid #d6d6d6;
+    }
+}
+ 
