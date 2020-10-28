@@ -21,7 +21,7 @@
                     <div id="createGroupCard" class="card bg-white w-50 p-3 dashed-bottom">
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <h1 id="createClassName"></h1>
-                            <button type="submit" id="createButton" disabled="disabled" class="btn btn-primary">{{ __('Create') }}</button>
+                            <a href="{{route('groups.create')}}" id="createButton" class="disabled btn btn-primary">{{ __('Create') }}</a>
                         </div>
                     </div>
                     <div id="model" class="card bg-white w-50 p-3 d-none" data-id="-1">
@@ -48,6 +48,13 @@
         timeout = setTimeout(liveSearch, 250); 
     });
 
+    $("#createButton").click(function(e) {
+        console.log("hi");
+        let completeUrl = $(this).attr('href') + "/?name=" +  $("#groupInput").val();
+        $(this).attr('href', completeUrl);
+        console.log("url : " + completeUrl);
+    });
+
     function liveSearch(){
         var groupName = $("#groupInput").val()
         $("#createClassName").text(groupName)
@@ -62,8 +69,14 @@
                 dataType: 'JSON',
                 /* remind that 'data' is the response of the AjaxController */
                 success: function (data) {
-                    $("#createButton").prop("disabled", !data.valid);
-                    buildListGroups(data.groups);
+                    if(data.valid){
+                        $("#createButton").removeClass("disabled");
+                    } else {
+                        $("#createButton").addClass("disabled");
+                    }
+                    if(data.groups){
+                        buildListGroups(data.groups);
+                    }
                 }
             });
         }
@@ -73,9 +86,11 @@
         //clean groups except "create" field
         $("#groupsContainer").children().not("#createGroupCard, #model").remove();
         //build groups
-        groups.forEach(group => {
+        if(groups){
+            groups.forEach(group => {
                 buildGroup(group); //build groups on page
-        });
+            });
+        }
     }
 
     function buildGroup(group){
@@ -87,7 +102,6 @@
         groupBody.find(".groupName").text(group.name);
         //customize button
         let buttonType; let buttonText;
-        console.log("requested : " + group.requested);
         if(group.requested){
             buttonType = "btn-info";
             buttonText = "requested";

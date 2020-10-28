@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class GroupController extends Controller
 {
@@ -24,9 +25,27 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $group = new Group();
+
+        $rules = [
+            'name' => 'unique:groups|max:150',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        $errors = "no";
+        if ($validator->fails()) {
+            $errors = "bad name";
+        } else {
+            $name = $request->get('name');
+            if(!empty($name)){
+                $group->name = $name;
+            }
+        }
+
+        return view('group.create', ["group" => $group, "errors" => $errors]);
     }
 
     /**
@@ -37,7 +56,7 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //return redirect()->back()->withErrors($validator)->withInput();
     }
 
     /**
