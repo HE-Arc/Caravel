@@ -107,7 +107,7 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        //
+        return redirect()->route('groups.tasks.index', $id);
     }
 
     /**

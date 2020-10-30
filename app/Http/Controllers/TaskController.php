@@ -25,8 +25,12 @@ class TaskController extends Controller
      */
     public function index(Request $request, Group $group)
     {
-        $tasks = Task::take(30)->orderBy('due_at', 'asc')->where('tasktype_id', '!=', TaskType::PROJECT)->whereDate('due_at', '>=', Carbon::now())->get();
-        $projects = Task::take(10)->orderBy('due_at', 'asc')->where('tasktype_id', '=', TaskType::PROJECT)->whereDate('due_at', '>=', Carbon::now())->get();
+        $tasks = $group->tasks()->take(30)->orderBy('due_at', 'asc')
+                                ->where('tasktype_id', '!=', TaskType::PROJECT)
+                                ->whereDate('due_at', '>=', Carbon::now())->get();
+        $projects = $group->tasks()->take(10)->orderBy('due_at', 'asc')
+                        ->where('tasktype_id', '=', TaskType::PROJECT)
+                        ->whereDate('due_at', '>=', Carbon::now())->get();
 
         $tasksByDays = [];
 
@@ -38,7 +42,6 @@ class TaskController extends Controller
 
         return view('group.task.upcoming', ['group' => $group,
                                           'types' => TaskType::all(),
-                                          'subjects' => Subject::all(),
                                           'tasksByDays' => $tasksByDays,
                                           'projects' => $projects
         ]);
@@ -53,7 +56,7 @@ class TaskController extends Controller
     {
         return view('group.task.createOrUpdate', ['group' => $group,
                                           'types' => TaskType::all(),
-                                          'subjects' => Subject::all(),
+                                          'subjects' => $group->subjects,
                                           'task' => new Task(),
         ]);
     }
@@ -167,7 +170,7 @@ class TaskController extends Controller
     {
         return view('group.task.createOrUpdate', ['group' => $group,
                                                 'types' => TaskType::all(),
-                                                'subjects' => Subject::all(),
+                                                'subjects' => $group->subjects,
                                                 'task' => $task]);
     }
 

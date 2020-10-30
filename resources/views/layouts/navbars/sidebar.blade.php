@@ -14,7 +14,9 @@
                 <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="media align-items-center">
                         <span class="avatar avatar-sm rounded-circle">
-                        <img alt="Image placeholder" src="{{ asset('argon') }}/img/theme/team-1-800x800.jpg">
+                            @isset(auth()->user()->picture)
+                                <img alt="Image placeholder" src="{{ auth()->user()->picture }}">
+                            @endisset
                         </span>
                     </div>
                 </a>
@@ -23,20 +25,8 @@
                         <h6 class="text-overflow m-0">{{ __('Welcome!') }}</h6>
                     </div>
                     <a href="{{ route('profile.edit') }}" class="dropdown-item">
-                        <i class="ni ni-single-02"></i>
-                        <span>{{ __('My profile') }}</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
                         <i class="ni ni-settings-gear-65"></i>
                         <span>{{ __('Settings') }}</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="ni ni-calendar-grid-58"></i>
-                        <span>{{ __('Activity') }}</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="ni ni-support-16"></i>
-                        <span>{{ __('Support') }}</span>
                     </a>
                     <div class="dropdown-divider"></div>
                     <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
@@ -65,64 +55,74 @@
                     </div>
                 </div>
             </div>
-            <!-- Form -->
-            <form class="mt-4 mb-3 d-md-none">
-                <div class="input-group input-group-rounded input-group-merge">
-                    <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="{{ __('Search') }}" aria-label="Search">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <span class="fa fa-search"></span>
+            <!-- Navigation -->
+            @isset($group)
+            <div class="dropdown d-block d-md-none">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              @if (isset($group))
+                {{$group->name}}
+              @else
+                {{ __('Select class') }}
+              @endif
+            </a>
+          
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                @foreach (auth()->user()->groups as $item)
+                    @if (!isset($group) || $group->id != $item->id)
+                        <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
+                    @endif
+                @endforeach
+                <a class="dropdown-item" href="{{ route('groups.create') }}">
+                    <i class="fas fa-plus"></i>
+                    {{__('Create a class')}}
+                </a>
+            </div>
+          </div>            
+                <h6 class="navbar-heading text-muted d-none d-md-block">{{$group->name}}</h6>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link{{ request()->route()->named('groups.tasks.index') ? ' active' : '' }}" href="{{ route('groups.tasks.index', $group->id) }}">
+                            <i class="ni ni-bullet-list-67 text-primary"></i> {{ __('Upcoming') }}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('groups.tasks.index', $group->id) }}">
+                            <i class="ni ni-calendar-grid-58 text-primary"></i> {{ __('Weekly') }}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">
+                            <i class="fas fa-toolbox text-primary"></i>
+                            <span class="nav-link-text" >{{ __('Manage') }}</span>
+                        </a>
+    
+                        <div class="collapse show" id="navbar-examples">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-cog text-primary"></i>
+                                        <span class="nav-link-text" >{{ __('Settings') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-tasks text-primary"></i>
+                                        <span class="nav-link-text" >{{ __('Subjects') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="fas fa-user-clock text-primary"></i>
+                                        <span class="nav-link-text" >{{ __('Requested') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
-            </form>
-            <!-- Navigation -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">
-                        <i class="ni ni-tv-2 text-primary"></i> {{ __('Dashboard') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#navbar-examples" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="navbar-examples">
-                        <i class="fab fa-laravel" style="color: #f4645f;"></i>
-                        <span class="nav-link-text" style="color: #f4645f;">{{ __('Laravel Examples') }}</span>
-                    </a>
-
-                    <div class="collapse show" id="navbar-examples">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile.edit') }}">
-                                    {{ __('User profile') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('user.index') }}">
-                                    {{ __('User Management') }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="ni ni-circle-08 text-pink"></i> {{ __('Register') }}
-                    </a>
-                </li>
-            </ul>
-            <!-- Divider -->
-            <hr class="my-3">
-            <!-- Heading -->
-            <h6 class="navbar-heading text-muted">Documentation</h6>
-            <!-- Navigation -->
-            <ul class="navbar-nav mb-md-3">
-                <li class="nav-item">
-                    <a class="nav-link" href="https://argon-dashboard-laravel.creative-tim.com/docs/components/alerts.html">
-                        <i class="ni ni-ui-04"></i> Components
-                    </a>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            @endisset
         </div>
     </div>
 </nav>
