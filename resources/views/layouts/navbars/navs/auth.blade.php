@@ -15,7 +15,7 @@
             </a>
           
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                @foreach (auth()->user()->groups as $item)
+                @foreach (auth()->user()->groupsAvailable as $item)
                     @if (!isset($group) || $group->id != $item->id)
                         <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
                     @endif

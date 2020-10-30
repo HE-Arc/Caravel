@@ -67,7 +67,7 @@
             </a>
           
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                @foreach (auth()->user()->groups as $item)
+                @foreach (auth()->user()->groupsAvailable as $item)
                     @if (!isset($group) || $group->id != $item->id)
                         <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
                     @endif
@@ -107,7 +107,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link{{ request()->route()->named('groups.subjects.index') ? ' active' : '' }}" href="{{route('groups.subjects.index', $group)}}">
                                         <i class="fas fa-tasks text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Subjects') }}</span>
                                     </a>
