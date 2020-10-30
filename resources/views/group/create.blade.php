@@ -17,10 +17,11 @@
 
         @include('layouts.footers.auth')
     </div>
-    <!--    $table->id();
-            $table->string('name', 150);
-            $table->string('picture');
-            $table->timestamps();
-            $table->bigInteger('user_id')->unsigned()->nullable();
-   -->
+    <!--    
+        $table->id();
+        $table->string('name', 150);
+        $table->string('picture');
+        $table->timestamps();
+        $table->bigInteger('user_id')->unsigned()->nullable();
+    -->
 @endsection
