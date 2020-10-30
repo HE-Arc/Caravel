@@ -27,11 +27,14 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            @include('layouts.navbars.sidebar')
+            @if (!isset($hasSidebar) || $hasSidebar)
+                @include('layouts.navbars.sidebar')
+            @endif
         @endauth
         
-        <div class="main-content">
+        <div class="main-content">    
             @include('layouts.navbars.navbar')
+            
             @yield('content')
         </div>
 
