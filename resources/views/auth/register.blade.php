@@ -2,7 +2,6 @@
 
 @section('content')
     @include('layouts.headers.guest')
-
     <div class="container mt--8 pb-5">
         <!-- Table -->
         <div class="row justify-content-center">
@@ -44,7 +43,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                     </div>
-                                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Password') }}" type="password" name="password" required>
+                                    <input id="passwordRegister" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Password') }}" type="password" name="password" required>
                                 </div>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" style="display: block;" role="alert">
@@ -61,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="text-muted font-italic">
-                                <small>{{ __('Password strength') }}: <span class="text-success font-weight-700">{{ __('strong') }}</span></small>
+                                <small>{{ __('Password strength') }}: <span class="text-success font-weight-700" id="passwordStrength"></span></small>
                             </div>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary mt-4">{{ __('Create account') }}</button>
@@ -71,5 +70,7 @@
                 </div>
             </div>
         </div>
+        <script src="../../resources/js/passwordCheck.js"></script>
+
     </div>
 @endsection
