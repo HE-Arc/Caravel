@@ -60,8 +60,9 @@
                                 </div>
                             </div>
                             <div class="text-muted font-italic">
-                                <small>{{ __('Password strength') }}: <span class="text-success font-weight-700" id="passwordStrength"></span></small>
+                                <small>{{ __('Password strength') }}: <span class="font-weight-700" id="passwordStrength"></span></small>
                             </div>
+                            <script src="../../resources/js/passwordCheck.js"></script>
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary mt-4">{{ __('Create account') }}</button>
                             </div>
@@ -70,7 +71,5 @@
                 </div>
             </div>
         </div>
-        <script src="../../resources/js/passwordCheck.js"></script>
-
     </div>
 @endsection

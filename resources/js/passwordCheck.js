@@ -10,8 +10,20 @@ function checkPassword(value){
     if (value.match(/[^\p{L}\d\s]/u))strength++;
 
     let message="";
-    if(strength >3&&value.length>8)message="strong";
-    else if(strength >2&&value.length>8)message="moderate";
-    else message="weak";
-    document.getElementById("passwordStrength").innerHTML=message;
+    let color ="";
+    if(strength >3&&value.length>8){
+        message="strong";
+        color = "green";
+    }
+    else if(strength >2&&value.length>8){
+        message="moderate";
+        color="orange";
+    }
+    else {
+        message="weak";
+        color="red";
+    }
+    var messageStrength= document.getElementById("passwordStrength");
+    messageStrength.innerHTML=message;
+    messageStrength.style.color=color;
 }
