@@ -35,17 +35,15 @@ class GroupController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        $errors = "no";
-        if ($validator->fails()) {
-            $errors = "bad name";
-        } else {
+        if (!$validator->fails()) {
             $name = $request->get('name');
             if(!empty($name)){
                 $group->name = $name;
             }
         }
 
-        return view('group.create', ["group" => $group, "errors" => $errors]);
+        return view('group.createOrUpdate', ["group" => $group])
+            ->withErrors($validator);
     }
 
     /**
@@ -56,7 +54,29 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //return redirect()->back()->withErrors($validator)->withInput();
+        $group = new Group();
+
+        $rules = [
+            'name' => 'required|unique:groups|max:150',
+            'description' => 'max:500',
+            'picture' => 'required|image|max:4096'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput();
+        } else {
+            $group->name = $request->get('name');
+            $group->description = $request->get('description');
+            $group->picture = $request->get('picture');
+            $group->save();
+        }
+
+        return redirect()->route('groups.show', $group->id);
     }
 
     /**
@@ -76,9 +96,9 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Group $group)
     {
-        //
+        return view('group.createOrUpdate', ["group" => $group, "errors" => $errors]);
     }
 
     /**
@@ -137,7 +157,6 @@ class GroupController extends Controller
                 "requested" => $group->users()->find($userID) != null
             ];
         }
-
         return response()->json([
             "valid" => $valid,
             "groups"  => $groupsData,
