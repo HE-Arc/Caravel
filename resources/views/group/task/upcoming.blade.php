@@ -46,7 +46,7 @@
                                                     @if ($task->isPrivate)
                                                         <span class="badge ml-1 badge-danger">{{__('Private')}}</span>
                                                     @endif
-                                                    <span class="badge ml-1 badge-info badge-{{$task->subject->id}}">{{$task->subject->name}}</span>
+                                                    <span class="badge ml-1 badge-info subject-color-{{$task->subject->color}}">{{$task->subject->name}}</span>
 
                                                 </span>
                                             </li>
