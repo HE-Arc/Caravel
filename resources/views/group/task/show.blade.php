@@ -14,6 +14,9 @@
                     <div class="card-header bg-white border-0">
                         <div class="card-header-details">
                             <span class="state ">
+                                @if ($task->isPrivate)
+                                    <span class="badge badge-danger">{{__('Private')}}</span>
+                                @endif
                                 @if ($task->due_at->isPast())
                                     <span class="badge badge-danger"> {{__('overdue')}} </span>
                                 @else

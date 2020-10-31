@@ -25,12 +25,20 @@ class TaskController extends Controller
      */
     public function index(Request $request, Group $group)
     {
+        $userid =  auth()->user()->id;
         $tasks = $group->tasks()->take(30)->orderBy('due_at', 'asc')
                                 ->where('tasktype_id', '!=', TaskType::PROJECT)
-                                ->whereDate('due_at', '>=', Carbon::now())->get();
+                                ->where(function($query) use($userid) {
+                                    $query->where('isPrivate', '=', 0)
+                                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
+                                })->whereDate('due_at', '>=', Carbon::now())->get();
+                                
         $projects = $group->tasks()->take(10)->orderBy('due_at', 'asc')
                         ->where('tasktype_id', '=', TaskType::PROJECT)
-                        ->whereDate('due_at', '>=', Carbon::now())->get();
+                        ->where(function($query) use($userid) {
+                            $query->where('isPrivate', '=', 0)
+                            ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
+                        })->whereDate('due_at', '>=', Carbon::now())->get();
 
         $tasksByDays = [];
 

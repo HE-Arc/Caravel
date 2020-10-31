@@ -14,14 +14,13 @@
                     <div class="card-header bg-white border-0">
                         <div class="card-header-details">
                             <a class="btn btn-sm btn-default float-right" href="{{ route('groups.tasks.create', [$group->id])}}">
-                                
                                 {{__('New task')}}
                             </a>
                         </div>
                     </div>
                     <div class="card-body bg-white">
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-md-8">
                                 @foreach ($tasksByDays as $days => $tasks)
                                     <h2 class="title-days"><span class="line">{{$days == 0 ? __('Today') : $days . __(' days')}}</span></h2>
                                 
@@ -44,14 +43,18 @@
                                                     @if ($task->attachements && count($task->attachements) > 0)
                                                         <span><i class="fas fa-paperclip"></i> {{count($task->attachements)}}</span>
                                                     @endif
-                                                    <span class="badge ml-2 badge-info badge-{{$task->subject->id}}">{{$task->subject->name}}</span>
+                                                    @if ($task->isPrivate)
+                                                        <span class="badge ml-1 badge-danger">{{__('Private')}}</span>
+                                                    @endif
+                                                    <span class="badge ml-1 badge-info subject-color-{{$task->subject->color}}">{{$task->subject->name}}</span>
+
                                                 </span>
                                             </li>
                                         @endforeach
                                     </ul>
                                 @endforeach
                             </div>
-                            <div class="col-4">
+                            <div class="col-md-4">
                                 <h4>{{__('Projects')}}</h4>
                                 <ul class="list-unstyled tasks-list tasks-upcoming">
                                     @foreach ($projects as $project)

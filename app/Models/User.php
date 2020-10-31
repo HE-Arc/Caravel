@@ -50,6 +50,10 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
+    public function groupsAvailable() {
+        return $this->groups()->wherePivot('isApprouved', '=', 1);
+    }
+
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
