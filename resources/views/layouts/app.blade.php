@@ -7,7 +7,7 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Argon Dashboard') }}</title>
+        <title>{{ $title ?? '' }}</title>
         <!-- Favicon -->
         <link href="{{ asset('argon') }}/img/brand/favicon.png" rel="icon" type="image/png">
         <!-- Fonts -->
@@ -21,18 +21,23 @@
         <link type="text/css" href="{{ asset('argon') }}/css/argon.css?v=1.0.0" rel="stylesheet">
         <!-- custom CSS -->
         <link type="text/css" href="{{ asset('css/caravel.css') }}" rel="stylesheet">
+        <link type="text/css" href="{{ asset('') }}css/app.css" rel="stylesheet">
         @stack('css')
     </head>
     <body class="{{ $class ?? '' }}">
+        @include('layouts.partials.notifications')
         @auth()
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-            @include('layouts.navbars.sidebar')
+            @if (!isset($hasSidebar) || $hasSidebar)
+                @include('layouts.navbars.sidebar')
+            @endif
         @endauth
         
-        <div class="main-content">
+        <div class="main-content">    
             @include('layouts.navbars.navbar')
+            
             @yield('content')
         </div>
 

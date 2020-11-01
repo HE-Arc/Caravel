@@ -9,6 +9,7 @@ use File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
@@ -77,6 +78,65 @@ class GroupController extends Controller
     }
 
     /**
+     * upload.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param int $group 
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request, $group)
+    {
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|max:4096'
+        ]);
+        if ($validator->passes()) {
+            $folder = config('smartmd.files.root') . '/groups\/' . $group;
+            $temp = $request->file('image');
+            $fileName = '[' . $temp->getClientOriginalName() . ']';
+            $name = $temp->hashName();
+            if (substr($temp->getMimeType(), 0, 5) == 'image') {
+                $fileName = '!' . $fileName;
+                $im = Image::make($temp->getPathname());
+                $width = $im->width();
+                $height = $im->height();
+                if ($width > 1200) {
+                    $scale = 1200 / $width;
+                    $width = ceil($width * $scale);
+                    $height = ceil($height * $scale);
+                    $im->resize($width, $height);
+                    $temp = (string) $im->encode();
+                    $folder .= '/'.$name;
+                }
+            } 
+
+            Storage::put($folder, $temp);
+            
+            return response()->json(
+                [
+                    'path' => route('groups.files', ['group' => $group, 'file' => $name]),
+                    'name' => $fileName,
+                    'message' => 'File uploaded'
+                ]
+            );
+        }
+        return response()->json(['message' => $validator->errors()->first()],400);
+    }
+
+        /**
+     * upload.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param int $group 
+     * @return \Illuminate\Http\Response
+     */
+    public function getFile(Request $request, $group, $file) {
+        $folder = config('smartmd.files.root') . '/groups\/' . $group . '/';
+        return response()->file(Storage::path($folder . $file));
+    }
+
+
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -84,7 +144,7 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        //
+        return redirect()->route('groups.tasks.index', $id);
     }
 
     /**

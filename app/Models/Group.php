@@ -27,4 +27,10 @@ class Group extends Model
     {
         return $this->hasMany('App\Models\Subject');
     }
+
+    public function tasks() {
+
+        return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject');
+
+    }
 }

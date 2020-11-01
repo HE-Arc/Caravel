@@ -4,5 +4,70 @@
 // Variables
 @import 'variables';
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+$icons: ("1": "#6bce6b",
+         "2": "#ecd635",
+         "3": "#f7b844",
+         "4": "#f08a38",
+         "5": "#f03838",
+         "6": "#f038a3",
+         "7": "#cb38f0",
+         "8": "#6038f0",
+         "9": "#3863f0",
+         "10": "#08a8cf",);
+
+@each $name, $color in $icons {
+    .subject-color-#{$name} {
+        background-color: #{$color};
+        color:#fff;
+    }
+}
+
+.caravel-alert.alert-container {
+    position: fixed;
+    top:30px;
+    right: 30px; 
+    z-index: 10;
+}
+
+
+.tasks-list {
+    li {
+        width:100%;
+        display:inline-block;
+        padding: 10px;
+        border: 1px solid #acacc561;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+}
+
+.title-days {
+    width: 100%; 
+    border-bottom: 1px solid #e0e0e0; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+    font-weight: 300;
+    color: #717871;
+
+    span { 
+        background:#fff; 
+        padding:0 10px; 
+    }
+}
+
+.comment-wrapper {
+    border-radius: 5px;
+    border: 1px solid #d2d2d2;
+
+    .comment-display {
+        padding: 15px;
+        background-color: #fff;
+    }
+
+    .comment-header {
+        padding: 10px;
+        background-color: #6772e50d;
+        border-bottom: 1px solid #d6d6d6;
+    }
+}
+ 
