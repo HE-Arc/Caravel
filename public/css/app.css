@@ -48,6 +48,13 @@
   color: #fff;
 }
 
+.caravel-alert.alert-container {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 10;
+}
+
 .tasks-list li {
   width: 100%;
   display: inline-block;
