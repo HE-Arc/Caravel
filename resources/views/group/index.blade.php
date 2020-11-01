@@ -19,17 +19,20 @@
 
                 <div id="groupsContainer" class="d-flex flex-column justify-content-start align-items-center my-4"> 
                     <div id="createGroupCard" class="card bg-white w-50 p-3 dashed-bottom">
+                        <form action="{{route('groups.store')}}" method="post">
+                        @method('post')
+                        @csrf
                         <div class="d-flex flex-row justify-content-between align-items-center">
+                            <input type="hidden" name="name" value="" id="inputNameHidden">
                             <h1 id="createClassName"></h1>
-                            <a href="{{route('groups.create')}}" id="createButton" class="disabled btn btn-primary">{{ __('Create') }}</a>
+                            <button @guest disabled="true" @endguest id="createButton" class="disabled btn btn-primary">{{ __('Create') }}</button>
                         </div>
+                        </form>
                     </div>
                     <div id="model" class="card bg-white w-50 p-3 d-none" data-id="-1">
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <h1 class="groupName">{{__("Test class 2")}}</h1>
-                            @auth
-                            <button type="submit" class="btn groupButton">{{ __('Requested') }}</button>
-                            @endauth
+                            <button type="submit" @guest disabled="true" @endguest class="btn groupButton">{{ __('Requested') }}</button>
                         </div>
                     </div>
                 </div>
@@ -44,6 +47,7 @@
     //set timeout on live search
     let timeout;
     $("#groupInput").keyup(function () {
+        $("#inputNameHidden").val($("#groupInput").val());
         clearTimeout(timeout);
         timeout = setTimeout(liveSearch, 250); 
     });
@@ -69,11 +73,13 @@
                 dataType: 'JSON',
                 /* remind that 'data' is the response of the AjaxController */
                 success: function (data) {
+                    @auth
                     if(data.valid){
                         $("#createButton").removeClass("disabled");
                     } else {
                         $("#createButton").addClass("disabled");
                     }
+                    @endauth
                     if(data.groups){
                         buildListGroups(data.groups);
                     }

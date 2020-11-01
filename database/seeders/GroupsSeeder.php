@@ -27,7 +27,6 @@ class GroupsSeeder extends Seeder
             DB::table('groups')->insert([
                 'id' => 0, //auto-incremented
                 'name' => $name,
-                'picture' => "ToBeDone picture path",
                 'created_at' => now(),
                 'updated_at' => now()
             ]);    

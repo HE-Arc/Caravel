@@ -9,10 +9,9 @@ class Group extends Model
 {
     use HasFactory;
 
-    //default image
-    protected $attributes = [
-        'picutre' => config() . config(),
-    ];
+    public function pictureOrDefault(){
+        return $this->picture ?? asset(config('caravel.groups.pictureFolder').config('caravel.groups.pictureBase'));
+    }
 
     public function users()
     {
