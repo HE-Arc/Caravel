@@ -25,7 +25,6 @@ class GroupsSeeder extends Seeder
 
         foreach ($names as $name){
             DB::table('groups')->insert([
-                'id' => 0, //auto-incremented
                 'name' => $name,
                 'created_at' => now(),
                 'updated_at' => now()
