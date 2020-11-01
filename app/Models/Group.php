@@ -9,6 +9,10 @@ class Group extends Model
 {
     use HasFactory;
 
+    public function pictureOrDefault(){
+        return $this->picture ?? asset(config('caravel.groups.pictureFolder').config('caravel.groups.pictureBase'));
+    }
+
     public function users()
     {
         return $this->belongsToMany('App\Models\User');

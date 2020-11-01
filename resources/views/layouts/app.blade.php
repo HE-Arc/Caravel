@@ -19,6 +19,8 @@
         <link href="{{ asset('argon') }}/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
         <!-- Argon CSS -->
         <link type="text/css" href="{{ asset('argon') }}/css/argon.css?v=1.0.0" rel="stylesheet">
+        <!-- custom CSS -->
+        <link type="text/css" href="{{ asset('css/caravel.css') }}" rel="stylesheet">
         <link type="text/css" href="{{ asset('') }}css/app.css" rel="stylesheet">
         @stack('css')
     </head>
