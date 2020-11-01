@@ -9,6 +9,11 @@ class Group extends Model
 {
     use HasFactory;
 
+    //default image
+    protected $attributes = [
+        'picutre' => config() . config(),
+    ];
+
     public function users()
     {
         return $this->belongsToMany('App\Models\User');

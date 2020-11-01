@@ -1,3 +1,6 @@
 .dashed-bottom {
   border-bottom: 2px dotted black;
 }
+.width-250 {
+  width: 250px;
+}

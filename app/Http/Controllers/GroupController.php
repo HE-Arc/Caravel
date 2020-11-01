@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 
 class GroupController extends Controller
 {
@@ -35,15 +36,20 @@ class GroupController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
 
-        if (!$validator->fails()) {
+        if ($validator->fails()) {
+            return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+        } else {
             $name = $request->get('name');
             if(!empty($name)){
                 $group->name = $name;
             }
         }
+        $group->save();
 
-        return view('group.createOrUpdate', ["group" => $group])
-            ->withErrors($validator);
+        return view('group.settings', ['group' => $group]);
     }
 
     /**
@@ -59,7 +65,7 @@ class GroupController extends Controller
         $rules = [
             'name' => 'required|unique:groups|max:150',
             'description' => 'max:500',
-            'picture' => 'required|image|max:4096'
+            'picture' => 'image|max:4096'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -72,11 +78,31 @@ class GroupController extends Controller
         } else {
             $group->name = $request->get('name');
             $group->description = $request->get('description');
-            $group->picture = $request->get('picture');
+            //$group->picture = $request->get('picture');
+            //https://stackoverflow.com/questions/50086004/issue-updating-user-account-with-avatar-laravel TODO
+            //if the picture is submitted, do the treatment
+            if($request->hasfile('picture')){
+                $filenamePicture = $this->FileNameAndSave($request->file('picture'));
+                $group->picture = $filenamePicture;
+            }
+            //if user is authenticated, put him as the group's leader
+            $userID = Auth::id();
+            if($userID!=null){
+                $group->user_id = $userID;
+            }
             $group->save();
         }
 
+        //return the user to the "show" of this created group
         return redirect()->route('groups.show', $group->id);
+    }
+
+    //this name is way too long, but "buildFilenameFromPicture" 
+    private function FileNameAndSave($picture){
+        //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
+        $filename = public_path(config('caravel.groups.pictureFolder')) . "/" . $picture->hashName();
+        Image::make($picture)->resize(250,250)->save($filename);
+        return $filename;
     }
 
     /**
@@ -98,7 +124,7 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        return view('group.createOrUpdate', ["group" => $group, "errors" => $errors]);
+        return view('group.settings', ["group" => $group, 'users' => $group->users()]);
     }
 
     /**
@@ -110,7 +136,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**

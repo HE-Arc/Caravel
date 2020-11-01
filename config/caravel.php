@@ -14,7 +14,7 @@ return [
 
     'groups' => 
         [
-            'pictureFolder' => '\/upload/groups/pictures/',
+            'pictureFolder' => '/upload/groups/pictures/',
             'pictureBase' => 'base.png',
         ],
 
