@@ -15,7 +15,7 @@ class Group extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
 
     public function author()
@@ -29,8 +29,6 @@ class Group extends Model
     }
 
     public function tasks() {
-
         return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject');
-
     }
 }
