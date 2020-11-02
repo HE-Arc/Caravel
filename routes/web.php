@@ -19,10 +19,15 @@ Route::get('/', function () {
 });
 
 Route::resource('groups', App\Http\Controllers\GroupController::class);
+
+//join a group (show view, apply))
+Route::get('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
+Route::get('groups/{group}/pending', ['as' => 'groups.pending', 'uses' => 'App\Http\Controllers\GroupController@pending']);
+//get filtered group API
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
+
 Route::resource('groups.tasks', App\Http\Controllers\TaskController::class);
 Route::resource('groups.subjects', App\Http\Controllers\SubjectController::class);
-
 Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');

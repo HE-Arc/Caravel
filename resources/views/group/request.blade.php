@@ -99,12 +99,6 @@
         }
     }
 
-    function addAjaxToJoinButton(button){
-        button.click(function(){
-
-        });
-    }
-
     function buildGroup(group){
         //clone model tweet
         let groupBody = $("#model").clone();
@@ -115,10 +109,7 @@
         //customize button
         let buttonType; let buttonText;
         if(group.request.requesting){
-            let requestStatus = group.request.status;
-            if(requestStatus == status.pending){
-                
-            }
+            requestStatus = group.request.status;
             buttonType = buttonStyles[requestStatus].buttonType;
             buttonText = buttonStyles[requestStatus].buttonText;
         } else {
@@ -127,7 +118,6 @@
         }
         groupBody.find(".groupButton").addClass(buttonType);
         groupBody.find(".groupButton").html(buttonText);
-        groupBody.find(".groupButton").attr("data-groupID", group.id);
 
         //remove model-related tags
         groupBody.removeClass("d-none");
@@ -137,27 +127,21 @@
         $("#groupsContainer").append(groupBody[0]);
     }
 
-    let status = {
-        pending : 0,
-        refused : 1,
-        accepted : 2,
-    };
-
     let buttonStyles = {
         // 0 -> pending, 1 -> refused, 2 accepted
-        [status.pending] : {
+        0 : {
             buttonType : "btn-info",
             buttonText : "requested",
         },
-        [status.refused] : {
+        1 : {
             buttonType : "btn-warning",
             buttonText : "refused",
         },
-        [status.accepted] : {
+        2 : {
             buttonType : "btn-info",
             buttonText : "accepted",
         },
-    };
+    }
 
     //init "create" group name
     $("#createClassName").text("Type a group name")

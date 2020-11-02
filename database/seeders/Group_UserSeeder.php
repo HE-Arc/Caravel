@@ -24,17 +24,17 @@ class Group_UserSeeder extends Seeder
                 [
                     "userID" => 10000,
                     "groupID" => 1,
-                    "approved" => False
+                    "approved" => 0
                 ],
                 [
                     "userID" => 10000,
                     "groupID" => 2,
-                    "approved" => True
+                    "approved" => 1
                 ],
                 [
                     "userID" => 10000,
                     "groupID" => 3,
-                    "approved" => null
+                    "approved" => 2
                 ]
             ];
 
@@ -43,8 +43,6 @@ class Group_UserSeeder extends Seeder
             DB::table('group_user')->insert([
                 'user_id' => $insertion["userID"],
                 'group_id' => $insertion["groupID"],
-                'created_at' => now(),
-                'updated_at' => now(),
                 'isApprouved' => $insertion["approved"]
             ]);
         }

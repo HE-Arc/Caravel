@@ -136,7 +136,6 @@ class GroupController extends Controller
     }
 
 
-
     /**
      * Display the specified resource.
      *
@@ -211,6 +210,19 @@ class GroupController extends Controller
         //
     }
 
+    public function pending($id){
+        return view('group.request', ['users' => $group->usersRequesting]);
+    }
+
+    public function join($id){
+        $userID = Auth::id();
+        $group = Group::find($id);
+        //verification of existence
+        if($group->users()->find($userID) == null){
+            $group->users()->attach($userID, ['isApprouved' => 0]);
+        }
+    }
+
     /**
      * @returns JSON containing groups
      */
@@ -219,13 +231,11 @@ class GroupController extends Controller
         $userID = Auth::id();
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        $groups = Group::where('name', 'LIKE', "%$str%")
-            ->whereDoesntHave('users')
+        $groups = Group::where('name', 'LIKE', "%$str%") 
+            ->whereDoesntHave('users') //either the group doesnt have users
             ->orWhere('name', 'LIKE', "%$str%")
-            ->WhereHas('users', function($q) use ($userID) {
-                $q->where("user_id", "<>", $userID)
-                    ->orWhere("user_id", $userID)->where('isApprouved', null)
-                    ->orWhere("user_id", $userID)->where('isApprouved', false);
+            ->WhereHas('users', function($q) use ($userID) {             //or it has the user requesting
+                $q->where("user_id", $userID);
             })
             ->orderBy('created_at') //TODO : Add a good order by relative to group activity, DONT FORGET N+1 problem
             ->take(10);
@@ -234,16 +244,24 @@ class GroupController extends Controller
         $valid = !empty($str);
         $groupsData = array();
         foreach($groups->get() as $group){
-
             if(strcasecmp($group->name,$str) == 0){
                 $valid = false;
             }
 
-            //if user is in groups->users(), then it has already requested
+            //does this group have this user as requesting ?
+            $user = $group->usersWithSubscription()->find($userID);
+            $hasUserRequestedGroup = ($user!= null);
+            //if so, get the code
+            $status = $hasUserRequestedGroup ? $user->pivot->isApprouved : null;
+
+            //stock the data in array for JSON
             $groupsData[] = [
                 "id" => $group->id, 
                 "name" => $group->name,
-                "requested" => $group->usersRequesting()->find($userID) != null
+                "request" => [
+                    "requesting" => $hasUserRequestedGroup,
+                    "status" => $status,
+                ]
             ];
         }
         return response()->json([

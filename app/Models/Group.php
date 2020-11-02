@@ -17,13 +17,17 @@ class Group extends Model
     {
         return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
+    
+    public function usersWithSubscription(){
+        return $this->belongsToMany('App\Models\User')->withPivot('isApprouved')->withTimestamps();
+    }
 
     public function usersApproved(){
         return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', 1);
     }
 
     public function usersRequesting(){
-        return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', null);
+        return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', 0);
     }
 
     public function author()

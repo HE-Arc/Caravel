@@ -34,9 +34,9 @@ class SeedingTest extends TestCase
             "group_id" => 1,
             "group_id" => 2,
             "group_id" => 3,
-            'isApprouved' => true,
-            'isApprouved' => false,
-            'isApprouved' => null
+            'isApprouved' => 0,
+            'isApprouved' => 1,
+            'isApprouved' => 2
         ]);
     }
 
