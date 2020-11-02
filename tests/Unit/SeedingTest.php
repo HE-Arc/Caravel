@@ -31,10 +31,12 @@ class SeedingTest extends TestCase
     {
         $this->assertDatabaseHas('group_user', [
             "user_id" => 10000,
-            "group_id" => 3,
+            "group_id" => 1,
             "group_id" => 2,
+            "group_id" => 3,
             'isApprouved' => true,
-            'isApprouved' => false
+            'isApprouved' => false,
+            'isApprouved' => null
         ]);
     }
 
