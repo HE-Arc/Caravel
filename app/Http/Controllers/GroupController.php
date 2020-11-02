@@ -30,7 +30,8 @@ class GroupController extends Controller
      */
     public function create(Request $request)
     {
-        //no view - directly on settings
+        //the "index" livesearch is the view used to create a new group
+        return view('group.index');
     }
 
     /**
@@ -60,8 +61,8 @@ class GroupController extends Controller
             $userID = Auth::id();
             $group->user_id = $userID;
             $group->save();
-            //attach the main user to this group
-            $group->users()->attach($userID);
+            //attach the main user to this group - automatically approved
+            $group->users()->attach($userID, ['isApprouved' => true]);
         }
 
         //return the user to the "show" of this created group
@@ -155,7 +156,7 @@ class GroupController extends Controller
      */
     public function edit(Group $group)
     {
-        return view('group.settings', ["group" => $group, 'users' => $group->users]);
+        return view('group.settings', ["group" => $group, 'users' => $group->usersApproved]);
     }
 
     /**
@@ -222,7 +223,9 @@ class GroupController extends Controller
             ->whereDoesntHave('users')
             ->orWhere('name', 'LIKE', "%$str%")
             ->WhereHas('users', function($q) use ($userID) {
-                $q->where("user_id", "<>", $userID)->orWhere("user_id", $userID)->where('isApprouved', FALSE);
+                $q->where("user_id", "<>", $userID)
+                    ->orWhere("user_id", $userID)->where('isApprouved', null)
+                    ->orWhere("user_id", $userID)->where('isApprouved', false);
             })
             ->orderBy('created_at') //TODO : Add a good order by relative to group activity, DONT FORGET N+1 problem
             ->take(10);
@@ -240,7 +243,7 @@ class GroupController extends Controller
             $groupsData[] = [
                 "id" => $group->id, 
                 "name" => $group->name,
-                "requested" => $group->users()->find($userID) != null
+                "requested" => $group->usersRequesting()->find($userID) != null
             ];
         }
         return response()->json([

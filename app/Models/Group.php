@@ -18,6 +18,14 @@ class Group extends Model
         return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
 
+    public function usersApproved(){
+        return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', 1);
+    }
+
+    public function usersRequesting(){
+        return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', null);
+    }
+
     public function author()
     {
         return $this->hasOne('App\Models\User');

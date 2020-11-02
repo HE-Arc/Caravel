@@ -23,13 +23,18 @@ class Group_UserSeeder extends Seeder
         $insertions = [
                 [
                     "userID" => 10000,
-                    "groupID" => 2,
+                    "groupID" => 1,
                     "approved" => False
                 ],
                 [
                     "userID" => 10000,
-                    "groupID" => 3,
+                    "groupID" => 2,
                     "approved" => True
+                ],
+                [
+                    "userID" => 10000,
+                    "groupID" => 3,
+                    "approved" => null
                 ]
             ];
 
