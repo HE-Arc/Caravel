@@ -62,7 +62,7 @@ class GroupController extends Controller
             $group->user_id = $userID;
             $group->save();
             //attach the main user to this group - automatically approved
-            $group->users()->attach($userID, ['isApprouved' => true]);
+            $group->users()->attach($userID, ['isApprouved' => Group::ACCEPTED]);
         }
 
         //return the user to the "show" of this created group
@@ -211,7 +211,7 @@ class GroupController extends Controller
     }
 
     public function pending($id){
-        return view('group.request', ['users' => $group->usersRequesting]);
+        return view('group.requested', ['users' => $group->usersRequesting]);
     }
 
     public function join($id){
@@ -219,7 +219,7 @@ class GroupController extends Controller
         $group = Group::find($id);
         //verification of existence
         if($group->users()->find($userID) == null){
-            $group->users()->attach($userID, ['isApprouved' => 0]);
+            $group->users()->attach($userID, ['isApprouved' => Group::PENDING]);
         }
     }
 
@@ -231,12 +231,7 @@ class GroupController extends Controller
         $userID = Auth::id();
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        $groups = Group::where('name', 'LIKE', "%$str%") 
-            ->whereDoesntHave('users') //either the group doesnt have users
-            ->orWhere('name', 'LIKE', "%$str%")
-            ->WhereHas('users', function($q) use ($userID) {             //or it has the user requesting
-                $q->where("user_id", $userID);
-            })
+        $groups = Group::where('name', 'LIKE', "%$str%")
             ->orderBy('created_at') //TODO : Add a good order by relative to group activity, DONT FORGET N+1 problem
             ->take(10);
 

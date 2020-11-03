@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Models\Tasktype;
+use App\Models\Group;
 
 class SeedingTest extends TestCase
 {
@@ -34,9 +35,9 @@ class SeedingTest extends TestCase
             "group_id" => 1,
             "group_id" => 2,
             "group_id" => 3,
-            'isApprouved' => 0,
-            'isApprouved' => 1,
-            'isApprouved' => 2
+            'isApprouved' => Group::PENDING,
+            'isApprouved' => Group::REFUSED,
+            'isApprouved' => Group::ACCEPTED,
         ]);
     }
 

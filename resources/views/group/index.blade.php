@@ -101,7 +101,7 @@
 
     function addAjaxToJoinButton(button){
         button.click(function(){
-
+            
         });
     }
 
