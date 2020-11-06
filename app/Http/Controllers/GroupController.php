@@ -31,7 +31,7 @@ class GroupController extends Controller
     public function create(Request $request)
     {
         //the "index" livesearch is the view used to create a new group
-        return view('group.index');
+        return view('group.search');
     }
 
     /**
