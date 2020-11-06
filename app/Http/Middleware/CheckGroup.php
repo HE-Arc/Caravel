@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\Group;
 
 class CheckGroup
 {
@@ -17,6 +19,8 @@ class CheckGroup
     public function handle(Request $request, Closure $next)
     {
         $group = $request->route('group');
+        
+        if (!empty($group) && !($group instanceof Group)) $group = Group::find($group);
 
         if (!empty($group)) {
             if (!$group->usersApproved->contains(auth()->user())) abort(403);
