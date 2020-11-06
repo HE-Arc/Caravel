@@ -23,15 +23,18 @@
                         @method('post')
                         @csrf
                         <div class="d-flex flex-row justify-content-between align-items-center">
+                            <!--"create" button-->
                             <input type="hidden" name="name" value="" id="inputNameHidden">
                             <h1 id="createClassName"></h1>
                             <button id="createButton" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="disabled btn btn-primary">{{ __('Create') }}</button>
                         </div>
                         </form>
                     </div>
+                    <!--groups-->
                     <div id="model" class="card bg-white w-50 p-3 d-none" data-id="-1">
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <h1 class="groupName">{{__("Test class 2")}}</h1>
+                            <!--"join" button-->
                             <button type="submit" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="btn group-button">{{ __('Requested') }}</button>
                         </div>
                     </div>
@@ -86,18 +89,31 @@
         timeout = setTimeout(liveSearch, 250); 
     });
 
+    //Add the name of the group to the create button on-the-fly
     $("#createButton").click(function(e) {
         let completeUrl = $(this).attr('href') + "/?name=" +  $("#groupInput").val();
         $(this).attr('href', completeUrl);
     });
 
+    //Behavior of "join buttons" when clicked
     $('#groupsContainer').on('click', '.group-button.btn-group-join', function(e) {
-        $(this).removeClass('btn-group-join');
-        // TODO
-        /*if($(this).attr('disable')){
-            $(this).click('modals.modal2 = true');
-        }*/
+        //ajax call to the "join" route
+        let button = $(this);
+        let idGroup = button.attr("data-groupID");
+        $.ajax({
+            /* the route pointing to the post function */
+            url: "{{ route('groups.join', 'idGroup') }}".replace('idGroup', idGroup),
+            type: 'GET',
+            dataType: 'JSON',
+            /* remind that 'data' is the response of the AjaxController */
+            success: function (data) {
+                //on success : Change the apparence of the button
+                button.removeClass('btn-group-join');
+                assignStyle(button, buttonStyles[status.pending]);
+            }
+        });
     });
+
 
     function liveSearch(){
         var groupName = $("#groupInput").val()
@@ -108,7 +124,7 @@
         } else {
             $.ajax({
                 /* the route pointing to the post function */
-                url: "{{ route('groups.filtered', '') }}" + '/' + groupName,
+                url: "{{ route('groups.filtered', 'groupName') }}".replace('groupName', groupName),
                 type: 'GET',
                 dataType: 'JSON',
                 /* remind that 'data' is the response of the AjaxController */
@@ -126,39 +142,38 @@
         }
     }
 
+    //Build the "groups" card from a list of groups
     function buildListGroups(groups){
         //clean groups except "create" field
         $("#groupsContainer").children().not("#createGroupCard, #model").remove();
         //build groups
         if(groups){
             groups.forEach(group => {
-                buildGroup(group); //build groups on page
+                //build groups one by one
+                buildGroup(group);
             });
         }
     }
 
-
+    //build a "group" card on the livesearch
     function buildGroup(group){
         //clone model tweet
         let groupBody = $("#model").clone();
-        //add data-id attribute
-        groupBody.attr("data-id", group.id);
         //add group name
         groupBody.find(".groupName").text(group.name);
-        //customize button
-        let buttonType; let buttonText;
+        groupBody.attr("data-id", group.id);
+
+        //assign style to button
         let button = groupBody.find(".group-button");
+        let style;
         if(group.request.requesting){
             let requestStatus = group.request.status;
-            buttonType = buttonStyles[requestStatus].buttonType;
-            buttonText = buttonStyles[requestStatus].buttonText;
+            style = buttonStyles[requestStatus];
         } else {
-            buttonType = "btn-success";
-            buttonText = "join";
+            style = buttonStyles[status.none];
             button.addClass('btn-group-join');
         }
-        button.addClass(buttonType);
-        button.html(buttonText);
+        applyStyleButton(button, style);
         button.attr("data-groupID", group.id);
 
         //remove model-related tags
@@ -169,13 +184,24 @@
         $("#groupsContainer").append(groupBody[0]);
     }
 
+    function applyStyleButton(button, style){
+        button.addClass(style.buttonType);
+        button.html(style.buttonText);
+    }
+
     let status = {
+        none : -1,
         pending : 0,
         refused : 1,
         accepted : 2,
     };
 
     let buttonStyles = {
+        //-1 special : Not requested yet
+        [status.none]: {
+            buttonType : "btn-primary",
+            buttonText : "join",
+        },
         // 0 -> pending, 1 -> refused, 2 accepted
         [status.pending] : {
             buttonType : "btn-info",
@@ -186,12 +212,12 @@
             buttonText : "refused",
         },
         [status.accepted] : {
-            buttonType : "btn-info",
+            buttonType : "btn-success",
             buttonText : "accepted",
         },
     };
 
     //init "create" group name
-    $("#createClassName").text("Type a group name")
+    $("#createClassName").text("Type a group name");
 </script>
 @endpush
