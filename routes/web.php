@@ -16,16 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::resource('groups', App\Http\Controllers\GroupController::class);
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
-Route::resource('groups.tasks', App\Http\Controllers\TaskController::class);
-Route::resource('groups.subjects', App\Http\Controllers\SubjectController::class);
 
 Auth::routes();
-
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::group(['middleware' => 'check.group'], function () {
