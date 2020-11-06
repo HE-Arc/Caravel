@@ -7,6 +7,10 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\Group;
 
+
+/**
+* Check if there is a group set on the request and valid auth group
+**/
 class CheckGroup
 {
     const SESSION_LAST_GROUP_ID = 'lastGroupId';
@@ -26,6 +30,7 @@ class CheckGroup
 
         if (empty($group)) {
             $group = $this->getDefaultGroup($request, $user);
+            return redirect()->route('groups.show', $group);
         }
         
         if (!empty($group) && !($group instanceof Group)) $group = Group::find($group);
