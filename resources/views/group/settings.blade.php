@@ -44,8 +44,13 @@
                 <div class="p-4">
                     <h1 class="text-center p-2 ">Manage</h1>
                     <div class="d-flex flex-row justify-content-around">
-                        <a href="{{route('groups.members', $group)}}" id="Members" class="btn btn-primary">{{ __('Members') }}</a>
-                        <a href="{{route('groups.pending', $group)}}" id="pending" class="btn btn-primary">{{ __('Requests pending') }}</a>
+                        <!-- "members" and "pending" buttons, with badge -->
+                        <a href="{{route('groups.members', $group)}}" id="Members" class="btn btn-primary">
+                            {{ __('Show Members') }}<span class="badge badge-success">{{$membersCount}}</span>
+                        </a>
+                        <a href="{{route('groups.pending', $group)}}" id="pending" class="btn btn-primary">
+                            {{ __('Show pending Requests') }} @if ($pendingCount>0) <span class="badge badge-danger">{{$pendingCount}}</span> @endif 
+                        </a>
                     </div>    
                 </div>
             </div>

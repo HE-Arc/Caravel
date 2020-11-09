@@ -154,8 +154,11 @@ class GroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Group $group)
-    {
-        return view('group.settings', ["group" => $group, 'users' => $group->usersApproved]);
+    {  
+        $users = $group->usersWithSubscription();
+        $memberCount = $users->wherePivot('isApprouved', Group::ACCEPTED)->count();
+        $pendingCount = $users->wherePivot('isApprouved',Group::PENDING)->count();
+        return view('group.settings', ["group" => $group, 'membersCount' => $memberCount, 'pendingCount' => $pendingCount]);
     }
 
     /**
