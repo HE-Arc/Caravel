@@ -33,27 +33,20 @@
                     <div class="form-group{{ $errors->has('picture') ? ' has-danger' : '' }}">
                         <img id="group-picture" src="{{asset($group->pictureOrDefault())}}" width="250" height="250"/>
                         <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }}">
-                        <p class="font-italic blockquote-footer width-250">Recommended : Square dimensions (N*N px). The image will be resized at 250*250 px.</p>
+                        <p class="font-italic blockquote-footer width-250 p-4">Recommended : Square dimensions (N*N px). The image will be resized at 250*250 px.</p>
                     </div>
                 </div>
 
-                <div class="text-center">
+                <div class="text-center p-4">
                     <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
                 </div>
                 </form>
-
-
-                <!-- Users list TODO -->
-                <h2>Current users</h2>
-                <div class="d-flex flex-row">
-                    @isset($users)
-                        @foreach ($users as $user)
-                            <div class="card-body d-flex flex-col">
-                                <h1>{{$user->name}}</h1>
-                                <button class="btn-primary">Kick</button>
-                            </div>
-                        @endforeach
-                    @endisset
+                <div class="p-4">
+                    <h1 class="text-center p-2 ">Manage</h1>
+                    <div class="d-flex flex-row justify-content-around">
+                        <a href="{{route('groups.members', $group)}}" id="Members" class="btn btn-primary">{{ __('Members') }}</a>
+                        <a href="{{route('groups.pending', $group)}}" id="pending" class="btn btn-primary">{{ __('Requests pending') }}</a>
+                    </div>    
                 </div>
             </div>
         </div>

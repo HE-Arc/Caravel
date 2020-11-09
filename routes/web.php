@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
+});
 
 //get filtered group API
 Route::get('groups/create', ['as' => 'groups.create', 'uses' => 'App\Http\Controllers\GroupController@create']);
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
 Auth::routes();
+
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('groups/{group}/upload', 'App\Http\Controllers\GroupController@upload')->name('groups.upload');
@@ -33,10 +35,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('groups.tasks', App\Http\Controllers\TaskController::class);
 	Route::resource('groups.subjects', App\Http\Controllers\SubjectController::class);
 
-  
 	//join a group (show view, apply))
 	Route::get('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
+	Route::get('groups/{group}/members', ['as' => 'groups.members', 'uses' => 'App\Http\Controllers\GroupController@members']);
+	Route::post('groups/{group}/members/{user}', ['as' => 'groups.members.leader', 'uses' => 'App\Http\Controllers\GroupController@changeLeader']);
+	Route::delete('groups/{group}/members/{user}', ['as' => 'groups.members.delete', 'uses' => 'App\Http\Controllers\GroupController@deleteMember']);
 	Route::get('groups/{group}/pending', ['as' => 'groups.pending', 'uses' => 'App\Http\Controllers\GroupController@pending']);
+	Route::post('groups/{group}/pending/{user}', ['as' => 'groups.pending.process', 'uses' => 'App\Http\Controllers\GroupController@processPending']);
 
 
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);

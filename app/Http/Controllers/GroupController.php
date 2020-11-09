@@ -210,17 +210,52 @@ class GroupController extends Controller
         //
     }
 
-    public function pending($id){
-        return view('group.requested', ['users' => $group->usersRequesting]);
+    /**
+     * Return the view of the pending /refused users
+     */
+    public function pending(Group $group){
+        return view('group.pending', ['group' => $group, 'pending' => $group->usersRequesting, 'refused' => $group->usersRefused]);
     }
 
-    public function join($id){
+    public function processPending(Group $group, User $user, $approved){
+        if($group->usersRequesting->find($user->id)){
+            //$group->
+        }
+    }
+
+    /**
+     * Return the view of the members of the group
+     */
+    public function members(Group $group){
+        return view('group.members', ['group' => $group, 'leaderID' => $group->user_id ,'users' => $group->usersApproved]);
+    }
+
+    /**
+     * Change the leader of the group
+     */
+    public function changeLeader(Group $group, User $user){
+        //verify that the user is already in the group
+        if($group->users->find($user->id)){
+            $group->user_id = $user->idate;
+            $group->save();
+            return redirect()->back();
+        }
+    }
+
+    public function deleteMember(Group $group, User $user){
+        //verify that the user is already in the group
+        if($group->users->find($user->id)){
+            $group->users->where('id', $user->id)->delete();
+            return redirect()->back();
+        }
+    }
+
+    public function join(Group $group){
         $userID = Auth::id();
-        $group = Group::find($id);
         //verification of existence
         if($group->users()->find($userID) == null){
             $group->users()->attach($userID, ['isApprouved' => Group::PENDING]);
-            return response()->json(["valid" => TRUE]);
+            return response()->json(["done" => TRUE]);
         }
     }
 
