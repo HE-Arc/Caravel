@@ -220,6 +220,7 @@ class GroupController extends Controller
         //verification of existence
         if($group->users()->find($userID) == null){
             $group->users()->attach($userID, ['isApprouved' => Group::PENDING]);
+            return response()->json(["valid" => TRUE]);
         }
     }
 

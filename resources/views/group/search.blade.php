@@ -19,16 +19,17 @@
 
                 <div id="groupsContainer" class="d-flex flex-column justify-content-start align-items-center my-4"> 
                     <div id="createGroupCard" class="card bg-white w-50 p-3 dashed-bottom">
+                        @auth
                         <form action="{{route('groups.store')}}" method="post">
                         @method('post')
-                        @csrf
+                        @csrf @endauth
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <!--"create" button-->
                             <input type="hidden" name="name" value="" id="inputNameHidden">
                             <h1 id="createClassName"></h1>
                             <button id="createButton" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="disabled btn btn-primary">{{ __('Create') }}</button>
                         </div>
-                        </form>
+                        @auth</form>@endauth
                     </div>
                     <!--groups-->
                     <div id="model" class="card bg-white w-50 p-3 d-none" data-id="-1">
@@ -81,14 +82,8 @@
 
 @push('script')
 <script>
-    //set timeout on live search
-    let timeout;
-    $("#groupInput").keyup(function () {
-        $("#inputNameHidden").val($("#groupInput").val());
-        clearTimeout(timeout);
-        timeout = setTimeout(liveSearch, 250); 
-    });
-
+    //add link on button iff the user is auth
+    @auth
     //Add the name of the group to the create button on-the-fly
     $("#createButton").click(function(e) {
         let completeUrl = $(this).attr('href') + "/?name=" +  $("#groupInput").val();
@@ -109,11 +104,19 @@
             success: function (data) {
                 //on success : Change the apparence of the button
                 button.removeClass('btn-group-join');
-                assignStyle(button, buttonStyles[status.pending]);
+                applyStyleButton(button, buttonStyles[status.pending]);
             }
         });
     });
+    @endauth
 
+    //set timeout on live search
+    let timeout;
+    $("#groupInput").keyup(function () {
+        $("#inputNameHidden").val($("#groupInput").val());
+        clearTimeout(timeout);
+        timeout = setTimeout(liveSearch, 250); 
+    });
 
     function liveSearch(){
         var groupName = $("#groupInput").val()
@@ -184,11 +187,14 @@
         $("#groupsContainer").append(groupBody[0]);
     }
 
+    // --- BUTTON STYLES HELPER ---
+
     function applyStyleButton(button, style){
         button.addClass(style.buttonType);
         button.html(style.buttonText);
     }
 
+    //all status codes as dictionary
     let status = {
         none : -1,
         pending : 0,
@@ -196,6 +202,7 @@
         accepted : 2,
     };
 
+    //styles corresponding to codes as dictionary
     let buttonStyles = {
         //-1 special : Not requested yet
         [status.none]: {
