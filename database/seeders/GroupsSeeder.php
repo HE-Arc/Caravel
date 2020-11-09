@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Group;
 
 class GroupsSeeder extends Seeder
 {
@@ -24,11 +26,17 @@ class GroupsSeeder extends Seeder
         ];
 
         foreach ($names as $name){
+            //select random user as pseudo-creator
+            $user = User::inRandomOrder()->first();
             DB::table('groups')->insert([
                 'name' => $name,
                 'created_at' => now(),
-                'updated_at' => now()
-            ]);    
+                'updated_at' => now(),
+                'user_id' => $user->id,//set him as leader
+            ]);
+            //attach him
+            $group = Group::where('name', $name)->first();
+            $group->users()->attach($user->id, ['isApprouved' => Group::ACCEPTED]);
         }
     }
 }

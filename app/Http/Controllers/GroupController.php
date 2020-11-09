@@ -31,7 +31,7 @@ class GroupController extends Controller
     public function create(Request $request)
     {
         //the "index" livesearch is the view used to create a new group
-        return view('group.index');
+        return view('group.search');
     }
 
     /**
@@ -62,7 +62,7 @@ class GroupController extends Controller
             $group->user_id = $userID;
             $group->save();
             //attach the main user to this group - automatically approved
-            $group->users()->attach($userID, ['isApprouved' => true]);
+            $group->users()->attach($userID, ['isApprouved' => Group::ACCEPTED]);
         }
 
         //return the user to the "show" of this created group
@@ -134,7 +134,6 @@ class GroupController extends Controller
         $folder = config('smartmd.files.root') . '/groups\/' . $group . '/';
         return response()->file(Storage::path($folder . $file));
     }
-
 
 
     /**
@@ -211,6 +210,20 @@ class GroupController extends Controller
         //
     }
 
+    public function pending($id){
+        return view('group.requested', ['users' => $group->usersRequesting]);
+    }
+
+    public function join($id){
+        $userID = Auth::id();
+        $group = Group::find($id);
+        //verification of existence
+        if($group->users()->find($userID) == null){
+            $group->users()->attach($userID, ['isApprouved' => Group::PENDING]);
+            return response()->json(["valid" => TRUE]);
+        }
+    }
+
     /**
      * @returns JSON containing groups
      */
@@ -220,13 +233,6 @@ class GroupController extends Controller
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
         $groups = Group::where('name', 'LIKE', "%$str%")
-            ->whereDoesntHave('users')
-            ->orWhere('name', 'LIKE', "%$str%")
-            ->WhereHas('users', function($q) use ($userID) {
-                $q->where("user_id", "<>", $userID)
-                    ->orWhere("user_id", $userID)->where('isApprouved', null)
-                    ->orWhere("user_id", $userID)->where('isApprouved', false);
-            })
             ->orderBy('created_at') //TODO : Add a good order by relative to group activity, DONT FORGET N+1 problem
             ->take(10);
 
@@ -234,16 +240,24 @@ class GroupController extends Controller
         $valid = !empty($str);
         $groupsData = array();
         foreach($groups->get() as $group){
-
             if(strcasecmp($group->name,$str) == 0){
                 $valid = false;
             }
 
-            //if user is in groups->users(), then it has already requested
+            //does this group have this user as requesting ?
+            $user = $group->usersWithSubscription()->find($userID);
+            $hasUserRequestedGroup = ($user!= null);
+            //if so, get the code
+            $status = $hasUserRequestedGroup ? $user->pivot->isApprouved : null;
+
+            //stock the data in array for JSON
             $groupsData[] = [
                 "id" => $group->id, 
                 "name" => $group->name,
-                "requested" => $group->usersRequesting()->find($userID) != null
+                "request" => [
+                    "requesting" => $hasUserRequestedGroup,
+                    "status" => $status,
+                ]
             ];
         }
         return response()->json([

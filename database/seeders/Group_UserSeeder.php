@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use App\Models\Group;
+
 
 class Group_UserSeeder extends Seeder
 {
@@ -24,17 +26,17 @@ class Group_UserSeeder extends Seeder
                 [
                     "userID" => 10000,
                     "groupID" => 1,
-                    "approved" => False
+                    "approved" => Group::PENDING,
                 ],
                 [
                     "userID" => 10000,
                     "groupID" => 2,
-                    "approved" => True
+                    "approved" => Group::REFUSED,
                 ],
                 [
                     "userID" => 10000,
                     "groupID" => 3,
-                    "approved" => null
+                    "approved" => Group::ACCEPTED,
                 ]
             ];
 
@@ -43,8 +45,6 @@ class Group_UserSeeder extends Seeder
             DB::table('group_user')->insert([
                 'user_id' => $insertion["userID"],
                 'group_id' => $insertion["groupID"],
-                'created_at' => now(),
-                'updated_at' => now(),
                 'isApprouved' => $insertion["approved"]
             ]);
         }
