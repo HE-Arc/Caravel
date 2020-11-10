@@ -25,11 +25,11 @@
                                 <tr>
                                     <td scope="row">
                                         <span class="avatar avatar-sm rounded-circle">
-                                            <img alt="Image placeholder" src="{{ $group->pictureOrDefault() }}">
+                                            <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
                                         </span>
                                     </td>
                                     <th scope="row">
-                                        {{$group->name}}
+                                        <a href="{{route('groups.show', $group)}}">{{$group->name}}</a>
                                     </th>
                                     <td>
                                         {{$group->description ?? __("No description")}}

@@ -101,7 +101,7 @@
                         <div class="collapse show" id="navbar-examples">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{{route('groups.edit', $group)}}">
                                         <i class="fas fa-cog text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Settings') }}</span>
                                     </a>
@@ -113,7 +113,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{{route('groups.members', $group)}}">
+                                        <i class="fas fa-user-clock text-primary"></i>
+                                        <span class="nav-link-text" >{{ __('Members') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('groups.pending', $group)}}">
                                         <i class="fas fa-user-clock text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Requested') }}</span>
                                     </a>

@@ -234,7 +234,7 @@ class GroupController extends Controller
         $this->deleteIfPicture($group);
         //TODO DELETE ASSETS
         $group->delete();
-        return redirect()->route('group.index');
+        return redirect()->route('groups.index');
     }
 
     /**

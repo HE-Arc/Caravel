@@ -39,7 +39,7 @@
 
                 <div class="text-right">
                     <!-- "save" button -->
-                    <button type="submit" class="btn btn-sm btn-outline-success mt-4">{{ __('Save') }}</button>
+                    <button type="submit" class="btn btn-sm btn-outline-success">{{ __('Save') }}</button>
                     </form> <!-- end of "save" form -->
                     <!-- "delete" form -->
                     @if ($isLeader)
@@ -47,9 +47,8 @@
                         @method('delete')
                         @csrf
                             <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
-                        </form>    
-                    @endif
-                </div>
+                    </form>    
+                    @endif</div>
                 
                 <div class="p-4">
                     <h1 class="text-center p-2 ">Manage</h1>

@@ -4,6 +4,7 @@
         <!-- Brand -->
         <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('groups.index') }}">{{ __('Caravel') }}</a>
         <!-- Groups -->
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{route('groups.index')}}">{{__('My groups')}}</a>
 
         <div class="dropdown d-none d-md-block">
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -20,7 +21,7 @@
                         <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
                     @endif
                 @endforeach
-                <a class="dropdown-item" href="{{ route('groups.index') }}">
+                <a class="dropdown-item" href="{{ route('groups.create') }}">
                     <i class="fas fa-plus"></i>
                     {{__('Create a class')}}
                 </a>
