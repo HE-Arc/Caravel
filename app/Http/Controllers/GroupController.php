@@ -20,6 +20,14 @@ class GroupController extends Controller
      */
     public function index()
     {
+        $groups = Auth::user()->groups;
+        if($groups->count() > 0){
+            $groupWithLeader = array();
+            foreach($groups as $group){
+                $groupWithLeader[] = [$group, User::find($group->user_id)->name];
+            }
+            return view('group.index', ['groups' => $groupWithLeader]);    
+        }
         return view('group.index');
     }
 
@@ -76,6 +84,16 @@ class GroupController extends Controller
         $filenameSystem = public_path($filename);
         Image::make($picture)->resize(250,250)->save($filenameSystem);
         return $filename;
+    }
+
+    /**
+     * Safely delete the picture of the group if it exists
+     */
+    private function deleteIfPicture($group){
+        //verify existence both in group and in file before deleting
+        if(isset($group->picture) && File::exists(public_path($group->picture))){ 
+            File::delete(public_path($group->picture));
+        }
     }
 
     /**
@@ -158,7 +176,12 @@ class GroupController extends Controller
         $users = $group->usersWithSubscription();
         $memberCount = $users->wherePivot('isApprouved', Group::ACCEPTED)->count();
         $pendingCount = $users->wherePivot('isApprouved',Group::PENDING)->count();
-        return view('group.settings', ["group" => $group, 'membersCount' => $memberCount, 'pendingCount' => $pendingCount]);
+        return view('group.settings', [
+            "group" => $group, 
+            'membersCount' => $memberCount, 
+            'pendingCount' => $pendingCount, 
+            'isLeader' => $group->user_id == Auth::id(),
+        ]);
     }
 
     /**
@@ -188,9 +211,7 @@ class GroupController extends Controller
             $group->description = $request->get('description');
             //if the picture is submitted, do the treatment
             if($request->hasfile('picture')){
-                if(isset($group->picture) && File::exists(public_path($group->picture))){
-                    File::delete(public_path($group->picture));
-                }
+                $this->deleteIfPicture($group);
                 $filenamePicture = $this->FileNameAndSave($request->file('picture'));
                 $group->picture = $filenamePicture;
             }
@@ -208,9 +229,12 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Group $group)
     {
-        //
+        $this->deleteIfPicture($group);
+        //TODO DELETE ASSETS
+        $group->delete();
+        return redirect()->route('group.index');
     }
 
     /**

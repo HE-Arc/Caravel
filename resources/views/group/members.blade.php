@@ -13,7 +13,7 @@
                         <table class="table align-items-center">
                         <thead class="thead-light">
                             <tr>
-                                <th scope="col">Subject</th>
+                                <th scope="col">Name</th>
                                 <th scope="col">Tasks</th>
                                 <th scope="col">Color</th>
                             </tr>
