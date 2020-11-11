@@ -59,4 +59,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Attachement');
     }
+
+    public function tasks(){
+        return $this->hasMany('App\Models\Task');
+    }
 }

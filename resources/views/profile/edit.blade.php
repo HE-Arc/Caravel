@@ -26,15 +26,15 @@
                             <div class="col">
                                 <div class="card-profile-stats d-flex justify-content-center mt-md-5">
                                     <div>
-                                        <span class="heading">22</span>
+                                    <span class="heading">{{$tasks}}</span>
                                     <span class="description">{{ __('Tasks') }}</span>
                                     </div>
                                     <div>
-                                        <span class="heading">10</span>
+                                        <span class="heading">{{$groups}}</span>
                                         <span class="description">{{ __('Classes') }}</span>
                                     </div>
                                     <div>
-                                        <span class="heading">89</span>
+                                        <span class="heading">{{$comments}}</span>
                                         <span class="description">{{ __('Comments') }}</span>
                                     </div>
                                 </div>

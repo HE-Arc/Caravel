@@ -15,7 +15,9 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        return view('profile.edit');
+        return view('profile.edit',['groups' => (auth()->user()->groups()->get()->count()??'0'),
+                    'tasks' => (/*auth()->user()->tasks()->get()->count()??*/'0'),
+                    'comments' => (auth()->user()->comments()->get()->count()??'0')]);
     }
 
     /**
