@@ -37,7 +37,7 @@
                             @endisset
                         </span>
                         <div class="media-body ml-2 d-none d-lg-block">
-                            <span class="mb-0 text-sm  font-weight-bold">{{ auth()->user()->name }}</span>
+                            <span class="mb-0 text-sm  d-inline-block font-weight-bold text-truncate" style="max-width: 40vw">{{ auth()->user()->name }}</span>
                         </div>
                     </div>
                 </a>
