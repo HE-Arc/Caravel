@@ -14,10 +14,11 @@
                 <div class="card card-profile shadow">
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
-                            <div class="card-profile-image">
-                                <a href="#">
-                                    <img src="{{ asset('argon') }}/img/theme/team-4-800x800.jpg" class="rounded-circle">
-                                </a>
+                            <div class="card-profile-image mb-1">
+                            <form method="post" action="{{route('profile.update')}}" autocomplete="off" id="picture-update-form" enctype="multipart/form-data">
+                                    <img id="user-picture" src="{{ auth()->user()->getPicture() }}" class="rounded-circle">
+                                    <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }}">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -143,7 +144,7 @@
                                 <div class="text-muted font-italic">
                                     <small>{{ __('Password strength') }}: <span class="font-weight-700" id="passwordStrength"></span></small>
                                 </div>
-                                <script src="../../resources/js/passwordCheck.js"></script>
+                                
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Change password') }}</button>
                                 </div>
@@ -157,3 +158,21 @@
         @include('layouts.footers.auth')
     </div>
 @endsection
+
+@push('js')
+    <script src="../../resources/js/passwordCheck.js"></script>
+    <script>
+        $('#user-picture').click(function(){$('#input-picture').trigger('click');});
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#user-picture').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#input-picture").change(function() {readURL(this);});
+    </script>
+@endpush

@@ -31,9 +31,10 @@ class ProfileController extends Controller
         if (auth()->user()->id == 1) {
             return back()->withErrors(['not_allow_profile' => __('You are not allowed to change data for a default user.')]);
         }
-        if(strlen($request->get('name'))>255){
-            return back()->withErrors(['name' => __('You are not allowed to have a so long name(more than 255 characters).')]);
+        if(strlen($request->get('name'))>150){
+            return back()->withErrors(['name' => __('You are not allowed to have a so long name (more than 150 characters).')]);
         }
+        
         auth()->user()->update($request->all());
 
         return back()->withStatus(__('Profile successfully updated.'));
