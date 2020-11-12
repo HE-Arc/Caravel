@@ -63,8 +63,10 @@ class User extends Authenticatable
     public function tasks(){
         return $this->hasMany('App\Models\Task');
     }
-
+    /**
+     * return the picture of the user if it exist or the base picture for all users
+     */
     public function getPicture(){
-        return $this->picture ?? asset(config('caravel.users.pictureFolder').config('caravel.users.pictureBase'));
+        return $this->picture ?? config('caravel.users.pictureFolder').config('caravel.users.pictureBase');
     }
 }

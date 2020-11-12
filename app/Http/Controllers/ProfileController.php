@@ -47,7 +47,6 @@ class ProfileController extends Controller
         else{
             auth()->user()->update($request->all());
         }     
-        
         return back()->withStatus(__('Profile successfully updated.'));
     }
 
