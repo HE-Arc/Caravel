@@ -93,8 +93,8 @@
                                 <div class="form-group{{ $errors->has('picture') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-image">{{ __('Picture') }}</label>
                                     <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }} ">
-                                    <p class="font-italic blockquote-footer">Click on the picture to change it, then click on the save button<br>
-                                    Recommended size : 250x250pixels</p>
+                                    <p class="font-italic blockquote-footer">Click on the picture to change it<br>
+                                    Recommended size : 4096B max it will be resized by 250*250</p>
                                     @if ($errors->has('picture'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('picture') }}</strong>
@@ -178,6 +178,7 @@
                     $('#user-picture').attr('src', e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);
+                input.form.submit();
             }
         }
         $("#input-picture").change(function() {readURL(this);});

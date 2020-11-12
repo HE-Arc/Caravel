@@ -42,7 +42,6 @@ class ProfileController extends Controller
             $filenamePicture = $this->FileNameAndSave($request->file('picture'));
             auth()->user()->picture=$filenamePicture;
             auth()->user()->save();
-            //$request->merge(['picture' => $filenamePicture]);
             auth()->user()->update($request->except('picture'));
         }  
         else{
@@ -75,5 +74,13 @@ class ProfileController extends Controller
         $filenamePicture = public_path($filename);
         Image::make($picture)->resize(250,250)->save($filenamePicture);
         return $filename;
+    }
+
+    public function deletePicture(){
+        if(isset(auth()->user()->picture) && File::exists(public_path(config('caravel.users.pictureFolder').auth()->user()->id))){
+            File::delete(public_path(auth()->user()->picture));
+        }
+        auth()->user()->picture=null;
+        auth()->user()->save();
     }
 }
