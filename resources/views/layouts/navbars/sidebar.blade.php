@@ -77,9 +77,22 @@
                     {{__('Create a class')}}
                 </a>
             </div>
-          </div>            
-                <h6 class="navbar-heading text-muted d-none d-md-block">{{$group->name}}</h6>
+          </div>  
+                <h6 class="navbar-heading text-muted d-none d-md-block">
+                    <span class="avatar avatar-sm rounded-circle mr-2">
+                        <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
+                    </span>
+                    {{$group->name}} 
+                </h6>
+
                 <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('groups.index')}}">
+                            <i class="fas fa-users text-primary"></i> {{ __('My groups') }}
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link{{ request()->route()->named('groups.tasks.index') ? ' active' : '' }}" href="{{ route('groups.tasks.index', $group->id) }}">
                             <i class="ni ni-bullet-list-67 text-primary"></i> {{ __('Upcoming') }}

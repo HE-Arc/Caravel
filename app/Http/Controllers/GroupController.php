@@ -20,10 +20,11 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Auth::user()->groups;
+        $groups = Auth::user()->groupsAvailable;
         if($groups->count() > 0){
             $groupWithLeader = array();
             foreach($groups as $group){
+                //TODO Maybe find better way to get leader's name with a join ?
                 $groupWithLeader[] = [$group, User::find($group->user_id)->name];
             }
             return view('group.index', ['groups' => $groupWithLeader]);    

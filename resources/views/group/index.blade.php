@@ -9,6 +9,7 @@
     <div class="row">
         <div class="col-xl-12 order-xl-1">
             <div class="card bg-secondary shadow">
+                @if(isset($groups))
                 <div class="table-responsive">
                     <table class="table align-items-center">
                     <thead class="thead-light">
@@ -20,29 +21,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @isset($groups)
-                            @foreach ($groups as list($group, $leader))
-                                <tr>
-                                    <td scope="row">
-                                        <span class="avatar avatar-sm rounded-circle">
-                                            <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
-                                        </span>
-                                    </td>
-                                    <th scope="row">
-                                        <a href="{{route('groups.show', $group)}}">{{$group->name}}</a>
-                                    </th>
-                                    <td>
-                                        {{$group->description ?? __("No description")}}
-                                    </td>
-                                    <td>
-                                        {{$leader}}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endisset
+                        @foreach ($groups as list($group, $leader))
+                            <tr>
+                                <td scope="row">
+                                    <span class="avatar avatar-sm rounded-circle">
+                                        <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
+                                    </span>
+                                </td>
+                                <th scope="row">
+                                    <a href="{{route('groups.show', $group)}}">{{$group->name}}</a>
+                                </th>
+                                <td>
+                                    {{$group->description ?? __("No description")}}
+                                </td>
+                                <td>
+                                    {{$leader}}
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
                 </div>
+                @else
+                <div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
