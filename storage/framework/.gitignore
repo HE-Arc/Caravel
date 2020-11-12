@@ -7,3 +7,5 @@ routes.php
 routes.scanned.php
 schedule-*
 services.json
+/public/upload/groups/pictures/*
+/public/upload/groups/pictures/base.png

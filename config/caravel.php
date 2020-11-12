@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+  
     /*
     |--------------------------------------------------------------------------
     | Default Placeholders
@@ -16,7 +16,7 @@ return [
             'pictureFolder' => '/upload/groups/pictures/',
             'pictureBase' => 'base.png',
         ],
-    
+  
     'users' => 
         [
             'pictureFolder' => '/upload/users/pictures/',

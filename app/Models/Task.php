@@ -54,12 +54,16 @@ class Task extends Model
 
     public function related()
     {
-        return $this->belongsToMany('App\Models\Task', 'related_tasks', 'related_id', 'task_id');
+        return $this->belongsToMany('App\Models\Task', 'related_tasks', 'related_id', 'task_id')->withTimestamps();
     }
 
     public function attachements()
     {
         return $this->hasMany('App\Models\Attachement');
+    }
+
+    public function contributors() {
+        return $this->belongsToMany('App\Models\User')->withTimestamps()->withPivot('created_at')->OrderbyDesc('task_user.created_at');
     }
 
 }

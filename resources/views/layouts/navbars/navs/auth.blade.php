@@ -2,7 +2,7 @@
 <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
     <div class="container-fluid">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('home') }}">{{ __('Caravel') }}</a>
+        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('groups.index') }}">{{ __('Caravel') }}</a>
         <!-- Groups -->
 
         <div class="dropdown d-none d-md-block">
@@ -15,12 +15,12 @@
             </a>
           
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                @foreach (auth()->user()->groups as $item)
+                @foreach (auth()->user()->groupsAvailable as $item)
                     @if (!isset($group) || $group->id != $item->id)
                         <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
                     @endif
                 @endforeach
-                <a class="dropdown-item" href="{{ route('groups.create') }}">
+                <a class="dropdown-item" href="{{ route('groups.index') }}">
                     <i class="fas fa-plus"></i>
                     {{__('Create a class')}}
                 </a>

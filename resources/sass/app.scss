@@ -4,6 +4,40 @@
 // Variables
 @import 'variables';
 
+$icons: ("1": "#6bce6b",
+         "2": "#ecd635",
+         "3": "#f7b844",
+         "4": "#f08a38",
+         "5": "#f03838",
+         "6": "#f038a3",
+         "7": "#cb38f0",
+         "8": "#6038f0",
+         "9": "#3863f0",
+         "10": "#08a8cf",);
+
+@each $name, $color in $icons {
+    .subject-color-#{$name} {
+        background-color: #{$color};
+        color:#fff;
+    }
+}
+
+.caravel-alert.alert-container {
+    position: fixed;
+    top:30px;
+    right: 30px; 
+    z-index: 10;
+}
+
+.avatar-xs {
+    font-size: .8rem;
+    width: 24px;
+    height: 24px;
+}
+
+.dropdown-item-xs {
+    font-size: .8rem;
+}
 
 .tasks-list {
     li {

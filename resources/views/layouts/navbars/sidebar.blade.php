@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Brand -->
-        <a class="navbar-brand pt-0" href="{{ route('home') }}">
+        <a class="navbar-brand pt-0" href="{{ route('groups.index') }}">
             <img src="{{ asset('argon') }}/img/brand/blue.png" class="navbar-brand-img" alt="...">
         </a>
         <!-- User -->
@@ -43,7 +43,7 @@
             <div class="navbar-collapse-header d-md-none">
                 <div class="row">
                     <div class="col-6 collapse-brand">
-                        <a href="{{ route('home') }}">
+                        <a href="{{ route('groups.index') }}">
                             <img src="{{ asset('argon') }}/img/brand/blue.png">
                         </a>
                     </div>
@@ -67,7 +67,7 @@
             </a>
           
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                @foreach (auth()->user()->groups as $item)
+                @foreach (auth()->user()->groupsAvailable as $item)
                     @if (!isset($group) || $group->id != $item->id)
                         <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
                     @endif
@@ -107,7 +107,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link{{ request()->route()->named('groups.subjects.index') ? ' active' : '' }}" href="{{route('groups.subjects.index', $group)}}">
                                         <i class="fas fa-tasks text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Subjects') }}</span>
                                     </a>

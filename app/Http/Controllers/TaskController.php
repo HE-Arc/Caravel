@@ -25,12 +25,20 @@ class TaskController extends Controller
      */
     public function index(Request $request, Group $group)
     {
+        $userid =  auth()->user()->id;
         $tasks = $group->tasks()->take(30)->orderBy('due_at', 'asc')
                                 ->where('tasktype_id', '!=', TaskType::PROJECT)
-                                ->whereDate('due_at', '>=', Carbon::now())->get();
+                                ->where(function($query) use($userid) {
+                                    $query->where('isPrivate', '=', 0)
+                                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
+                                })->whereDate('due_at', '>=', Carbon::now())->get();
+                                
         $projects = $group->tasks()->take(10)->orderBy('due_at', 'asc')
                         ->where('tasktype_id', '=', TaskType::PROJECT)
-                        ->whereDate('due_at', '>=', Carbon::now())->get();
+                        ->where(function($query) use($userid) {
+                            $query->where('isPrivate', '=', 0)
+                            ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
+                        })->whereDate('due_at', '>=', Carbon::now())->get();
 
         $tasksByDays = [];
 
@@ -69,7 +77,9 @@ class TaskController extends Controller
      */
     public function store(Request $request, Group $group)
     {
-        return $this->persistData($request, $group, new Task());
+        $task = new Task();
+        $task->user_id = auth()->user()->id;
+        return $this->persistData($request, $group, $task);
     }
 
     /**
@@ -132,19 +142,11 @@ class TaskController extends Controller
      */
     public function delAttachement(Request $request, Group $group, Task $task, Attachement $file)
     {
-        if (auth()->user()->id==$file->user->id) {
-            $file->delete();
-            return response()->json([
-                'status' => 'ok',
-                'message' => 'File has been delete successfully!',
-            ]);
-        } else {
-            return response()->json([
-                'status' => 'nok',
-                'message' => 'File has not been delete !',
-            ]);
-        }
-        
+        $file->delete();
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'File has been delete successfully!',
+        ]);
     }
 
     /**
@@ -220,10 +222,10 @@ class TaskController extends Controller
             $task->subject_id      = $request->get('subject_id');
             $task->tasktype_id     = $request->get('tasktype_id');
             $task->due_at          = $request->get('due_at');
-            $task->user_id         = auth()->user()->id;
             $task->description     = $request->get('description');
             $task->isPrivate       = $request->get('isPrivate')=='on';
             $task->save();
+            $task->contributors()->attach(auth()->user()->id, ['action' => 1]);
 
             //process attachement
             if($request->hasfile('attachement'))

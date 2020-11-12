@@ -14,6 +14,9 @@
                     <div class="card-header bg-white border-0">
                         <div class="card-header-details">
                             <span class="state ">
+                                @if ($task->isPrivate)
+                                    <span class="badge badge-danger">{{__('Private')}}</span>
+                                @endif
                                 @if ($task->due_at->isPast())
                                     <span class="badge badge-danger"> {{__('overdue')}} </span>
                                 @else
@@ -23,6 +26,28 @@
                             <span class=""> {{__(' Opened by ') }} </span>
                             <span class=" font-weight-bold"> {{$task->user->name }}</span>
                             <span> {{ $task->created_at->diffForHumans()}} </span>
+                            @if (isset($task->contributors) && count($task->contributors) > 0)
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                     · {{__('edited')}}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @foreach ($task->contributors as $contri)
+                                        <div class="dropdown-item dropdown-item-xs pr-5 size-xs">
+                                            <span class="avatar avatar-xs rounded-circle float-left mr-2">
+                                                <img alt="" src="{{$contri->picture}}"> 
+                                            </span> 
+                                            <div >
+                                                
+                                            <b>{{$contri->name}}</b>
+                                            {{__(' edited ')}}
+                                            {{$contri->pivot->created_at->diffForHumans()}}
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         <a class="btn btn-sm btn-info float-right" href="{{ route('groups.tasks.create', [$task->subject->group->id])}}">{{__('New')}}</a>
                         </div>
                     </div>
@@ -57,12 +82,12 @@
                         <hr class="my-2"/>
 
                         <div class="row justify-content-center mt-4 px-4">
-                            <div class="col-9 ">
+                            <div class="col-md-9">
                                 <textarea id="editor" placeholder="test" style="display: none">{{ $task->description }}</textarea>
                                 <div id="content" class=""></div>
                                 
                             </div>
-                            <div class="col-3">
+                            <div class="col-md-3">
                                 @if ($task->attachements && count($task->attachements) > 0)
                                     <i class="fas fa-paperclip"></i> {{__('Files')}}
                                     <ul>
@@ -77,13 +102,13 @@
                         </div>
 
                         <div class="row px-4 mb-4">
-                            <div class="col-9">
+                            <div class="col-md-9">
                                 <hr class="my-2"/>
                             </div>
                         </div>
                         <div class="row px-4">
                             @foreach ($task->comments as $comment)
-                                <div class="col-9">
+                                <div class="col-md-9">
                                     <div class="comment mb-4">
                                         <span class="avatar avatar-sm rounded-circle float-left mt-1">
                                             <img alt="" src="{{$comment->user->picture}}">
