@@ -42,11 +42,13 @@ class ProfileController extends Controller
             $filenamePicture = $this->FileNameAndSave($request->file('picture'));
             auth()->user()->picture=$filenamePicture;
             auth()->user()->save();
-            $request->merge(['picture' => $filenamePicture]);
-            return back()->withStatus(__($filenamePicture));
-        }       
-        auth()->user()->update($request->all());
-
+            //$request->merge(['picture' => $filenamePicture]);
+            auth()->user()->update($request->except('picture'));
+        }  
+        else{
+            auth()->user()->update($request->all());
+        }     
+        
         return back()->withStatus(__('Profile successfully updated.'));
     }
 
@@ -69,8 +71,9 @@ class ProfileController extends Controller
 
     private function FileNameAndSave($picture){
         //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
-        $filename = public_path(config('caravel.users.pictureFolder').auth()->user()->id.'.'.$picture->clientExtension());
-        Image::make($picture)->resize(250,250)->save($filename);
+        $filename = config('caravel.users.pictureFolder').auth()->user()->id.'.'.$picture->clientExtension();
+        $filenamePicture = public_path($filename);
+        Image::make($picture)->resize(250,250)->save($filenamePicture);
         return $filename;
     }
 }

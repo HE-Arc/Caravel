@@ -15,7 +15,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image mb-1">
-                                <img id="user-picture" src="{{ auth()->user()->getPicture() }}" class="rounded-circle" width="200" height="200">
+                                <img id="user-picture" src="{{ asset(auth()->user()->getPicture()) }}" class="rounded-circle" width="200" height="200">
                             </div>
                         </div>
                     </div>
