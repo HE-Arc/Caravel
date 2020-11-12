@@ -1,4 +1,4 @@
-var password = document.getElementById('passwordRegister');
+var password = document.getElementsByClassName('newPassword')[0];
 
 password.addEventListener("keyup",function(){checkPassword(password.value)});
 

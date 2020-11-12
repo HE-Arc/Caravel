@@ -5,7 +5,7 @@
     <div class="container d-flex align-items-center">
         <div class="row">
             <div class="col-md-12 {{ $class ?? '' }}">
-                <h1 class="display-3 text-white">{{ $title }}</h1>
+                <h1 class="d-inline-block text-white text-truncate" style="max-width:75vw">{{ $title }}</h1>
                 @if (isset($description) && $description)
                     <p class="text-white mt-0 mb-5">{{ $description }}</p>
                 @endif
