@@ -15,10 +15,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image mb-1">
-                            <form method="post" action="{{route('profile.update')}}" autocomplete="off" id="picture-update-form" enctype="multipart/form-data">
-                                    <img id="user-picture" src="{{ auth()->user()->getPicture() }}" class="rounded-circle">
-                                    <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }}">
-                                </form>
+                                <img id="user-picture" src="{{ auth()->user()->getPicture() }}" class="rounded-circle" width="200" height="200">
                             </div>
                         </div>
                     </div>
@@ -57,7 +54,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('profile.update') }}" autocomplete="off">
+                        <form method="post" action="{{ route('profile.update') }}" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             @method('put')
 
@@ -93,7 +90,17 @@
                                         </span>
                                     @endif
                                 </div>
-
+                                <div class="form-group{{ $errors->has('picture') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-image">{{ __('Picture') }}</label>
+                                    <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }} ">
+                                    <p class="font-italic blockquote-footer">Click on the picture to change it, then click on the save button<br>
+                                    Recommended size : 250x250pixels</p>
+                                    @if ($errors->has('picture'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('picture') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
                                 </div>

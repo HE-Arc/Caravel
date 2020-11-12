@@ -20,7 +20,7 @@ return [
     'users' => 
         [
             'pictureFolder' => '/upload/users/pictures/',
-            'pictureBase' => 'base.png'
+            'pictureBase' => 'base.png',
         ],
 
 ];

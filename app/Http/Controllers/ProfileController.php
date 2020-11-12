@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
+use File;
 
 class ProfileController extends Controller
 {
@@ -34,7 +35,16 @@ class ProfileController extends Controller
         if(strlen($request->get('name'))>150){
             return back()->withErrors(['name' => __('You are not allowed to have a so long name (more than 150 characters).')]);
         }
-        
+        if($request->hasfile('picture')){
+            if(isset(auth()->user()->picture) && File::exists(public_path(config('caravel.users.pictureFolder').auth()->user()->id))){
+                File::delete(public_path(auth()->user()->picture));
+            }
+            $filenamePicture = $this->FileNameAndSave($request->file('picture'));
+            auth()->user()->picture=$filenamePicture;
+            auth()->user()->save();
+            $request->merge(['picture' => $filenamePicture]);
+            return back()->withStatus(__($filenamePicture));
+        }       
         auth()->user()->update($request->all());
 
         return back()->withStatus(__('Profile successfully updated.'));
@@ -55,5 +65,12 @@ class ProfileController extends Controller
         auth()->user()->update(['password' => Hash::make($request->get('password'))]);
 
         return back()->withPasswordStatus(__('Password successfully updated.'));
+    }
+
+    private function FileNameAndSave($picture){
+        //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
+        $filename = public_path(config('caravel.users.pictureFolder').auth()->user()->id.'.'.$picture->clientExtension());
+        Image::make($picture)->resize(250,250)->save($filename);
+        return $filename;
     }
 }
