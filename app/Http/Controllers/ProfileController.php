@@ -36,7 +36,7 @@ class ProfileController extends Controller
             return back()->withErrors(['name' => __('You are not allowed to have a so long name (more than 150 characters).')]);
         }
         if($request->hasfile('picture')){
-            if(isset(auth()->user()->picture) && File::exists(public_path(config('caravel.users.pictureFolder').auth()->user()->id))){
+            if(isset(auth()->user()->picture) && File::exists(public_path(public_path(auth()->user()->picture)))){
                 File::delete(public_path(auth()->user()->picture));
             }
             $filenamePicture = $this->FileNameAndSave($request->file('picture'));
@@ -77,10 +77,14 @@ class ProfileController extends Controller
     }
 
     public function deletePicture(){
-        if(isset(auth()->user()->picture) && File::exists(public_path(config('caravel.users.pictureFolder').auth()->user()->id))){
+        if(isset(auth()->user()->picture) && File::exists(public_path(auth()->user()->picture))){
             File::delete(public_path(auth()->user()->picture));
+            auth()->user()->picture=null;
+            auth()->user()->save();
+            return back()->withStatus(__('Picture successfully deleted.'));
         }
-        auth()->user()->picture=null;
-        auth()->user()->save();
+        else {
+            return back()->withStatus(__('Picture already deleted.'));
+        }
     }
 }

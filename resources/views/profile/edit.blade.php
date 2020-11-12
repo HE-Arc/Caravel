@@ -106,6 +106,13 @@
                                 </div>
                             </div>
                         </form>
+                        <form method="post" action="{{ route('profile.deletePicture') }}">
+                            @csrf
+                            @method('delete')
+                            <div class="text-center pl-lg-4">
+                                <button type="submit" class="btn btn-danger mt-4">{{ __('Delete Picture') }}</button>
+                            </div>
+                        </form>
                         <hr class="my-4" />
                         <form method="post" action="{{ route('profile.password') }}" autocomplete="off">
                             @csrf
