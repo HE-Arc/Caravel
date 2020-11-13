@@ -35,13 +35,12 @@
                                     @foreach ($task->contributors as $contri)
                                         <div class="dropdown-item dropdown-item-xs pr-5 size-xs">
                                             <span class="avatar avatar-xs rounded-circle float-left mr-2">
-                                                <img alt="" src="{{$contri->picture}}"> 
+                                                <img alt="" src="{{ asset($contri->getPicture()) }}"> 
                                             </span> 
-                                            <div >
-                                                
-                                            <b>{{$contri->name}}</b>
-                                            {{__(' edited ')}}
-                                            {{$contri->pivot->created_at->diffForHumans()}}
+                                            <div>    
+                                                <b>{{$contri->name}}</b>
+                                                {{__(' edited ')}}
+                                                {{$contri->pivot->created_at->diffForHumans()}}
                                             </div>
                                         </div>
                                     @endforeach
@@ -100,7 +99,6 @@
                                 @endif
                             </div>
                         </div>
-
                         <div class="row px-4 mb-4">
                             <div class="col-md-9">
                                 <hr class="my-2"/>
@@ -111,7 +109,7 @@
                                 <div class="col-md-9">
                                     <div class="comment mb-4">
                                         <span class="avatar avatar-sm rounded-circle float-left mt-1">
-                                            <img alt="" src="{{$comment->user->picture}}">
+                                            <img alt="" src="{{asset($comment->user->getPicture())}}">
                                         </span>
                                         <div class="comment-wrapper ml-0 pl-0 ml-md-5 md-3">
                                             <div class="comment-header">
@@ -120,7 +118,6 @@
                                                     <span class="badge badge-primary"> {{__('author')}} </span>
                                                 @endif
                                                 {{__('commented')}} {{ $comment->created_at->diffForHumans()}}
-                                                
 
                                                 @if (auth()->user()->id == $comment->user->id)
                                                     <form method="POST" style="display: inline;" action="{{route('groups.tasks.comment.delete', [$task->subject->group->id, $task->id, $comment->id])}}">
@@ -144,12 +141,11 @@
                     </div>
 
                     <div class="card-footer">
-
                         <form action="{{route('groups.tasks.comment.store', [$task->subject->group->id, $task->id])}}" method="post">
                             @csrf
                             @method('post')
                             <span class="avatar avatar-sm rounded-circle float-left mt-3">
-                                <img alt="" src="{{auth()->user()->picture}}">
+                                <img alt="" src="{{asset(auth()->user()->getPicture())}}">
                             </span>
                             <div class="ml-0 pl-0 ml-md-5 pl-md-3">
                                 

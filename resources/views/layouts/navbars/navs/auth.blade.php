@@ -20,7 +20,7 @@
                         <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
                     @endif
                 @endforeach
-                <a class="dropdown-item" href="{{ route('groups.index') }}">
+                <a class="dropdown-item" href="{{ route('groups.create') }}">
                     <i class="fas fa-plus"></i>
                     {{__('Create a class')}}
                 </a>
