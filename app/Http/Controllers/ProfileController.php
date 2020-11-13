@@ -29,13 +29,13 @@ class ProfileController extends Controller
      */
     public function update(ProfileRequest $request)
     {
-        if (auth()->user()->id == 1) {
-            return back()->withErrors(['not_allow_profile' => __('You are not allowed to change data for a default user.')]);
-        }
         if(strlen($request->get('name'))>150){
             return back()->withErrors(['name' => __('You are not allowed to have a so long name (more than 150 characters).')]);
         }
         if($request->hasfile('picture')){
+            if($request->file('picture')->getSize()>4096000){
+                return back()->withErrors(['picture' => __('You are not allowed to have a so big picture (more than  4096KB).')]);
+            }
             if(isset(auth()->user()->picture) && File::exists(public_path(public_path(auth()->user()->picture)))){
                 File::delete(public_path(auth()->user()->picture));
             }
