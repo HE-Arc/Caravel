@@ -51,7 +51,7 @@ class User extends Authenticatable
     }
 
     public function groupsAvailable() {
-        return $this->groups()->wherePivot('isApprouved', '=', 1);
+        return $this->groups()->wherePivot('isApprouved', '=', Group::ACCEPTED);
     }
 
     public function comments()
