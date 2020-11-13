@@ -15,7 +15,7 @@
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image mb-1">
-                                <img id="user-picture" src="{{ asset(auth()->user()->getPicture()) }}" class="rounded-circle" width="200" height="200">
+                                <img id="user-picture" src="{{ asset(auth()->user()->getPicture()) }}" class="rounded-circle" width="180" height="180">
                             </div>
                         </div>
                     </div>
@@ -94,24 +94,23 @@
                                     <label class="form-control-label" for="input-image">{{ __('Picture') }}</label>
                                     <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }} ">
                                     <p class="font-italic blockquote-footer">Click on the picture to change it<br>
-                                    Recommended size : 4096B max it will be resized by 250*250</p>
+                                    Recommended size : 4096B max it will be resized by 250*250 </p>
+                                    <button type="button" class="btn btn-sm btn-danger pull-right" onclick="formPictureDelete.submit();">{{ __('Remove picture') }}</button>
                                     @if ($errors->has('picture'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('picture') }}</strong>
                                         </span>
                                     @endif
                                 </div>
-                                <div class="text-center">
+                                <div class="text-right">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
                                 </div>
                             </div>
                         </form>
-                        <form method="post" action="{{ route('profile.deletePicture') }}">
+                        <form method="post" action="{{ route('profile.deletePicture') }}" id="formPictureDelete">
                             @csrf
                             @method('delete')
-                            <div class="text-center pl-lg-4">
-                                <button type="submit" class="btn btn-danger mt-4">{{ __('Delete Picture') }}</button>
-                            </div>
+                            
                         </form>
                         <hr class="my-4" />
                         <form method="post" action="{{ route('profile.password') }}" autocomplete="off">
@@ -160,7 +159,7 @@
                                     <small>{{ __('Password strength') }}: <span class="font-weight-700" id="passwordStrength"></span></small>
                                 </div>
                                 
-                                <div class="text-center">
+                                <div class="text-right">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Change password') }}</button>
                                 </div>
                             </div>

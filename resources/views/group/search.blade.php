@@ -18,7 +18,7 @@
                 </div>
 
                 <div id="groupsContainer" class="d-flex flex-column justify-content-start align-items-center my-4"> 
-                    <div id="createGroupCard" class="card bg-white w-50 p-3 dashed-bottom">
+                    <div id="createGroupCard" class="card bg-white w-50 p-3">
                         @auth
                         <form action="{{route('groups.store')}}" method="post">
                         @method('post')
@@ -27,7 +27,7 @@
                             <!--"create" button-->
                             <input type="hidden" name="name" value="" id="inputNameHidden">
                             <h1 id="createClassName"></h1>
-                            <button id="createButton" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="disabled btn btn-primary">{{ __('Create') }}</button>
+                            <button id="createButton" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="disabled btn btn-success">{{ __('Create') }}</button>
                         </div>
                         @auth</form>@endauth
                     </div>
