@@ -142,6 +142,7 @@
                                 </div>
                                 <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-password">{{ __('New Password') }}</label>
+                                    <br><small>{{ __("Minimum 8 characters, recommended to use lower/upper case, numbers and symbols") }}</small>
                                     <input type="password" name="password" id="input-password" class="newPassword form-control form-control-alternative{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('New Password') }}" value="" required>
                                     
                                     @if ($errors->has('password'))
