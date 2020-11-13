@@ -7,9 +7,20 @@
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-7">
                 <div class="card bg-secondary shadow border-0">
-                    <div class="text-muted text-center mt-5"><small>{{ __('Sign in :') }}</small></div>
+                    <div class="text-muted text-center mt-5"><small>{{ __('Sign in with:') }}</small></div>
+                    <div class="card-header bg-transparent pb-5">
+                        <div class="btn-wrapper text-center">
+                        <a href="{{route('login.redirect')."?name=github"}}" class="btn btn-neutral btn-icon">
+                                <span class="btn-inner--icon"><img src="{{ asset('argon') }}/img/icons/common/github.svg"></span>
+                                <span class="btn-inner--text">{{ __('Github') }}</span>
+                            </a>
+                            <a href="{{route('login.redirect')."?name=google"}}" class="btn btn-neutral btn-icon">
+                                <span class="btn-inner--icon"><img src="{{ asset('argon') }}/img/icons/common/google.svg"></span>
+                                <span class="btn-inner--text">{{ __('Google') }}</span>
+                            </a>
+                        </div>
                     <div class="card-body px-lg-5 py-lg-5">
-                        <form role="form" method="POST" action="{{ route('login') }}">
+                        <form role="form" method="POST" action="{{ route('login') }}" autocomplete="on">
                             @csrf
                             <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }} mb-3">
                                 <div class="input-group input-group-alternative">

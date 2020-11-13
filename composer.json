@@ -21,6 +21,7 @@
         "intervention/image": "^2.5",
         "laravel-frontend-presets/argon": "^1.1",
         "laravel/framework": "^8.0",
+        "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "m4n0x/laravel-smartmd": "^1.0"
