@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Socialite;
 
@@ -47,7 +48,9 @@ class LoginController extends Controller
     */
     public function redirectToProvider()
     {
-        return Socialite::driver($_GET["name"])->stateless()->redirect();
+        if(isset($_GET["name"])&&($_GET["name"]=='google'||$_GET["name"]=='github'))
+            return Socialite::driver($_GET["name"])->stateless()->redirect();
+        return redirect('/login');
     }
 
     /**
@@ -65,7 +68,7 @@ class LoginController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'picture' => $user->avatar,
-            'password' => '2'
+            'password' => Hash::make($user->email) //should be changed by user
         ]);
     }
 
@@ -78,8 +81,8 @@ class LoginController extends Controller
     {
         try {
             $user = Socialite::driver($_GET["name"])->stateless()->user();
-        } catch (Exception $e) {
-            return redirect('/login?error='.$e);
+        } catch (\Exception $e) {
+            return redirect('/login');
         }
         auth()->login($this->findOrCreateUser($user), true);
         return redirect()->to('/');

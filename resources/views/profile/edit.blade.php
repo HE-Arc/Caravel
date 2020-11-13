@@ -132,7 +132,8 @@
                             <div class="pl-lg-4">
                                 <div class="form-group{{ $errors->has('old_password') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-current-password">{{ __('Current Password') }}</label>
-                                    <input type="password" name="old_password" id="input-current-password" class="form-control form-control-alternative{{ $errors->has('old_password') ? ' is-invalid' : '' }}" placeholder="{{ __('Current Password') }}" value="" required>
+                                    <br><small>{{ __("if connected with google or github, the current password is your email, it's strongly recommended to change it") }}</small>
+                                    <input type="password" name="old_password" id="input-current-password" class="form-control mt-2 form-control-alternative{{ $errors->has('old_password') ? ' is-invalid' : '' }}" placeholder="{{ __('Current Password') }}" value="" required>
                                     
                                     @if ($errors->has('old_password'))
                                         <span class="invalid-feedback" role="alert">
