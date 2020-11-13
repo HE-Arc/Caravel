@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Models\User;
 use Socialite;
 
 class LoginController extends Controller
@@ -40,79 +41,47 @@ class LoginController extends Controller
     }
 
     /**
-    * Redirect the user to the Github authentication page.
+    * Redirect the user to the Github/Google authentication page.
     *
     * @return \Illuminate\Http\Response
     */
-    public function redirectToProviderGithub()
+    public function redirectToProvider()
     {
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver($_GET["name"])->stateless()->redirect();
     }
 
     /**
-    * Redirect the user to the Google authentication page.
-    *
-    * @return \Illuminate\Http\Response
-    */
-    public function redirectToProviderGoogle()
+     * Return user if exists; create and return if doesn't
+     *
+     * @param $user
+     * @return User
+     */
+    private function findOrCreateUser($user)
     {
-        return Socialite::driver('google')->redirect();
+        if ($authUser = User::where('email', $user->email)->first()) {
+            return $authUser;
+        }
+        return User::create([
+            'name' => $user->name,
+            'email' => $user->email,
+            'picture' => $user->avatar,
+            'password' => '2'
+        ]);
     }
+
     /**
      * Obtain the user information from Google.
      *
      * @return \Illuminate\Http\Response
      */
-    public function handleProviderCallbackGoogle()
+    public function handleProviderCallback()
     {
         try {
-            $user = Socialite::driver('google')->user();
-        } catch (\Exception $e) {
-            return redirect('/login');
+            $user = Socialite::driver($_GET["name"])->stateless()->user();
+        } catch (Exception $e) {
+            return redirect('/login?error='.$e);
         }
-        // check if they're an existing user
-        $existingUser = User::where('email', $user->email)->first();
-        if($existingUser){
-            // log them in
-            auth()->login($existingUser, true);
-        } else {
-            // create a new user
-            $newUser                  = new User;
-            $newUser->name            = $user->name;
-            $newUser->email           = $user->email;
-            $newUser->picture         = $user->avatar;
-            $newUser->save();
-            auth()->login($newUser, true);
-        }
-        return redirect()->to('/');
-    }
-
-    /**
-     * Obtain the user information from Github.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function handleProviderCallbackGithub()
-    {
-        try {
-            $user = Socialite::driver('github')->user();
-        } catch (\Exception $e) {
-            return redirect('/login');
-        }
-        // check if they're an existing user
-        $existingUser = User::where('email', $user->email)->first();
-        if($existingUser){
-            // log them in
-            auth()->login($existingUser, true);
-        } else {
-            // create a new user
-            $newUser                  = new User;
-            $newUser->name            = $user->name;
-            $newUser->email           = $user->email;
-            $newUser->picture         = $user->avatar;
-            $newUser->save();
-            auth()->login($newUser, true);
-        }
+        auth()->login($this->findOrCreateUser($user), true);
         return redirect()->to('/');
     }
 }

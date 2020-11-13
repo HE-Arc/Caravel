@@ -22,10 +22,8 @@ Route::get('/', function () {
 Route::get('groups/create', ['as' => 'groups.create', 'uses' => 'App\Http\Controllers\GroupController@create']);
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
 Auth::routes();
-Route::get('login/redirectGoogle', 'App\Http\Controllers\Auth\LoginController@redirectToProviderGoogle')->name('login.google');
-Route::get('login/redirectGithub', 'App\Http\Controllers\Auth\LoginController@redirectToProviderGithub')->name('login.github');
-Route::get('/callbackGoogle', 'App\Http\Controllers\Auth\LoginController@handleProviderCallbackGoogle');
-Route::get('/callbackGithub', 'App\Http\Controllers\Auth\LoginController@handleProviderCallbackGithub');
+Route::get('login/redirect', 'App\Http\Controllers\Auth\LoginController@redirectToProvider')->name('login.redirect');
+Route::get('/callback', 'App\Http\Controllers\Auth\LoginController@handleProviderCallback');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::post('groups/{group}/upload', 'App\Http\Controllers\GroupController@upload')->name('groups.upload');
