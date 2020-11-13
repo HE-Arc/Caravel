@@ -76,8 +76,9 @@ class ProfileController extends Controller
     }
 
     public function deletePicture(){
-        if(isset(auth()->user()->picture) && File::exists(public_path(auth()->user()->picture))){
-            File::delete(public_path(auth()->user()->picture));
+        if(isset(auth()->user()->picture)){
+            if(File::exists(public_path(auth()->user()->picture)))
+                File::delete(public_path(auth()->user()->picture));
             auth()->user()->picture=null;
             auth()->user()->save();
             return back()->withStatus(__('Picture successfully deleted.'));
