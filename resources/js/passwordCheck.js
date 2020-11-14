@@ -11,11 +11,11 @@ function checkPassword(value){
 
     let message = "";
     let color = "";
-    if(strength > 3 && value.length > 8){
+    if(strength > 3 && value.length > 5){
         message = "strong";
         color = "green";
     }
-    else if(strength > 2 && value.length > 8){
+    else if(strength > 2 && value.length > 5){
         message = "moderate";
         color = "orange";
     }
