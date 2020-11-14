@@ -36,7 +36,7 @@ class ProfileController extends Controller
             if(isset(auth()->user()->picture) && File::exists(public_path(public_path(auth()->user()->picture)))){
                 File::delete(public_path(auth()->user()->picture));
             }
-            if($request->file('picture')->getSize()>25){   //images > 2MB will be blurred 
+            if($request->file('picture')->getSize()>2048000){   //images > 2MB will be blurred 
                 $filenamePicture = $this->FileNameAndSave($request->file('picture'),75);
             }
             else{
