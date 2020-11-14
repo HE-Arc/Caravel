@@ -94,7 +94,7 @@
                                     <label class="form-control-label" for="input-image">{{ __('Picture') }}</label>
                                     <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }} ">
                                     <p class="font-italic blockquote-footer">Click on the picture to change it<br>
-                                    Recommended size : 4096B max it will be resized by 250*250 </p>
+                                    Size : 4096B max it will be resized by 250*250 </p>
                                     <button type="button" class="btn btn-sm btn-danger pull-right" onclick="formPictureDelete.submit();">{{ __('Remove picture') }}</button>
                                     @if ($errors->has('picture'))
                                         <span class="invalid-feedback" role="alert">
@@ -110,7 +110,6 @@
                         <form method="post" action="{{ route('profile.deletePicture') }}" id="formPictureDelete">
                             @csrf
                             @method('delete')
-                            
                         </form>
                         <hr class="my-4" />
                         <form method="post" action="{{ route('profile.password') }}" autocomplete="off">
@@ -182,6 +181,10 @@
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
+                if(input.files[0].size > 1048576*4){//1MB*4
+                    alert("Image is too big!");
+                    return;
+                };
                 reader.onload = function (e) {
                     $('#user-picture').attr('src', e.target.result);
                 };
