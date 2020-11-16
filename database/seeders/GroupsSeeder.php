@@ -29,7 +29,6 @@ class GroupsSeeder extends Seeder
             //select random user as pseudo-creator
             $user = User::inRandomOrder()->first();
             DB::table('groups')->insert([
-                'id' => 0,
                 'name' => $name,
                 'created_at' => now(),
                 'updated_at' => now(),
