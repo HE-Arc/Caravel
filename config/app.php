@@ -161,6 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -226,7 +227,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'TaskType' => App\Models\TaskType::class,
+        'Subject' => App\Models\Subject::class,
+        'Task' => App\Models\Task::class,
+        'Group' => App\Models\Group::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class
     ],
 
 ];

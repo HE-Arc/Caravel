@@ -9,7 +9,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    public function author()
+    public function user()
     {
         return $this->belongsTo('App\Models\User');
     }

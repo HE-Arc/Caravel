@@ -18,10 +18,12 @@ class CreateGroupUserTable extends Migration
             $table->index('user_id');
             
             $table->bigInteger('group_id')->unsigned();
-            $table->index('group_id');            
+            $table->index('group_id');
+            
+            $table->primary(['group_id', 'user_id']);
 
             $table->timestamps();
-            $table->boolean('isApprouved')->nullable(); // null -> pending, false -> refused, true accepted
+            $table->integer('isApprouved')->default(0); // 0 -> pending, 1 -> refused, 2 accepted
         });
 
         Schema::table('group_user', function (Blueprint $table) {
