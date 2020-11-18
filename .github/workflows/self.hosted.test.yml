@@ -5,16 +5,17 @@ on:
 
 jobs:
   deliver-main:
+    name: main
     runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Put the app at the right place (test)
-        run: |
-        cp . /var/www/app
+        run: cp . /var/www/app
 
   deliver-devel:
+    name : devel
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
@@ -22,5 +23,4 @@ jobs:
           ref: develop
       
       - name: Put the app at the right place (test devel)
-        run: |
-        cp . /var/www/develop
+        run: cp . /var/www/develop
