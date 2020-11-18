@@ -1,0 +1,26 @@
+name: Tester
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  deliver-main:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Put the app at the right place (test)
+        run: |
+        cp . /var/www/app
+
+  deliver-devel:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: develop
+      
+      - name: Put the app at the right place (test devel)
+        run: |
+        cp . /var/www/develop
