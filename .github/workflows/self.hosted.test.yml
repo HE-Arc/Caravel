@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Put the app at the right place (test)
-        run: cp . /var/www/app
+        run: cp -r . /var/www/app
 
   deliver-devel:
     name : devel
@@ -23,4 +23,4 @@ jobs:
           ref: develop
       
       - name: Put the app at the right place (test devel)
-        run: cp . /var/www/develop
+        run: cp -r . /var/www/develop
