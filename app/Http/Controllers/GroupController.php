@@ -88,16 +88,6 @@ class GroupController extends Controller
     }
 
     /**
-     * Safely delete the picture of the group if it exists
-     */
-    private function deleteIfPicture($group){
-        //verify existence both in group and in file before deleting
-        if(isset($group->picture) && File::exists(public_path($group->picture))){ 
-            File::delete(public_path($group->picture));
-        }
-    }
-
-    /**
      * upload.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -225,6 +215,30 @@ class GroupController extends Controller
     }
 
     /**
+     * Delete the given member from the group
+     */
+    public function kickMember(Group $group, User $user){
+        //verify that the user is already in the group
+        $this->deleteMember($group, $user->id);
+        return redirect()->route('groups.members', $group);
+    }
+
+    public function quitGroup(Group $group){
+        $this->deleteMember($group, Auth::id());
+        return redirect()->route('groups.index');
+    }
+
+    private function deleteMember($group, $id){
+        if($group->users->find($id)){
+            $group->users()->where('id', $id)->detach();
+            //if there are no members anymore, delete the group
+            if($group->usersApproved()->count() == 0){
+                $this->deleteGroup($group);
+            }
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -232,10 +246,31 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
-        $this->deleteIfPicture($group);
-        //TODO DELETE ASSETS
-        $group->delete();
+        $this->deleteGroup($group);
         return redirect()->route('groups.index');
+    }
+
+    private function deleteGroup($group){
+        $this->deleteIfPicture($group);
+        $this->deleteIfStorage($group);
+        $group->delete();
+    }
+
+    private function deleteIfStorage($group){
+        $folder = config('smartmd.files.root') . '/groups\/' . $group->id;
+        if(Storage::exists($folder)){
+            Storage::delete($folder);
+        }
+    }
+
+    /**
+     * Safely delete the picture of the group if it exists
+     */
+    private function deleteIfPicture($group){
+        //verify existence both in group and in file before deleting
+        if(isset($group->picture) && File::exists(public_path($group->picture))){ 
+            File::delete(public_path($group->picture));
+        }
     }
 
     /**
@@ -279,17 +314,9 @@ class GroupController extends Controller
     public function changeLeader(Group $group, User $user){
         //verify that the user is already in the group
         if($group->users->find($user->id)){
-            $group->user_id = $user->idate;
+            $group->user_id = $user->id;
             $group->save();
             return redirect()->back();
-        }
-    }
-
-    public function deleteMember(Group $group, User $user){
-        //verify that the user is already in the group
-        if($group->users->find($user->id)){
-            $group->users()->where('id', $user->id)->detach();
-            return redirect()->route('groups.index');
         }
     }
 

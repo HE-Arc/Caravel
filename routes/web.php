@@ -37,7 +37,9 @@ Route::group(['middleware' => 'auth'], function () {
 
 	#members of groups (get, delete, no post as this is the role of the "join" mecanic)
 	Route::get('groups/{group}/members', ['as' => 'groups.members', 'uses' => 'App\Http\Controllers\GroupController@members']);
-	Route::delete('groups/{group}/members/{user}', ['as' => 'groups.members.delete', 'uses' => 'App\Http\Controllers\GroupController@deleteMember']);
+	Route::delete('groups/{group}/delete/{user}', ['as' => 'groups.members.delete', 'uses' => 'App\Http\Controllers\GroupController@kickMember']);
+	Route::delete('groups/{group}/quit', ['as' => 'groups.quit', 'uses' => 'App\Http\Controllers\GroupController@quitGroup']);
+	
 	#change leader
 	Route::put('groups/{group}/leader/{user}', ['as' => 'groups.members.leader', 'uses' => 'App\Http\Controllers\GroupController@changeLeader']);
 	#join a group, see the pending members, process "accept/refuse" a pending member

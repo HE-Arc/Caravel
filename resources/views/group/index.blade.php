@@ -23,10 +23,12 @@
                         @foreach ($groups as list($group, $leader))
                             <tr>
                                 <th scope="row">
-                                    <span class="avatar avatar-sm rounded-circle">
-                                        <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
-                                    </span>
-                                    <a href="{{route('groups.show', $group)}}">{{$group->name}}</a>
+                                    <div class="d-flex justify-content-start align-items-center">
+                                        <span class="avatar avatar-sm rounded-circle mr-2">
+                                            <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
+                                        </span>
+                                        <a href="{{route('groups.show', $group)}}">{{$group->name}}</a>
+                                    </div>
                                 </th>
                                 <td>
                                     {{$group->description ?? __("No description")}}

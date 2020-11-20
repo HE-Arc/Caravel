@@ -111,7 +111,7 @@
   overflow: hidden;
   position: relative;
   text-align: center;
-  cursor: default;
+  cursor: pointer;
 }
 
 .hovereffect .overlay {
@@ -136,6 +136,12 @@
   transform: scale(1.2);
 }
 
+.hovereffect:hover h2 {
+  opacity: 1;
+  filter: alpha(opacity=100);
+  transform: scale(1);
+}
+
 .hovereffect h2 {
   text-transform: uppercase;
   text-align: center;
@@ -143,35 +149,11 @@
   font-size: 17px;
   padding: 10px;
   background: rgba(0, 0, 0, 0.6);
-}
-
-.hovereffect a.info {
-  display: inline-block;
-  text-decoration: none;
-  padding: 7px 14px;
-  border: 1px solid #fff;
-  margin: 50px 0 0 0;
-  background-color: transparent;
-}
-
-.hovereffect a.info:hover {
-  box-shadow: 0 0 5px #fff;
-}
-
-.hovereffect a.info,
-.hovereffect h2 {
   transform: scale(0.7);
   transition: all 0.4s ease-in;
   opacity: 0;
   filter: alpha(opacity=0);
   color: #fff;
   text-transform: uppercase;
-}
-
-.hovereffect:hover a.info,
-.hovereffect:hover h2 {
-  opacity: 1;
-  filter: alpha(opacity=100);
-  transform: scale(1);
 }
 

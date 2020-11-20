@@ -77,12 +77,15 @@
                     {{__('Create a class')}}
                 </a>
             </div>
-          </div>  
+          </div>
+
                 <h6 class="navbar-heading text-muted d-none d-md-block">
-                    <span class="avatar avatar-sm rounded-circle mr-2">
-                        <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
-                    </span>
-                    {{$group->name}} 
+                    <div class="d-flex justify-content-start align-items-center">
+                        <span class="avatar avatar-sm rounded-circle mr-2">
+                            <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
+                        </span>
+                        <span>{{$group->name}}</span>
+                    </div>
                 </h6>
 
                 <ul class="navbar-nav">
@@ -135,7 +138,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('groups.pending', $group)}}">
                                         <i class="fas fa-user-clock text-primary"></i>
-                                        <span class="nav-link-text" >{{ __('Requested') }}</span>
+                                        <span class="nav-link-text" >{{ __('Requests') }}</span>
                                     </a>
                                 </li>
                             </ul>
