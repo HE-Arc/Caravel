@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Put the app at the right place (test)
+      - name: Put the main branch at the main serving point on server
         run: cp -r . /var/www/app
 
 name: Continus Delivery Develop
@@ -34,5 +34,5 @@ jobs:
         with:
           ref: develop
       
-      - name: Put the app at the right place (test devel)
+      - name: Put the main develop branch at the secondary serving point on server
         run: cp -r . /var/www/develop
