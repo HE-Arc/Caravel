@@ -70,17 +70,18 @@
                         </table>
                     </div>
                 </div>
+
+                <!--Refused card -->
                 <div class="card bg-secondary shadow p-2 m-2">
-                    <!-- refused users -->
                     <div class="card-header">
                         <h1 class="text-center">Refused users</h1>
                     </div>
+                    <!-- refused users -->
                     <div class="table-responsive">
                         <table class="table align-items-center">
                             <thead class="thead-light">
                                 <tr>
-                                    <th scope="col">Avatar</th>
-                                    <th scope="col">Name</th>
+                                    <th scope="col">User</th>
                                     <th scope="col">Refuse date</th>
                                     <th scope="col">Unkick</th>
                                 </tr>
@@ -96,11 +97,11 @@
                                                     <img alt="Image placeholder" src="{{asset($user->picture)}}">
                                                 @endisset
                                             </span>
+                                            <p>
+                                            {{$user->name}}
+                                            </p>
                                         </div>                
                                     </th>
-                                    <td>
-                                        {{$user->name}}
-                                    </td>
                                     <td>
                                         <span class="mb-0">
                                             Refused the {{ $user->pivot->updated_at->isoFormat('D MMMM Y') }}

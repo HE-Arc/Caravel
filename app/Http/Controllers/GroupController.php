@@ -295,7 +295,7 @@ class GroupController extends Controller
 
     public function join(Group $group){
         $userID = Auth::id();
-        //verification of non existence
+        //verification of non existence (a refused/accepter/pending user can not ask again to join a group)
         if($group->users()->find($userID) == null){
             $group->users()->attach($userID, ['isApprouved' => Group::PENDING]);
             return response()->json(["done" => TRUE]);

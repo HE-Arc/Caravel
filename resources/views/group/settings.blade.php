@@ -18,22 +18,32 @@
             
             <!-- Setting inputs -->
             <div class="card-body">
-                <div class="d-flex flex-column w-50">
+                <div class="d-flex flex-column">
                     <!-- Image -->
                     <div class="form-group{{ $errors->has('picture') ? ' has-danger' : '' }}">
-                        <img id="group-picture" src="{{asset($group->pictureOrDefault())}}" width="250" height="250"/>
+                       <!-- with hover effect -->
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                            <div class="hovereffect">
+                                <img id="group-picture" class="img-fluid" src="{{asset($group->pictureOrDefault())}}" alt="group picture">
+                                <div class="overlay" id="img-overlay">
+                                   <h2>Change image</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <!--hidden input-->
                         <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }}">
-                        <p class="font-italic blockquote-footer p-1">Recommended : Square dimensions (N*N px). The image will be resized at 250*250 px.</p>
                     </div>
+                    <p class="font-italic blockquote-footer p-1">Recommended : Square dimensions (N*N px). The image will be resized at 250*250 px</p>
+
                     <!-- Name -->
-                    <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
+                    <div class="form-group w-50{{ $errors->has('name') ? ' has-danger' : '' }}">
                         <label class="form-control-label" for="input-name">{{ __('name') }}</label>
                         <input type="text" name="name" id="input-name" class="form-control form-control-alternative{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Inf-DLM-2020') }}" value="{{ old('name', $group->name) }}" required autofocus>
                     </div>
                     <!-- Description -->
-                    <div class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
+                    <div class="form-group w-50{{ $errors->has('description') ? ' has-danger' : '' }}">
                         <label class="form-control-label" for="input-description">{{ __('description') }}</label>
-                        <textarea name="description" id="input-description" class="form-control form-control-alternative{{ $errors->has('description') ? ' is-invalid' : '' }}" placeholder="{{ __('Groupe Inf-DLM de la volée 2020 !') }}">{{ old('description', $group->description) }}</textarea>
+                        <textarea name="description" id="input-description" class="form-control form-control-alternative{{ $errors->has('description') ? ' is-invalid' : '' }}" placeholder="{{ __('Your description here') }}">{{ old('description', $group->description) }}</textarea>
                     </div>
                 </div>
 
@@ -72,8 +82,8 @@
 @push('js')
 <script>
 //make image click trigget the file input event
-$('#group-picture').click(function(){ 
-        $('#input-picture').trigger('click'); 
+$('#group-picture,#img-overlay').click(function(){ 
+        $('#input-picture').trigger('click');
     });
 
 function readURL(input) {
