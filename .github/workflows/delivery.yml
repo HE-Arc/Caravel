@@ -1,10 +1,10 @@
-name: Continus Delivery
+name: Continus Delivery Main
 
 on: 
   push:
     branches:
       - main
-      - develop
+      - issue-2-build_CD_pipeline
 
 jobs:
   deliver-main:
@@ -17,13 +17,13 @@ jobs:
       - name: Put the app at the right place (test)
         run: cp -r . /var/www/app
 
-name: test second action
+name: Continus Delivery Develop
 
 on: 
   push:
     branches:
       - main
-      - develop
+      - issue-2-build_CD_pipeline
 
 jobs:
   deliver-devel:
