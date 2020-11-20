@@ -43,7 +43,8 @@
                 </table>
                 </div>
                 @else
-                <div>
+                <div class="text-center ">
+                    <h1>You have no group, join one <a href="{{route('groups.create')}}">here !</a></h1>
                 </div>
                 @endif
             </div>

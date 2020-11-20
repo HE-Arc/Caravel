@@ -175,8 +175,8 @@ class GroupController extends Controller
     public function edit(Group $group)
     {  
         $users = $group->usersWithSubscription();
-        $memberCount = $users->wherePivot('isApprouved', Group::ACCEPTED)->count();
-        $pendingCount = $users->wherePivot('isApprouved',Group::PENDING)->count();
+        $memberCount =  $users->wherePivot('isApprouved', Group::ACCEPTED)->count();
+        $pendingCount = $users->wherePivot('isApprouved', Group::PENDING)->count();
         return view('group.settings', [
             "group" => $group, 
             'membersCount' => $memberCount, 
@@ -242,20 +242,35 @@ class GroupController extends Controller
      * Return the view of the pending /refused users
      */
     public function pending(Group $group){
-        return view('group.pending', ['group' => $group, 'pending' => $group->usersRequesting, 'refused' => $group->usersRefused]);
+        return view('group.pending', [
+            'group' => $group, 
+            'pending' => $group->usersRequesting, 
+            'refused' => $group->usersRefused
+            ]);
     }
 
-    public function processPending(Group $group, User $user, $approved){
+    /**
+     * Accept or refuse a pending user
+     */
+    public function processPending(Group $group, User $user, $status){
         if($group->usersRequesting->find($user->id)){
-            //$group->
+            $processedStatus = $status ? Group::ACCEPTED : Group::REFUSED;
+            //true in update means the updated_at is written with now()
+            //usefull to know when the user was accepted/refused
+            $group->usersRequesting()->updateExistingPivot($user, array('isApprouved' => $processedStatus), true);
         }
+        return redirect()->back();
     }
 
     /**
      * Return the view of the members of the group
      */
     public function members(Group $group){
-        return view('group.members', ['group' => $group, 'leaderID' => $group->user_id ,'users' => $group->usersApproved]);
+        return view('group.members', [
+            'group' => $group, 
+            'leaderID' => $group->user_id,
+            'isLeader' => $group->user_id == Auth::id(),
+            'users' => $group->usersApproved]);
     }
 
     /**
@@ -280,7 +295,7 @@ class GroupController extends Controller
 
     public function join(Group $group){
         $userID = Auth::id();
-        //verification of existence
+        //verification of non existence
         if($group->users()->find($userID) == null){
             $group->users()->attach($userID, ['isApprouved' => Group::PENDING]);
             return response()->json(["done" => TRUE]);
@@ -296,7 +311,7 @@ class GroupController extends Controller
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
         $groups = Group::where('name', 'LIKE', "%$str%")
-            ->orderBy('created_at') //TODO : Add a good order by relative to group activity, DONT FORGET N+1 problem
+            ->orderBy('created_at') //TODO : Add a good order by relative to group activity maybe ?
             ->take(10);
 
         //loop over groups, builds result array

@@ -35,14 +35,15 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('groups.tasks', App\Http\Controllers\TaskController::class);
 	Route::resource('groups.subjects', App\Http\Controllers\SubjectController::class);
 
-	//join a group (show view, apply))
-	Route::get('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
+	#members of groups (get, delete, no post as this is the role of the "join" mecanic)
 	Route::get('groups/{group}/members', ['as' => 'groups.members', 'uses' => 'App\Http\Controllers\GroupController@members']);
-	Route::post('groups/{group}/members/{user}', ['as' => 'groups.members.leader', 'uses' => 'App\Http\Controllers\GroupController@changeLeader']);
 	Route::delete('groups/{group}/members/{user}', ['as' => 'groups.members.delete', 'uses' => 'App\Http\Controllers\GroupController@deleteMember']);
+	#change leader
+	Route::put('groups/{group}/leader/{user}', ['as' => 'groups.members.leader', 'uses' => 'App\Http\Controllers\GroupController@changeLeader']);
+	#join a group, see the pending members, process "accept/refuse" a pending member
+	Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
 	Route::get('groups/{group}/pending', ['as' => 'groups.pending', 'uses' => 'App\Http\Controllers\GroupController@pending']);
-	Route::post('groups/{group}/pending/{user}', ['as' => 'groups.pending.process', 'uses' => 'App\Http\Controllers\GroupController@processPending']);
-
+	Route::patch('groups/{group}/pending/{user}/{status}', ['as' => 'groups.pending.process', 'uses' => 'App\Http\Controllers\GroupController@processPending']);
 
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
