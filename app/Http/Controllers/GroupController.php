@@ -219,7 +219,8 @@ class GroupController extends Controller
      */
     public function kickMember(Group $group, User $user){
         //verify that the user is already in the group
-        $this->deleteMember($group, $user->id);
+        $before = $group->usersApproved()->count();
+        $count = $this->deleteMember($group, $user->id);
         return redirect()->route('groups.members', $group);
     }
 
@@ -230,7 +231,7 @@ class GroupController extends Controller
 
     private function deleteMember($group, $id){
         if($group->users->find($id)){
-            $group->users()->where('id', $id)->detach();
+            $group->usersApproved()->detach($id);
             //if there are no members anymore, delete the group
             if($group->usersApproved()->count() == 0){
                 $this->deleteGroup($group);
