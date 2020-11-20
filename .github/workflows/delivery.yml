@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: checkout main branch
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         #with:
           #ref: develop
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
