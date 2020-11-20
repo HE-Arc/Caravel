@@ -17,6 +17,15 @@ jobs:
       - name: Put the app at the right place (test)
         run: cp -r . /var/www/app
 
+name: test second action
+
+on: 
+  pushes:
+    branches:
+      - main
+      - develop
+
+jobs:
   deliver-devel:
     name : devel
     runs-on: self-hosted
