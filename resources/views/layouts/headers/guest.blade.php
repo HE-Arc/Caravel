@@ -4,7 +4,7 @@
             <div class="row justify-content-center mt-5">
                 <div class="col-lg-5 col-md-6">
                     <h1 class="text-white">{{ __('Welcome to Caravel') }}</h1>
-                    <p class="text-white">{{ __('Please login to see the amazing work behing Caravel :-) ') }}</p>
+                    <p class="text-white">{{ __('Please login to see the amazing work behind Caravel :-) ') }}</p>
                 </div>
             </div>
         </div>
