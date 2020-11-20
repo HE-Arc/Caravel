@@ -288,8 +288,8 @@ class GroupController extends Controller
     public function deleteMember(Group $group, User $user){
         //verify that the user is already in the group
         if($group->users->find($user->id)){
-            $group->users->where('id', $user->id)->delete();
-            return redirect()->back();
+            $group->users()->where('id', $user->id)->detach();
+            return redirect()->route('groups.index');
         }
     }
 

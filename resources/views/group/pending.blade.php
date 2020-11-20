@@ -8,10 +8,16 @@
     <div class="container mt--7">
         <div class="row">
             <div class="col-xl-12 order-xl-1">
-                <div class="card bg-secondary shadow">
-
+                <!-- pending card -->
+                <div class="card bg-secondary shadow mb-4">
                     <!-- "pending" users -->
-                    <h1 class="text-center mb-5">Pending users</h1>
+                    <div class="card-header bg-white border-0">
+                        <div class="card-header-details">
+                            <h3>
+                                {{__('Pending users')}}
+                            </h3>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-hover align-items-center">
                             <thead class="thead-light">
@@ -63,9 +69,12 @@
                             </tbody>
                         </table>
                     </div>
-
+                </div>
+                <div class="card bg-secondary shadow p-2 m-2">
                     <!-- refused users -->
-                    <h1 class="text-center my-5">Refused users</h1>
+                    <div class="card-header">
+                        <h1 class="text-center">Refused users</h1>
+                    </div>
                     <div class="table-responsive">
                         <table class="table align-items-center">
                             <thead class="thead-light">
@@ -111,8 +120,7 @@
                             </tbody>
                         </table>
                     </div>
-
-
+                </div>
                 </div>
             </div>
         </div>

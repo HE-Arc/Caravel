@@ -14,8 +14,7 @@
                     <table class="table align-items-center">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Picture</th>
-                            <th scope="col">Name</th>
+                            <th scope="col">Group</th>
                             <th scope="col">Description</th>
                             <th scope="col">Leader</th>
                         </tr>
@@ -23,12 +22,10 @@
                     <tbody>
                         @foreach ($groups as list($group, $leader))
                             <tr>
-                                <td scope="row">
+                                <th scope="row">
                                     <span class="avatar avatar-sm rounded-circle">
                                         <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
                                     </span>
-                                </td>
-                                <th scope="row">
                                     <a href="{{route('groups.show', $group)}}">{{$group->name}}</a>
                                 </th>
                                 <td>

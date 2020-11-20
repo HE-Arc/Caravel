@@ -89,7 +89,8 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('groups.index')}}">
-                            <i class="fas fa-users text-primary"></i> {{ __('My groups') }}
+                            <i class="fas fa-list-alt text-primary"></i>
+                            {{ __('My groups') }}
                         </a>
                     </li>
 
@@ -127,7 +128,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('groups.members', $group)}}">
-                                        <i class="fas fa-user-clock text-primary"></i>
+                                        <i class="fas fa-users text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Members') }}</span>
                                     </a>
                                 </li>
