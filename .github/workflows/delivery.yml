@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - issue-2-build_CD_pipeline
+      - issue-2-Build_CD_pipeline
 
 jobs:
   deliver-main:
@@ -23,7 +23,7 @@ on:
   push:
     branches:
       - main
-      - issue-2-build_CD_pipeline
+      - issue-2-Build_CD_pipeline
 
 jobs:
   deliver-devel:
