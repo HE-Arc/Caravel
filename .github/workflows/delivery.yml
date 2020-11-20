@@ -1,10 +1,9 @@
-name: Continus Delivery Main
+name: Continus Delivery
 
 on: 
   push:
     branches:
       - main
-      - issue-2-Build_CD_pipeline
 
 jobs:
   deliver-main:
@@ -12,27 +11,21 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: checkout main branch
       - uses: actions/checkout@v2
+        #with:
+          #ref: develop
+          #in case we want to deploy a certain branch (ex : serve main and develop at different points)
 
       - name: Put the main branch at the main serving point on server
-        run: cp -r . /var/www/app
+        run: |
+        cp -r . /var/www/app
+        cd /var/www/app
 
-name: Continus Delivery Develop
+      - name: Install composer Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-on: 
-  push:
-    branches:
-      - main
-      - issue-2-Build_CD_pipeline
-
-jobs:
-  deliver-devel:
-    name : devel
-    runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: develop
-      
-      - name: Put the main develop branch at the secondary serving point on server
-        run: cp -r . /var/www/develop
+      - name: Install NPM Dependencies
+        run: |
+          npm install
+          npm run prod
