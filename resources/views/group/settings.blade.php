@@ -92,11 +92,13 @@ $('#group-picture,#img-overlay').click(function(){
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-
+        if(input.files[0].size > 4096000){//1MB*4
+            alert("File is too big!");
+            return;
+        };
         reader.onload = function (e) {
             $('#group-picture').attr('src', e.target.result);
         };
-
         reader.readAsDataURL(input.files[0]);
     }
 }

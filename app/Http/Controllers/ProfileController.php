@@ -33,13 +33,15 @@ class ProfileController extends Controller
             return back()->withErrors(['name' => __('You are not allowed to have a so long name (more than 150 characters).')]);
         }
         if($request->hasfile('picture')){
-            if($request->file('picture')->getSize()>4096000){
-                return back()->withErrors(['picture' => __('You are not allowed to have a so big picture (more than  4096KB).')]);
-            }
             if(isset(auth()->user()->picture) && File::exists(public_path(public_path(auth()->user()->picture)))){
                 File::delete(public_path(auth()->user()->picture));
             }
-            $filenamePicture = $this->FileNameAndSave($request->file('picture'));
+            if($request->file('picture')->getSize()>2048000){   //images > 2MB will be blurred 
+                $filenamePicture = $this->FileNameAndSave($request->file('picture'),75);
+            }
+            else{
+                $filenamePicture = $this->FileNameAndSave($request->file('picture'));
+            }
             auth()->user()->picture=$filenamePicture;
             auth()->user()->save();
             auth()->user()->update($request->except('picture'));
@@ -67,11 +69,11 @@ class ProfileController extends Controller
         return back()->withPasswordStatus(__('Password successfully updated.'));
     }
 
-    private function FileNameAndSave($picture){
+    private function FileNameAndSave($picture,$quality=90){
         //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
         $filename = config('caravel.users.pictureFolder').$picture->hashName();
         $filenamePicture = public_path($filename);
-        Image::make($picture)->resize(250,250)->save($filenamePicture);
+        Image::make($picture)->resize(250,250)->save($filenamePicture,$quality);
         return $filename;
     }
 

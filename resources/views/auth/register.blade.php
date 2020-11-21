@@ -45,7 +45,7 @@
                                     </div>
                                     <input class=" newPassword form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Password') }}" type="password" name="password" required>
                                 </div>
-                                <br><small>{{ __("Min 8 characters, recommended to use lower/upper case, numbers and symbols") }}</small>
+                                <br><small>{{ __("Min 6 characters, recommended to use lower/upper case, numbers and symbols") }}</small>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" style="display: block;" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>

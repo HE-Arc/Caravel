@@ -1,4 +1,10 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);.subject-color-1 {
+@font-face {
+  font-family: "BreeSerif";
+  font-style: normal;
+  font-weight: normal;
+  src: url("../assets/fonts/BreeSerif/BreeSerif-Regular.ttf") format("truetype");
+}
+.subject-color-1 {
   background-color: #6bce6b;
   color: #fafafa;
 }
@@ -82,7 +88,6 @@
   font-weight: 300;
   color: #717871;
 }
-
 .title-days span {
   background: #fff;
   padding: 0 10px;
@@ -92,12 +97,10 @@
   border-radius: 5px;
   border: 1px solid #d2d2d2;
 }
-
 .comment-wrapper .comment-display {
   padding: 15px;
   background-color: #fff;
 }
-
 .comment-wrapper .comment-header {
   padding: 10px;
   background-color: #6772e50d;
@@ -168,4 +171,3 @@
 #user-picture {
   cursor: pointer;
 }
-

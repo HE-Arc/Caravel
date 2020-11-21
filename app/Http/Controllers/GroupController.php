@@ -79,7 +79,7 @@ class GroupController extends Controller
     }
 
     //this name is way too long, but "buildFilenameFromPicture" 
-    private function FileNameAndSave($picture){
+    private function FileNameAndSave($picture,$quality=90){
         //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
         $filename = config('caravel.groups.pictureFolder').$picture->hashName();
         $filenameSystem = public_path($filename);
@@ -208,7 +208,11 @@ class GroupController extends Controller
             //if the picture is submitted, do the treatment
             if($request->hasfile('picture')){
                 $this->deleteIfPicture($group);
-                $filenamePicture = $this->FileNameAndSave($request->file('picture'));
+                if($request->file('picture')->getSize()>2048000){   //images > 2MB will be blurred 
+                    $filenamePicture = $this->FileNameAndSave($request->file('picture'),75);
+                } else{
+                    $filenamePicture = $this->FileNameAndSave($request->file('picture'));
+                }
                 $group->picture = $filenamePicture;
             }
             //if user is authenticated, put him as the group's leader
