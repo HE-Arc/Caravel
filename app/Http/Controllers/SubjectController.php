@@ -59,7 +59,7 @@ class SubjectController extends Controller
     private function persistData(Request $request, Group $group, Subject $subject)
     {
         $rules = [
-            'name' => 'required|max:255',
+            'name' => 'required|unique:subjects|max:255',
             'color' => 'required|min:1|max:10'
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -93,7 +93,7 @@ class SubjectController extends Controller
     public function destroy(Request $request, Group $group, Subject $subject)
     {
         if (count($subject->tasks) > 0) {
-            $request->session()->flash('status', 'This subject cannot be delete, there task linked on it !');
+            $request->session()->flash('errors', 'This subject cannot be delete, there task linked on it !');
         } else {
             $subject->delete();
             $request->session()->flash('status', 'this subject has been delete successfully');

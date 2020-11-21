@@ -161,6 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -229,7 +230,8 @@ return [
         'TaskType' => App\Models\TaskType::class,
         'Subject' => App\Models\Subject::class,
         'Task' => App\Models\Task::class,
-        'Group' => App\Models\Group::class
+        'Group' => App\Models\Group::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class
     ],
 
 ];
