@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Group;
+use Illuminate\Support\Facades\View;
 
 
 /**
@@ -30,10 +31,12 @@ class CheckGroup
 
         if (empty($group)) {
             $group = $this->getDefaultGroup($request, $user);
-            return redirect()->route('groups.show', $group);
         }
         
-        if (!empty($group) && !($group instanceof Group)) $group = Group::find($group);
+        if (!empty($group) && !($group instanceof Group)) {
+            $group = Group::find($group);
+            View::share('group', $group);
+        }
 
         if (empty($group) || ($group instanceof Group && !$group->usersApproved->contains($user))) {
             abort(403);
