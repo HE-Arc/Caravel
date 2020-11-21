@@ -1,5 +1,4 @@
-@extends('layouts.app', ['title' => __('Search groups'),
-'hasSidebar' => false])
+@extends('layouts.app', ['title' => __('Search groups'), 'hasSidebar' => false])
 
 @section('content')
     @include('users.partials.header', [
@@ -99,8 +98,9 @@
         $.ajax({
             /* the route pointing to the post function */
             url: "{{ route('groups.join', 'idGroup') }}".replace('idGroup', idGroup),
-            type: 'GET',
+            type: 'POST',
             dataType: 'JSON',
+            data: { _token: '{{csrf_token()}}' },
             /* remind that 'data' is the response of the AjaxController */
             success: function (data) {
                 //on success : Change the apparence of the button
