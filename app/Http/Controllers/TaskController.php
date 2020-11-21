@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\TaskType;
+use App\Models\Tasktype;
 use App\Models\Subject;
 use App\Models\Task;
 use App\Models\Group;
