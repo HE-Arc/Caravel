@@ -77,9 +77,26 @@
                     {{__('Create a class')}}
                 </a>
             </div>
-          </div>            
-                <h6 class="navbar-heading text-muted d-none d-md-block">{{$group->name}}</h6>
+          </div>
+
+                <h6 class="navbar-heading text-muted d-none d-md-block">
+                    <div class="d-flex justify-content-start align-items-center">
+                        <span class="avatar avatar-sm rounded-circle mr-2">
+                            <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
+                        </span>
+                        <span>{{$group->name}}</span>
+                    </div>
+                </h6>
+
                 <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('groups.index')}}">
+                            <i class="fas fa-list-alt text-primary"></i>
+                            {{ __('My groups') }}
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link{{ request()->route()->named('groups.tasks.index') ? ' active' : '' }}" href="{{ route('groups.tasks.index', $group->id) }}">
                             <i class="ni ni-bullet-list-67 text-primary"></i> {{ __('Upcoming') }}
@@ -101,7 +118,7 @@
                         <div class="collapse show" id="navbar-examples">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{{route('groups.edit', $group)}}">
                                         <i class="fas fa-cog text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Settings') }}</span>
                                     </a>
@@ -113,9 +130,15 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="{{route('groups.members', $group)}}">
+                                        <i class="fas fa-users text-primary"></i>
+                                        <span class="nav-link-text" >{{ __('Members') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('groups.pending', $group)}}">
                                         <i class="fas fa-user-clock text-primary"></i>
-                                        <span class="nav-link-text" >{{ __('Requested') }}</span>
+                                        <span class="nav-link-text" >{{ __('Requests') }}</span>
                                     </a>
                                 </li>
                             </ul>
