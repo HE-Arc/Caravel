@@ -24,9 +24,7 @@
                     <th scope="row">
                         <div class="d-flex justify-content-start align-items-center">
                             <span class="avatar avatar-sm rounded-circle mr-2">
-                                @isset($user->picture)
-                                    <img alt="Image placeholder" src="{{asset($user->picture)}}">
-                                @endisset
+                                <img alt="Image placeholder" src="{{asset($user->getPicture())}}">
                             </span>
                             <span>{{$user->name}}</span>
                         </div>                
@@ -41,7 +39,7 @@
                         <form action="{{route('groups.pending.allowBack', ['group' => $group, 'user' => $user->id])}}" method="post">
                             @method('patch')
                             @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-primary">{{ __('Unkick') }}</button>
+                                <button type="submit" class="btn btn-sm btn-outline-warning">{{ __('Unkick') }}</button>
                         </form>
                     </td>
                 </tr>

@@ -1,5 +1,5 @@
 @extends('layouts.app', ['title' => __('Search groups'),
-                         'hasSidebar' => false])
+                         'hasSidebar' => isset($group)])
 
 @section('content')
     @include('users.partials.header', [
@@ -29,6 +29,9 @@
                                             <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
                                         </span>
                                         <a href="{{route('groups.show', $group)}}">{{$group->name}}</a>
+                                        @if (Auth::id() == $group->user_id)
+                                            <i class="fas fa-crown ml-1 text-warning"></i>
+                                        @endif
                                     </div>
                                 </th>
                                 <td>
@@ -43,8 +46,14 @@
                 </table>
                 </div>
                 @else
-                <div class="text-center ">
-                    <h1>You have no group, join one <a href="{{route('groups.create')}}">here !</a></h1>
+                <div class="card-header bg-white border-0">
+                    <div class="card-header-details">
+                        <h4>{{__("You have no group,  ")}}                  
+                            <a href="{{route('groups.create')}}">
+                                {{__('create or join one !')}}
+                            </a>
+                        </h4>
+                    </div>
                 </div>
                 @endif
             </div>

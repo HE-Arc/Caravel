@@ -35,9 +35,7 @@
                     <th scope="row">
                         <div class="d-flex justify-content-start align-items-center">
                             <span class="avatar avatar-sm rounded-circle mr-2">
-                                @isset($user->picture)
-                                    <img alt="Image placeholder" src="{{asset($user->picture)}}">
-                                @endisset
+                                <img alt="Image placeholder" src="{{asset($user->getPicture())}}">
                             </span>
                             <span>{{$user->name}}</span>
                             @if ($user->id == $group->user_id)
