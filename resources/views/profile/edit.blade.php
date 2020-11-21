@@ -1,5 +1,5 @@
 @extends('layouts.app', ['title' => __('User Profile'),
-                         'hasSidebar' => false])
+                         'hasSidebar' => true])
 
 @section('content')
     @include('users.partials.header', [

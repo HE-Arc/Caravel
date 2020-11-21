@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-6 collapse-brand">
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('argon') }}/img/brand/blue.png">
+                            <img src="{{ asset('assets') }}/img/brand/brand.png">
                         </a>
                     </div>
                     <div class="col-6 collapse-close">
@@ -26,9 +26,9 @@
             <!-- Navbar items -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link nav-link-icon" href="{{ route('groups.index') }}">
+                    <a class="nav-link nav-link-icon" href="{{ route('groups.create') }}">
                         <i class="ni ni-planet"></i>
-                        <span class="nav-link-inner--text">{{ __('My Groups') }}</span>
+                        <span class="nav-link-inner--text">{{ __('Search groups') }}</span>
                     </a>
                 </li>
                 <li class="nav-item">

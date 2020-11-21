@@ -40,9 +40,9 @@ class Group extends Model
         return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', Group::PENDING);
     }
 
-    public function author()
+    public function user()
     {
-        return $this->hasOne('App\Models\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function subjects()

@@ -2,11 +2,9 @@
 <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
     <div class="container-fluid">
         <!-- Brand -->
-        <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{ route('groups.index') }}">{{ __('Caravel') }}</a>
-
         <div class="dropdown d-none d-md-block">
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              @if (isset($group))
+              @if (isset($group) && isset($group->id) )
                 {{$group->name}}
               @else
                 {{ __('Select class') }}
@@ -42,6 +40,10 @@
                     <div class=" dropdown-header noti-title">
                         <h6 class="text-overflow m-0">{{ __('Welcome!') }}</h6>
                     </div>
+                    <a href="{{route('groups.index')}}" class="dropdown-item">
+                        <i class="fas fa-list-alt"></i>
+                        {{ __('My groups') }}
+                    </a>
                     <a href="{{ route('profile.edit') }}" class="dropdown-item">
                         <i class="ni ni-settings-gear-65"></i>
                         <span>{{ __('Settings') }}</span>
