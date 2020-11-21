@@ -12,9 +12,9 @@
         <table class="table align-items-center">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Refuse date</th>
-                    <th scope="col">Unkick</th>
+                    <th scope="col">{{__('User')}}</th>
+                    <th scope="col">{{__('Refuse date')}}</th>
+                    <th scope="col">{{__('Unkick')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,16 +33,16 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            Refused the {{ $user->pivot->updated_at->isoFormat('D MMMM Y') }}
+                            {{__('Refused')}} {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }}
                         </span>
                     </td>
                     <td>
-                        <!-- Go back button -->
-                        <!--<form action="{{route('groups.members.delete', ['group' => $group, 'user' => $user->id])}}" method="post">
-                            @method('delete')
+                        <!-- Unban button -->
+                        <form action="{{route('groups.pending.allowBack', ['group' => $group, 'user' => $user->id])}}" method="post">
+                            @method('patch')
                             @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Accept') }}</button>
-                        </form>-->
+                                <button type="submit" class="btn btn-sm btn-outline-primary">{{ __('Unkick') }}</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

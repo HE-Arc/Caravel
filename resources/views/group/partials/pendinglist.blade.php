@@ -12,9 +12,9 @@
         <table class="table table-hover align-items-center">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">User</th>
-                    <th scope="col">Request date</th>
-                    <th scope="col" class="text-center">Decide</th>
+                    <th scope="col">{{__('User')}}</th>
+                    <th scope="col">{{__('Request date')}}</th>
+                    <th scope="col" class="text-center">{{__('Decide')}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +33,7 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            Asked to join the {{ $user->pivot->updated_at->isoFormat('D MMMM Y') }}
+                            {{__('Asked to join')}} {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }}
                         </span>
                     </td>
                     <td class="d-flex flex-col justify-content-center">

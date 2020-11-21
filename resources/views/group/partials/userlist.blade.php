@@ -1,14 +1,31 @@
+
+
+
 <div class="card bg-secondary shadow">
+
+    <div class="card-header bg-white border-0">
+        <div class="card-header-details">
+            <form action="{{route('groups.quit', $group)}}" method="post">                    
+                @method('delete')
+                @csrf
+                <h3>{{__('Members of')}} {{$group->name}}
+                    <button class="btn btn-sm btn-outline-danger float-right">
+                        <i class="fas fa-door-open"></i> {{__('Quit')}}
+                    </button>
+                </h3>
+            </form>
+        </div>
+    </div>
+
     <div class="table-responsive">
         <table class="table align-items-center">
             <thead class="thead-light">
                 <tr>
-                    <th scope="col">User COMPTE{{$group->usersApproved()->count()}}</th>
-                    <th scope="col">Member since</th>
-                    <th scope="col">Quit</th>
+                    <th scope="col">{{__('User')}}</th>
+                    <th scope="col">{{__('Member since')}}</th>
                     <!-- manage section only for leader-->
                     @if($isLeader)
-                    <th scope="col" class="text-center">Manage</th>
+                    <th scope="col" class="text-center">{{__('Manage')}}</th>
                     @endif
                 </tr>
             </thead>
@@ -30,17 +47,8 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            Member since {{ $user->pivot->updated_at->isoFormat('D MMMM Y') }}
+                            {{__('Member since')}} {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }}
                         </span>
-                    </td>
-                    <td>
-                        @if ($user->id == Auth::id())
-                            <form action="{{route('groups.quit', $group)}}" method="post">
-                                @method('delete')
-                                @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Quit') }}</button>
-                            </form>
-                        @endif
                     </td>
                     <!-- manage section only for leader-->
                     @if($isLeader)

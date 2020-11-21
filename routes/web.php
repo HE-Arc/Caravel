@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
 	Route::get('groups/{group}/pending', ['as' => 'groups.pending', 'uses' => 'App\Http\Controllers\GroupController@pending']);
 	Route::patch('groups/{group}/pending/{user}/{status}', ['as' => 'groups.pending.process', 'uses' => 'App\Http\Controllers\GroupController@processPending']);
+	Route::patch('groups/{group}/allowBack/{user}', ['as' => 'groups.pending.allowBack', 'uses' => 'App\Http\Controllers\GroupController@allowBack']);
 
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);

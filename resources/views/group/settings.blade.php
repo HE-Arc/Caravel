@@ -13,7 +13,7 @@
     <div class="container mt--7">
         <div class="card bg-white">
             <div class="card-header text-center">
-                <h1>Manage and edit {{$group->name}}</h1>
+                <h1>{{__('Edit') . " $group->name"}}</h1>
             </div>
             
             <!-- Setting inputs -->
@@ -26,14 +26,16 @@
                             <div class="hovereffect">
                                 <img id="group-picture" class="img-fluid" src="{{asset($group->pictureOrDefault())}}" alt="group picture">
                                 <div class="overlay" id="img-overlay">
-                                   <h2>Change image</h2>
+                                   <h2>{{__('Change')}}</h2>
                                 </div>
                             </div>
                         </div>
                         <!--hidden input-->
                         <input type="file" accept="image/png,image/jpeg,image/jpg" name="picture" id="input-picture" class="d-none form-control form-control-alternative{{ $errors->has('picture') ? ' is-invalid' : '' }}">
                     </div>
-                    <p class="font-italic blockquote-footer p-1">Recommended : Square dimensions (N*N px). The image will be resized at 250*250 px</p>
+                    <p class="font-italic blockquote-footer p-1">
+                        {{__('Recommended : Square dimensions (N*N px). The image will be resized at 250*250 px')}}
+                    </p>
 
                     <!-- Name -->
                     <div class="form-group w-50{{ $errors->has('name') ? ' has-danger' : '' }}">
@@ -47,18 +49,19 @@
                     </div>
                 </div>
 
-                <div class="text-right">
-                    <!-- "save" button -->
-                    <button type="submit" class="btn btn-sm btn-outline-success">{{ __('Save') }}</button>
-                    </form> <!-- end of "save" form -->
-                    <!-- "delete" form -->
-                    @if ($isLeader)
-                    <form action="{{route('groups.destroy', $group)}}" method="post">
-                        @method('delete')
-                        @csrf
-                            <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
-                    </form>    
-                    @endif</div>
+                <div class="d-flex justify-content-end">
+                        <!-- "save" button -->
+                        <button type="submit" class="btn btn-sm btn-outline-success">{{ __('Save') }}</button>
+                        </form> <!-- end of "save" form -->
+                        <!-- "delete" form -->
+                        @if ($isLeader)
+                            <form action="{{route('groups.destroy', $group)}}" method="post">
+                                @method('delete')
+                                @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">{{ __('Delete') }}</button>
+                            </form>    
+                        @endif
+                </div>
                 
                 <div class="p-4">
                     <h1 class="text-center p-2 ">Manage</h1>

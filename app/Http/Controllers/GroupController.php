@@ -38,7 +38,7 @@ class GroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {
+    {        
         //the "index" livesearch is the view used to create a new group
         return view('group.search');
     }
@@ -83,7 +83,12 @@ class GroupController extends Controller
         //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
         $filename = config('caravel.groups.pictureFolder').$picture->hashName();
         $filenameSystem = public_path($filename);
-        Image::make($picture)->resize(250,250)->save($filenameSystem);
+        Image::make($picture)
+            ->resize(250, 250, function ($constraint) {
+                $constraint->aspectRatio(); //keep ratio aspect
+                $constraint->upsize();      //must fit inside 250*250, can be smaller
+            })
+            ->save($filenameSystem);
         return $filename;
     }
 
@@ -219,22 +224,32 @@ class GroupController extends Controller
      */
     public function kickMember(Group $group, User $user){
         //verify that the user is already in the group
-        $before = $group->usersApproved()->count();
-        $count = $this->deleteMember($group, $user->id);
+        $this->deleteMember($group, $user->id);
         return redirect()->route('groups.members', $group);
     }
 
+    /**
+     * Quit a group (delete the own user from the group)
+     */
     public function quitGroup(Group $group){
         $this->deleteMember($group, Auth::id());
         return redirect()->route('groups.index');
     }
 
-    private function deleteMember($group, $id){
-        if($group->users->find($id)){
-            $group->usersApproved()->detach($id);
+    /**
+     * Factorisation of the deletion of a member from a group
+     * Check if the group is empty or without leader
+     */
+    private function deleteMember($group, $userId){
+        if($group->users->find($userId)){
+            $group->usersApproved()->detach($userId);
             //if there are no members anymore, delete the group
             if($group->usersApproved()->count() == 0){
                 $this->deleteGroup($group);
+            } else if($userId == $group->user_id){
+                //give leadership of the group to the older user
+                $group->user_id = $group->usersApproved()->orderBy('pivot_updated_at','asc')->first()->id;
+                $group->save();
             }
         }
     }
@@ -251,16 +266,23 @@ class GroupController extends Controller
         return redirect()->route('groups.index');
     }
 
+    /**
+     * Delete the group, including its picture and its eventual storage datas
+     */
     private function deleteGroup($group){
         $this->deleteIfPicture($group);
         $this->deleteIfStorage($group);
         $group->delete();
     }
 
+    /**
+     * Delete the data (ex : files from comment) of the group in storage
+     */
     private function deleteIfStorage($group){
         $folder = config('smartmd.files.root') . '/groups\/' . $group->id;
+        //if the group has a storage, delete the entire directory (files)
         if(Storage::exists($folder)){
-            Storage::delete($folder);
+            Storage::deleteDirectory($folder);
         }
     }
 
@@ -280,8 +302,8 @@ class GroupController extends Controller
     public function pending(Group $group){
         return view('group.pending', [
             'group' => $group, 
-            'pending' => $group->usersRequesting, 
-            'refused' => $group->usersRefused
+            'pending' => $group->usersRequesting()->orderBy('pivot_updated_at','asc')->get(), 
+            'refused' => $group->usersRefused()->orderBy('pivot_updated_at','asc')->get()
             ]);
     }
 
@@ -299,6 +321,18 @@ class GroupController extends Controller
     }
 
     /**
+     * Allow a user that was kicked back into the "pending" category ('un-ban')
+     */
+    public function allowBack(Group $group, User $user){
+        //verify existence
+        if($group->usersRefused->find($user->id)){
+            //back into "pending" mode
+            $group->usersRefused()->updateExistingPivot($user, array('isApprouved' => Group::PENDING), true);
+        }
+        return redirect()->back();
+    }
+
+    /**
      * Return the view of the members of the group
      */
     public function members(Group $group){
@@ -306,7 +340,8 @@ class GroupController extends Controller
             'group' => $group, 
             'leaderID' => $group->user_id,
             'isLeader' => $group->user_id == Auth::id(),
-            'users' => $group->usersApproved]);
+            'users' => $group->usersApproved()->orderBy('pivot_updated_at','asc')->get(),
+            ]);
     }
 
     /**
@@ -339,7 +374,7 @@ class GroupController extends Controller
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
         $groups = Group::where('name', 'LIKE', "%$str%")
-            ->orderBy('created_at') //TODO : Add a good order by relative to group activity maybe ?
+            ->orderBy('created_at') //TODO : Add a good 'order by' relative to group activity maybe ?
             ->take(10);
 
         //loop over groups, builds result array
