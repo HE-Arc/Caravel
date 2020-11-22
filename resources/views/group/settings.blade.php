@@ -5,7 +5,7 @@
         'title' =>  __('Group settings')
     ])
 
-    <!-- this page allows you to change the existing groupe -->
+    <!-- this page allows you to change the existing group -->
     <form method="post" action="{{ route('groups.update', ['group' => $group]) }}" autocomplete="off" id="form-group" enctype="multipart/form-data">
     @method('patch')
     @csrf
