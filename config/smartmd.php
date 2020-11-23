@@ -9,6 +9,5 @@ return [
          * return public image path
          */
         "url" => env('APP_URL').'/storage/upload',
-        "types" => array('jpeg', 'png', 'bmp', 'gif', 'jpg', 'pdf', 'zip', 'py'),
     ],
 ];

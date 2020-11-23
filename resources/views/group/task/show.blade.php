@@ -13,7 +13,7 @@
                 <div class="card bg-secondary shadow">
                     <div class="card-header bg-white border-0">
                         <div class="card-header-details">
-                            <span class="state">
+                            <span class="state ">
                                 @if ($task->isPrivate)
                                     <span class="badge badge-danger">{{__('Private')}}</span>
                                 @endif
@@ -54,9 +54,8 @@
                         <h2 class="mb-0">
                             {{ $task->title }}
                             <div class="float-right">
-
-                                    <a class="btn btn-sm btn-outline-primary" href="{{ route('groups.tasks.edit', [$task->subject->group->id, $task->id])}}">{{__('Edit')}}</a>
                                 @if ($task->user->id == auth()->user()->id)
+                                    <a class="btn btn-sm btn-outline-primary" href="{{ route('groups.tasks.edit', [$task->subject->group->id, $task->id])}}">{{__('Edit')}}</a>
                                     <form method="POST" class="float-right" action="{{ route('groups.tasks.destroy', [$task->subject->group->id, $task->id])}}">
                                         @csrf
                                         @method('DELETE')
@@ -84,7 +83,8 @@
                         <div class="row justify-content-center mt-4 px-4">
                             <div class="col-md-9">
                                 <textarea id="editor" placeholder="test" style="display: none">{{ $task->description }}</textarea>
-                                <div id="content" class="markdown-body p-0"></div>
+                                <div id="content" class=""></div>
+                                
                             </div>
                             <div class="col-md-3">
                                 @if ($task->attachements && count($task->attachements) > 0)
@@ -180,7 +180,7 @@
                     isFullScreen: false,
                     isPreviewActive: true,
                     uploads: {
-                        type: {!!json_encode(config('smartmd.files.types'))!!},
+                        type: ['jpeg', 'png', 'bmp', 'gif', 'jpg', 'pdf'],
                         maxSize: 4096,
                         typeError: 'Support format {type}.',
                         sizeError: 'File size is more than {maxSize} kb.',
