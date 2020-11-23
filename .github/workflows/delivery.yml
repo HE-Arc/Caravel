@@ -33,6 +33,6 @@ jobs:
         run: |
           pwd
           cd ${{ env.path }}
-          npm install --unsafe-perm=true --allow-root
+          sudo npm install --unsafe-perm=true --allow-root
           npm run prod
         working-directory: ${{ env.path }}
