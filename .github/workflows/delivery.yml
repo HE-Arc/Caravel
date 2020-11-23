@@ -19,7 +19,7 @@ jobs:
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
           
       - name: copy repo at good place
-        run: cp -rf . ${{ env.path }}
+        run: rsync --recursive . ${{ env.path }}
           
       - name: Install composer Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
