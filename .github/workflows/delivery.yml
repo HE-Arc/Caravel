@@ -8,6 +8,10 @@ on:
 jobs:
   deliver-main:
     runs-on: self-hosted
+    defaults:
+      run:
+        #set default working-directory to always be on the serving path
+        working-directory: ${{ secrets.DEPLOY_PATH }}
 
     steps:
       - name: checkout main branch
@@ -15,23 +19,12 @@ jobs:
         #with:
           #ref: develop
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
-
-      - name: Put the main branch at the main serving point on server
-        run: |
-          cp -r . /var/www/app
           
       - name: Install composer Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      
-      #test : write the current directory
-      - name: write dir
-        run: |
-          cd /var/www/app 
-          pwd
 
       - name: Install NPM Dependencies
         #working-directory: /usr/bin
         run: |
-          pwd 
           npm install
           npm run prod
