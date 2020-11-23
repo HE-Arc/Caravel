@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: checkout main branch
         uses: actions/checkout@v2
-        with:
-          path: '/var/test-runner'
+      - name: copy repo at good place
+        run: cp -rf . /var/test-runner/
         #with:
           #ref: develop
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
