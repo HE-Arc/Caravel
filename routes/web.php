@@ -21,6 +21,7 @@ Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 Route::get('groups/create', ['as' => 'groups.create', 'uses' => 'App\Http\Controllers\GroupController@create']);
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
 Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
+Route::get('groups', 'App\Http\Controllers\GroupController@index')->name('groups.index');
 
 Route::get('login/redirect', 'App\Http\Controllers\Auth\LoginController@redirectToProvider')->name('login.redirect');
 Route::get('/callback', 'App\Http\Controllers\Auth\LoginController@handleProviderCallback');
@@ -28,7 +29,6 @@ Route::get('/callback', 'App\Http\Controllers\Auth\LoginController@handleProvide
 Route::group(['middleware' => 'auth'], function () {
 	
 	Route::group(['middleware' => 'check.group'], function () {
-		Route::get('groups', 'App\Http\Controllers\GroupController@index')->name('groups.index');
 		Route::post('groups/{group}/upload', 'App\Http\Controllers\GroupController@upload')->name('groups.upload');
 		Route::get('groups/{group}/files/{file}', 'App\Http\Controllers\GroupController@getFile')->name('groups.files');
 		Route::post('groups/{group}/tasks/{task}/comment', 'App\Http\Controllers\TaskController@comment')->name('groups.tasks.comment.store');
