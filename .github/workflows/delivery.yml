@@ -9,7 +9,7 @@ jobs:
   deliver-main:
     runs-on: self-hosted
     env:
-      path: /var/www/test-deploy/
+      path: /var/www/app/
 
     steps:
       - name: checkout main branch
@@ -23,16 +23,12 @@ jobs:
           
       - name: Install composer Dependencies
         run: #
-          pwd
-          cd ${{ env.path }}
           touch "this is a test"
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
         working-directory: ${{ env.path }}
 
       - name: Install NPM Dependencies
         run: |
-          pwd
-          cd ${{ env.path }}
           sudo npm install --unsafe-perm=true --allow-root
-          npm run prod
+          sudo npm run prod
         working-directory: ${{ env.path }}
