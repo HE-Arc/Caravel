@@ -11,7 +11,7 @@ jobs:
     defaults:
       run:
         #set default working-directory to always be on the serving path
-        working-directory: /var/www/app
+        working-directory: '/var/www/app/'
 
     steps:
       - name: checkout main branch
