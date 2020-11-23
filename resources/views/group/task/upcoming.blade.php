@@ -74,7 +74,7 @@
                                                 </a>
 
                                                 <span class="float-right">
-                                                    @if ($project->tasks && count($project->tasks) > 0)
+                                                    @if ($task->tasks && count($project->tasks) > 0)
                                                         <span><i class="fas fa-folder-open"></i> {{count($project->tasks)}} </span>
                                                     @endif
                                                     @if ($task->attachements && count($task->attachements) > 0)
