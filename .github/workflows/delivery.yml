@@ -11,25 +11,28 @@ jobs:
     defaults:
       run:
         #set default working-directory to always be on the serving path
-        working-directory: '/var/www/app/'
+        working-directory: /var/www/test-deploy/
 
     steps:
       - name: checkout main branch
         uses: actions/checkout@v2
-      - name: copy repo at good place
-        run: cp -rf . /var/test-runner/
         #with:
           #ref: develop
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
           
+      - name: copy repo at good place
+        run: cp -rf . /var/www/test-deploy/
+        working-directory: ${{ GITHUB_WORKSPACE }}
+          
       - name: Install composer Dependencies
         run: #
           pwd
+          touch "this is a test"
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Install NPM Dependencies
         #working-directory: /usr/bin
         run: |
           pwd
-          npm install
+          npm install --unsafe-perm=true --allow-root
           npm run prod
