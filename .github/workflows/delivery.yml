@@ -19,15 +19,12 @@ jobs:
       - name: Put the main branch at the main serving point on server
         run: |
           cp -r . /var/www/app
-          cd /var/www/app
-          
-      - name: check user
-        run: whoami
-
+          cd /var/www/app 
       - name: Install composer Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Install NPM Dependencies
+        working-directory: /usr/bin
         run: |
           npm install
           npm run prod
