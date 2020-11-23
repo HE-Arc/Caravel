@@ -29,8 +29,8 @@ Route::get('/callback', 'App\Http\Controllers\Auth\LoginController@handleProvide
 Route::group(['middleware' => 'auth'], function () {
 	//routes of group accessible when authentified, but without a particular group
 	Route::get('groups', 'App\Http\Controllers\GroupController@index')->name('groups.index');
-	Route::post('groups/{group}', 'App\Http\Controllers\GroupController@store')->name('groups.store');
-	
+	Route::post('groups', 'App\Http\Controllers\GroupController@store')->name('groups.store');
+
 	Route::group(['middleware' => 'check.group'], function () {
 		Route::post('groups/{group}/upload', 'App\Http\Controllers\GroupController@upload')->name('groups.upload');
 		Route::get('groups/{group}/files/{file}', 'App\Http\Controllers\GroupController@getFile')->name('groups.files');
