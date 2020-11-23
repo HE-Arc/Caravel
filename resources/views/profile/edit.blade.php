@@ -1,5 +1,5 @@
 @extends('layouts.app', ['title' => __('User Profile'),
-                         'hasSidebar' => false])
+                         'hasSidebar' => true])
 
 @section('content')
     @include('users.partials.header', [
@@ -174,7 +174,7 @@
 @endsection
 
 @push('js')
-    <script src="../../resources/js/passwordCheck.js"></script>
+    <script src="{{asset('/js/passwordCheck.js')}}"></script>
     <script>
         $('#user-picture').click(function(){$('#input-picture').trigger('click');});
 

@@ -1,18 +1,13 @@
-@extends('layouts.app', ['title' => __('Search groups'), 'hasSidebar' => false])
+@extends('layouts.app', ['title' => __('Search for groups'), 'hasSidebar' => false])
 
 @section('content')
     @include('users.partials.header', [
-        'title' => __('Consult, join or create a group')
+        'title' => __('Look for a group or create one !')
     ])
 
     <div class="container mt--7">
         <div class="card bg-white">
-
-            <div class="card-header">
-                <h1 class="text-center">{{ __("Type your group Here") }}</h1>
-            </div>
-
-            <div class="card-body">
+            <div class="card-body p-5">
                 <div class="d-flex align-items-center justify-content-center">
                     <input type="text" id="groupInput" class="form-control w-75 p-3" placeholder="ide1-a, inf3-dlm..." aria-label="Field to input the class">
                 </div>

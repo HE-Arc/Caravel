@@ -24,6 +24,10 @@
                     <div class=" dropdown-header noti-title">
                         <h6 class="text-overflow m-0">{{ __('Welcome!') }}</h6>
                     </div>
+                    <a href="{{route('groups.index')}}" class="dropdown-item">
+                        <i class="fas fa-list-alt"></i>
+                        {{ __('My groups') }}
+                    </a>
                     <a href="{{ route('profile.edit') }}" class="dropdown-item">
                         <i class="ni ni-settings-gear-65"></i>
                         <span>{{ __('Settings') }}</span>
@@ -44,7 +48,7 @@
                 <div class="row">
                     <div class="col-6 collapse-brand">
                         <a href="{{ route('groups.index') }}">
-                            <img src="{{ asset('argon') }}/img/brand/blue.png">
+                            <img src="{{ asset('assets') }}/img/brand/brand.png">
                         </a>
                     </div>
                     <div class="col-6 collapse-close">
@@ -91,21 +95,16 @@
                 <ul class="navbar-nav">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('groups.index')}}">
-                            <i class="fas fa-list-alt text-primary"></i>
-                            {{ __('My groups') }}
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
                         <a class="nav-link{{ request()->route()->named('groups.tasks.index') ? ' active' : '' }}" href="{{ route('groups.tasks.index', $group->id) }}">
-                            <i class="ni ni-bullet-list-67 text-primary"></i> {{ __('Upcoming') }}
+                            <i class="fas fa-calendar-alt text-primary"></i> {{ __('Upcoming') }}
+                            <i class=""></i>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('groups.tasks.index', $group->id) }}">
-                            <i class="ni ni-calendar-grid-58 text-primary"></i> {{ __('Weekly') }}
+                        <a class="nav-link{{ request()->route()->named('groups.subjects.index') ? ' active' : '' }}" href="{{route('groups.subjects.index', $group)}}">
+                            <i class="fas fa-tasks text-primary"></i>
+                            <span class="nav-link-text" >{{ __('Subjects') }}</span>
                         </a>
                     </li>
 
@@ -124,21 +123,22 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link{{ request()->route()->named('groups.subjects.index') ? ' active' : '' }}" href="{{route('groups.subjects.index', $group)}}">
-                                        <i class="fas fa-tasks text-primary"></i>
-                                        <span class="nav-link-text" >{{ __('Subjects') }}</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="{{route('groups.members', $group)}}">
                                         <i class="fas fa-users text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Members') }}</span>
+                                        @isset($groupMembersCount)
+                                            <span class="badge badge-primary ml-1">{{$groupMembersCount}}</span>
+                                        @endisset
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('groups.pending', $group)}}">
                                         <i class="fas fa-user-clock text-primary"></i>
-                                        <span class="nav-link-text" >{{ __('Requests') }}</span>
+                                        <span class="nav-link-text">{{__('Requests')}}
+                                            @if($groupRequestsCount > 0)
+                                            <span class="badge badge-danger ml-1">{{$groupRequestsCount}}</span>
+                                            @endif
+                                        </span>
                                     </a>
                                 </li>
                             </ul>

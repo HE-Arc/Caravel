@@ -21,15 +21,7 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Auth::user()->groupsAvailable;
-        if($groups->count() > 0){
-            $groupWithLeader = array();
-            foreach($groups as $group){
-                //TODO Maybe find better way to get leader's name with a join ?
-                $groupWithLeader[] = [$group, User::find($group->user_id)->name];
-            }
-            return view('group.index', ['groups' => $groupWithLeader]);    
-        }
-        return view('group.index');
+        return view('group.index', ["groups" => $groups]);
     }
 
     /**
@@ -75,7 +67,7 @@ class GroupController extends Controller
         }
 
         //return the user to the "show" of this created group
-        return redirect()->route('groups.edit', $group->id);
+        return redirect()->route('groups.edit', $group);
     }
 
     //this name is way too long, but "buildFilenameFromPicture" 
@@ -168,14 +160,9 @@ class GroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Group $group)
-    {  
-        $users = $group->usersWithSubscription();
-        $memberCount =  $users->wherePivot('isApprouved', Group::ACCEPTED)->count();
-        $pendingCount = $users->wherePivot('isApprouved', Group::PENDING)->count();
+    {
         return view('group.settings', [
-            "group" => $group, 
-            'membersCount' => $memberCount, 
-            'pendingCount' => $pendingCount, 
+            'group' => $group, 
             'isLeader' => $group->user_id == Auth::id(),
         ]);
     }

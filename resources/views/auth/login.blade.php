@@ -40,7 +40,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                                     </div>
-                                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="{{ __('Password') }}" type="password" value="secret" required>
+                                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="{{ __('Password') }}" type="password" value="" required>
                                 </div>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" style="display: block;" role="alert">
@@ -60,19 +60,19 @@
                         </form>
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-light">
-                                <small>{{ __('Forgot password?') }}</small>
-                            </a>
-                        @endif
-                    </div>
-                    <div class="col-6 text-right">
-                        <a href="{{ route('register') }}" class="text-light">
-                            <small>{{ __('Create new account') }}</small>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6">
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}" class="text-light">
+                            <small>{{ __('Forgot password?') }}</small>
                         </a>
-                    </div>
+                    @endif
+                </div>
+                <div class="col-6 text-right">
+                    <a href="{{ route('register') }}" class="text-light">
+                        <small>{{ __('Create new account') }}</small>
+                    </a>
                 </div>
             </div>
         </div>

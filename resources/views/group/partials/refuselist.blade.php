@@ -31,7 +31,7 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            {{__('Refused')}} {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }}
+                            {{__('Refused')}} @isset($user->pivot->updated_at) {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }} @endisset 
                         </span>
                     </td>
                     <td>
