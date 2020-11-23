@@ -17,16 +17,19 @@ Auth::routes();
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 
-//get filtered group API
+// group create accessible to everyone
 Route::get('groups/create', ['as' => 'groups.create', 'uses' => 'App\Http\Controllers\GroupController@create']);
+// group APIs accessible to everyone
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
 Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
-Route::get('groups', 'App\Http\Controllers\GroupController@index')->name('groups.index');
 
 Route::get('login/redirect', 'App\Http\Controllers\Auth\LoginController@redirectToProvider')->name('login.redirect');
 Route::get('/callback', 'App\Http\Controllers\Auth\LoginController@handleProviderCallback');
 
 Route::group(['middleware' => 'auth'], function () {
+	//routes of group accessible when authentified, but without a particular group
+	Route::get('groups', 'App\Http\Controllers\GroupController@index')->name('groups.index');
+	Route::post('groups/{group}', 'App\Http\Controllers\GroupController@store')->name('groups.store');
 	
 	Route::group(['middleware' => 'check.group'], function () {
 		Route::post('groups/{group}/upload', 'App\Http\Controllers\GroupController@upload')->name('groups.upload');
@@ -34,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('groups/{group}/tasks/{task}/comment', 'App\Http\Controllers\TaskController@comment')->name('groups.tasks.comment.store');
 		Route::delete('groups/{group}/tasks/{task}/comment/{comment}', 'App\Http\Controllers\TaskController@delComment')->name('groups.tasks.comment.delete');
 		Route::delete('groups/{group}/tasks/{task}/attachement/{file}', 'App\Http\Controllers\TaskController@delAttachement')->name('groups.tasks.attachement.delete');
-		Route::resource('groups', App\Http\Controllers\GroupController::class)->except(['create', 'index']);
+		Route::resource('groups', App\Http\Controllers\GroupController::class)->except(['create', 'index', 'store']);
 		Route::resource('groups.tasks', App\Http\Controllers\TaskController::class);
 		Route::resource('groups.subjects', App\Http\Controllers\SubjectController::class);
 
