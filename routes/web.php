@@ -17,23 +17,27 @@ Auth::routes();
 
 Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 
-//get filtered group API
+// group create accessible to everyone
 Route::get('groups/create', ['as' => 'groups.create', 'uses' => 'App\Http\Controllers\GroupController@create']);
+// group APIs accessible to everyone
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
+Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
 
 Route::get('login/redirect', 'App\Http\Controllers\Auth\LoginController@redirectToProvider')->name('login.redirect');
 Route::get('/callback', 'App\Http\Controllers\Auth\LoginController@handleProviderCallback');
 
 Route::group(['middleware' => 'auth'], function () {
-	
+	//routes of group accessible when authentified, but without a particular group
+	Route::get('groups', 'App\Http\Controllers\GroupController@index')->name('groups.index');
+	Route::post('groups', 'App\Http\Controllers\GroupController@store')->name('groups.store');
+
 	Route::group(['middleware' => 'check.group'], function () {
-		Route::get('groups', 'App\Http\Controllers\GroupController@index')->name('groups.index');
 		Route::post('groups/{group}/upload', 'App\Http\Controllers\GroupController@upload')->name('groups.upload');
 		Route::get('groups/{group}/files/{file}', 'App\Http\Controllers\GroupController@getFile')->name('groups.files');
 		Route::post('groups/{group}/tasks/{task}/comment', 'App\Http\Controllers\TaskController@comment')->name('groups.tasks.comment.store');
 		Route::delete('groups/{group}/tasks/{task}/comment/{comment}', 'App\Http\Controllers\TaskController@delComment')->name('groups.tasks.comment.delete');
 		Route::delete('groups/{group}/tasks/{task}/attachement/{file}', 'App\Http\Controllers\TaskController@delAttachement')->name('groups.tasks.attachement.delete');
-		Route::resource('groups', App\Http\Controllers\GroupController::class)->except(['create', 'index']);
+		Route::resource('groups', App\Http\Controllers\GroupController::class)->except(['create', 'index', 'store']);
 		Route::resource('groups.tasks', App\Http\Controllers\TaskController::class);
 		Route::resource('groups.subjects', App\Http\Controllers\SubjectController::class);
 
@@ -45,7 +49,6 @@ Route::group(['middleware' => 'auth'], function () {
 		#change leader
 		Route::put('groups/{group}/leader/{user}', ['as' => 'groups.members.leader', 'uses' => 'App\Http\Controllers\GroupController@changeLeader']);
 		#join a group, see the pending members, process "accept/refuse" a pending member
-		Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
 		Route::get('groups/{group}/pending', ['as' => 'groups.pending', 'uses' => 'App\Http\Controllers\GroupController@pending']);
 		Route::patch('groups/{group}/pending/{user}/{status}', ['as' => 'groups.pending.process', 'uses' => 'App\Http\Controllers\GroupController@processPending']);
 		Route::patch('groups/{group}/allowBack/{user}', ['as' => 'groups.pending.allowBack', 'uses' => 'App\Http\Controllers\GroupController@allowBack']);

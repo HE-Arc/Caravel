@@ -40,6 +40,12 @@ class CheckGroup
 
         if (empty($group) || ($group instanceof Group && !$group->usersApproved->contains($user))) {
             abort(403);
+        } else {
+            //share info for sidebar
+            View::share([
+                'groupMembersCount' => $group->usersApproved()->count(),
+                'groupRequestsCount' => $group->usersRequesting()->count(),
+            ]);
         }
 
         $request->session()->put(CheckGroup::SESSION_LAST_GROUP_ID, $group->id);

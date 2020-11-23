@@ -67,7 +67,7 @@ class GroupController extends Controller
         }
 
         //return the user to the "show" of this created group
-        return redirect()->route('groups.edit', $group->id);
+        return redirect()->route('groups.edit', $group);
     }
 
     //this name is way too long, but "buildFilenameFromPicture" 
@@ -160,14 +160,9 @@ class GroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Group $group)
-    {  
-        $users = $group->usersWithSubscription();
-        $memberCount =  $users->wherePivot('isApprouved', Group::ACCEPTED)->count();
-        $pendingCount = $users->wherePivot('isApprouved', Group::PENDING)->count();
+    {
         return view('group.settings', [
-            "group" => $group, 
-            'membersCount' => $memberCount, 
-            'pendingCount' => $pendingCount, 
+            'group' => $group, 
             'isLeader' => $group->user_id == Auth::id(),
         ]);
     }
