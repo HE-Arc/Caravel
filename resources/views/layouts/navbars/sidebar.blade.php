@@ -126,12 +126,19 @@
                                     <a class="nav-link" href="{{route('groups.members', $group)}}">
                                         <i class="fas fa-users text-primary"></i>
                                         <span class="nav-link-text" >{{ __('Members') }}</span>
+                                        @isset($groupMembersCount)
+                                            <span class="badge badge-primary ml-1">{{$groupMembersCount}}</span>
+                                        @endisset
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('groups.pending', $group)}}">
                                         <i class="fas fa-user-clock text-primary"></i>
-                                        <span class="nav-link-text" >{{ __('Requests') }}</span>
+                                        <span class="nav-link-text">{{__('Requests')}}
+                                            @if($groupRequestsCount > 0)
+                                            <span class="badge badge-danger ml-1">{{$groupRequestsCount}}</span>
+                                            @endif
+                                        </span>
                                     </a>
                                 </li>
                             </ul>
