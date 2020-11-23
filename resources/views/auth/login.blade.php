@@ -60,19 +60,19 @@
                         </form>
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-light">
-                                <small>{{ __('Forgot password?') }}</small>
-                            </a>
-                        @endif
-                    </div>
-                    <div class="col-6 text-right">
-                        <a href="{{ route('register') }}" class="text-light">
-                            <small>{{ __('Create new account') }}</small>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6">
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}" class="text-light">
+                            <small>{{ __('Forgot password?') }}</small>
                         </a>
-                    </div>
+                    @endif
+                </div>
+                <div class="col-6 text-right">
+                    <a href="{{ route('register') }}" class="text-light">
+                        <small>{{ __('Create new account') }}</small>
+                    </a>
                 </div>
             </div>
         </div>
