@@ -174,7 +174,7 @@
 @endsection
 
 @push('js')
-    <script src="../../resources/js/passwordCheck.js"></script>
+    <script src="{{asset('/js/passwordCheck.js')}}"></script>
     <script>
         $('#user-picture').click(function(){$('#input-picture').trigger('click');});
 
