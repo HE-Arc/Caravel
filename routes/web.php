@@ -20,6 +20,7 @@ Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 //get filtered group API
 Route::get('groups/create', ['as' => 'groups.create', 'uses' => 'App\Http\Controllers\GroupController@create']);
 Route::get('groups/filtered/{string}', ['as' => 'groups.filtered', 'uses' => 'App\Http\Controllers\GroupController@filtered']);
+Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
 
 Route::get('login/redirect', 'App\Http\Controllers\Auth\LoginController@redirectToProvider')->name('login.redirect');
 Route::get('/callback', 'App\Http\Controllers\Auth\LoginController@handleProviderCallback');
@@ -45,7 +46,6 @@ Route::group(['middleware' => 'auth'], function () {
 		#change leader
 		Route::put('groups/{group}/leader/{user}', ['as' => 'groups.members.leader', 'uses' => 'App\Http\Controllers\GroupController@changeLeader']);
 		#join a group, see the pending members, process "accept/refuse" a pending member
-		Route::post('groups/{group}/join', ['as' => 'groups.join', 'uses' => 'App\Http\Controllers\GroupController@join']);
 		Route::get('groups/{group}/pending', ['as' => 'groups.pending', 'uses' => 'App\Http\Controllers\GroupController@pending']);
 		Route::patch('groups/{group}/pending/{user}/{status}', ['as' => 'groups.pending.process', 'uses' => 'App\Http\Controllers\GroupController@processPending']);
 		Route::patch('groups/{group}/allowBack/{user}', ['as' => 'groups.pending.allowBack', 'uses' => 'App\Http\Controllers\GroupController@allowBack']);
