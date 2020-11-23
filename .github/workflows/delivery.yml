@@ -16,15 +16,20 @@ jobs:
     steps:
       - name: checkout main branch
         uses: actions/checkout@v2
+        with:
+          path: '/var/test-runner'
         #with:
           #ref: develop
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
           
       - name: Install composer Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        run: #
+          pwd
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Install NPM Dependencies
         #working-directory: /usr/bin
         run: |
+          pwd
           npm install
           npm run prod
