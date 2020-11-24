@@ -158,7 +158,7 @@
                                     isFullScreen: false,
                                     isPreviewActive: false,
                                     uploads: {
-                                        type: ['jpeg', 'png', 'bmp', 'gif', 'jpg', 'pdf'],
+                                        type: {!!json_encode(config('smartmd.files.types'))!!},
                                         maxSize: 4096,
                                         typeError: 'Support format {type}.',
                                         sizeError: 'File size is more than {maxSize} kb.',
