@@ -36,3 +36,4 @@ jobs:
 
       - name: restart server :-)
         run: sudo sv restart nginx
+
