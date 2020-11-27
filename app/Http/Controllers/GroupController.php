@@ -97,7 +97,7 @@ class GroupController extends Controller
             'image' => 'required|max:4096'
         ]);
         if ($validator->passes()) {
-            $folder = config('smartmd.files.root') . '/groups\/' . $group;
+            $folder = config('smartmd.files.root') . '/groups/' . $group;
             $temp = $request->file('image');
             $fileName = '[' . $temp->getClientOriginalName() . ']';
             $name = $temp->hashName();
@@ -137,7 +137,7 @@ class GroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getFile(Request $request, $group, $file) {
-        $folder = config('smartmd.files.root') . '/groups\/' . $group . '/';
+        $folder = config('smartmd.files.root') . '/groups/' . $group . '/';
         return response()->file(Storage::path($folder . $file));
     }
 

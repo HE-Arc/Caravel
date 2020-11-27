@@ -230,7 +230,7 @@ class TaskController extends Controller
             //process attachement
             if($request->hasfile('attachement'))
             {
-                $folder = config('smartmd.files.root') . '/groups\/' . $group->id;
+                $folder = config('smartmd.files.root') . '/groups/' . $group->id;
                 foreach($request->file('attachement') as $upload)
                 {
                     $file = new Attachement();
