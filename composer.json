@@ -19,6 +19,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.5",
+        "jackiedo/timezonelist": "5.*",
         "laravel-frontend-presets/argon": "^1.1",
         "laravel/framework": "^8.0",
         "laravel/socialite": "^5.1",
@@ -40,6 +41,9 @@
     },
     "extra": {
         "laravel": {
+            "providers": [
+                "Jackiedo\\Timezonelist\\TimezonelistServiceProvider"
+            ],
             "dont-discover": []
         }
     },

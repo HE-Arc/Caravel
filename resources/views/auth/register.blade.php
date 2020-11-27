@@ -60,6 +60,10 @@
                                     <input class="form-control" placeholder="{{ __('Confirm Password') }}" type="password" name="password_confirmation" required>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="form-control-label" for="timezone">{{ __('Timezone') }}</label>
+                                {!! Timezonelist::create('timezone', config('caravel.users.baseTimezone'), 'id="timezone" class="form-control form-control-alternative"') !!}
+                            </div>
                             <div class="text-muted font-italic">
                                 <small>{{ __('Password strength') }}: <span class="font-weight-700" id="passwordStrength"></span></small>
                             </div>
