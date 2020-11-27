@@ -84,7 +84,7 @@ class LoginController extends Controller
         } catch (\Exception $e) {
             return redirect('/login');
         }
-        auth()->login($this->findOrCreateUser($user), true);
+        auth()->login($this->findOrCreateUser($user), false);
         return redirect()->to('/');
     }
 }
