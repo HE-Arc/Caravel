@@ -43,8 +43,8 @@ class CheckGroup
         } else {
             //share info for sidebar
             View::share([
-                'groupMembersCount' => $group->usersApproved()->count(),
-                'groupRequestsCount' => $group->usersRequesting()->count(),
+                'groupMembersCount' => $group->usersApproved->count(),
+                'groupRequestsCount' => $group->usersRequesting->count(),
             ]);
         }
 
@@ -57,7 +57,7 @@ class CheckGroup
         $group = $request->session()->pull(CheckGroup::SESSION_LAST_GROUP_ID, '');
 
         if (empty($group)) {
-            $group = $user->groupsAvailable()->limit(1)->pluck('id')->first();
+            $group = $user->groupsAvailable->limit(1)->pluck('id')->first();
         }
 
         return $group;

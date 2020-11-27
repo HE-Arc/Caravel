@@ -78,7 +78,7 @@
                 @endforeach
                 <a class="dropdown-item" href="{{ route('groups.create') }}">
                     <i class="fas fa-plus"></i>
-                    {{__('Create a class')}}
+                    {{__('Add a class')}}
                 </a>
             </div>
           </div>

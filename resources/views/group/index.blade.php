@@ -14,7 +14,7 @@
                     <div class="card-header-details">
                         <h3>{{__('Your groups')}}
                             <a class="btn btn-sm btn-default float-right " href="{{ route('groups.create')}}">
-                                {{__('New group')}}
+                                {{__('Add group')}}
                             </a>
                         </h3>
                     </div>
