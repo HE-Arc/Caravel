@@ -85,10 +85,12 @@
 
                 <h6 class="navbar-heading text-muted d-none d-md-block">
                     <div class="d-flex justify-content-start align-items-center">
-                        <span class="avatar avatar-sm rounded-circle mr-2">
-                            <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
-                        </span>
-                        <span>{{$group->name}}</span>
+                        <div><!--avatar container-->
+                            <span class="avatar avatar-sm rounded-circle">
+                                <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
+                            </span>
+                        </div>
+                        <span class="ml-2">{{$group->name}}</span>
                     </div>
                 </h6>
 
