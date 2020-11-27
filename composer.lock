@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0493a5ed7c122a9d1233da7132d3b966",
+    "content-hash": "9624348ffb679b57534e5f01196de110",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -826,6 +826,60 @@
                 "watermark"
             ],
             "time": "2019-11-02T09:15:47+00:00"
+        },
+        {
+            "name": "jackiedo/timezonelist",
+            "version": "5.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JackieDo/Timezone-List.git",
+                "reference": "2c56729b13ff5b21db8203a6234f661f80614f94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JackieDo/Timezone-List/zipball/2c56729b13ff5b21db8203a6234f661f80614f94",
+                "reference": "2c56729b13ff5b21db8203a6234f661f80614f94",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Jackiedo\\Timezonelist\\TimezonelistServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Jackiedo\\Timezonelist\\": "src/Jackiedo/Timezonelist"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jackie Do",
+                    "email": "anhvudo@gmail.com"
+                }
+            ],
+            "description": "A small package use to create a timezone list box in Laravel",
+            "keywords": [
+                "laravel",
+                "timezone",
+                "timezonelist",
+                "timezones"
+            ],
+            "support": {
+                "issues": "https://github.com/JackieDo/Timezone-List/issues",
+                "source": "https://github.com/JackieDo/Timezone-List/tree/master"
+            },
+            "time": "2020-04-12T17:09:47+00:00"
         },
         {
             "name": "laravel-frontend-presets/argon",
@@ -6733,5 +6787,5 @@
         "php": "^7.3"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }

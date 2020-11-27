@@ -5,6 +5,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
+use Timezonelist;
 use File;
 
 class ProfileController extends Controller
@@ -18,7 +19,7 @@ class ProfileController extends Controller
     {
         return view('profile.edit',['groups' => (auth()->user()->groups()->get()->count()??'0'),
                                     'tasks' => (auth()->user()->tasks()->get()->count()??'0'),
-                                    'comments' => (auth()->user()->comments()->get()->count()??'0')]);
+                                    'comments' => (auth()->user()->comments()->get()->count()??'0'),]);
     }
 
     /**
@@ -47,6 +48,7 @@ class ProfileController extends Controller
             auth()->user()->update($request->except('picture'));
         }  
         else{
+            auth()->user()->update($request->all());
             auth()->user()->update($request->all());
         }     
         return back()->withStatus(__('Profile successfully updated.'));

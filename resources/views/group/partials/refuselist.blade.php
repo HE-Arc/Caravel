@@ -33,7 +33,7 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            {{__('Refused')}} @isset($user->pivot->updated_at) {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }} @endisset 
+                            {{__('Refused')}} @isset($user->pivot->updated_at) {{ $user->pivot->updated_at->timezone(Auth::user()->timezone)->isoFormat('MMMM D Y, HH:mm') }} @endisset 
                         </span>
                     </td>
                     <td>

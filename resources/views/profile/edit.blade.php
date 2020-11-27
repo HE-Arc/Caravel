@@ -57,7 +57,6 @@
                         <form method="post" action="{{ route('profile.update') }}" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             @method('put')
-
                             <h6 class="heading-small text-muted mb-4">{{ __('User information') }}</h6>
                             
                             @if (session('status'))
@@ -101,6 +100,10 @@
                                             <strong>{{ $errors->first('picture') }}</strong>
                                         </span>
                                     @endif
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="timezone">{{ __('Timezone') }}</label>
+                                    {!! Timezonelist::create('timezone', Auth::user()->timezone, 'id="timezone" class="form-control form-control-alternative"') !!}
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>

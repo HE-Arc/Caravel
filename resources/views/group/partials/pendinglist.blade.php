@@ -33,7 +33,7 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            {{__('Asked to join')}} {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }}
+                            {{__('Asked to join')}} {{ $user->pivot->updated_at->timezone(Auth::user()->timezone)->isoFormat('MMMM D Y, HH:mm') }}
                         </span>
                     </td>
                     <td class="d-flex flex-col justify-content-center">
