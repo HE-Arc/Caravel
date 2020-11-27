@@ -41,7 +41,7 @@
                         <form action="{{route('groups.pending.allowBack', ['group' => $group, 'user' => $user->id])}}" method="post">
                             @method('patch')
                             @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-warning">{{ __('Unkick') }}</button>
+                                <button type="submit" @if (!$isLeader) disabled="true" @endif class="btn btn-sm btn-outline-warning">{{ __('Unkick') }}</button>
                         </form>
                     </td>
                 </tr>
