@@ -34,9 +34,11 @@
                             <tr>
                                 <th scope="row">
                                     <div class="d-flex justify-content-start align-items-center">
-                                        <span class="avatar avatar-sm rounded-circle mr-2">
-                                            <img alt="Image placeholder" src="{{asset($userGroup->pictureOrDefault())}}">
-                                        </span>
+                                        <div><!--avatar container-->
+                                            <span class="avatar avatar-sm rounded-circle mr-2">
+                                                <img alt="Image placeholder" src="{{asset($userGroup->pictureOrDefault())}}">
+                                            </span>
+                                        </div>
                                         <a href="{{route('groups.show', $userGroup)}}">{{$userGroup->name}}</a>
                                     
                                         @if (Auth::id() == $userGroup->user->id)

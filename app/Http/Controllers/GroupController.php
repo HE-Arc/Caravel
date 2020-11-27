@@ -76,10 +76,7 @@ class GroupController extends Controller
         $filename = config('caravel.groups.pictureFolder').$picture->hashName();
         $filenameSystem = public_path($filename);
         Image::make($picture)
-            ->resize(250, 250, function ($constraint) {
-                $constraint->aspectRatio(); //keep ratio aspect
-                $constraint->upsize();      //must fit inside 250*250, can be smaller
-            })
+            ->fit(250, 250)
             ->save($filenameSystem);
         return $filename;
     }
