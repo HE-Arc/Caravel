@@ -211,7 +211,10 @@ class GroupController extends Controller
      * Delete the given member from the group
      */
     public function kickMember(Group $group, User $user){
-        //verify that the user is already in the group
+        //verify : only the group leader can kick someone
+        if($user != $group->user_id){
+            abort(403);
+        }
         $this->deleteMember($group, $user->id);
         return redirect()->route('groups.members', $group);
     }
@@ -229,16 +232,19 @@ class GroupController extends Controller
      * Check if the group is empty or without leader
      */
     private function deleteMember($group, $userId){
-        if($group->users->find($userId)){
-            $group->usersApproved()->detach($userId);
-            //if there are no members anymore, delete the group
-            if($group->usersApproved()->count() == 0){
-                $this->deleteGroup($group);
-            } else if($userId == $group->user_id){
-                //give leadership of the group to the older user
-                $group->user_id = $group->usersApproved()->orderBy('pivot_updated_at','asc')->first()->id;
-                $group->save();
-            }
+        //verify : User must be in the group
+        if(!$group->users->find($userId)){
+            return;
+        }
+
+        $group->usersApproved()->detach($userId);
+        //if there are no members anymore, delete the group
+        if($group->usersApproved()->count() == 0){
+            $this->deleteGroup($group);
+        } else if($userId == $group->user_id){
+            //give leadership of the group to the older user
+            $group->user_id = $group->usersApproved()->orderBy('pivot_updated_at','asc')->first()->id;
+            $group->save();
         }
     }
 
@@ -250,6 +256,10 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
+        //verify : User must be the leader of the group
+        if(Auth::id() != $group->user_id){
+            abort(403);
+        }
         $this->deleteGroup($group);
         return redirect()->route('groups.index');
     }
@@ -291,7 +301,8 @@ class GroupController extends Controller
         return view('group.pending', [
             'group' => $group, 
             'pending' => $group->usersRequesting()->orderBy('pivot_updated_at','asc')->get(), 
-            'refused' => $group->usersRefused()->orderBy('pivot_updated_at','asc')->get()
+            'refused' => $group->usersRefused()->orderBy('pivot_updated_at','asc')->get(),
+            'isLeader' => $group->user_id == Auth::id(),
             ]);
     }
 
@@ -299,10 +310,10 @@ class GroupController extends Controller
      * Accept or refuse a pending user
      */
     public function processPending(Group $group, User $user, $status){
+        //verify : User has a pending request
         if($group->usersRequesting->find($user->id)){
             $processedStatus = $status ? Group::ACCEPTED : Group::REFUSED;
-            //true in update means the updated_at is written with now()
-            //usefull to know when the user was accepted/refused
+            //true in update means the updated_at is written with now(), usefull to know when the user was accepted/refused
             $group->usersRequesting()->updateExistingPivot($user, array('isApprouved' => $processedStatus), true);
         }
         return redirect()->back();
