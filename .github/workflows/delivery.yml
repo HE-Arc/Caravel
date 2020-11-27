@@ -3,29 +3,36 @@ name: Continus Delivery
 on: 
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deliver-main:
-    name: main
     runs-on: self-hosted
+    env:
+      path: /var/www/app/
 
     steps:
+      - name: stop server during deployment
+        run: sudo sv stop nginx
+
       - name: checkout main branch
         uses: actions/checkout@v2
         #with:
           #ref: develop
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
-
-      - name: Put the main branch at the main serving point on server
-        run: |
-          cp -r . /var/www/app
-          cd /var/www/app
-
+          
+      - name: copy repo at good place
+        run: rsync --recursive . ${{ env.path }}
+          
       - name: Install composer Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        working-directory: ${{ env.path }}
 
       - name: Install NPM Dependencies
         run: |
-          npm install
-          npm run prod
+          sudo npm install --unsafe-perm=true --allow-root
+          sudo npm run prod
+        working-directory: ${{ env.path }}
+
+      - name: restart server :-)
+        run: sudo sv restart nginx
