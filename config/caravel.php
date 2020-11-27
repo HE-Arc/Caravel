@@ -21,6 +21,6 @@ return [
         [
             'pictureFolder' => '/upload/users/pictures/',
             'pictureBase' => 'base.png',
+            'baseTimezone' => 'Europe/Paris',
         ],
-
 ];

@@ -33,7 +33,7 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            {{__('Refused')}} @isset($user->pivot->updated_at) {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }} @endisset 
+                            {{__('Refused')}} @isset($user->pivot->updated_at) {{ $user->pivot->updated_at->timezone(Auth::user()->timezone)->isoFormat('MMMM D Y, HH:mm') }} @endisset 
                         </span>
                     </td>
                     <td>
@@ -41,7 +41,7 @@
                         <form action="{{route('groups.pending.allowBack', ['group' => $group, 'user' => $user->id])}}" method="post">
                             @method('patch')
                             @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-warning">{{ __('Unkick') }}</button>
+                                <button type="submit" @if (!$isLeader) disabled="true" @endif class="btn btn-sm btn-outline-warning">{{ __('Unkick') }}</button>
                         </form>
                     </td>
                 </tr>

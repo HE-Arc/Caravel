@@ -47,7 +47,7 @@
                     </th>
                     <td>
                         <span class="mb-0">
-                            {{__('Member since')}} {{ $user->pivot->updated_at->isoFormat('MMMM D Y, HH:mm') }}
+                            {{__('Member since')}} {{ $user->pivot->updated_at->timezone(Auth::user()->timezone)->isoFormat('MMMM D Y, HH:mm') }}
                         </span>
                     </td>
                     <!-- manage section only for leader-->
