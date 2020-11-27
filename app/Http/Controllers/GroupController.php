@@ -20,7 +20,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Auth::user()->groupsAvailable;
+        $groups = Auth::user()->groupsAvailable()->with('user')->get();
         return view('group.index', ["groups" => $groups]);
     }
 
