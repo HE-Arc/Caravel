@@ -23,9 +23,11 @@
                 <tr>
                     <th scope="row">
                         <div class="d-flex justify-content-start align-items-center">
-                            <span class="avatar avatar-sm rounded-circle mr-2">
-                                <img alt="Image placeholder" src="{{asset($user->getPicture())}}">
-                            </span>
+                            <div><!--avatar container-->
+                                <span class="avatar avatar-sm rounded-circle mr-2">
+                                    <img alt="Image placeholder" src="{{asset($user->getPicture())}}">
+                                </span>
+                            </div>
                             <span>{{$user->name}}</span>
                         </div>                
                     </th>

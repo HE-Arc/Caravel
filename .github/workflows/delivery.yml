@@ -12,6 +12,9 @@ jobs:
       path: /var/www/app/
 
     steps:
+      - name: stop server during deployment
+        run: sudo sv stop nginx
+
       - name: checkout main branch
         uses: actions/checkout@v2
         #with:
@@ -30,3 +33,7 @@ jobs:
           sudo npm install --unsafe-perm=true --allow-root
           sudo npm run prod
         working-directory: ${{ env.path }}
+
+      - name: restart server :-)
+        run: sudo sv restart nginx
+

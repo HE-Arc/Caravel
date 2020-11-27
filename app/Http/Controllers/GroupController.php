@@ -20,7 +20,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Auth::user()->groupsAvailable;
+        $groups = Auth::user()->groupsAvailable()->with('user')->get();
         return view('group.index', ["groups" => $groups]);
     }
 
@@ -76,10 +76,7 @@ class GroupController extends Controller
         $filename = config('caravel.groups.pictureFolder').$picture->hashName();
         $filenameSystem = public_path($filename);
         Image::make($picture)
-            ->resize(250, 250, function ($constraint) {
-                $constraint->aspectRatio(); //keep ratio aspect
-                $constraint->upsize();      //must fit inside 250*250, can be smaller
-            })
+            ->fit(250, 250)
             ->save($filenameSystem);
         return $filename;
     }
@@ -97,7 +94,7 @@ class GroupController extends Controller
             'image' => 'required|max:4096'
         ]);
         if ($validator->passes()) {
-            $folder = config('smartmd.files.root') . '/groups\/' . $group;
+            $folder = config('smartmd.files.root') . '/groups/' . $group;
             $temp = $request->file('image');
             $fileName = '[' . $temp->getClientOriginalName() . ']';
             $name = $temp->hashName();
@@ -137,7 +134,7 @@ class GroupController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getFile(Request $request, $group, $file) {
-        $folder = config('smartmd.files.root') . '/groups\/' . $group . '/';
+        $folder = config('smartmd.files.root') . '/groups/' . $group . '/';
         return response()->file(Storage::path($folder . $file));
     }
 
