@@ -56,10 +56,16 @@ class CheckGroup
     private function getDefaultGroup(Request $request, $user) {
         $group = $request->session()->pull(CheckGroup::SESSION_LAST_GROUP_ID, '');
 
-        if (empty($group)) {
-            $group = $user->groupsAvailable->limit(1)->pluck('id')->first();
+        if (!empty($group) && (empty($user->groupsAvailable) || !$user->groupsAvailable->contains($group))) {
+            $request->session()->forget(CheckGroup::SESSION_LAST_GROUP_ID);
+            $group = null;
         }
 
+        if (empty($group)) {
+            if (!empty($user->groupsAvailable) && !empty($user->groupsAvailable->first()))
+                $group = $user->groupsAvailable->first()->id;
+        }
+        
         return $group;
     }
 }
