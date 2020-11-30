@@ -4,6 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * This class was a one-time use to add the timezone into the production server
+ * Not used anymore !
+ */
 class AddTimezoneToUsersNoerase extends Migration
 {
     /**
