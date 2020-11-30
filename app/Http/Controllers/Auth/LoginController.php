@@ -87,4 +87,17 @@ class LoginController extends Controller
         auth()->login($this->findOrCreateUser($user), false);
         return redirect()->to('/');
     }
+
+    /**
+     * Logout function to forget the login with google and github
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        $request->session()->flush();
+        $request->session()->regenerate();
+        return redirect('/login');
+    }
 }
