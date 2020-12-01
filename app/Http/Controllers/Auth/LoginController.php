@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use App\Models\User;
 use Socialite;
 
@@ -86,5 +87,18 @@ class LoginController extends Controller
         }
         auth()->login($this->findOrCreateUser($user), false);
         return redirect()->to('/');
+    }
+
+    /**
+     * Logout function to forget the login with google and github
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        auth()->logout();
+        $request->session()->flush();
+        $request->session()->regenerate();
+        return redirect('/login');
     }
 }

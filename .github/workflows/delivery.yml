@@ -22,7 +22,10 @@ jobs:
           #in case we want to deploy a certain branch (ex : serve main and develop at different points)
           
       - name: copy repo at good place
-        run: rsync --recursive . ${{ env.path }}
+        run: |
+          rsync --recursive . ${{ env.path }}
+          cd ${{ env.path }}
+          sudo chmod -R a+rw public/
           
       - name: Install composer Dependencies
         run: sudo composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
@@ -36,4 +39,3 @@ jobs:
 
       - name: restart server :-)
         run: sudo sv restart nginx
-

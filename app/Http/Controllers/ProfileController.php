@@ -75,7 +75,7 @@ class ProfileController extends Controller
         //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
         $filename = config('caravel.users.pictureFolder').$picture->hashName();
         $filenamePicture = public_path($filename);
-        Image::make($picture)->resize(250,250)->save($filenamePicture,$quality);
+        Image::make($picture)->fit(250,250)->save($filenamePicture,$quality);
         return $filename;
     }
 
