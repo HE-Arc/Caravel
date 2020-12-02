@@ -7,6 +7,7 @@ use App\Models\Subject;
 use App\Models\Task;
 use App\Models\Group;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class SubjectController extends Controller
 {
@@ -59,7 +60,11 @@ class SubjectController extends Controller
     private function persistData(Request $request, Group $group, Subject $subject)
     {
         $rules = [
-            'name' => 'required|unique:subjects|max:255',
+            'name' => [
+                'required',
+                'max:255',
+                Rule::unique('subjects')->Where('group_id', $group->id)
+            ],
             'color' => 'required|min:1|max:10'
         ];
         $validator = Validator::make($request->all(), $rules);

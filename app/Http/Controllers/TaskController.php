@@ -43,7 +43,7 @@ class TaskController extends Controller
         $tasksByDays = [];
 
         foreach($tasks as $task) {
-            $days = $task->due_at->diffInDays(new Carbon());
+            $days = $task->due_at->startOfDay()->diffInDays((new Carbon())->startOfDay());
             if (!isset($tasksByDays[$days])) $tasksByDays[$days] = [];
             $tasksByDays[$days][] = $task;
         }
