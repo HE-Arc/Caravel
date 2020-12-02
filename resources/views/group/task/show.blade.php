@@ -111,7 +111,7 @@
                                         <span class="avatar avatar-sm rounded-circle float-left mt-1">
                                             <img alt="" src="{{asset($comment->user->getPicture())}}">
                                         </span>
-                                        <div class="comment-wrapper ml-0 pl-0 ml-md-5 md-3">
+                                        <div class="comment-wrapper ml-0 pl-0 ml-5">
                                             <div class="comment-header">
                                                 <span class=" font-weight-bold"> {{$comment->user->name }}</span>
                                                 @if ($task->user->id == $comment->user->id)
@@ -147,7 +147,7 @@
                             <span class="avatar avatar-sm rounded-circle float-left mt-3">
                                 <img alt="" src="{{asset(auth()->user()->getPicture())}}">
                             </span>
-                            <div class="ml-0 pl-0 ml-md-5 pl-md-3">
+                            <div class="ml-4 pl-4">
                                 
                                 <div class="form-group{{ $errors->has('message') ? ' has-danger' : '' }}">
                                     <textarea id="commentEditor" class="form-control form-control-alternative" rows="3" placeholder="{{ __('Leave a comment...') }}" name="message">{{old('message', '')}}</textarea>

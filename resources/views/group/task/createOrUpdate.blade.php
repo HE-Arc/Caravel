@@ -28,17 +28,6 @@
 
                             <div class="pl-lg-4">
 
-                                <div class="form-group{{ $errors->has('title') ? ' has-danger' : '' }}">
-                                    <label class="form-control-label" for="input-title">{{ __('Title') }}</label>
-                                    <input type="text" name="title" id="input-name" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title', $task->title) }}" required autofocus>
-
-                                    @if ($errors->has('title'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('title') }}</strong>
-                                        </span>
-                                    @endif
-                                </div>
-
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group{{ $errors->has('subject_id') ? ' has-danger' : '' }}">
@@ -63,7 +52,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                                 </div>
-                                                <input class="form-control datepicker" placeholder="Select date" type="text" value="{{old('due_at', $task->due_at)}}" name="due_at">
+                                                <input class="form-control datepicker" placeholder="Due date" type="text" value="{{old('due_at', $task->due_at)}}" name="due_at">
                                             </div>
 
                                             @if ($errors->has('due_at'))
@@ -87,6 +76,17 @@
                                     @if ($errors->has('tasktype_id'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('tasktype_id') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div class="form-group{{ $errors->has('title') ? ' has-danger' : '' }}">
+                                    <label class="form-control-label" for="input-title">{{ __('Title') }}</label>
+                                    <input type="text" name="title" id="input-name" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title', $task->title) }}" required autofocus>
+
+                                    @if ($errors->has('title'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('title') }}</strong>
                                         </span>
                                     @endif
                                 </div>
