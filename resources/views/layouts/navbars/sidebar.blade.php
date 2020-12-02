@@ -60,39 +60,41 @@
                 </div>
             </div>
             <!-- Navigation -->
-            @isset($group)
-            <div class="dropdown d-block d-md-none">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              @if (isset($group))
-                {{$group->name}}
-              @else
-                {{ __('Select class') }}
-              @endif
-            </a>
-          
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                @foreach (auth()->user()->groupsAvailable as $item)
-                    @if (!isset($group) || $group->id != $item->id)
-                        <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
-                    @endif
-                @endforeach
-                <a class="dropdown-item" href="{{ route('groups.create') }}">
-                    <i class="fas fa-plus"></i>
-                    {{__('Add a class')}}
-                </a>
-            </div>
-          </div>
-
-                <h6 class="navbar-heading text-muted d-none d-md-block">
-                    <div class="d-flex justify-content-start align-items-center">
-                        <div><!--avatar container-->
-                            <span class="avatar avatar-sm rounded-circle">
-                                <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
-                            </span>
-                        </div>
-                        <span class="ml-2">{{$group->name}}</span>
+            <div class="text-muted">
+                <div class="d-flex justify-content-start align-items-center">
+                    <div><!--avatar container-->
+                        @isset($group)
+                        <span class="avatar avatar-sm rounded-circle mr-2">
+                            
+                            <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
+                        </span>
+                        @endisset
                     </div>
-                </h6>
+                    <div class="dropdown d-block">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if (isset($group))
+                            {{$group->name}}
+                        @else
+                            {{ __('Select class') }}
+                        @endif
+                        </a>
+                    
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            @foreach (auth()->user()->groupsAvailable as $item)
+                                @if (!isset($group) || $group->id != $item->id)
+                                    <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
+                                @endif
+                            @endforeach
+                            <a class="dropdown-item" href="{{ route('groups.create') }}">
+                                <i class="fas fa-plus"></i>
+                                {{__('Add a class')}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            @isset($group)
 
                 <ul class="navbar-nav">
 

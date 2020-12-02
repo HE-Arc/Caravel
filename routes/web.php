@@ -53,9 +53,10 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::patch('groups/{group}/pending/{user}/{status}', ['as' => 'groups.pending.process', 'uses' => 'App\Http\Controllers\GroupController@processPending']);
 		Route::patch('groups/{group}/allowBack/{user}', ['as' => 'groups.pending.allowBack', 'uses' => 'App\Http\Controllers\GroupController@allowBack']);
 
-		Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
+		
 	});
 	
+	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
 	Route::delete('profile', ['as' => 'profile.deletePicture', 'uses' => 'App\Http\Controllers\ProfileController@deletePicture']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
