@@ -173,16 +173,21 @@
                                 $(".delete-attachement").on('click', function( event ) {
                                     event.preventDefault();
                                     var self = $(this);
-                                    $.ajax({
-                                        url: self.attr('href'),
-                                        type: 'DELETE',
-                                        data:{
-                                            '_token': '{{ csrf_token() }}'
-                                        },
-                                        success: function(result) {
-                                            self.parent().remove();
-                                        }
-                                    });
+
+                                    //init fetch parameters
+                                    let init = {
+                                        method : 'DELETE',
+                                        headers: {
+                                            "X-CSRF-Token": '{{ csrf_token() }}'
+                                        },        
+                                    };
+                                    //use fecth API to request the join
+                                    fetch(self.attr('href'), init)
+                                        .then(function(response){ 
+                                            if(response.ok){
+                                                self.parent().remove();
+                                            }
+                                        });
                                 });
                             </script>
                         @endpush
