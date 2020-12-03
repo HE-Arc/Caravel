@@ -90,19 +90,22 @@
         //ajax call to the "join" route
         let button = $(this);
         let idGroup = button.attr("data-groupID");
-        $.ajax({
-            /* the route pointing to the post function */
-            url: "{{ route('groups.join', 'idGroup') }}".replace('idGroup', idGroup),
-            type: 'POST',
-            dataType: 'JSON',
-            data: { _token: '{{csrf_token()}}' },
-            /* remind that 'data' is the response of the AjaxController */
-            success: function (data) {
-                //on success : Change the apparence of the button
-                button.removeClass('btn-group-join');
-                applyStyleButton(button, buttonStyles[status.pending]);
-            }
-        });
+
+        //init fetch parameters
+        let init = {
+            method : 'POST',
+            headers: {
+                "X-CSRF-Token": '{{ csrf_token() }}'
+            },        
+        };
+        //use fecth API to request the join
+        fetch("{{ route('groups.join', 'idGroup') }}".replace('idGroup', idGroup), init)
+            .then(function(response){ 
+                if(response.ok){
+                    button.removeClass('btn-group-join');
+                    applyStyleButton(button, buttonStyles[status.pending]);
+                }
+            });
     });
     @endauth
 
@@ -121,13 +124,12 @@
             $("#createClassName").text("Type a group name");
             buildListGroups();
         } else {
-            $.ajax({
-                /* the route pointing to the post function */
-                url: "{{ route('groups.filtered', 'groupName') }}".replace('groupName', groupName),
-                type: 'GET',
-                dataType: 'JSON',
-                /* remind that 'data' is the response of the AjaxController */
-                success: function (data) {
+            //use fecth API to ask the usable groups
+            fetch("{{ route('groups.filtered', 'groupName') }}".replace('groupName', groupName), {method : 'GET'})
+                .then(function(response){
+                    return response.json() //extract json
+                })
+                .then(function (data) {
                     if(data.valid){
                         $("#createButton").removeClass("disabled");
                     } else {
@@ -136,8 +138,7 @@
                     if(data.groups){
                         buildListGroups(data.groups);
                     }
-                }
-            });
+                });
         }
     }
 
