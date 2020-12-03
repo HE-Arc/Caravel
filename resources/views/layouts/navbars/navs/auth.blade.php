@@ -5,12 +5,12 @@
         <div class="dropdown d-none d-md-block">
             <div>
               @if (isset($group))
-                <a class="nav-link pr-0" href="{{route('groups.show', $group)}}">
+                <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{route('groups.show', $group)}}">
                     {{$group->name}}
                 </a>
               @else
-                <a href="{{route('groups.create')}}">
-                    {{ __('Tl; dr') }}
+                <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{route('groups.create')}}">
+                    {{ __('My groups') }}
                 </a>
               @endif
             </div>
