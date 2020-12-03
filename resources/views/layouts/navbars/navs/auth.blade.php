@@ -3,24 +3,16 @@
     <div class="container-fluid">
         <!-- Brand -->
         <div class="dropdown d-none d-md-block">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              @if (isset($group) && isset($group->id) )
-                {{$group->name}}
-              @else
-                {{ __('Select class') }}
-              @endif
-            </a>
-          
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                @foreach (auth()->user()->groupsAvailable as $item)
-                    @if (!isset($group) || $group->id != $item->id)
-                        <a class="dropdown-item" href="{{route('groups.show', $item->id)}}">{{ $item->name }}</a>
-                    @endif
-                @endforeach
-                <a class="dropdown-item" href="{{ route('groups.create') }}">
-                    <i class="fas fa-plus"></i>
-                    {{__('Add a class')}}
+            <div>
+              @if (isset($group))
+                <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{route('groups.show', $group)}}">
+                    {{$group->name}}
                 </a>
+              @else
+                <a class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block" href="{{route('groups.create')}}">
+                    {{ __('My groups') }}
+                </a>
+              @endif
             </div>
           </div>
         <!-- User -->

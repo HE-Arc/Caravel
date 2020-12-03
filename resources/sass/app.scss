@@ -151,3 +151,18 @@ $icons: ("1": "#6bce6b",
 #user-picture {
     cursor: pointer;
 }
+
+.navbar.fixed-left {
+    .group-title a {
+        max-width: 75%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+//We should use bootstrap var instead
+@media (max-width: 768px) { 
+    .smartmd .smartmd__toolbar {
+        overflow-x: scroll;
+    }
+}

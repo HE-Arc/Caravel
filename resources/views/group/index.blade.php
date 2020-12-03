@@ -1,5 +1,4 @@
-@extends('layouts.app', ['title' => __('Search groups'),
-                         'hasSidebar' => isset($group)])
+@extends('layouts.app', ['title' => __('Search groups')])
 
 @section('content')
     @include('users.partials.header', [
