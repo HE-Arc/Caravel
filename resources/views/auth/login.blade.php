@@ -1,4 +1,4 @@
-@extends('layouts.app', ['class' => 'bg-default'])
+@extends('layouts.app', ['class' => 'bg-default','title' => __('Login')])
 
 @section('content')
     @include('layouts.headers.guest')

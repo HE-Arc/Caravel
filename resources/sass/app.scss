@@ -153,10 +153,13 @@ $icons: ("1": "#6bce6b",
 }
 
 .navbar.fixed-left {
-    .group-title a {
-        max-width: 75%;
-        text-overflow: ellipsis;
-        overflow: hidden;
+    .group-title {
+        max-width: 85%;
+        a {
+            max-width: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
     }
 }
 
@@ -165,4 +168,16 @@ $icons: ("1": "#6bce6b",
     .smartmd .smartmd__toolbar {
         overflow-x: scroll;
     }
+}
+
+.group-card-fluid{
+    width: 50%;
+
+    @media (max-width: 768px){
+        width: 100%;
+    }
+}
+
+#groupsContainer{
+    overflow: scroll;
 }

@@ -22,7 +22,7 @@
                     <div class="card-body pt-0 pt-md-6">
                         <div class="row">
                             <div class="col">
-                                <div class="card-profile-stats d-flex justify-content-center mt-md-5">
+                                <div class="card-profile-stats d-flex justify-content-center mt-7 mt-md-5">
                                     <div>
                                     <span class="heading">{{$tasks}}</span>
                                     <span class="description">{{ __('Tasks') }}</span>
