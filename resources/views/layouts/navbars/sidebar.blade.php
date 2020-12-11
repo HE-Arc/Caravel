@@ -65,12 +65,11 @@
                     <div><!--avatar container-->
                         @isset($group)
                         <span class="avatar avatar-sm rounded-circle mr-2">
-                            
                             <img alt="Image placeholder" src="{{asset($group->pictureOrDefault())}}">
                         </span>
                         @endisset
                     </div>
-                    <div class="dropdown d-block">
+                    <div class="dropdown d-block group-title">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         @if (isset($group))
                             {{$group->name}}
