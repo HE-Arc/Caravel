@@ -168,3 +168,29 @@
   cursor: pointer;
 }
 
+.navbar.fixed-left .group-title a {
+  max-width: 75%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .smartmd .smartmd__toolbar {
+    overflow-x: scroll;
+  }
+}
+
+.group-card-fluid {
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .group-card-fluid {
+    width: 100%;
+  }
+}
+
+#groupsContainer {
+  overflow: scroll;
+}
+

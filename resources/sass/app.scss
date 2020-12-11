@@ -166,3 +166,15 @@ $icons: ("1": "#6bce6b",
         overflow-x: scroll;
     }
 }
+
+.group-card-fluid{
+    width: 50%;
+
+    @media (max-width: 768px){
+        width: 100%;
+    }
+}
+
+#groupsContainer{
+    overflow: scroll;
+}
