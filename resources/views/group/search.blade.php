@@ -5,15 +5,15 @@
         'title' => __('Look for a group or create one !')
     ])
 
-    <div class="container mt--7">
+    <div class="container-fluid mt--7">
         <div class="card bg-white">
             <div class="card-body p-5">
                 <div class="d-flex align-items-center justify-content-center">
                     <input type="text" id="groupInput" class="form-control w-75 p-3" placeholder="ide1-a, inf3-dlm..." aria-label="Field to input the class">
                 </div>
 
-                <div id="groupsContainer" class="d-flex flex-column justify-content-start align-items-center my-4"> 
-                    <div id="createGroupCard" class="card bg-white w-50 p-3">
+                <div id="groupsContainer" class="d-flex flex-column justify-content-start align-items-center my-4">
+                    <div id="createGroupCard" class="card bg-white p-3 group-card-fluid">
                         @auth
                         <form action="{{route('groups.store')}}" method="post">
                         @method('post')
@@ -21,17 +21,17 @@
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <!--"create" button-->
                             <input type="hidden" name="name" value="" id="inputNameHidden">
-                            <h1 id="createClassName"></h1>
-                            <button id="createButton" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="disabled btn btn-success">{{ __('Create') }}</button>
+                            <span class="mr-1" id="createClassName"></span>
+                            <button id="createButton" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="disabled btn btn-sm btn-success">{{ __('Create') }}</button>
                         </div>
                         @auth</form>@endauth
                     </div>
                     <!--groups-->
-                    <div id="model" class="card bg-white w-50 p-3 d-none" data-id="-1">
+                    <div id="model" class="card bg-white p-3 d-none group-card-fluid" data-id="-1">
                         <div class="d-flex flex-row justify-content-between align-items-center">
-                            <h1 class="groupName">{{__("Test class 2")}}</h1>
+                            <span class="groupName mr-1">{{__("Test class 2")}}</span>
                             <!--"join" button-->
-                            <button type="submit" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="btn group-button">{{ __('Requested') }}</button>
+                            <button type="submit" @guest data-toggle="modal" data-target="#modal-notification" @endguest class="btn btn-sm group-button">{{ __('Requested') }}</button>
                         </div>
                     </div>
                 </div>

@@ -23,9 +23,9 @@
                     <table class="table align-items-center">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col">Group</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Leader</th>
+                            <th scope="col">{{__('Group')}}</th>
+                            <th scope="col">{{__('Description')}}</th>
+                            <th scope="col">{{__('Leader')}}</th>
                         </tr>
                     </thead>
                     <tbody>
