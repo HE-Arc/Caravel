@@ -11,6 +11,8 @@ The project has been made by a team of 3 software students :
 * [Joris Monnet](https://github.com/JorisMonnet)
 * [Maxime Welcklen](https://github.com/maximewel)
 
+The logo was made by [Luca Trucello](mailto:truscello.luca@gmail.com) from HEPIA (Haute école du paysage, d'ingénierie et d'architecture de Genève)
+
 ## Developpement
 All the conception phase is available publicly on the wiki of the Github project.
 
@@ -23,3 +25,5 @@ The site is always up-to-date with the last version of the main branch.
 
 ## Clone repo
 A lot of files are not commited on the repo ! To have a functioning project, see [this little tuto for a laravel clone project setup](https://devmarketer.io/learn/setup-laravel-project-cloned-github-com/)
+
+
