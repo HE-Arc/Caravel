@@ -1,8 +1,10 @@
 # Caravel
 Caravel is an open-source collaborative group-sharing site.\
 It has been made to help the students organize and structure their work, and their shared deadlines.\
-It is done as a Web Developpement project for the [He-Arc Neuchâtel](https://www.he-arc.ch/) engineering school.
-[[image/brand.png]]
+It is done as a Web Developpement project for the [He-Arc Neuchâtel](https://www.he-arc.ch/) engineering school.\
+\
+![brand image](public/assets/img/brand/brand.png)
+
 ## Authors
 The project has been made by a team of 3 software students :
 * [Steve Mendes Reis](https://github.com/M4n0x)
