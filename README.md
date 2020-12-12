@@ -11,7 +11,7 @@ The project has been made by a team of 3 software students :
 * [Joris Monnet](https://github.com/JorisMonnet)
 * [Maxime Welcklen](https://github.com/maximewel)
 
-The logo was made by [Luca Trucello](mailto:truscello.luca@gmail.com) from HEPIA (Haute école du paysage, d'ingénierie et d'architecture de Genève)
+The logo was made by [Luca Truscello](mailto:truscello.luca@gmail.com) from HEPIA (Haute école du paysage, d'ingénierie et d'architecture de Genève)
 
 ## Developpement
 All the conception phase is available publicly on the wiki of the Github project.
