@@ -17,7 +17,7 @@ The logo was made by [Luca Trucello](mailto:truscello.luca@gmail.com) from HEPIA
 All the conception phase is available publicly on the wiki of the Github project.
 
 ## Technology
-Caravel is made using Laravel & Argon in PHP.
+Caravel is made using [Laravel](https://laravel.com/) & [Argon](https://argon-dashboard-laravel.creative-tim.com/) in PHP.
 
 ## Production
 You can enjoy [Caravel here !](https://caravel.srvz-webapp.he-arc.ch/groups)\
