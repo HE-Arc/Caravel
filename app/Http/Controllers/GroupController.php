@@ -212,7 +212,7 @@ class GroupController extends Controller
      */
     public function kickMember(Group $group, User $user){
         //verify : only the group leader can kick someone
-        if($user != $group->user_id){
+        if(Auth::id() != $group->user_id){
             abort(403);
         }
         $this->deleteMember($group, $user->id);
