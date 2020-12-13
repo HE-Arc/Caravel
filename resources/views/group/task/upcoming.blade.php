@@ -77,8 +77,8 @@
                                                     @if ($project->tasks && count($project->tasks) > 0)
                                                         <span><i class="fas fa-folder-open"></i> {{count($project->tasks)}} </span>
                                                     @endif
-                                                    @if ($task->attachements && count($task->attachements) > 0)
-                                                        <span><i class="fas fa-paperclip"></i> {{count($task->attachements)}}</span>
+                                                    @if ($project->attachements && count($project->attachements) > 0)
+                                                        <span><i class="fas fa-paperclip"></i> {{count($project->attachements)}}</span>
                                                     @endif
                                                 </span>
                                             </li>
