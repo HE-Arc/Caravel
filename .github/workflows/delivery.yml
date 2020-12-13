@@ -33,7 +33,7 @@ jobs:
 
       - name: Install NPM Dependencies
         run: |
-          sudo npm install --unsafe-perm=true --allow-root
+          sudo npm install --production --unsafe-perm=true --allow-root
           sudo npm run prod
         working-directory: ${{ env.path }}
 
