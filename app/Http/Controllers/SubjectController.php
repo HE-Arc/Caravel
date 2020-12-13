@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\Group;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\MessageBag;
 
 class SubjectController extends Controller
 {
@@ -98,7 +99,9 @@ class SubjectController extends Controller
     public function destroy(Request $request, Group $group, Subject $subject)
     {
         if (count($subject->tasks) > 0) {
-            $request->session()->flash('errors', 'This subject cannot be delete, there task linked on it !');
+            $errors = new MessageBag();
+            $errors->add('errors', 'This subject cannot be delete, there task linked on it !');
+            $request->session()->flash('errors', $errors);
         } else {
             $subject->delete();
             $request->session()->flash('status', 'this subject has been delete successfully');
