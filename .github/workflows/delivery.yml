@@ -26,6 +26,11 @@ jobs:
           rsync --recursive . ${{ env.path }}
           cd ${{ env.path }}
           sudo chmod -R a+rw public/
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
           
       - name: Install composer Dependencies
         run: sudo composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
