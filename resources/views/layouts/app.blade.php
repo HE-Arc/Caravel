@@ -53,5 +53,11 @@
         <script src="{{ asset('argon') }}/js/argon.js?v=1.0.0"></script>
 
         @stack('script')
+
+        <div id="feedback-report-btn">
+            <a href="https://github.com/HE-Arc/Caravel/issues/new?labels=report" title="Report an issue">
+                <i class="fas fa-bug"></i>
+            </a>
+        </div>
     </body>
 </html>
