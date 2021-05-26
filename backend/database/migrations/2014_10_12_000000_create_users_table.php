@@ -19,9 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('timezone')->default(config('caravel.users.baseTimezone'));
             $table->string('picture')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->boolean('isLDAP')->default(0);
+            $table->boolean('isTeacher')->default(0);
+            $table->string('fcm_token')->nullable();
             $table->timestamps();
         });
     }

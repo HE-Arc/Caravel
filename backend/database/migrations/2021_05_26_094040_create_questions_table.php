@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaskUserTable extends Migration
+class CreateQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateTaskUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('task_user', function (Blueprint $table) {
-            $table->bigInteger('user_id')->unsigned();
-            $table->index('user_id');
-            
-            $table->bigInteger('task_id')->unsigned();
-            $table->index('task_id');  
+        Schema::create('questions', function (Blueprint $table) {
+            $table->id();
+            $table->text('description');
             $table->timestamps();
-            $table->tinyInteger('action');
+            $table->boolean('isSolved')->nullable()->default(false);
+            $table->foreignId('user_id');
+            $table->foreignId('task_id');
         });
 
-        Schema::table('task_user', function (Blueprint $table) {
+        Schema::table('questions', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
         });
@@ -36,6 +35,6 @@ class CreateTaskUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_user');
+        Schema::dropIfExists('questions');
     }
 }
