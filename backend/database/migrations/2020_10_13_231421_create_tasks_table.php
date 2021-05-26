@@ -13,23 +13,18 @@ class CreateTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {           
             $table->id();
-            $table->string('title', 150);
-            $table->date('due_at');
-            $table->boolean('isPrivate')->nullable()->default(false);
+            $table->string('title', 255);
             $table->text('description')->nullable();
-            $table->integer('number')->unsigned()->default(0);
+            $table->date('start_at');
+            $table->date('due_at');
             $table->timestamps();
-
-            $table->bigInteger('user_id')->unsigned();
-            $table->index('user_id');
-
-            $table->bigInteger('tasktype_id')->unsigned();
-            $table->index('tasktype_id');
-
-            $table->bigInteger('subject_id')->unsigned();
-            $table->index('subject_id');
+            $table->boolean('isPrivate')->nullable()->default(false);
+            $table->bigInteger('task_group_id')->unsigned();
+            $table->foreignId('user_id');
+            $table->foreignId('tasktype_id');
+            $table->foreignId('subject_id');
         });
 
         Schema::table('tasks', function (Blueprint $table) {

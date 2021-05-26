@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupUserTable extends Migration
+class HasFinish extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateGroupUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_user', function (Blueprint $table) {
+        Schema::create('has_finish', function (Blueprint $table) {
             $table->foreignId('user_id');
-            $table->foreignId('group_id');
-            $table->primary(['group_id', 'user_id']);
-            $table->integer('isApprouved')->default(0); // 0 -> pending, 1 -> refused, 2 accepted
+            $table->morphs('element');
+            $table->primary(['element_id', 'element_type', 'user_id']);
+            $table->integer('isSubscribed')->default(0);
             $table->timestamps();
         });
 
-        Schema::table('group_user', function (Blueprint $table) {
+        Schema::table('has_finish', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
         });
     }
 
@@ -34,6 +33,6 @@ class CreateGroupUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_user');
+        Schema::dropIfExists('subscriptions');
     }
 }
