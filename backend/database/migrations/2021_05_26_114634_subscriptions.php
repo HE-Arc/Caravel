@@ -14,9 +14,9 @@ class Subscriptions extends Migration
     public function up()
     {
         Schema::create('subscriptions', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id');
             $table->morphs('element');
-            $table->primary(['element_id', 'element_type', 'user_id']);
             $table->integer('isSubscribed')->default(0);
             $table->timestamps();
         });

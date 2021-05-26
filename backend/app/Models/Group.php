@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Group extends Model
 {
@@ -15,28 +17,33 @@ class Group extends Model
     public const ACCEPTED = 2;
     public const REQUESTSTATUS = array(Group::PENDING, Group::ACCEPTED, Group::REFUSED);
 
-    public function pictureOrDefault(){
-        return $this->picture ?? asset(config('caravel.groups.pictureFolder').config('caravel.groups.pictureBase'));
+    public function pictureOrDefault()
+    {
+        return $this->picture ?? asset(config('caravel.groups.pictureFolder') . config('caravel.groups.pictureBase'));
     }
 
     public function users()
     {
         return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
-    
-    public function usersWithSubscription(){
+
+    public function usersWithSubscription()
+    {
         return $this->belongsToMany('App\Models\User')->withPivot('isApprouved')->withTimestamps();
     }
 
-    public function usersApproved(){
+    public function usersApproved()
+    {
         return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', Group::ACCEPTED);
     }
 
-    public function usersRefused(){
+    public function usersRefused()
+    {
         return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', Group::REFUSED);
     }
 
-    public function usersRequesting(){
+    public function usersRequesting()
+    {
         return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', Group::PENDING);
     }
 
@@ -50,7 +57,23 @@ class Group extends Model
         return $this->hasMany('App\Models\Subject');
     }
 
-    public function tasks() {
+    /**
+     * Get all of the GroupStat for the Group
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function GroupStat(): HasMany
+    {
+        return $this->hasMany('App\Models\GroupStat');
+    }
+
+    /**
+     * Get all of the GroupStat for the Group
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function tasks(): HasManyThrough
+    {
         return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject');
     }
 }

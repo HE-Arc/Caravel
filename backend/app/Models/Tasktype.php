@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tasktype extends Model
+class Tasktype
 {
-    use HasFactory;
 
     public const ASSIGNMENT = 1;
     public const EXAM = 2;
@@ -17,8 +16,4 @@ class Tasktype extends Model
                                    "Exam" => TaskType::EXAM,
                                    "Project" => TaskType::PROJECT);
 
-    public function tasks()
-    {
-        return $this->hasMany('App\Models\Task');
-    }
 }

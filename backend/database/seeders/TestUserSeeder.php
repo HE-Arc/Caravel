@@ -16,11 +16,10 @@ class TestUserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'id' => 10000,
-            'name' => 'test1',
-            'email' => 'test1@test.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('test1'),
+            'id' => 1,
+            'name' => 'test',
+            'email' => 'steve.mendesreis@he-arc.ch',
+            'password' => Hash::make('test'),
             'created_at' => now(),
             'updated_at' => now()
         ]);

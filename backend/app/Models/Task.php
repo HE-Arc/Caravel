@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
@@ -17,6 +18,7 @@ class Task extends Model
      */
     protected $dates = [
         'due_at',
+        'start_at'
     ];
 
     /**
@@ -32,38 +34,44 @@ class Task extends Model
                                 );
     }
 
-    public function subject()
+    /**
+     * Get the subject that owns the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function subject(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Subject');
+        return $this->belongsTo(Subject::class);
     }
 
-    public function taskType()
+    /**
+     * Get the author that owns the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author(): BelongsTo
     {
-        return $this->belongsTo('App\Models\Tasktype');
+        return $this->belongsTo(User::class);
     }
 
-    public function user()
+    /**
+     * Get all of the questions for the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions(): HasMany
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->hasMany(Question::class);
     }
 
-    public function comments()
+    /**
+     * Get all of the reactions for the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reactions(): HasMany
     {
-        return $this->hasMany('App\Models\Comment');
-    }
-
-    public function related()
-    {
-        return $this->belongsToMany('App\Models\Task', 'related_tasks', 'related_id', 'task_id')->withTimestamps();
-    }
-
-    public function attachements()
-    {
-        return $this->hasMany('App\Models\Attachement');
-    }
-
-    public function contributors() {
-        return $this->belongsToMany('App\Models\User')->withTimestamps()->withPivot('created_at')->OrderbyDesc('task_user.created_at');
+        return $this->hasMany(Reaction::class);
     }
 
 }

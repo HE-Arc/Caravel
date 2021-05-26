@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class HasFinish extends Migration
+class TaskUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class HasFinish extends Migration
      */
     public function up()
     {
-        Schema::create('has_finish', function (Blueprint $table) {
+        Schema::create('task_user', function (Blueprint $table) {
             $table->foreignId('user_id');
-            $table->morphs('element');
-            $table->primary(['element_id', 'element_type', 'user_id']);
+            $table->foreignId('task_id');
             $table->integer('isSubscribed')->default(0);
             $table->timestamps();
         });
 
-        Schema::table('has_finish', function (Blueprint $table) {
+        Schema::table('task_user', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
         });
     }
 
