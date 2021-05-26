@@ -14,9 +14,9 @@ class Reactions extends Migration
     public function up()
     {
         Schema::create('reactions', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id');
             $table->foreignId('task_id');
-            $table->primary(['task_id', 'user_id']);
             $table->integer('type')->unsigned();
             $table->timestamps();
         });

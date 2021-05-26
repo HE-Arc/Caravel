@@ -24,17 +24,17 @@ class Group_UserSeeder extends Seeder
         //prepare insertions with 2 basic links
         $insertions = [
                 [
-                    "userID" => 10000,
+                    "userID" => 1,
                     "groupID" => 1,
                     "approved" => Group::PENDING,
                 ],
                 [
-                    "userID" => 10000,
+                    "userID" => 1,
                     "groupID" => 2,
                     "approved" => Group::REFUSED,
                 ],
                 [
-                    "userID" => 10000,
+                    "userID" => 1,
                     "groupID" => 3,
                     "approved" => Group::ACCEPTED,
                 ]

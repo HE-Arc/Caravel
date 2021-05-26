@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -30,8 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password'
     ];
 
     /**
@@ -46,12 +46,13 @@ class User extends Authenticatable
     public function groups()
     {
         return $this->belongsToMany('App\Models\Group')
-                    ->withPivot('isApprouved')
-                    ->as('subscription')
-                    ->withTimestamps();
+            ->withPivot('isApprouved')
+            ->as('subscription')
+            ->withTimestamps();
     }
 
-    public function groupsAvailable() {
+    public function groupsAvailable()
+    {
         return $this->groups()->wherePivot('isApprouved', Group::ACCEPTED);
     }
 
@@ -60,18 +61,36 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Comment');
     }
 
-    public function attachements()
+    public function tasks()
     {
-        return $this->hasMany('App\Models\Attachement');
-    }
-
-    public function tasks(){
         return $this->hasMany('App\Models\Task');
     }
+
     /**
      * return the picture of the user if it exist or the base picture for all users
      */
-    public function getPicture(){
-        return $this->picture ?? config('caravel.users.pictureFolder').config('caravel.users.pictureBase');
+    public function getPicture()
+    {
+        return $this->picture ?? config('caravel.users.pictureFolder') . config('caravel.users.pictureBase');
+    }
+
+    /**
+     * Get all of the Subscription for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    /**
+     * The settings that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function settings(): BelongsToMany
+    {
+        return $this->belongsToMany(ActionType::class, 'settings_user', 'user_id', 'action_type_id');
     }
 }
