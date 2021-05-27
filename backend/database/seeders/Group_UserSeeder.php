@@ -16,10 +16,6 @@ class Group_UserSeeder extends Seeder
      */
     public function run()
     {
-        //call seeder to mae sure userID 10'000 exists
-        $this->call([
-            TestUserSeeder::class,
-        ]);
 
         //prepare insertions with 2 basic links
         $insertions = [
