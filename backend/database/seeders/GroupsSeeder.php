@@ -32,7 +32,7 @@ class GroupsSeeder extends Seeder
                 'name' => $name,
                 'created_at' => now(),
                 'updated_at' => now(),
-                'user_id' => $user->id,//set him as leader
+                'user_id' => 1,//set him as leader
             ]);
             //attach him
             $group = Group::where('name', $name)->first();
