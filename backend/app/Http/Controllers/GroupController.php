@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\FileUploadRequest;
+use App\Http\Requests\GroupRequest;
 use App\Models\Group;
 use App\Models\User;
-use File;
+use App\Services\UploadFileService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
@@ -20,19 +18,8 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Auth::user()->groupsAvailable()->with('user')->get();
-        return view('group.index', ["groups" => $groups]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {        
-        //the "index" livesearch is the view used to create a new group
-        return view('group.search');
+        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user')->get();
+        return ["groups" => $groups];
     }
 
     /**
@@ -41,127 +28,38 @@ class GroupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request)
     {
-        $group = new Group();
+        $group = Group::create($request->validated());
+        $group->user_id = Auth::id();
+        $group->save();
 
-        $rules = [
-            'name' => 'required|unique:groups|max:150',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
-        } else {
-            $group->name = $request->get('name');
-            //if user is authenticated, put him as the group's leader
-            $userID = Auth::id();
-            $group->user_id = $userID;
-            $group->save();
-            //attach the main user to this group - automatically approved
-            $group->users()->attach($userID, ['isApprouved' => Group::ACCEPTED]);
-        }
+        //attach the main user to this group - automatically approved
+        $group->users()->attach(Auth::id(), ['isApprouved' => Group::ACCEPTED]);
 
         //return the user to the "show" of this created group
-        return redirect()->route('groups.edit', $group);
-    }
-
-    //this name is way too long, but "buildFilenameFromPicture" 
-    private function FileNameAndSave($picture,$quality=90){
-        //the filename is the hasName of this picture inside the public folder for pictures (defined in the config)
-        $filename = config('caravel.groups.pictureFolder').$picture->hashName();
-        $filenameSystem = public_path($filename);
-        Image::make($picture)
-            ->fit(250, 250)
-            ->save($filenameSystem);
-        return $filename;
+        return response()->json($group);
     }
 
     /**
-     * upload.
+     * Manage upload file to a group
      *
      * @param  \Illuminate\Http\Request  $request
      * @param int $group 
      * @return \Illuminate\Http\Response
      */
-    public function upload(Request $request, $group)
+    public function upload(FileUploadRequest $request, Group $group, UploadFileService $fileService)
     {
-        $validator = Validator::make($request->all(), [
-            'image' => 'required|max:4096'
-        ]);
-        if ($validator->passes()) {
-            $folder = config('smartmd.files.root') . '/groups/' . $group;
-            $temp = $request->file('image');
-            $fileName = '[' . $temp->getClientOriginalName() . ']';
-            $name = $temp->hashName();
-            if (substr($temp->getMimeType(), 0, 5) == 'image') {
-                $fileName = '!' . $fileName;
-                $im = Image::make($temp->getPathname());
-                $width = $im->width();
-                $height = $im->height();
-                if ($width > 1200) {
-                    $scale = 1200 / $width;
-                    $width = ceil($width * $scale);
-                    $height = ceil($height * $scale);
-                    $im->resize($width, $height);
-                    $temp = (string) $im->encode();
-                    $folder .= '/'.$name;
-                }
-            } 
+        $file = $request->file('image');
 
-            Storage::put($folder, $temp);
-            
-            return response()->json(
-                [
-                    'path' => route('groups.files', ['group' => $group, 'file' => $name]),
-                    'name' => $fileName,
-                    'message' => 'File uploaded'
-                ]
-            );
-        }
-        return response()->json(['message' => $validator->errors()->first()],400);
-    }
-
-        /**
-     * upload.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param int $group 
-     * @return \Illuminate\Http\Response
-     */
-    public function getFile(Request $request, $group, $file) {
-        $folder = config('smartmd.files.root') . '/groups/' . $group . '/';
-        return response()->file(Storage::path($folder . $file));
-    }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return redirect()->route('groups.tasks.index', $id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Group $group)
-    {
-        return view('group.settings', [
-            'group' => $group, 
-            'isLeader' => $group->user_id == Auth::id(),
-        ]);
+        $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file);
+        
+        return response()->json(
+            [
+                'path' => route('groups.files', ['group' => $group, 'file' => $filepath]),
+                'message' => 'File uploaded'
+            ]
+        );
     }
 
     /**
@@ -171,40 +69,22 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(GroupRequest $request, Group $group, UploadFileService $fileService)
     {
-        $rules = [
-            'name' => "required|unique:groups,name,{$group->id}|max:150",
-            'description' => 'max:500',
-            'picture' => 'image|max:4096'
-        ];
+        $data = $request->validated();
 
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
-        } else {
-            $group->name = $request->get('name');
-            $group->description = $request->get('description');
-            //if the picture is submitted, do the treatment
-            if($request->hasfile('picture')){
-                $this->deleteIfPicture($group);
-                if($request->file('picture')->getSize()>2048000){   //images > 2MB will be blurred 
-                    $filenamePicture = $this->FileNameAndSave($request->file('picture'),75);
-                } else{
-                    $filenamePicture = $this->FileNameAndSave($request->file('picture'));
-                }
-                $group->picture = $filenamePicture;
-            }
-            //if user is authenticated, put him as the group's leader
-            $group->save();
+        if ($request->hasfile('picture')){
+            $group->picture = $fileService->uploadFileToFolder($group->getStorageFolder(), $request->file('picture'));
         }
 
-        //return the user to the "show" of this created group
-        return redirect()->back();
+        if ($request->has('user_id')) {
+            $this->conca
+        }
+
+        $group->fill($data);
+        $group->save();
+
+        return response()->json($group);
     }
 
     /**
@@ -215,6 +95,7 @@ class GroupController extends Controller
         if(Auth::id() != $group->user_id){
             abort(403);
         }
+
         $this->deleteMember($group, $user->id);
         return redirect()->route('groups.members', $group);
     }
@@ -260,50 +141,10 @@ class GroupController extends Controller
         if(Auth::id() != $group->user_id){
             abort(403);
         }
-        $this->deleteGroup($group);
-        return redirect()->route('groups.index');
-    }
 
-    /**
-     * Delete the group, including its picture and its eventual storage datas
-     */
-    private function deleteGroup($group){
-        $this->deleteIfPicture($group);
-        $this->deleteIfStorage($group);
         $group->delete();
-    }
 
-    /**
-     * Delete the data (ex : files from comment) of the group in storage
-     */
-    private function deleteIfStorage($group){
-        $folder = config('smartmd.files.root') . '/groups\/' . $group->id;
-        //if the group has a storage, delete the entire directory (files)
-        if(Storage::exists($folder)){
-            Storage::deleteDirectory($folder);
-        }
-    }
-
-    /**
-     * Safely delete the picture of the group if it exists
-     */
-    private function deleteIfPicture($group){
-        //verify existence both in group and in file before deleting
-        if(isset($group->picture) && File::exists(public_path($group->picture))){ 
-            File::delete(public_path($group->picture));
-        }
-    }
-
-    /**
-     * Return the view of the pending /refused users
-     */
-    public function pending(Group $group){
-        return view('group.pending', [
-            'group' => $group, 
-            'pending' => $group->usersRequesting()->orderBy('pivot_updated_at','asc')->get(), 
-            'refused' => $group->usersRefused()->orderBy('pivot_updated_at','asc')->get(),
-            'isLeader' => $group->user_id == Auth::id(),
-            ]);
+        return ["message" => "group has been deleted"];
     }
 
     /**
@@ -332,26 +173,12 @@ class GroupController extends Controller
     }
 
     /**
-     * Return the view of the members of the group
-     */
-    public function members(Group $group){
-        return view('group.members', [
-            'group' => $group, 
-            'leaderID' => $group->user_id,
-            'isLeader' => $group->user_id == Auth::id(),
-            'users' => $group->usersApproved()->orderBy('pivot_updated_at','asc')->get(),
-            ]);
-    }
-
-    /**
      * Change the leader of the group
      */
     public function changeLeader(Group $group, User $user){
         //verify that the user is already in the group
         if($group->users->find($user->id)){
             $group->user_id = $user->id;
-            $group->save();
-            return redirect()->back();
         }
     }
 

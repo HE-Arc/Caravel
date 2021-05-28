@@ -6,9 +6,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Routing\Controller as BaseController;
 
-class AuthAPIController extends Controller
+class AuthAPIController extends BaseController
 {
     /**
      * Method to handle user json token auth
