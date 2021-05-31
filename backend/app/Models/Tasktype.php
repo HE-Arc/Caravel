@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tasktype
 {
-
     public const ASSIGNMENT = 1;
     public const EXAM = 2;
     public const PROJECT = 3;

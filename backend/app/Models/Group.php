@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class Group extends Model
 {
@@ -16,6 +19,12 @@ class Group extends Model
     public const REFUSED = 1;
     public const ACCEPTED = 2;
     public const REQUESTSTATUS = array(Group::PENDING, Group::ACCEPTED, Group::REFUSED);
+
+    protected $fillable = [
+        'name',
+        'description',
+        'isPrivate',
+    ];
 
     public function pictureOrDefault()
     {
@@ -32,19 +41,15 @@ class Group extends Model
         return $this->belongsToMany('App\Models\User')->withPivot('isApprouved')->withTimestamps();
     }
 
-    public function usersApproved()
-    {
-        return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', Group::ACCEPTED);
-    }
-
-    public function usersRefused()
-    {
-        return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', Group::REFUSED);
-    }
-
-    public function usersRequesting()
-    {
-        return $this->belongsToMany('App\Models\User')->withTimestamps()->wherePivot('isApprouved', Group::PENDING);
+    /**
+     * Scoped function for users
+     * 
+     * @param $state Group::REQUESTATUS
+     */
+    public function scopeState(Builder $query, $state): Builder {
+        return $query->whereHas('users', function (Builder $q) use($state) {
+            $q->where('isApprouved', $state);
+        });
     }
 
     public function user()
@@ -75,5 +80,50 @@ class Group extends Model
     public function tasks(): HasManyThrough
     {
         return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject');
+    }
+
+    /**
+     * Safely delete the picture
+     */
+    public function removePicture(){
+        //verify existence both in group and in file before deleting
+        if(isset($this->picture) && File::exists(public_path($this->picture))){ 
+            File::delete(public_path($this->picture));
+        }
+    }
+
+    public function getStorageFolder() {
+        return config('smartmd.files.root') . "/groups/" . $this->id;
+    }
+
+    /**
+     * Delete the data (ex : files from comment) of the group in storage
+     */
+    public function deleteStorage(){
+        //if the group has a storage, delete the entire directory (files)
+        if(Storage::exists($this->getStorageFolder())){
+            Storage::deleteDirectory($this->getStorageFolder());
+        }
+    }
+
+    /**
+     * Safely delete the picture of the group if it exists
+     */
+    public function deletePicture(){
+        //verify existence both in group and in file before deleting
+        if(isset($this->picture) && File::exists(public_path($this->picture))){ 
+            File::delete(public_path($this->picture));
+        }
+    }
+
+    /**
+     * Override parent delete to 
+     * delete the group, including its picture 
+     * and its eventual storage datas
+     */
+    public function delete(): bool {
+        $this->deletePicture();
+        $this->deleteStorage();
+        return parent::delete();
     }
 }

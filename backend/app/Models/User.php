@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\UploadedFile;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
@@ -25,7 +27,6 @@ class User extends Authenticatable implements LdapAuthenticatable
         'email',
         'password',
         'timezone',
-        'picture'
     ];
 
     /**
@@ -106,5 +107,25 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function settings(): BelongsToMany
     {
         return $this->belongsToMany(ActionType::class, 'settings_user', 'user_id', 'action_type_id');
+    }
+
+    /**
+     * This function delete user's picture profile
+     */
+    public function deletePicture(){
+        if(isset($this->picture)){
+            if(File::exists(public_path($this->picture)))
+                File::delete(public_path($this->picture));
+            $this->picture=null;
+        }
+    }
+
+    /**
+     * Utility fonction to set profile picture
+     */
+    public function setProfilePic(string $filepath) {
+        $this->deletePicture();
+
+        $this->user->picture=$filepath;
     }
 }

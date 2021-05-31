@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
+use App\Models\Group;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class RemoveGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +26,11 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        $this->merge(['group_id' => $this->route('group')]);
         return [
-            'name' => [
-                'required', 'min:3'
-            ],
-            'email' => [
-                'required', 'email', Rule::unique((new User)->getTable())->ignore($this->route()->user->id ?? null)
-            ],
-            'password' => [
-                $this->route()->user ? 'nullable' : 'required', 'confirmed', 'min:6'
-            ]
+            'group_id' => "required", Rule::exists('group_user','group_id')->where(function($query) {
+                $query->where('isApproved', Group::ACCEPTED)->where('user_id', Auth::id());
+            }),
         ];
     }
 }
