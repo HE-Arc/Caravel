@@ -8,11 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Tasktype;
 use App\Models\Task;
 use App\Models\Group;
-use App\Models\Attachement;
 use App\Models\Comment;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {

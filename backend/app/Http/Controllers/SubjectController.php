@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SubjectRequest;
 use Illuminate\Http\Request;
 use App\Models\Subject;
-use App\Models\Task;
 use App\Models\Group;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\MessageBag;
 
 class SubjectController extends Controller
 {

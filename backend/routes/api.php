@@ -1,13 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthAPIController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
-use App\Models\Subject;
 
 /*
 |--------------------------------------------------------------------------
