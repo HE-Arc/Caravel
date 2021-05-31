@@ -26,6 +26,7 @@ class RemoveGroupRequest extends FormRequest
      */
     public function rules()
     {
+        $this->merge(['group_id' => $this->route('group')]);
         return [
             'group_id' => "required", Rule::exists('group_user','group_id')->where(function($query) {
                 $query->where('isApproved', Group::ACCEPTED)->where('user_id', Auth::id());

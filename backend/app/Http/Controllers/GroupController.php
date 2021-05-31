@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\UploadFileService;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
@@ -83,6 +84,10 @@ class GroupController extends Controller
 
         if ($request->hasfile('picture')){
             $group->picture = $fileService->uploadFileToFolder($group->getStorageFolder(), $request->file('picture'));
+        }
+
+        if ($request->has("user_id")) { 
+            $this->changeLeader($group, $data['user_id']);
         }
 
         $group->fill($data);
@@ -179,5 +184,15 @@ class GroupController extends Controller
             })->paginate(GroupController::PAGINATION_LIMIT);
 
         return response()->json($groups);
+    }
+
+    /**
+     * Retrieve uploaded file
+     *
+     * @param int $group 
+     * @return \Illuminate\Http\Response
+     */
+    public function getFile(Group $group, $file) {
+        return response()->file(Storage::path($group->getStorageFolder() . "/" . $file));
     }
 }

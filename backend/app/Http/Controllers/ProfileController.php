@@ -3,8 +3,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
 use App\Services\UploadFileService;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\File;
 
 class ProfileController extends Controller
 {

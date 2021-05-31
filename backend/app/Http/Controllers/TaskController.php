@@ -27,7 +27,7 @@ class TaskController extends Controller
      * @param Group $group 
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Group $group)
+    public function index(Group $group)
     {
         $userid =  auth()->user()->id;
         $tasks = $group->tasks()->orderBy('due_at', 'asc')
@@ -146,7 +146,7 @@ class TaskController extends Controller
      * @param Task $task
      * @return \Illuminate\Http\Response
      */
-    private function persistData(TaskRequest $request, Group $group, Task $task)
+    private function persistData(TaskRequest $request, Group $group, Task $task): Task
     {
         $task->fill($request->validated());
         $task->save();

@@ -14,5 +14,10 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     /** @var User $user */
-    protected $user = Auth::user();
+    protected $user;
+
+    function __construct()
+    {
+        $this->user = Auth::user();
+    }
 }

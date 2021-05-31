@@ -23,7 +23,8 @@ class AuthAPIController extends BaseController
             
             $token = $user->createToken("token");
     
-            return ['token' => $token->plainTextToken];
+            return ['token' => $token->plainTextToken,
+                    'user' => $user];
         } else {
             return response()->json(['error' => "authentification failed."], 401);
         }
