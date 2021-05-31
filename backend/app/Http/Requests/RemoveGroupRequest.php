@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Group;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileUploadRequest extends FormRequest
+class RemoveGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +27,9 @@ class FileUploadRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required|max:4096'
+            'group_id' => "required", Rule::exists('group_user','group_id')->where(function($query) {
+                $query->where('isApproved', Group::ACCEPTED)->where('user_id', Auth::id());
+            }),
         ];
     }
 }

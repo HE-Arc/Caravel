@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Task;
 use App\Models\Group;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Tasktype;

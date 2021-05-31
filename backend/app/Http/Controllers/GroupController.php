@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FileUploadRequest;
 use App\Http\Requests\GroupRequest;
+use App\Http\Requests\MemberGroupRequest;
+use App\Http\Requests\MemberStatusRequest;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\UploadFileService;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
+
+    public const PAGINATION_LIMIT = 15;
+
     /**
      * Display a listing of the resource.
      *
@@ -18,8 +24,8 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user')->get();
-        return ["groups" => $groups];
+        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user')->paginate(GroupController::PAGINATION_LIMIT);
+        return response()->json($groups);
     }
 
     /**
@@ -50,7 +56,9 @@ class GroupController extends Controller
      */
     public function upload(FileUploadRequest $request, Group $group, UploadFileService $fileService)
     {
-        $file = $request->file('image');
+        $data = $request->validated();
+
+        $file = $data['file'];
 
         $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file);
         
@@ -77,10 +85,6 @@ class GroupController extends Controller
             $group->picture = $fileService->uploadFileToFolder($group->getStorageFolder(), $request->file('picture'));
         }
 
-        if ($request->has('user_id')) {
-            $this->conca
-        }
-
         $group->fill($data);
         $group->save();
 
@@ -90,43 +94,20 @@ class GroupController extends Controller
     /**
      * Delete the given member from the group
      */
-    public function kickMember(Group $group, User $user){
+    public function removeMember(MemberGroupRequest $request, Group $group){
+        $data = $request->validated();
+
         //verify : only the group leader can kick someone
         if(Auth::id() != $group->user_id){
-            abort(403);
+            return response()->json(["message" => __('api.groups.admin_operation')], 403);
         }
 
-        $this->deleteMember($group, $user->id);
-        return redirect()->route('groups.members', $group);
-    }
+        if ($data['user_id'] == $group->user_id) 
+            return response()->json(['message' => __('api.groups.resource_restricted')], 403);
 
-    /**
-     * Quit a group (delete the own user from the group)
-     */
-    public function quitGroup(Group $group){
-        $this->deleteMember($group, Auth::id());
-        return redirect()->route('groups.index');
-    }
+        $group->users()->detach($data['user_id']);
 
-    /**
-     * Factorisation of the deletion of a member from a group
-     * Check if the group is empty or without leader
-     */
-    private function deleteMember($group, $userId){
-        //verify : User must be in the group
-        if(!$group->users->find($userId)){
-            return;
-        }
-
-        $group->usersApproved()->detach($userId);
-        //if there are no members anymore, delete the group
-        if($group->usersApproved()->count() == 0){
-            $this->deleteGroup($group);
-        } else if($userId == $group->user_id){
-            //give leadership of the group to the older user
-            $group->user_id = $group->usersApproved()->orderBy('pivot_updated_at','asc')->first()->id;
-            $group->save();
-        }
+        return response()->json(['message' => __('api.groups.member_updated')]);
     }
 
     /**
@@ -139,37 +120,27 @@ class GroupController extends Controller
     {
         //verify : User must be the leader of the group
         if(Auth::id() != $group->user_id){
-            abort(403);
+            return response()->json(["message" => __('api.groups.admin_operation')], 403);
         }
 
         $group->delete();
 
-        return ["message" => "group has been deleted"];
+        return ["message" => __('api.groups.delete')];
     }
 
     /**
-     * Accept or refuse a pending user
+     * Change status of user in a group
+     * status can be found under Group::REQUESTSTATUS
      */
-    public function processPending(Group $group, User $user, $status){
-        //verify : User has a pending request
-        if($group->usersRequesting->find($user->id)){
-            $processedStatus = $status ? Group::ACCEPTED : Group::REFUSED;
-            //true in update means the updated_at is written with now(), usefull to know when the user was accepted/refused
-            $group->usersRequesting()->updateExistingPivot($user, array('isApprouved' => $processedStatus), true);
-        }
-        return redirect()->back();
-    }
+    public function updateMemberStatus(MemberStatusRequest $request, Group $group) {
+        $data = $request->validated();
 
-    /**
-     * Allow a user that was kicked back into the "pending" category ('un-ban')
-     */
-    public function allowBack(Group $group, User $user){
-        //verify existence
-        if($group->usersRefused->find($user->id)){
-            //back into "pending" mode
-            $group->usersRefused()->updateExistingPivot($user, array('isApprouved' => Group::PENDING), true);
-        }
-        return redirect()->back();
+        if ($group->author == $data['user_id'])
+            return response()->json(['message' => __('api.groups.resource_restricted')], 403);
+
+        $group->users()->updateExistingPivot($data['user_id'], array('isApprouved' => $data['status_id']), true);
+
+        return response()->json(['message' => __('api.groups.member_updated')]);
     }
 
     /**
@@ -183,12 +154,14 @@ class GroupController extends Controller
     }
 
     public function join(Group $group){
-        $userID = Auth::id();
+        $userId = Auth::id();
         //verification of non existence (a refused/accepter/pending user can not ask again to join a group)
-        if($group->users()->find($userID) == null){
-            $group->users()->attach($userID, ['isApprouved' => Group::PENDING]);
-            return response()->json(["done" => TRUE]);
+        if($group->users()->find($userId) == null){
+            $group->users()->attach($userId, ['isApprouved' => Group::PENDING]);
+            return response()->json(["message" => TRUE]);
         }
+
+        return response()->json(['message' => __('api.global.operation_failed')], 400);
     }
 
     /**
@@ -196,40 +169,15 @@ class GroupController extends Controller
      */
     public function filtered(String $str){
         //fetch current user
-        $userID = Auth::id();
+        $userId = Auth::id();
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
         $groups = Group::where('name', 'LIKE', "%$str%")
-            ->orderBy('created_at') //TODO : Add a good 'order by' relative to group activity maybe ?
-            ->take(10);
+            ->orderBy('created_at') 
+            ->whereHas('users', function(Builder $query) use($userId) {
+                $query->where('user_id', '!=', $userId)->orWhere('isAccepted', '!=', Group::ACCEPTED);
+            })->paginate(GroupController::PAGINATION_LIMIT);
 
-        //loop over groups, builds result array
-        $valid = !empty($str);
-        $groupsData = array();
-        foreach($groups->get() as $group){
-            if(strcasecmp($group->name,$str) == 0){
-                $valid = false;
-            }
-
-            //does this group have this user as requesting ?
-            $user = $group->usersWithSubscription()->find($userID);
-            $hasUserRequestedGroup = ($user!= null);
-            //if so, get the code
-            $status = $hasUserRequestedGroup ? $user->pivot->isApprouved : null;
-
-            //stock the data in array for JSON
-            $groupsData[] = [
-                "id" => $group->id, 
-                "name" => $group->name,
-                "request" => [
-                    "requesting" => $hasUserRequestedGroup,
-                    "status" => $status,
-                ]
-            ];
-        }
-        return response()->json([
-            "valid" => $valid,
-            "groups"  => $groupsData,
-        ]);
+        return response()->json($groups);
     }
 }

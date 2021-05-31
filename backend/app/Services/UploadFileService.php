@@ -10,7 +10,7 @@ use Intervention\Image\Facades\Image;
 class UploadFileService {
 
     /**
-     * Upload file and resize if needed
+     * Upload file and resize needed (if it's an image) 
      * @param string $folder specify the folder where to put the image 
      * @param UploadedFile $file file to uplaod 
      * @param int $size set size to -1 to prevent resizing and squaring
@@ -32,6 +32,7 @@ class UploadFileService {
                         $constraint->upsize();
                     });
                 }
+                $file = (string) $im->encode();
             }
         }
 
