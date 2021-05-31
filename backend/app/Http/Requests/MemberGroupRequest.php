@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Models\Group;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Models\User;
 
 class MemberGroupRequest extends FormRequest
 {
