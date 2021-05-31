@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
+use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Request;
 use App\Models\Tasktype;
-use App\Models\Subject;
 use App\Models\Task;
 use App\Models\Group;
 use App\Models\Attachement;
 use App\Models\Comment;
-use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
+
+    // todo : let user decide the number of tasks to display in one page
+    public const PAGINATION_LIMIT = 30;
+
     /**
-     * Display next 30 task.
+     * List of tasks.
      *
      * @param Request $request
      * @param Group $group 
@@ -26,46 +30,22 @@ class TaskController extends Controller
     public function index(Request $request, Group $group)
     {
         $userid =  auth()->user()->id;
-        $tasks = $group->tasks()->take(30)->orderBy('due_at', 'asc')
-                                ->where('tasktype_id', '!=', TaskType::PROJECT)
+        $tasks = $group->tasks()->orderBy('due_at', 'asc')
                                 ->where(function($query) use($userid) {
                                     $query->where('isPrivate', '=', 0)
                                     ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-                                })->whereDate('due_at', '>=', Carbon::now())->get();
+                                })->whereDate('due_at', '>=', Carbon::now())->paginate(TaskController::PAGINATION_LIMIT);
                                 
-        $projects = $group->tasks()->take(10)->orderBy('due_at', 'asc')
+        $projects = $group->tasks()->orderBy('due_at', 'asc')
                         ->where('tasktype_id', '=', TaskType::PROJECT)
                         ->where(function($query) use($userid) {
                             $query->where('isPrivate', '=', 0)
                             ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-                        })->whereDate('due_at', '>=', Carbon::now())->get();
+                        })->whereDate('due_at', '>=', Carbon::now())->get()->paginate(TaskController::PAGINATION_LIMIT);
 
-        $tasksByDays = [];
-
-        foreach($tasks as $task) {
-            $days = $task->due_at->startOfDay()->diffInDays((new Carbon())->startOfDay());
-            if (!isset($tasksByDays[$days])) $tasksByDays[$days] = [];
-            $tasksByDays[$days][] = $task;
-        }
-
-        return view('group.task.upcoming', ['group' => $group,
-                                          'types' => TaskType::all(),
-                                          'tasksByDays' => $tasksByDays,
-                                          'projects' => $projects
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Group $group)
-    {
-        return view('group.task.createOrUpdate', ['group' => $group,
-                                          'types' => TaskType::all(),
-                                          'subjects' => $group->subjects,
-                                          'task' => new Task(),
+        return response()->json([
+            'tasks' => $tasks,
+            'projects' => $projects,
         ]);
     }
 
@@ -79,7 +59,8 @@ class TaskController extends Controller
     {
         $task = new Task();
         $task->user_id = auth()->user()->id;
-        return $this->persistData($request, $group, $task);
+        $updatedInstance = $this->persistData($request, $group, $task);
+        return response()->json($updatedInstance);
     }
 
     /**
@@ -88,28 +69,14 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function comment(Request $request, Group $group, Task $task)
-    {
-        $rules = [
-            'message' => 'required',
-        ];
+    public function comment(CommentRequest $request, Group $group, Task $task)
+    {   
+        $comment = Comment::create($request->validated());
 
-        $validator = Validator::make($request->all(), $rules);
+        $comment->user_id = $this->user->id;
+        $comment->save();
 
-        if ($validator->fails()) {
-            return redirect()
-                    ->route('groups.tasks.show', [$group->id, $task->id])
-                    ->withErrors($validator)
-                    ->withInput();
-        } else {
-            $comment = new Comment();
-            $comment->user_id = auth()->user()->id;
-            $comment->task_id = $task->id;
-            $comment->message = $request->get('message');
-            $comment->save();
-        }
-
-        return redirect()->route('groups.tasks.show', [$group->id, $task->id]);
+        return response()->json($comment);
     }
 
       /**
@@ -123,43 +90,24 @@ class TaskController extends Controller
      */
     public function delComment(Request $request, Group $group, Task $task, Comment $comment)
     {
-        if (auth()->user()->id==$comment->user->id) {
+        if ($this->user->id==$comment->user->id) {
             $comment->delete();
-            $request->session()->flash('status', 'Comment has been delete successfully!');
+            return response()->json(__('api.comments.delete'));
         }
 
-        return redirect()->route('groups.tasks.show', [$group->id, $task->id]);
-    }
-
-   /**
-     * Delete file linked to a task
-     *
-     * @param Request $request
-     * @param Group $group
-     * @param Task $task
-     * @param Attachement $file
-     * @return \Illuminate\Http\Response
-     */
-    public function delAttachement(Request $request, Group $group, Task $task, Attachement $file)
-    {
-        $file->delete();
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'File has been delete successfully!',
-        ]);
+        return response()->json(__('api.comments.delete_failed'), 400);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Group $group
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
     public function show(Group $group, Task $task)
     {
-        return view('group.task.show', ['group' => $group,
-                                        'task' => $task
-        ]);
+        return response()->json($task);
     }
 
     /**
@@ -170,10 +118,10 @@ class TaskController extends Controller
      */
     public function edit(Group $group, Task $task)
     {
-        return view('group.task.createOrUpdate', ['group' => $group,
-                                                'types' => TaskType::all(),
-                                                'subjects' => $group->subjects,
-                                                'task' => $task]);
+        return response()->json( ['group' => $group,
+                                'types' => TaskType::TYPES_KEY,
+                                'subjects' => $group->subjects,
+                                'task' => $task]);
     }
 
     /**
@@ -184,10 +132,10 @@ class TaskController extends Controller
      * @param Task $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group, Task $task)
+    public function update(TaskRequest $request, Group $group, Task $task)
     {
-        $request['isPrivate'] = $task->isPrivate ? 'on' : 'off';
-        return $this->persistData($request, $group, $task);
+        $updatedInstance = $this->persistData($request, $group, $task);
+        return response()->json($updatedInstance);
     }
 
     /**
@@ -198,58 +146,12 @@ class TaskController extends Controller
      * @param Task $task
      * @return \Illuminate\Http\Response
      */
-    private function persistData(Request $request, Group $group, Task $task)
+    private function persistData(TaskRequest $request, Group $group, Task $task)
     {
-        $rules = [
-            'title' => 'required|max:255',
-            'subject_id' => 'required|exists:subjects,id',
-            'tasktype_id' => 'required|exists:tasktypes,id',
-            'due_at' => 'required|date|after_or_equal:today',
-            'description' => 'required',
-            'filenames' => 'file|max:13312',
-        ];
-        $validator = Validator::make($request->all(), $rules);
-
+        $task->fill($request->validated());
+        $task->save();
         
-        if ($validator->fails()) {
-            return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
-        } else {
-            // store
-            $task->title           = $request->get('title');
-            $task->subject_id      = $request->get('subject_id');
-            $task->tasktype_id     = $request->get('tasktype_id');
-            $task->due_at          = $request->get('due_at');
-            $task->description     = $request->get('description');
-            $task->isPrivate       = $request->get('isPrivate')=='on';
-            $task->save();
-            $task->contributors()->attach(auth()->user()->id, ['action' => 1]);
-
-            //process attachement
-            if($request->hasfile('attachement'))
-            {
-                $folder = config('smartmd.files.root') . '/groups/' . $group->id;
-                foreach($request->file('attachement') as $upload)
-                {
-                    $file = new Attachement();
-                    $file->path = $upload->hashName();
-                    $file->name =  $upload->getClientOriginalName();
-                    $file->mimeType = $upload->getMimeType();
-                    $file->task_id = $task->id;
-                    $file->user_id = auth()->user()->id;
-                    $file->save();
-                    Storage::put($folder, $upload);
-                }
-            }
-
-            // redirect
-            $request->session()->flash('status', 'Action was made successfully!');
-            return redirect()
-                    ->route('groups.tasks.show', ['group' => $group->id,
-                                                 'task' => $task->id]);
-        }
+        return $task;
     }
 
     /**
@@ -262,9 +164,9 @@ class TaskController extends Controller
     {
         if (auth()->user()->id==$task->user->id) {
             $task->delete();
-            $request->session()->flash('status', 'Task has been delete successfully!');
+            return response()->json(__('api.tasks.deleted'));
         }
 
-        return redirect()->route('groups.show', [$group->id]);
+        return response()->json(__('api.tasks.not_permitted'), 403);
     }
 }

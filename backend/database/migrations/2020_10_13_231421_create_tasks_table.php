@@ -25,6 +25,7 @@ class CreateTasksTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('tasktype_id');
             $table->foreignId('subject_id');
+            $table->softDeletes();
         });
 
         Schema::table('tasks', function (Blueprint $table) {
