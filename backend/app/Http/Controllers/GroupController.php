@@ -119,7 +119,7 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         //verify : User must be the leader of the group
-        if(Auth::id() != $group->user_id){
+        if(!$this->user->can('delete', $group)){
             return response()->json(["message" => __('api.groups.admin_operation')], 403);
         }
 
