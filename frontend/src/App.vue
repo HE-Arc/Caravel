@@ -1,39 +1,32 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app light flat color="white">
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
+          alt="Caravel Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="@/assets/logo.png"
           transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
         />
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <v-main>
+    <v-main class="pa-0">
       <router-view />
     </v-main>
   </v-app>
@@ -50,3 +43,9 @@ export default Vue.extend({
   }),
 });
 </script>
+
+<style scoped>
+header.theme--light::v-deep .v-toolbar__content {
+  border-bottom: 1px solid #f3f3f3;
+}
+</style>
