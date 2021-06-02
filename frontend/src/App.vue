@@ -37,12 +37,11 @@ import Vue from "vue";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
 import { AuthActions } from "./store/modules/auth";
+import { Getter } from "vuex-class";
 
 @Component
 export default class App extends Vue {
-  get isLoggedIn(): boolean {
-    return this.$store.getters.isLoggedIn;
-  }
+  @Getter isLoggedIn!: boolean;
 
   logout(): void {
     this.$store
