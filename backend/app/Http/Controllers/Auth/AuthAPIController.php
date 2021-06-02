@@ -19,6 +19,9 @@ class AuthAPIController extends BaseController
         if (Auth::attempt($credentials)) {
             /** @var User $user */
             $user = Auth::user();
+
+            $user->load('groupsAvailable');
+            $user->load('notifications');
             
             $token = $user->createToken("token");
     
