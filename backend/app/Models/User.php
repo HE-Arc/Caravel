@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use Illuminate\Support\Facades\File;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Query\Builder;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
@@ -60,15 +60,36 @@ class User extends Authenticatable implements LdapAuthenticatable
 
     public function groups()
     {
-        return $this->belongsToMany('App\Models\Group')
+        return $this->belongsToMany(Group::class)
             ->withPivot('isApprouved')
             ->as('subscription')
             ->withTimestamps();
     }
 
+    /**
+     * Scoped function for users
+     * 
+     * @param $state Group::REQUESTATUS
+     */
+    public function scopeState(Builder $query, $state): Builder {
+        return $query->whereHas('groups', function (Builder $q) use($state) {
+            $q->where('isApprouved', $state);
+        });
+    }
+
     public function groupsAvailable()
     {
         return $this->groups()->wherePivot('isApprouved', Group::ACCEPTED);
+    }
+
+    /**
+     * The Notifications that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function notifications(): BelongsToMany
+    {
+        return $this->belongsToMany(Action::class)->wherePivot('isTrash', 0);
     }
 
     public function comments()

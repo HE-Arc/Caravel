@@ -1,0 +1,26 @@
+<svg width="610" height="160" xmlns="http://www.w3.org/2000/svg">
+
+
+
+ <style type="text/css">
+	.st0{font-family:'Bree Serif';}
+	.st1{font-size:140px;fill: #5e72e4}
+	
+	.st2, .st3 { fill: white;
+    stroke: #5e72e4;
+    stroke-width: 3px;}</style>
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="162" width="800" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text x="-378" y="-305" id="svg_1" class="st0 st1" transform="matrix(1,0,0,1,569.2979,435.3359) ">caravel</text>
+  <polygon id="svg_2" points="135.530029296875,83.95001220703125 9.970001220703125,130.33999633789062 114.91000366210938,130.33999633789062 " class="st2 path"/>
+  <polygon id="svg_3" points="1.100006103515625,98.79000854492188 135.530029296875,83.95001220703125 54.8800048828125,113.739990234375 " class="st3 path"/>
+  <polygon id="svg_4" points="1.100006103515625,98.79000854492188 9.970001220703125,130.33999633789062 54.8800048828125,113.739990234375 " class="st2 path"/>
+  <polygon id="svg_5" points="60.269989013671875,27.660003662109375 54.8800048828125,113.739990234375 97.95001220703125,97.82998657226562 " class="st2 path"/>
+  <polygon id="svg_6" points="60.269989013671875,27.660003662109375 22.779998779296875,104.82000732421875 54.8800048828125,113.739990234375 " class="st2"/>
+ </g>
+</svg>
