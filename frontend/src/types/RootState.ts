@@ -1,5 +1,3 @@
-namespace Types {
-  export interface RootState {
-    version: string;
-  }
+export interface RootState {
+  version: string;
 }

@@ -21,9 +21,7 @@
         <v-icon>mdi-heart</v-icon>
       </v-btn>
 
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <user-icon></user-icon>
     </v-app-bar>
 
     <v-main class="pa-0">
@@ -38,8 +36,13 @@ import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
 import { AuthActions } from "./store/modules/auth";
 import { Getter } from "vuex-class";
+import UserIcon from "./components/UserIcon.vue";
 
-@Component
+@Component({
+  components: {
+    UserIcon,
+  },
+})
 export default class App extends Vue {
   @Getter isLoggedIn!: boolean;
 

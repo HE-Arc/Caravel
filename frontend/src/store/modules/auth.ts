@@ -1,4 +1,8 @@
 // src/store/modules/auth.ts
+import { AuthState } from "@/types/authstate";
+import { Credentials } from "@/types/helpers";
+import { RootState } from "@/types/RootState";
+import { User } from "@/types/user";
 import axios, { AxiosResponse } from "axios";
 import { Module, GetterTree, MutationTree, ActionTree } from "vuex";
 
@@ -16,22 +20,22 @@ export enum AuthActions {
 
 interface BagSuccess {
   token: string;
-  user: Types.User;
+  user: User;
 }
 
-const state: Types.AuthState = {
+const state: AuthState = {
   user: undefined,
   status: "",
   token: localStorage.getItem(process.env.VUE_APP_TOKEN_NAME) || "",
 };
 
-const getters: GetterTree<Types.AuthState, Types.RootState> = {
-  authUser: (state: Types.AuthState): Types.User | undefined => state.user,
-  isLoggedIn: (state: Types.AuthState): boolean => !!state.token,
-  authStatus: (state: Types.AuthState): string => state.status,
+const getters: GetterTree<AuthState, RootState> = {
+  authUser: (state: AuthState): User | undefined => state.user,
+  isLoggedIn: (state: AuthState): boolean => !!state.token,
+  authStatus: (state: AuthState): string => state.status,
 };
 
-const mutations: MutationTree<Types.AuthState> = {
+const mutations: MutationTree<AuthState> = {
   [AuthMutations.REQUEST](state) {
     state.status = "loading";
   },
@@ -50,10 +54,10 @@ const mutations: MutationTree<Types.AuthState> = {
   },
 };
 
-const actions: ActionTree<Types.AuthState, Types.RootState> = {
+const actions: ActionTree<AuthState, RootState> = {
   [AuthActions.LOGIN](
     { commit },
-    data: Types.Credentials
+    data: Credentials
   ): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
       commit("auth_request");
@@ -64,7 +68,7 @@ const actions: ActionTree<Types.AuthState, Types.RootState> = {
       })
         .then((resp) => {
           const token = resp.data.token;
-          const user: Types.User = resp.data.user;
+          const user: User = resp.data.user;
           localStorage.setItem(process.env.VUE_APP_TOKEN_NAME, token);
           axios.defaults.headers.common["Authorization"] = token;
           commit("auth_success", { token, user });
@@ -87,7 +91,7 @@ const actions: ActionTree<Types.AuthState, Types.RootState> = {
   },
 };
 
-export const auth: Module<Types.AuthState, Types.RootState> = {
+export const auth: Module<AuthState, RootState> = {
   state,
   getters,
   mutations,
