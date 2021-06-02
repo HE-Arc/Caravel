@@ -33,6 +33,7 @@
                       :label="$t('login.username')"
                       type="text"
                       v-model="username"
+                      outlined
                     ></v-text-field>
                     <v-text-field
                       id="password"
@@ -41,6 +42,7 @@
                       v-model="password"
                       :label="$t('login.password')"
                       type="password"
+                      outlined
                     ></v-text-field>
                   </v-form>
                 </v-card-text>
@@ -61,6 +63,7 @@
 </template>
 
 <script lang="ts">
+import { AuthActions } from "@/store/modules/auth";
 import Vue from "vue";
 import Component from "vue-class-component";
 
@@ -73,9 +76,14 @@ export default class Login extends Vue {
     let mail = this.username;
     let password = this.password;
     this.$store
-      .dispatch("login", { mail, password })
-      .then(() => this.$router.push({ name: "Home" }))
-      .catch((err) => console.log(err));
+      .dispatch(AuthActions.LOGIN, { mail, password })
+      .then(() => {
+        this.$router.push({ name: "Home" });
+        this.$toast.success(this.$t("login.logged_in").toString());
+      })
+      .catch(() => {
+        this.$toast.error(this.$t("login.failed").toString());
+      });
   }
 }
 </script>

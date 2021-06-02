@@ -2,6 +2,9 @@
   "login": {
     "connexion": "Se connecter",
     "username": "Nom d'utilisateur",
-    "password": "Mot de passe"
+    "password": "Mot de passe",
+    "failed": "L'authentification a échouée",
+    "logged_in": "Authentification réussie",
+    "logout": "Vous avez été deconnecté avec succès"
   }
 }

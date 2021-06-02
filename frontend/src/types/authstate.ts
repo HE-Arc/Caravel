@@ -1,6 +1,6 @@
 namespace Types {
   export interface AuthState {
-    user: Types.User | null;
+    user?: Types.User;
     status: string;
     token: string;
   }

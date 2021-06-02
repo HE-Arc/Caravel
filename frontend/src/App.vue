@@ -17,7 +17,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon @click="logout" v-if="isLoggedIn">
         <v-icon>mdi-heart</v-icon>
       </v-btn>
 
@@ -34,18 +34,37 @@
 
 <script lang="ts">
 import Vue from "vue";
+import "vue-toast-notification/dist/theme-sugar.css";
+import Component from "vue-class-component";
+import { AuthActions } from "./store/modules/auth";
 
-export default Vue.extend({
-  name: "App",
+@Component
+export default class App extends Vue {
+  get isLoggedIn(): boolean {
+    return this.$store.getters.isLoggedIn;
+  }
 
-  data: () => ({
-    //
-  }),
-});
+  logout(): void {
+    this.$store
+      .dispatch(AuthActions.LOGOUT)
+      .then(() => {
+        this.$router.push({ name: "Login" });
+        this.$toast.success(this.$t("login.logout").toString());
+      })
+      .catch(() => this.$toast.error(this.$t("login.failed").toString()));
+  }
+}
 </script>
 
 <style scoped>
 header.theme--light::v-deep .v-toolbar__content {
   border-bottom: 1px solid #f3f3f3;
+}
+</style>
+
+<style>
+p.v-toast__text {
+  font-family: "Roboto";
+  font-weight: 300;
 }
 </style>

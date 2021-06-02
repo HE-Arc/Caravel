@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 const store: StoreOptions<Types.RootState> = {
   state: {
-    helloMessage: "test",
+    version: "1.0.0",
   },
   modules: {
     auth,

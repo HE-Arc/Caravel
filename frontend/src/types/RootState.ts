@@ -1,5 +1,5 @@
 namespace Types {
   export interface RootState {
-    helloMessage: string;
+    version: string;
   }
 }
