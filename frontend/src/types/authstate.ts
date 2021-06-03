@@ -1,7 +1,7 @@
-namespace Types {
-  export interface AuthState {
-    user?: Types.User;
-    status: string;
-    token: string;
-  }
+import { User } from "./user";
+
+export interface AuthState {
+  user?: User;
+  status: string;
+  token: string;
 }

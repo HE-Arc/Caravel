@@ -2,31 +2,31 @@
   <v-app>
     <v-app-bar app light flat color="white">
       <div class="d-flex align-center">
-        <v-img
-          alt="Caravel Logo"
-          class="shrink mr-2"
-          contain
-          src="@/assets/logo.png"
-          transition="scale-transition"
-        />
+        <router-link to="/">
+          <v-img
+            alt="Caravel Logo"
+            class="shrink mr-2"
+            contain
+            src="@/assets/logo.png"
+            transition="scale-transition"
+          />
+        </router-link>
       </div>
+      <search-bar class="ml-2" v-if="isLoggedIn"></search-bar>
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
+      <add-content v-if="isLoggedIn"></add-content>
+
+      <v-btn icon v-if="isLoggedIn">
+        <v-icon>mdi-bell-ring</v-icon>
       </v-btn>
 
-      <v-btn icon @click="logout" v-if="isLoggedIn">
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
+      <user-icon class="mr-3" v-if="isLoggedIn"></user-icon>
     </v-app-bar>
 
     <v-main class="pa-0">
+      <div class="mt-16"></div>
       <router-view />
     </v-main>
   </v-app>
@@ -36,22 +36,20 @@
 import Vue from "vue";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
-import { AuthActions } from "./store/modules/auth";
 import { Getter } from "vuex-class";
+import UserIcon from "./components/UserIcon.vue";
+import AddContent from "./components/AddContent.vue";
+import SearchBar from "./components/SearchBar.vue";
 
-@Component
+@Component({
+  components: {
+    UserIcon,
+    AddContent,
+    SearchBar,
+  },
+})
 export default class App extends Vue {
   @Getter isLoggedIn!: boolean;
-
-  logout(): void {
-    this.$store
-      .dispatch(AuthActions.LOGOUT)
-      .then(() => {
-        this.$router.push({ name: "Login" });
-        this.$toast.success(this.$t("login.logout").toString());
-      })
-      .catch(() => this.$toast.error(this.$t("login.failed").toString()));
-  }
 }
 </script>
 
