@@ -3,7 +3,7 @@
     <v-main>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
-          <v-flex xs12 sm6 md4>
+          <v-flex xs12 sm6 md3>
             <v-card
               class="elevation-2 d-flex flex-column"
               min-height="400"
@@ -49,7 +49,7 @@
                 <v-spacer></v-spacer>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" @click="login">{{
+                  <v-btn color="primary" @click="login" :loading="loading">{{
                     $t("login.connexion")
                   }}</v-btn>
                 </v-card-actions>
@@ -66,11 +66,13 @@
 import { AuthActions } from "@/store/modules/auth";
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Getter } from "vuex-class";
 
 @Component
 export default class Login extends Vue {
   username = "";
   password = "";
+  @Getter authStatus!: string;
 
   login(): void {
     let mail = this.username;
@@ -84,6 +86,10 @@ export default class Login extends Vue {
       .catch(() => {
         this.$toast.error(this.$t("login.failed").toString());
       });
+  }
+
+  get loading(): boolean {
+    return this.authStatus == "loading";
   }
 }
 </script>

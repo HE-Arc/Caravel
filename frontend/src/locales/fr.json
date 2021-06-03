@@ -6,5 +6,13 @@
     "failed": "L'authentification a échouée",
     "logged_in": "Authentification réussie",
     "logout": "Vous avez été deconnecté avec succès"
+  },
+  "appbar": {
+    "signout": "Déconnexion",
+    "notifs": "Notifications",
+    "settings": "Paramètres"
+  },
+  "search": {
+    "label": "Rechercher une tâche"
   }
 }
