@@ -26,7 +26,7 @@ interface BagSuccess {
 const state: AuthState = {
   user: undefined,
   status: "",
-  token: localStorage.getItem(process.env.VUE_APP_TOKEN_NAME) || "",
+  token: "",
 };
 
 const getters: GetterTree<AuthState, RootState> = {
@@ -55,10 +55,7 @@ const mutations: MutationTree<AuthState> = {
 };
 
 const actions: ActionTree<AuthState, RootState> = {
-  [AuthActions.LOGIN](
-    { commit },
-    data: Credentials
-  ): Promise<AxiosResponse> {
+  [AuthActions.LOGIN]({ commit }, data: Credentials): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
       commit("auth_request");
       axios({
@@ -71,6 +68,10 @@ const actions: ActionTree<AuthState, RootState> = {
           const user: User = resp.data.user;
           localStorage.setItem(process.env.VUE_APP_TOKEN_NAME, token);
           axios.defaults.headers.common["Authorization"] = token;
+          localStorage.setItem(
+            process.env.VUE_APP_TOKEN_NAME,
+            JSON.stringify(user)
+          );
           commit("auth_success", { token, user });
           resolve(resp);
         })
