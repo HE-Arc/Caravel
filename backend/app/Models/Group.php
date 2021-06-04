@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class Group extends Model
 {
@@ -125,5 +126,19 @@ class Group extends Model
         $this->deletePicture();
         $this->deleteStorage();
         return parent::delete();
+    }
+
+    public static function getFilteredGroupsForUser($userId, $text) {
+        return Group::query()
+        ->select('groups.*', 'group_user.isApprouved as status')
+        ->leftJoin('group_user', function ($join) use($userId) {
+            $join->on('group_user.group_id','=','groups.id');
+            $join->on('group_user.user_id','=',DB::raw($userId));
+        })
+        ->where('name', 'LIKE', "%$text%")
+        ->where(function($query) {
+            $query->where('isApprouved', '!=', Group::ACCEPTED)
+                  ->orWhereNull('isApprouved');
+        });
     }
 }

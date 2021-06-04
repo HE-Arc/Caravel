@@ -19,7 +19,6 @@ use App\Http\Controllers\UserController;
 */
 
 Route::post('login', [AuthAPIController::class, 'login'])->name('login');
-Route::get('groups/filtered/{string}', [GroupController::class, 'filtered']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('logout', [AuthAPIController::class, 'logout'])->name('logout');
