@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class Controller extends BaseController
 {
@@ -18,6 +19,10 @@ class Controller extends BaseController
 
     function __construct()
     {
-        $this->user = Auth::user();
+        $this->middleware(function (Request $request, $next) {
+            $this->user = Auth::user();
+     
+            return $next($request);
+        });
     }
 }
