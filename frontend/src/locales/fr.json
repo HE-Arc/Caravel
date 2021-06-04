@@ -1,4 +1,7 @@
 {
+  "global": {
+    "clear": "Effacer"
+  },
   "login": {
     "connexion": "Se connecter",
     "username": "Nom d'utilisateur",
@@ -14,5 +17,15 @@
   },
   "search": {
     "label": "Rechercher une tâche"
+  },
+  "groups": {
+    "search-title": "Rechercher un groupe",
+    "search-input": "Nom du groupe",
+    "search-type": "Commencer à taper pour rechercher",
+    "join": "Demande d'adhésion",
+    "pending": "En attente",
+    "refused": "Demande refusée",
+    "no_results": "Aucun résultat",
+    "ask": "La demande a été envoyée"
   }
 }

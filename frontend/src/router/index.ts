@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import GroupsSearch from "../views/GroupSearch.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -25,6 +26,11 @@ const routes: Array<RouteConfig> = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/groups/search",
+    name: "Groups",
+    component: GroupsSearch,
   },
 ];
 

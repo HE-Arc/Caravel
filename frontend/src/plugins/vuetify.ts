@@ -6,12 +6,15 @@ Vue.use(Vuetify);
 
 export default new Vuetify({
   theme: {
+    dark: false,
     themes: {
       light: {
-        primary: colors.deepPurple,
+        primary: "#5e72e4",
+        secondary: colors.blueGrey,
       },
       dark: {
-        primary: colors.purple,
+        primary: "#5e72e4",
+        secondary: colors.blueGrey,
       },
     },
   },
