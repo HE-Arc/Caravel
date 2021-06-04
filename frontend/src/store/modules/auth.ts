@@ -33,6 +33,7 @@ const getters: GetterTree<AuthState, RootState> = {
   authUser: (state: AuthState): User | undefined => state.user,
   isLoggedIn: (state: AuthState): boolean => !!state.token,
   authStatus: (state: AuthState): string => state.status,
+  authToken: (state: AuthState): string => state.token,
 };
 
 const mutations: MutationTree<AuthState> = {
@@ -67,7 +68,7 @@ const actions: ActionTree<AuthState, RootState> = {
           const token = resp.data.token;
           const user: User = resp.data.user;
           localStorage.setItem(process.env.VUE_APP_TOKEN_NAME, token);
-          axios.defaults.headers.common["Authorization"] = token;
+          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           localStorage.setItem(
             process.env.VUE_APP_TOKEN_NAME,
             JSON.stringify(user)

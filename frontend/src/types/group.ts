@@ -5,4 +5,5 @@ export interface Group {
   picture: string;
   isPrivate: Boolean;
   user_id: Number;
+  status: Number | undefined;
 }

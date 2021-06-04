@@ -9,9 +9,11 @@ use App\Http\Requests\MemberStatusRequest;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\UploadFileService;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
+use function PHPUnit\Framework\isEmpty;
 
 class GroupController extends Controller
 {
@@ -23,9 +25,13 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user')->paginate(GroupController::PAGINATION_LIMIT);
+        if ($request->has('text')) {
+            $text = $request->input('text') ?? "";
+            return $this->filtered($text);
+        }
+        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user');
         return response()->json($groups);
     }
 
@@ -177,11 +183,7 @@ class GroupController extends Controller
         $userId = Auth::id();
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        $groups = Group::where('name', 'LIKE', "%$str%")
-            ->orderBy('created_at') 
-            ->whereHas('users', function(Builder $query) use($userId) {
-                $query->where('user_id', '!=', $userId)->orWhere('isAccepted', '!=', Group::ACCEPTED);
-            })->paginate(GroupController::PAGINATION_LIMIT);
+        $groups = (!empty($str)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(1) : [];
 
         return response()->json($groups);
     }

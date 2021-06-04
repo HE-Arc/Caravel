@@ -5,7 +5,7 @@
     dense
     hide-details="true"
     clearable
-    solo
+    solo-inverted
     flat
     color="#5e72e4"
     background-color="#5e72e422"

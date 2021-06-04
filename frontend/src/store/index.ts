@@ -9,6 +9,7 @@ Vue.use(Vuex);
 const vuexPersist = new VuexPersist({
   key: process.env.VUE_APP_NAME,
   storage: window.localStorage,
+  modules: ["auth"],
 });
 
 const store: StoreOptions<RootState> = {

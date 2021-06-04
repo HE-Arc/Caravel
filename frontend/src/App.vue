@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app light flat color="white">
+    <v-app-bar color="white" flat>
       <div class="d-flex align-center">
         <router-link to="/">
           <v-img
@@ -26,7 +26,6 @@
     </v-app-bar>
 
     <v-main class="pa-0">
-      <div class="mt-16"></div>
       <router-view />
     </v-main>
   </v-app>
@@ -36,6 +35,7 @@
 import Vue from "vue";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
+import axios from "axios";
 import { Getter } from "vuex-class";
 import UserIcon from "./components/UserIcon.vue";
 import AddContent from "./components/AddContent.vue";
@@ -50,6 +50,11 @@ import SearchBar from "./components/SearchBar.vue";
 })
 export default class App extends Vue {
   @Getter isLoggedIn!: boolean;
+  @Getter authToken!: string;
+
+  mounted(): void {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${this.authToken}`;
+  }
 }
 </script>
 
