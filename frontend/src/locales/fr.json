@@ -25,7 +25,10 @@
     "join": "Demande d'adhésion",
     "pending": "En attente",
     "refused": "Demande refusée",
-    "no_results": "Aucun résultat",
+    "no_results": "Aucun groupe trouvé, {0} ?",
+    "create_link": "créer {0}",
     "ask": "La demande a été envoyée"
-  }
+  },
+  "tos": "Term of Service",
+  "term": "I accept xxx {0}."
 }

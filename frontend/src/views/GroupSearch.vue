@@ -30,7 +30,24 @@
                     indeterminate
                     v-if="isLoading"
                   ></v-progress-circular>
-                  <h4 v-else-if="hasNoResult">{{ $t("groups.no_results") }}</h4>
+
+                  <h4 v-else-if="hasNoResult">
+                    <i18n
+                      path="groups.no_results"
+                      tag="label"
+                      for="groups.no_results_link"
+                    >
+                      <router-link
+                        :to="{
+                          name: 'GroupNew',
+                          query: { text: filters.text },
+                        }"
+                        >{{
+                          $t("groups.create_link", [filters.text])
+                        }}</router-link
+                      >
+                    </i18n>
+                  </h4>
                   <v-row dense v-else>
                     <v-col
                       v-for="item in results"
@@ -112,8 +129,13 @@ export default class GroupSearch extends Vue {
     );
   }
 
+  get currentPage(): number {
+    let page: string = this.filters.page as string;
+    return !page || page == "" ? 1 : parseInt(this.filters.page as string);
+  }
+
   @Watch("filters", { deep: true })
-  onPropertyChange() {
+  onPropertyChange(): void {
     if (!this.enableWatcher) return;
 
     clearTimeout(this.delayTimer);
@@ -130,9 +152,8 @@ export default class GroupSearch extends Vue {
     }
   }
 
-  get currentPage(): number {
-    let page: string = this.filters.page as string;
-    return !page || page == "" ? 1 : parseInt(this.filters.page as string);
+  createGroup(): void {
+    this.$router.push({ name: "GroupNew", query: { text: this.filters.text } });
   }
 
   loadData(): void {

@@ -32,6 +32,11 @@ const routes: Array<RouteConfig> = [
     name: "Groups",
     component: GroupsSearch,
   },
+  {
+    path: "/groups/new",
+    name: "GroupNew",
+    component: GroupsSearch,
+  },
 ];
 
 const router = new VueRouter({
