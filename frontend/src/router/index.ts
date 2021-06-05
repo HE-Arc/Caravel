@@ -35,7 +35,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/groups/new",
     name: "GroupNew",
-    component: GroupsSearch,
+    component: () => import("../views/GroupNew.vue"),
   },
 ];
 

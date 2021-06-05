@@ -1,6 +1,8 @@
 {
   "global": {
-    "clear": "Effacer"
+    "clear": "Effacer",
+    "finish": "Terminer"
+
   },
   "login": {
     "connexion": "Se connecter",
@@ -27,7 +29,18 @@
     "refused": "Demande refusée",
     "no_results": "Aucun groupe trouvé, {0} ?",
     "create_link": "créer {0}",
-    "ask": "La demande a été envoyée"
+    "ask": "La demande a été envoyée",
+    "create": {
+      "title": "Création d'un groupe",
+      "step1": {
+        "name": "Définissez le nom du groupe",
+        "example": "ex.: INF DLM b 2020-2021",
+        "label": "Nom de groupe",
+        "placeholder": "Taper le nom de votre groupe",
+        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement !"
+      },
+      "finish": "Terminer"
+    }
   },
   "tos": "Term of Service",
   "term": "I accept xxx {0}."

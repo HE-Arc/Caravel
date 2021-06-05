@@ -8,3 +8,11 @@ export enum JoinStatus {
   REFUSED = 1,
   ACCEPTED = 2,
 }
+
+export interface GroupForm {
+  id: number;
+  name: string;
+  description: string;
+  picture: string;
+  isPrivate: boolean;
+}

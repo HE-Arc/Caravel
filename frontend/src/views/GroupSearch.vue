@@ -16,8 +16,7 @@
                   :placeholder="$t('groups.search-type')"
                   prepend-icon="mdi-magnify"
                   clearable
-                  autocomplete="false"
-                  aria-autocomplete="groups"
+                  autocomplete="off"
                 ></v-text-field>
               </v-card-text>
               <v-divider dark></v-divider>
