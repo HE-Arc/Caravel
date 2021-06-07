@@ -15,12 +15,16 @@ class ProfileController extends Controller
      */
     public function update(ProfileRequest $request, UploadFileService $fileService)
     {
+        $data = $request->validated();
+
         if($request->hasfile('picture')){
-            $this->user->setProfilePic($fileService->uploadFileToFolder(config('caravel.users.pictureFolder'), $request->file('picture')));
-        }  
+            $image = $fileService->uploadFileToFolder(config('caravel.users.pictureFolder'), $data['picture']);
+            $this->user->setProfilePic($image);
+            unset($data['picture']);
+        }
 
         // update = fill + save 
-        $this->user->update($request->all());
+        $this->user->update($data);
 
         return response()->json($this->user);
     }

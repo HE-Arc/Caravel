@@ -5,6 +5,7 @@ export interface User {
   email: string;
   timezone: string;
   picture: string;
+  picture_full: string;
   isLDAP: boolean;
   isTeacher: boolean;
   groups_available: Group[];

@@ -33,10 +33,12 @@ class UploadFileService {
                     });
                 }
                 $file = (string) $im->encode();
+                $folder .= $name;
+                return Storage::put($folder, $file) ? $folder : null;
             }
         }
 
-        return Storage::put($folder, $file) ? $name : null;
+        return Storage::put($folder, $file) ? $folder . $name : null;
     }
     
 }

@@ -12,10 +12,15 @@ use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\URL;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap;
+
+
+
+    protected $appends = ['picture_full'];
 
     /**
      * The attributes that are mass assignable.
@@ -147,6 +152,16 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function setProfilePic(string $filepath) {
         $this->deletePicture();
 
-        $this->user->picture=$filepath;
+        $this->picture=$filepath;
+    }
+
+        /**
+     * Determine if the user is an administrator.
+     *
+     * @return string
+     */
+    public function getPictureFullAttribute()
+    {
+        return URL::to('/') . $this->picture;
     }
 }

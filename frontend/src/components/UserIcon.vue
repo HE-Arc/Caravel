@@ -3,7 +3,8 @@
     <template v-slot:activator="{ on }">
       <v-btn icon x-large v-on="on">
         <v-avatar color="brown" size="36">
-          <span class="white--text text-h6">{{ initials }}</span>
+          <v-img v-if="user.picture" :src="user.picture_full"></v-img>
+          <span v-else class="white--text text-h6">{{ initials }}</span>
         </v-avatar>
       </v-btn>
     </template>
@@ -11,14 +12,17 @@
       <v-list-item-content class="justify-center">
         <div class="mx-auto text-center">
           <v-avatar color="brown" class="mb-2">
-            <span class="white--text text-h6">{{ initials }}</span>
+            <v-img v-if="user.picture" :src="user.picture_full"></v-img>
+            <span v-else class="white--text text-h6">{{ initials }}</span>
           </v-avatar>
           <h3>{{ user.name }}</h3>
           <p class="text-caption mt-1">
             {{ user.email }}
           </p>
           <v-divider class="my-3"></v-divider>
-          <v-btn depressed rounded text>{{ $t("appbar.settings") }}</v-btn>
+          <v-btn depressed rounded text @click="goTo('Profile')">{{
+            $t("appbar.settings")
+          }}</v-btn>
           <v-divider class="my-3"></v-divider>
           <v-btn depressed rounded text @click="logout">{{
             $t("appbar.signout")
@@ -61,6 +65,10 @@ export default class UserIcon extends Vue {
         : this.user?.name.charAt(0) + ".";
 
     return name.toUpperCase();
+  }
+
+  goTo(routeName: string): void {
+    this.$router.push({ name: routeName });
   }
 }
 </script>

@@ -42,6 +42,11 @@ const routes: Array<RouteConfig> = [
     name: "GroupNew",
     component: () => import("../views/GroupNew.vue"),
   },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () => import("../views/Profile.vue"),
+  },
 ];
 
 const router = new VueRouter({

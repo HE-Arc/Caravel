@@ -4,7 +4,12 @@
     "finish": "Terminer",
     "resume": "Continuer",
     "cancel": "Annuler",
-    "back": "Revenir"
+    "back": "Revenir",
+    "submit": "Envoyer",
+    "roles": {
+      "student": "Etudiant",
+      "teacher": "Professeur"
+    }
   },
   "login": {
     "connexion": "Se connecter",
@@ -68,6 +73,10 @@
       "success": "Le groupe a été créé !"
     }
   },
-  "tos": "Term of Service",
-  "term": "I accept xxx {0}."
+  "profile": {
+    "info": "Informations utilisateur",
+    "email": "Adresse mail",
+    "name": "Nom complet",
+    "update": "Le profile a été mis à jour."
+  }
 }
