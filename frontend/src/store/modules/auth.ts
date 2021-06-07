@@ -11,11 +11,13 @@ export enum AuthMutations {
   SUCCESS = "auth_success",
   ERROR = "auth_error",
   LOGOUT = "logout",
+  UPDATE = "auth_update",
 }
 
 export enum AuthActions {
   LOGIN = "login",
   LOGOUT = "logout",
+  UPDATE = "update",
 }
 
 interface BagSuccess {
@@ -43,6 +45,10 @@ const mutations: MutationTree<AuthState> = {
   [AuthMutations.SUCCESS](state, { token, user }: BagSuccess) {
     state.status = "success";
     state.token = token;
+    state.user = user;
+  },
+  [AuthMutations.UPDATE](state, user: User) {
+    state.status = "updated user";
     state.user = user;
   },
   [AuthMutations.ERROR](state) {
@@ -83,9 +89,14 @@ const actions: ActionTree<AuthState, RootState> = {
         });
     });
   },
+  [AuthActions.UPDATE]({ commit }, user: User): Promise<void> {
+    return new Promise<void>((resolve) => {
+      commit(AuthMutations.UPDATE, user);
+    });
+  },
   [AuthActions.LOGOUT]({ commit }): Promise<void> {
     return new Promise<void>((resolve) => {
-      commit("logout");
+      commit(AuthMutations.LOGOUT);
       localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
       delete axios.defaults.headers.common["Authorization"];
       resolve();
