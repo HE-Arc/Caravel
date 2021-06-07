@@ -13,6 +13,6 @@ export interface GroupForm {
   id: number;
   name: string;
   description: string;
-  picture: string;
-  isPrivate: boolean;
+  picture: File | undefined;
+  isPrivate: boolean | undefined;
 }

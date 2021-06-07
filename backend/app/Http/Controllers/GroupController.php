@@ -197,4 +197,15 @@ class GroupController extends Controller
     public function getFile(Group $group, $file) {
         return response()->file(Storage::path($group->getStorageFolder() . "/" . $file));
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Group $group)
+    {
+        return response()->json($group);
+    }
 }

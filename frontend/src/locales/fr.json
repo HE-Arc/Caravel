@@ -1,8 +1,10 @@
 {
   "global": {
     "clear": "Effacer",
-    "finish": "Terminer"
-
+    "finish": "Terminer",
+    "resume": "Continuer",
+    "cancel": "Annuler",
+    "back": "Revenir"
   },
   "login": {
     "connexion": "Se connecter",
@@ -33,13 +35,37 @@
     "create": {
       "title": "Création d'un groupe",
       "step1": {
-        "name": "Définissez le nom du groupe",
-        "example": "ex.: INF DLM b 2020-2021",
+        "name": "Définissez le nom du groupe et une image",
+        "example": "ex.: INF XXX b 2020-2021",
         "label": "Nom de groupe",
         "placeholder": "Taper le nom de votre groupe",
-        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement !"
+        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement !",
+        "image" : "Image du groupe"
       },
-      "finish": "Terminer"
+      "step2": {
+        "name": "Description du groupe",
+        "example": "ex. Super groupe d'informatique",
+        "label": "Description du groupe",
+        "placeholder": "Taper la description du groupe",
+        "help": "Une description qui permette aux futurs membres de le trouver !"
+      },
+      "step3": {
+        "name": "Type du groupe",
+        "type1": {
+          "icon": "mdi-lock",
+          "title": "Groupe privé",
+          "subtitle": "Ce groupe est privé, tous les membres devront être co-optés pour pouvoir y accéder"
+        },
+        "type2": {
+          "icon": "mdi-book-variant",
+          "title": "Groupe de classe",
+          "subtitle": "Ce groupe représente une classe, les professeurs peuvent s'y inscrire sans co-optage"
+        }
+      },
+      "step4": {
+        "name": "Résumé du groupe"
+      },
+      "success": "Le groupe a été créé !"
     }
   },
   "tos": "Term of Service",
