@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthAPIController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -40,5 +41,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('groups/{group}/members/{user}', [GroupController::class, 'removeMember']);
 
     Route::delete('profile/groups/{group}', [UserController::class, 'removeGroup']);
+    Route::patch('profile', [ProfileController::class, 'update']);
 
 });
