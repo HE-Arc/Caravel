@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar color="white" flat>
+    <v-app-bar app color="white" flat>
       <div class="d-flex align-center">
         <router-link to="/">
           <v-img
@@ -25,7 +25,7 @@
       <user-icon class="mr-3" v-if="isLoggedIn"></user-icon>
     </v-app-bar>
 
-    <v-main class="pa-0">
+    <v-main>
       <router-view />
     </v-main>
   </v-app>

@@ -1,88 +1,76 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container class="mt-5">
-        <v-row no-gutters>
-          <v-col cols="12" md="10" offset-md="1" align="center">
-            <v-card flat>
-              <v-card-title class="text-h4">
-                {{ $t("groups.search-title") }}
-              </v-card-title>
-              <v-spacer></v-spacer>
-              <v-card-text>
-                <v-text-field
-                  v-model.lazy="filters.text"
-                  :label="$t('groups.search-input')"
-                  :placeholder="$t('groups.search-type')"
-                  prepend-icon="mdi-magnify"
-                  clearable
-                  autocomplete="false"
-                  aria-autocomplete="groups"
-                ></v-text-field>
-              </v-card-text>
-              <v-divider dark></v-divider>
-              <v-expand-transition>
-                <v-container fluid class="white darken-3 pa0" v-if="!!results">
-                  <v-progress-circular
-                    :size="70"
-                    :width="7"
-                    color="purple"
-                    indeterminate
-                    v-if="isLoading"
-                  ></v-progress-circular>
+  <v-container class="mt-5">
+    <v-row no-gutters>
+      <v-col cols="12" md="10" offset-md="1" align="center">
+        <v-card flat>
+          <v-card-title class="text-h4">
+            {{ $t("groups.search-title") }}
+          </v-card-title>
+          <v-spacer></v-spacer>
+          <v-card-text>
+            <v-text-field
+              v-model.lazy="filters.text"
+              :label="$t('groups.search-input')"
+              :placeholder="$t('groups.search-type')"
+              prepend-icon="mdi-magnify"
+              clearable
+              autocomplete="off"
+            ></v-text-field>
+          </v-card-text>
+          <v-divider dark></v-divider>
+          <v-expand-transition>
+            <v-container fluid class="white darken-3 pa0" v-if="!!results">
+              <v-progress-circular
+                :size="70"
+                :width="7"
+                color="purple"
+                indeterminate
+                v-if="isLoading"
+              ></v-progress-circular>
 
-                  <h4 v-else-if="hasNoResult">
-                    <i18n
-                      path="groups.no_results"
-                      tag="label"
-                      for="groups.no_results_link"
-                    >
-                      <router-link
-                        :to="{
-                          name: 'GroupNew',
-                          query: { text: filters.text },
-                        }"
-                        >{{
-                          $t("groups.create_link", [filters.text])
-                        }}</router-link
-                      >
-                    </i18n>
-                  </h4>
-                  <v-row dense v-else>
-                    <v-col
-                      v-for="item in results"
-                      :key="item.id"
-                      cols="12"
-                      md="6"
-                    >
-                      <group-item :group="item"></group-item>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-pagination
-                        class="mt-4"
-                        :value="currentPage"
-                        @input="changePage"
-                        circle
-                        :length="pages"
-                        v-if="pages > 1"
-                      ></v-pagination>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-expand-transition>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn :disabled="!filters.text" @click="clear">
-                  {{ $t("global.clear") }}
-                  <v-icon right> mdi-close-circle </v-icon>
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+              <h4 v-else-if="hasNoResult">
+                <i18n
+                  path="groups.no_results"
+                  tag="label"
+                  for="groups.no_results_link"
+                >
+                  <router-link
+                    :to="{
+                      name: 'GroupNew',
+                      query: { text: filters.text },
+                    }"
+                    >{{ $t("groups.create_link", [filters.text]) }}</router-link
+                  >
+                </i18n>
+              </h4>
+              <v-row dense v-else>
+                <v-col v-for="item in results" :key="item.id" cols="12" md="6">
+                  <group-item :group="item"></group-item>
+                </v-col>
+                <v-col cols="12">
+                  <v-pagination
+                    class="mt-4"
+                    :value="currentPage"
+                    @input="changePage"
+                    circle
+                    :length="pages"
+                    v-if="pages > 1"
+                  ></v-pagination>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-expand-transition>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn :disabled="!filters.text" @click="clear">
+              {{ $t("global.clear") }}
+              <v-icon right> mdi-close-circle </v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
