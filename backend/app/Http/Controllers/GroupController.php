@@ -183,7 +183,7 @@ class GroupController extends Controller
         $userId = Auth::id();
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        $groups = (!empty($str)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(1) : [];
+        $groups = (!empty($str)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(GroupController::PAGINATION_LIMIT) : [];
 
         return response()->json($groups);
     }
