@@ -8,7 +8,7 @@
       </template>
       <v-list>
         <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-btn depressed rounded text :to="item.to">{{ item.title }}</v-btn>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -20,6 +20,13 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class AddContent extends Vue {
-  items: any = [{ title: "Group" }, { title: "Task" }, { title: "Subject" }];
+  items = [
+    { title: "Group", to: this.$router.resolve({ name: "GroupSearch" }).href },
+    { title: "Task", to: this.$router.resolve({ name: "GroupSearch" }).href },
+    {
+      title: "Subject",
+      to: this.$router.resolve({ name: "GroupSearch" }).href,
+    },
+  ];
 }
 </script>

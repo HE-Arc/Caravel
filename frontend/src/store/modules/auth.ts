@@ -1,112 +1,122 @@
 // src/store/modules/auth.ts
-import { AuthState } from "@/types/authstate";
-import { Credentials } from "@/types/helpers";
-import { RootState } from "@/types/RootState";
 import { User } from "@/types/user";
 import axios, { AxiosResponse } from "axios";
-import { Module, GetterTree, MutationTree, ActionTree } from "vuex";
-
-export enum AuthMutations {
-  REQUEST = "auth_request",
-  SUCCESS = "auth_success",
-  ERROR = "auth_error",
-  LOGOUT = "logout",
-  UPDATE = "auth_update",
-}
-
-export enum AuthActions {
-  LOGIN = "login",
-  LOGOUT = "logout",
-  UPDATE = "update",
-}
+import {
+  VuexModule,
+  Module,
+  Mutation,
+  Action,
+  getModule,
+  MutationAction,
+} from "vuex-module-decorators";
+import store from "@/store";
 
 interface BagSuccess {
   token: string;
   user: User;
 }
 
-const state: AuthState = {
-  user: undefined,
-  status: "",
-  token: "",
-};
+interface Credentials {
+  mail: string;
+  password: string;
+}
 
-const getters: GetterTree<AuthState, RootState> = {
-  authUser: (state: AuthState): User | undefined => state.user,
-  isLoggedIn: (state: AuthState): boolean => !!state.token,
-  authStatus: (state: AuthState): string => state.status,
-  authToken: (state: AuthState): string => state.token,
-};
+@Module({
+  namespaced: true,
+  dynamic: true,
+  store,
+  name: "auth",
+  preserveState: localStorage.getItem("vuex") !== null,
+})
+class AuthModule extends VuexModule {
+  _user: User | undefined = undefined;
+  _status = "";
+  _token = "";
 
-const mutations: MutationTree<AuthState> = {
-  [AuthMutations.REQUEST](state) {
-    state.status = "loading";
-  },
-  [AuthMutations.SUCCESS](state, { token, user }: BagSuccess) {
-    state.status = "success";
-    state.token = token;
-    state.user = user;
-  },
-  [AuthMutations.UPDATE](state, user: User) {
-    state.status = "updated user";
-    state.user = user;
-  },
-  [AuthMutations.ERROR](state) {
-    state.status = "error";
-  },
-  [AuthMutations.LOGOUT](state) {
-    state.status = "";
-    state.user = undefined;
-    state.token = "";
-  },
-};
+  get isLoggedIn(): boolean {
+    return !!this._token;
+  }
 
-const actions: ActionTree<AuthState, RootState> = {
-  [AuthActions.LOGIN]({ commit }, data: Credentials): Promise<AxiosResponse> {
-    return new Promise((resolve, reject) => {
-      commit("auth_request");
+  get user(): User | undefined {
+    return this._user;
+  }
+
+  get token(): string {
+    return this._token;
+  }
+
+  get status(): string {
+    return this._status;
+  }
+
+  // MUTATION
+  @Mutation
+  private REQUEST() {
+    this._status = "loading";
+  }
+
+  @Mutation
+  private SUCCESS({ token, user }: BagSuccess) {
+    this._status = "success";
+    this._token = token;
+    this._user = user;
+  }
+
+  @Mutation
+  private ERROR() {
+    this._status = "error";
+  }
+
+  @Mutation
+  private DISCONNECT() {
+    this._status = "";
+    this._user = undefined;
+    this._token = "";
+  }
+
+  @MutationAction({ mutate: ["_user"] })
+  async update(user: User) {
+    //api call update
+    return { _user: user };
+  }
+
+  //ACTIONS
+  @Action
+  login({ mail, password }: Credentials): Promise<AxiosResponse> {
+    this.REQUEST();
+    return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + "login",
-        data: data,
+        data: { mail, password },
         method: "POST",
       })
         .then((resp) => {
           const token = resp.data.token;
           const user: User = resp.data.user;
-          localStorage.setItem(process.env.VUE_APP_TOKEN_NAME, token);
+
+          this.SUCCESS({ token, user });
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-          localStorage.setItem(
-            process.env.VUE_APP_TOKEN_NAME,
-            JSON.stringify(user)
-          );
-          commit("auth_success", { token, user });
           resolve(resp);
         })
         .catch((err) => {
-          commit("auth_error");
+          this.ERROR();
           localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
           reject(err);
         });
     });
-  },
-  [AuthActions.UPDATE]({ commit }, user: User): Promise<void> {
+  }
+
+  @Action
+  logout(): Promise<void> {
     return new Promise<void>((resolve) => {
-      commit(AuthMutations.UPDATE, user);
-    });
-  },
-  [AuthActions.LOGOUT]({ commit }): Promise<void> {
-    return new Promise<void>((resolve) => {
-      commit(AuthMutations.LOGOUT);
+      this.DISCONNECT();
       localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
       delete axios.defaults.headers.common["Authorization"];
       resolve();
     });
-  },
-};
+  }
+}
 
-export const auth: Module<AuthState, RootState> = {
-  state,
-  getters,
-  mutations,
-  actions,
-};
+const instance = getModule(AuthModule);
+
+export default instance;

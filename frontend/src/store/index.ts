@@ -1,25 +1,19 @@
 import Vue from "vue";
-import Vuex, { StoreOptions } from "vuex";
-import { auth } from "@/store/modules/auth";
-import { RootState } from "@/types/RootState";
+import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
+import { config } from "vuex-module-decorators";
+// Set rawError to true by default on all @Action decorators
+config.rawError = true;
 
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
-  key: process.env.VUE_APP_NAME,
+  key: "vuex",
   storage: window.localStorage,
-  modules: ["auth"],
 });
 
-const store: StoreOptions<RootState> = {
-  state: {
-    version: "1.0.0",
-  },
-  modules: {
-    auth,
-  },
+export default new Vuex.Store({
+  state: {},
+  modules: {},
   plugins: [vuexPersist.plugin],
-};
-
-export default new Vuex.Store<RootState>(store);
+});

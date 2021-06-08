@@ -3,7 +3,10 @@
     <template v-slot:activator="{ on }">
       <v-btn icon x-large v-on="on">
         <v-avatar color="brown" size="36">
-          <v-img v-if="user.picture" :src="user.picture_full"></v-img>
+          <v-img
+            v-if="user != undefined && user.picture"
+            :src="user.picture_full"
+          ></v-img>
           <span v-else class="white--text text-h6">{{ initials }}</span>
         </v-avatar>
       </v-btn>
@@ -12,7 +15,10 @@
       <v-list-item-content class="justify-center">
         <div class="mx-auto text-center">
           <v-avatar color="brown" class="mb-2">
-            <v-img v-if="user.picture" :src="user.picture_full"></v-img>
+            <v-img
+              v-if="user != undefined && user.picture"
+              :src="user.picture_full"
+            ></v-img>
             <span v-else class="white--text text-h6">{{ initials }}</span>
           </v-avatar>
           <h3>{{ user.name }}</h3>
@@ -35,19 +41,20 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-property-decorator";
-import { Getter } from "vuex-class";
+import auth from "@/store/modules/auth";
 import { User } from "@/types/user";
-import { AuthActions } from "@/store/modules/auth";
+
+//const authModule = namespace("auth");
 
 @Component
 export default class UserIcon extends Vue {
   @Prop({ default: false }) isTitleHidden?: boolean;
   @Prop({ default: false }) hasDropDown?: boolean;
-  @Getter("authUser") user?: User;
+  user?: User = auth.user;
 
   logout(): void {
-    this.$store
-      .dispatch(AuthActions.LOGOUT)
+    auth
+      .logout()
       .then(() => {
         this.$router.push({ name: "Login" });
         this.$toast.success(this.$t("login.logout").toString());

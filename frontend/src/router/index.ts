@@ -3,12 +3,13 @@ import VueRouter, { NavigationGuardNext, Route, RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import GroupsSearch from "../views/GroupSearch.vue";
-import store from "../store";
+import GroupContainer from "../views/GroupContainer.vue";
+import auth from "@/store/modules/auth";
 
 Vue.use(VueRouter);
 
 const ifAuthenticated = (to: Route, from: Route, next: NavigationGuardNext) => {
-  if (store.getters.isLoggedIn) {
+  if (auth.isLoggedIn) {
     next();
     return;
   }
@@ -28,14 +29,42 @@ const routes: Array<RouteConfig> = [
     component: Login,
   },
   {
-    path: "/groups/search",
-    name: "Groups",
+    path: "/groups",
+    name: "GroupSearch",
     component: GroupsSearch,
   },
   {
     path: "/groups/:group_id",
     name: "Group",
-    component: GroupsSearch,
+    component: GroupContainer,
+    redirect: { name: "tasks" },
+    children: [
+      {
+        path: "tasks",
+        name: "tasks",
+        component: () => import("../views/Group/TaskList.vue"),
+      },
+      {
+        path: "calendar",
+        name: "calendar",
+        component: () => import("../views/Group/Calendar.vue"),
+      },
+      {
+        path: "timeline",
+        name: "timeline",
+        component: () => import("../views/Group/Timeline.vue"),
+      },
+      {
+        path: "stats",
+        name: "stats",
+        component: () => import("../views/Group/Stats.vue"),
+      },
+      {
+        path: "settings",
+        name: "settings",
+        component: () => import("../views/Group/Settings.vue"),
+      },
+    ],
   },
   {
     path: "/groups/new",

@@ -61,7 +61,7 @@ export default class GroupItem extends Vue {
   status = JoinStatus;
   isLoading = false;
 
-  askJoin() {
+  askJoin(): void {
     this.isLoading = true;
     axios({
       url: process.env.VUE_APP_API_BASE_URL + `groups/${this.group.id}/members`,

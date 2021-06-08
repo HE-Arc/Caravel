@@ -217,8 +217,6 @@ export default class GroupNew extends Vue {
       .catch((err) => {
         this.$toast.error(err.response.data.message);
       });
-
-    console.log("test");
   }
 }
 </script>

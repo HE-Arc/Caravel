@@ -73,6 +73,15 @@
       "success": "Le groupe a été créé !"
     }
   },
+  "group": {
+    "tabs": {
+      "tasks": "Tâches",
+      "calendar": "Calendrier",
+      "timeline": "Chronologique",
+      "stats": "Statistiques",
+      "settings": "Paramètres"
+    }
+  },
   "profile": {
     "info": "Informations utilisateur",
     "email": "Adresse mail",

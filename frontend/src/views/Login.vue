@@ -63,25 +63,23 @@
 </template>
 
 <script lang="ts">
-import { AuthActions } from "@/store/modules/auth";
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Getter } from "vuex-class";
+import auth from "@/store/modules/auth";
 
 @Component
 export default class Login extends Vue {
   username = "";
   password = "";
-  @Getter authStatus!: string;
 
   login(): void {
     let mail = this.username;
     let password = this.password;
-    this.$store
-      .dispatch(AuthActions.LOGIN, { mail, password })
+    auth
+      .login({ mail, password })
       .then(() => {
-        this.$router.push({ name: "Home" });
         this.$toast.success(this.$t("login.logged_in").toString());
+        this.$router.push({ name: "Home" });
       })
       .catch(() => {
         this.$toast.error(this.$t("login.failed").toString());
@@ -89,7 +87,7 @@ export default class Login extends Vue {
   }
 
   get loading(): boolean {
-    return this.authStatus == "loading";
+    return auth.status == "loading";
   }
 }
 </script>
