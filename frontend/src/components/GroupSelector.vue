@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="group">
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -9,19 +9,17 @@
           large
           color="primary"
           text
+          :disabled="groups.length == 0"
         >
           <v-avatar color="secondary" size="32">
-            <v-img
-              v-if="group && group.picture"
-              :src="group.picture_full"
-            ></v-img>
+            <v-img v-if="group && group.picture" :src="group.picture"></v-img>
             <span v-else class="white--text text-h7">{{
               initials(group.name)
             }}</span>
           </v-avatar>
-          <span class="font-weight-bold ml-2">
+          <span class="font-weight-bold text-h6 ml-2">
             {{ group.name }}
-            <v-icon>mdi-menu-down</v-icon>
+            <v-icon v-if="groups.length > 1">mdi-menu-down</v-icon>
           </span>
         </v-btn>
       </template>
@@ -32,7 +30,7 @@
           @click="navTo(item.id)"
         >
           <v-avatar color="secondary" size="32">
-            <v-img v-if="item && item.picture" :src="item.picture_full"></v-img>
+            <v-img v-if="item && item.picture" :src="item.picture"></v-img>
             <span v-else class="white--text text-h7">{{
               initials(item.name)
             }}</span>
@@ -45,20 +43,20 @@
 </template>
 
 <script lang="ts">
-//import main from "@/store/modules/main";
 import { Group } from "@/types/group";
 import { Component, Vue } from "vue-property-decorator";
-import main from "@/store/modules/main";
-import auth from "@/store/modules/auth";
+import groupModule from "@/store/modules/groups";
 
 @Component
 export default class GroupSelector extends Vue {
   get group(): Group | undefined {
-    return main.group;
+    return groupModule.group;
   }
 
   get groups(): Group[] {
-    return auth.user ? auth.user.groups_available : [];
+    let groups = groupModule.groups;
+
+    return groups.filter((group) => group.id != this.group?.id);
   }
 
   initials(groupName: string): string {
@@ -66,10 +64,13 @@ export default class GroupSelector extends Vue {
     return name.substring(0, 2).toUpperCase();
   }
 
-  navTo(groupId: string): void {
-    main.loadGroup(groupId).then(() => {
+  async navTo(groupId: string): Promise<void> {
+    try {
+      await groupModule.selectGroup(groupId);
       this.$router.push({ name: "Group", params: { group_id: groupId } });
-    });
+    } catch {
+      //pass
+    }
   }
 }
 </script>

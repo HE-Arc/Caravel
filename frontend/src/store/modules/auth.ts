@@ -115,8 +115,15 @@ class AuthModule extends VuexModule {
       resolve();
     });
   }
+
+  @Action
+  init(): void {
+    if (this.token)
+      axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
+  }
 }
 
 const instance = getModule(AuthModule);
+instance.init();
 
 export default instance;

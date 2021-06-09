@@ -1,11 +1,11 @@
 <template>
-  <v-menu bottom min-width="200px" rounded offset-y>
+  <v-menu bottom min-width="200px" rounded offset-y v-if="user">
     <template v-slot:activator="{ on }">
       <v-btn icon x-large v-on="on">
         <v-avatar color="brown" size="36">
           <v-img
             v-if="user != undefined && user.picture"
-            :src="user.picture_full"
+            :src="user.picture"
           ></v-img>
           <span v-else class="white--text text-h6">{{ initials }}</span>
         </v-avatar>
@@ -17,7 +17,7 @@
           <v-avatar color="brown" class="mb-2">
             <v-img
               v-if="user != undefined && user.picture"
-              :src="user.picture_full"
+              :src="user.picture"
             ></v-img>
             <span v-else class="white--text text-h6">{{ initials }}</span>
           </v-avatar>
@@ -44,22 +44,23 @@ import { Prop, Component, Vue } from "vue-property-decorator";
 import auth from "@/store/modules/auth";
 import { User } from "@/types/user";
 
-//const authModule = namespace("auth");
-
 @Component
-export default class UserIcon extends Vue {
+export default class UserMenu extends Vue {
   @Prop({ default: false }) isTitleHidden?: boolean;
   @Prop({ default: false }) hasDropDown?: boolean;
-  user?: User = auth.user;
 
-  logout(): void {
-    auth
-      .logout()
-      .then(() => {
-        this.$router.push({ name: "Login" });
-        this.$toast.success(this.$t("login.logout").toString());
-      })
-      .catch(() => this.$toast.error(this.$t("login.failed").toString()));
+  get user(): User | undefined {
+    return auth.user;
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await auth.logout();
+      this.$router.push({ name: "Login" });
+      this.$toast.success(this.$t("login.logout").toString());
+    } catch {
+      this.$toast.error(this.$t("login.failed").toString());
+    }
   }
 
   get initials(): string {
@@ -75,7 +76,7 @@ export default class UserIcon extends Vue {
   }
 
   goTo(routeName: string): void {
-    this.$router.push({ name: routeName });
+    this.$router.push({ name: routeName }).catch((err) => err);
   }
 }
 </script>

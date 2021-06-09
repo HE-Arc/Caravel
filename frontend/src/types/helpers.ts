@@ -11,3 +11,11 @@ export interface GroupForm {
   picture: File | undefined;
   isPrivate: boolean | undefined;
 }
+
+export interface GroupEditForm {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export type Dictionary<T> = { [key: string]: T };

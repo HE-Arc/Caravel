@@ -29,10 +29,8 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import GroupSelector from "@/components/GroupSelector.vue";
-import mainStore from "@/store/modules/main";
-import { namespace } from "vuex-class";
+import groupModule from "@/store/modules/groups";
 import { Group } from "@/types/group";
-const mainModule = namespace("mainStore");
 
 @Component({
   components: {
@@ -42,7 +40,10 @@ const mainModule = namespace("mainStore");
 export default class GroupContainer extends Vue {
   groupId = this.$route.params.group_id;
   activeTab = "tasks";
-  @mainModule.Getter group!: Group;
+
+  get group(): Group | undefined {
+    return groupModule.group;
+  }
 
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router
   tabs = {
@@ -63,10 +64,12 @@ export default class GroupContainer extends Vue {
     },
   };
 
-  created(): void {
-    mainStore.loadGroup(this.groupId).catch((err) => {
+  async created(): Promise<void> {
+    try {
+      groupModule.selectGroup(this.groupId);
+    } catch (err) {
       this.$toast.error(err.response.data.message);
-    });
+    }
   }
 }
 </script>

@@ -72,18 +72,16 @@ export default class Login extends Vue {
   username = "";
   password = "";
 
-  login(): void {
+  async login(): Promise<void> {
     let mail = this.username;
     let password = this.password;
-    auth
-      .login({ mail, password })
-      .then(() => {
-        this.$toast.success(this.$t("login.logged_in").toString());
-        this.$router.push({ name: "Home" });
-      })
-      .catch(() => {
-        this.$toast.error(this.$t("login.failed").toString());
-      });
+    try {
+      await auth.login({ mail, password });
+      this.$toast.success(this.$t("login.logged_in").toString());
+      this.$router.push({ name: "Home" });
+    } catch {
+      this.$toast.error(this.$t("login.failed").toString());
+    }
   }
 
   get loading(): boolean {

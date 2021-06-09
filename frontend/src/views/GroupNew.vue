@@ -10,18 +10,18 @@
             editable
             :rules="[() => group.name != undefined, () => group.name != '']"
           >
-            {{ $t("groups.create.step1.name") }}
-            <small>{{ $t("groups.create.step1.example") }}</small>
+            {{ $t("groups.create.name.name") }}
+            <small>{{ $t("groups.create.name.example") }}</small>
           </v-stepper-step>
 
           <v-stepper-content step="1">
             <v-card class="mb-6" flat>
               <v-card-text>
                 <v-text-field
-                  :label="$t('groups.create.step1.label')"
-                  :placeholder="$t('groups.create.step1.placeholder')"
+                  :label="$t('groups.create.name.label')"
+                  :placeholder="$t('groups.create.name.placeholder')"
                   v-model="group.name"
-                  :messages="$t('groups.create.step1.help')"
+                  :messages="$t('groups.create.name.help')"
                   autocomplete="off"
                 >
                 </v-text-field>
@@ -31,7 +31,7 @@
                   <img :src="imageUrl" :alt="group.name" />
                 </v-avatar>
                 <v-file-input
-                  :label="$t('groups.create.step1.image')"
+                  :label="$t('groups.create.name.image')"
                   filled
                   prepend-icon="mdi-camera"
                   v-model="group.picture"
@@ -48,18 +48,18 @@
           </v-stepper-content>
 
           <v-stepper-step :complete="e6 > 2" step="2" editable>
-            {{ $t("groups.create.step2.name") }}
-            <small> {{ $t("groups.create.step2.example") }} </small>
+            {{ $t("groups.create.description.name") }}
+            <small> {{ $t("groups.create.description.example") }} </small>
           </v-stepper-step>
 
           <v-stepper-content step="2">
             <v-card class="mb-12" flat>
               <v-card-text>
                 <v-textarea
-                  :label="$t('groups.create.step2.label')"
-                  :placeholder="$t('groups.create.step2.placeholder')"
+                  :label="$t('groups.create.description.label')"
+                  :placeholder="$t('groups.create.description.placeholder')"
                   v-model="group.description"
-                  :messages="$t('groups.create.step2.help')"
+                  :messages="$t('groups.create.description.help')"
                   autocomplete="off"
                 >
                 </v-textarea>
@@ -77,7 +77,7 @@
             :rules="[() => group.isPrivate != undefined]"
             editable
           >
-            {{ $t("groups.create.step3.name") }}
+            {{ $t("groups.create.type.name") }}
           </v-stepper-step>
 
           <v-stepper-content step="3">
@@ -92,13 +92,13 @@
                   >
                     <v-card-text class="text-center pa-10">
                       <v-icon x-large>{{
-                        $t("groups.create.step3.type2.icon")
+                        $t("groups.create.type.type2.icon")
                       }}</v-icon>
                       <h3 class="mb-2">
-                        {{ $t("groups.create.step3.type2.title") }}
+                        {{ $t("groups.create.type.type2.title") }}
                       </h3>
                       <small>{{
-                        $t("groups.create.step3.type2.subtitle")
+                        $t("groups.create.type.type2.subtitle")
                       }}</small>
                     </v-card-text>
                   </v-card>
@@ -112,13 +112,13 @@
                   >
                     <v-card-text class="text-center pa-10">
                       <v-icon x-large>{{
-                        $t("groups.create.step3.type1.icon")
+                        $t("groups.create.type.type1.icon")
                       }}</v-icon>
                       <h3 class="mb-2">
-                        {{ $t("groups.create.step3.type1.title") }}
+                        {{ $t("groups.create.type.type1.title") }}
                       </h3>
                       <small>{{
-                        $t("groups.create.step3.type1.subtitle")
+                        $t("groups.create.type.type1.subtitle")
                       }}</small>
                     </v-card-text>
                   </v-card>
@@ -136,7 +136,7 @@
           </v-stepper-content>
 
           <v-stepper-step step="4">
-            {{ $t("groups.create.step4.name") }}
+            {{ $t("groups.create.resume") }}
           </v-stepper-step>
           <v-stepper-content step="4">
             <v-card class="mb-12" dark>
@@ -148,10 +148,10 @@
                   {{ group.name }}
                 </span>
                 <v-icon medium v-if="group.isPrivate === false">{{
-                  $t("groups.create.step3.type2.icon")
+                  $t("groups.create.type.type2.icon")
                 }}</v-icon>
                 <v-icon medium v-else>{{
-                  $t("groups.create.step3.type1.icon")
+                  $t("groups.create.type.type1.icon")
                 }}</v-icon>
               </v-card-title>
               <v-card-text>

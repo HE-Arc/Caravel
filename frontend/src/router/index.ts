@@ -63,6 +63,24 @@ const routes: Array<RouteConfig> = [
         path: "settings",
         name: "settings",
         component: () => import("../views/Group/Settings.vue"),
+        redirect: { name: "manage" },
+        children: [
+          {
+            path: "manage",
+            name: "manage",
+            component: () => import("../views/Group/Settings/Manage.vue"),
+          },
+          {
+            path: "members",
+            name: "members",
+            component: () => import("../views/Group/Settings/Members.vue"),
+          },
+          {
+            path: "requests",
+            name: "requests",
+            component: () => import("../views/Group/Settings/Requests.vue"),
+          },
+        ],
       },
     ],
   },
