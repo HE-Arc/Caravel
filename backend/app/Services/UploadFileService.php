@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -7,7 +7,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
-class UploadFileService {
+class UploadFileService
+{
 
     /**
      * Upload file and resize needed (if it's an image) 
@@ -17,8 +18,11 @@ class UploadFileService {
      * @param bool $sqaureIt true to square image 
      * 
      */
-    public function uploadFileToFolder(string $folder, File $file, $size = 250, $squareIt = true): string {
+    public function uploadFileToFolder(string $folder, File $file, $size = 250, $squareIt = true, $imagedisk = 'public_uploads'): string
+    {
         $name = $file->hashName();
+
+        if (substr($folder, -1) != '/') $folder .= '/';
 
         if (substr($file->getMimeType(), 0, 5) == 'image') {
             $im = Image::make($file->getPathname());
@@ -34,11 +38,10 @@ class UploadFileService {
                 }
                 $file = (string) $im->encode();
                 $folder .= $name;
-                return Storage::put($folder, $file) ? $folder : null;
+                return Storage::disk($imagedisk)->put($folder, $file) ? $folder : null;
             }
         }
 
         return Storage::put($folder, $file) ? $folder . $name : null;
     }
-    
 }

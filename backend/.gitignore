@@ -12,3 +12,5 @@ npm-debug.log
 yarn-error.log
 /public/upload/users/pictures
 /public/upload/groups/pictures
+/public/uploads
+/public/upload

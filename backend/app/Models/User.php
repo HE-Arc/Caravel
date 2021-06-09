@@ -18,10 +18,6 @@ class User extends Authenticatable implements LdapAuthenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap;
 
-
-
-    protected $appends = ['picture_full'];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -38,7 +34,6 @@ class User extends Authenticatable implements LdapAuthenticatable
      * Ldap objectclass attribute
      * 
      */
-
     public static $objectClasses = [
         'top',
         'person',
@@ -76,8 +71,9 @@ class User extends Authenticatable implements LdapAuthenticatable
      * 
      * @param $state Group::REQUESTATUS
      */
-    public function scopeState(Builder $query, $state): Builder {
-        return $query->whereHas('groups', function (Builder $q) use($state) {
+    public function scopeState(Builder $query, $state): Builder
+    {
+        return $query->whereHas('groups', function (Builder $q) use ($state) {
             $q->where('isApprouved', $state);
         });
     }
@@ -138,30 +134,32 @@ class User extends Authenticatable implements LdapAuthenticatable
     /**
      * This function delete user's picture profile
      */
-    public function deletePicture(){
-        if(isset($this->picture)){
-            if(File::exists(public_path($this->picture)))
-                File::delete(public_path($this->picture));
-            $this->picture=null;
+    public function deletePicture()
+    {
+        $filepath = config("filesystems.disks.public_uploads.root") . $this->picture;
+        if (File::exists($filepath)) {
+            File::delete($filepath);
+            $this->picture = null;
         }
     }
 
     /**
      * Utility fonction to set profile picture
      */
-    public function setProfilePic(string $filepath) {
+    public function setProfilePic(string $filepath)
+    {
         $this->deletePicture();
 
-        $this->picture=$filepath;
+        $this->picture = $filepath;
     }
 
-        /**
-     * Determine if the user is an administrator.
+    /**
+     * Add full path of picture in serialization process
      *
      * @return string
      */
-    public function getPictureFullAttribute()
+    public function getPictureAttribute($value)
     {
-        return URL::to('/') . $this->picture;
+        return $value ? URL::to('/') . '/uploads' . $value : "";
     }
 }

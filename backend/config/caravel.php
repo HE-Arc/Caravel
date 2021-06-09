@@ -1,7 +1,7 @@
 <?php
 
 return [
-  
+
     /*
     |--------------------------------------------------------------------------
     | Default Placeholders
@@ -11,16 +11,16 @@ return [
     |
     */
 
-    'groups' => 
-        [
-            'pictureFolder' => '/upload/groups/pictures/',
-            'pictureBase' => 'base.png',
-        ],
-  
-    'users' => 
-        [
-            'pictureFolder' => '/upload/users/pictures/',
-            'pictureBase' => 'base.png',
-            'baseTimezone' => 'Europe/Paris',
-        ],
+    'groups' =>
+    [
+        'pictureFolder' => '/groups/',
+        'pictureBase' => 'base.png',
+    ],
+
+    'users' =>
+    [
+        'pictureFolder' => '/users/',
+        'pictureBase' => 'base.png',
+        'baseTimezone' => 'Europe/Paris',
+    ],
 ];
