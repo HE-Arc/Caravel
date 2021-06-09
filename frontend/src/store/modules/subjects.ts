@@ -17,7 +17,7 @@ import {
   preserveState: localStorage.getItem("vuex") !== null,
 })
 class SubjectModule extends VuexModule {
-  _subjects: Subject[] = []
+  _subjects: Subject[] = [];
   _status = "";
 
   get subjects(): Subject[] {
@@ -41,27 +41,27 @@ class SubjectModule extends VuexModule {
   @Mutation
   private LOAD_SUBJECTS(subjects: Subject[]) {
     this._subjects = subjects;
-    this._status = "subjects_loaded";
+    this._status = "loaded";
   }
 
   @Mutation
   private UPSERT_SUBJECT(subject: Subject) {
-    let index = this._subjects.findIndex(item => item.id == subject.id);
+    const index = this._subjects.findIndex((item) => item.id == subject.id);
     if (index === -1) {
       this._subjects.push(subject);
-      this._status = "subject_added";
+      this._status = "added";
     } else {
       this._subjects[index] = subject;
-      this._status = "subject_modified";
+      this._status = "modified";
     }
   }
 
   @Mutation
   private REMOVE_SUBJECT(subject: Subject) {
-    let index = this._subjects.findIndex(item => item.id == subject.id);
+    const index = this._subjects.findIndex((item) => item.id == subject.id);
     if (index !== -1) {
       this._subjects.splice(index, 1);
-      this._status = "subject_delete";
+      this._status = "delete";
     }
   }
 
@@ -71,7 +71,7 @@ class SubjectModule extends VuexModule {
       this.REQUEST();
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects`,
-        method: 'POST',
+        method: "POST",
         data: subject,
       })
         .then((response) => {
@@ -91,13 +91,15 @@ class SubjectModule extends VuexModule {
     return new Promise<AxiosResponse>((resolve, reject) => {
       this.REQUEST();
       axios({
-        url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects/${subject.id}`,
-        method: 'PATCH',
+        url:
+          process.env.VUE_APP_API_BASE_URL +
+          `groups/${groupId}/subjects/${subject.id}`,
+        method: "PATCH",
         data: subject,
       })
         .then((response) => {
           const data: Subject = response.data;
-          this.UPSERT_SUBJECT(subject);
+          this.UPSERT_SUBJECT(data);
           resolve(response);
         })
         .catch((err) => {
@@ -112,8 +114,10 @@ class SubjectModule extends VuexModule {
     return new Promise<AxiosResponse>((resolve, reject) => {
       this.REQUEST();
       axios({
-        url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects/${subject.id}`,
-        method: 'DELETE',
+        url:
+          process.env.VUE_APP_API_BASE_URL +
+          `groups/${groupId}/subjects/${subject.id}`,
+        method: "DELETE",
       })
         .then((response) => {
           this.REMOVE_SUBJECT(subject);
@@ -130,7 +134,6 @@ class SubjectModule extends VuexModule {
   load(subjects: Subject[]) {
     this.LOAD_SUBJECTS(subjects);
   }
-
 }
 
 const instance = getModule(SubjectModule);

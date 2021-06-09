@@ -41,7 +41,7 @@ class TasksModule extends VuexModule {
     @Mutation
     private LOAD_TASKS(tasks: Task[]) {
         this._tasks = tasks;
-        this._status = "tasks_loaded";
+        this._status = "loaded";
     }
 
     @Mutation
@@ -49,10 +49,10 @@ class TasksModule extends VuexModule {
         let index = this._tasks.findIndex(item => item.id == task.id);
         if (index === -1) {
             this._tasks.push(task);
-            this._status = "task_added";
+            this._status = "added";
         } else {
             this._tasks[index] = task;
-            this._status = "task_modified";
+            this._status = "modified";
         }
     }
 
@@ -61,7 +61,7 @@ class TasksModule extends VuexModule {
         let index = this._tasks.findIndex(item => item.id == task.id);
         if (index !== -1) {
             this._tasks.splice(index, 1);
-            this._status = "task_delete";
+            this._status = "delete";
         }
     }
 
@@ -71,7 +71,7 @@ class TasksModule extends VuexModule {
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios({
                 url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks`,
-                method: 'POST',
+                method: "POST",
                 data: task,
             })
                 .then((response) => {
@@ -92,7 +92,7 @@ class TasksModule extends VuexModule {
             this.REQUEST();
             axios({
                 url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${task.id}`,
-                method: 'PATCH',
+                method: "PATCH",
                 data: task,
             })
                 .then((response) => {
@@ -113,7 +113,7 @@ class TasksModule extends VuexModule {
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios({
                 url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${task.id}`,
-                method: 'DELETE',
+                method: "DELETE",
             })
                 .then((response) => {
                     this.REMOVE_TASK(task);
