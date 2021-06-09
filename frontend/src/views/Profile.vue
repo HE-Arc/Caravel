@@ -1,37 +1,18 @@
 <template>
   <v-container class="mt-8">
-    <avatar-cropper
-      @uploaded="handleUploaded"
-      requestMethod="POST"
-      :labels="labels"
-      trigger="#pick-avatar"
-      upload-form-name="picture"
-      :upload-headers="{
-        Authorization: `Bearer ${authToken}`,
-        Accept: 'application/json',
-      }"
-      :upload-url="uploadURL"
-      :upload-form-data="{
-        _method: 'PATCH',
-      }"
-    />
     <v-row>
       <v-col cols="12" md="4">
         <v-card dark class="text-center">
           <v-container>
             <v-row>
               <v-col cols="12" class="align-center">
-                <button id="pick-avatar">
-                  <v-avatar color="brown" class="profile" size="164">
-                    <v-img
-                      v-if="authUser.picture"
-                      :src="authUser.picture_full"
-                    ></v-img>
-                    <span v-else class="white--text text-h6">{{
-                      initials
-                    }}</span>
-                  </v-avatar>
-                </button>
+                <avatar-upload
+                  @handleResponse="handleUpload"
+                  :token="authToken"
+                  :upload-url="uploadURL"
+                  :picture="authUser.picture"
+                  :name="authUser.name"
+                />
               </v-col>
               <v-col>
                 <v-list-item color="rgba(0, 0, 0, .4)" dark>
@@ -80,30 +61,29 @@
 import { User } from "@/types/user";
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Getter } from "vuex-class";
 import AvatarCropper from "vue-avatar-cropper";
-import { Dictionary } from "vue-router/types/router";
-import { AuthActions } from "@/store/modules/auth";
+import auth from "@/store/modules/auth";
+import AvatarUpload from "@/components/AvatarUpload.vue";
 
 @Component({
   components: {
     AvatarCropper,
+    AvatarUpload,
   },
 })
 export default class Profile extends Vue {
-  @Getter authUser!: User;
-  @Getter authToken!: string;
   showCrop = false;
 
-  get labels(): Dictionary<string> {
-    return {
-      submit: this.$t("global.submit").toString(),
-      cancel: this.$t("global.cancel").toString(),
-    };
+  get authToken(): string {
+    return auth.token;
+  }
+
+  get authUser(): User | undefined {
+    return auth.user;
   }
 
   get getPicture(): string {
-    return this.authUser.picture ? this.authUser.picture_full : "";
+    return this.authUser ? this.authUser.picture : "";
   }
 
   get uploadURL(): string {
@@ -111,23 +91,19 @@ export default class Profile extends Vue {
   }
 
   get initials(): string {
-    if (this.authUser === undefined) return "";
+    if (auth.user === undefined) return "";
 
-    let split = this.authUser?.name.split(" ");
+    let split = auth.user?.name.split(" ");
     let name =
       split.length > 1
         ? split[0].charAt(0) + split[split.length - 1].charAt(0)
-        : this.authUser?.name.charAt(0) + ".";
+        : auth.user?.name.charAt(0) + ".";
 
     return name.toUpperCase();
   }
 
-  changeFile(): void {
-    console.log("0test");
-  }
-
-  handleUploaded(user: User): void {
-    this.$store.dispatch(AuthActions.UPDATE, user);
+  handleUpload(user: User): void {
+    auth.update(user);
   }
 }
 </script>

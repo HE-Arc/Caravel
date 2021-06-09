@@ -28,22 +28,20 @@ class TaskController extends Controller
     {
         $userid =  auth()->user()->id;
         $tasks = $group->tasks()->orderBy('due_at', 'asc')
-                                ->where(function($query) use($userid) {
-                                    $query->where('isPrivate', '=', 0)
-                                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-                                })->whereDate('due_at', '>=', Carbon::now())->paginate(TaskController::PAGINATION_LIMIT);
-                                
-        $projects = $group->tasks()->orderBy('due_at', 'asc')
-                        ->where('tasktype_id', '=', TaskType::PROJECT)
-                        ->where(function($query) use($userid) {
-                            $query->where('isPrivate', '=', 0)
-                            ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-                        })->whereDate('due_at', '>=', Carbon::now())->get()->paginate(TaskController::PAGINATION_LIMIT);
+            ->where(function ($query) use ($userid) {
+                $query->where('isPrivate', '=', 0)
+                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
+            })->whereDate('due_at', '>=', Carbon::now())->get();
 
-        return response()->json([
-            'tasks' => $tasks,
-            'projects' => $projects,
-        ]);
+        //TODO remove if not necessary
+        /*$projects = $group->tasks()->orderBy('due_at', 'asc')
+            ->where('tasktype_id', '=', TaskType::PROJECT)
+            ->where(function ($query) use ($userid) {
+                $query->where('isPrivate', '=', 0)
+                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
+            })->whereDate('due_at', '>=', Carbon::now())->paginate(TaskController::PAGINATION_LIMIT);*/
+
+        return response()->json($tasks);
     }
 
     /**
@@ -67,7 +65,7 @@ class TaskController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function comment(CommentRequest $request, Group $group, Task $task)
-    {   
+    {
         $comment = Comment::create($request->validated());
 
         $comment->user_id = $this->user->id;
@@ -76,7 +74,7 @@ class TaskController extends Controller
         return response()->json($comment);
     }
 
-      /**
+    /**
      * Display the specified resource.
      *
      * @param Request $request
@@ -87,7 +85,7 @@ class TaskController extends Controller
      */
     public function delComment(Request $request, Group $group, Task $task, Comment $comment)
     {
-        if ($this->user->id==$comment->user->id) {
+        if ($this->user->id == $comment->user->id) {
             $comment->delete();
             return response()->json(__('api.comments.delete'));
         }
@@ -115,10 +113,12 @@ class TaskController extends Controller
      */
     public function edit(Group $group, Task $task)
     {
-        return response()->json( ['group' => $group,
-                                'types' => TaskType::TYPES_KEY,
-                                'subjects' => $group->subjects,
-                                'task' => $task]);
+        return response()->json([
+            'group' => $group,
+            'types' => TaskType::TYPES_KEY,
+            'subjects' => $group->subjects,
+            'task' => $task
+        ]);
     }
 
     /**
@@ -147,7 +147,7 @@ class TaskController extends Controller
     {
         $task->fill($request->validated());
         $task->save();
-        
+
         return $task;
     }
 
@@ -159,7 +159,7 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Group $group, Task $task)
     {
-        if (auth()->user()->id==$task->user->id) {
+        if (auth()->user()->id == $task->user->id) {
             $task->delete();
             return response()->json(__('api.tasks.deleted'));
         }

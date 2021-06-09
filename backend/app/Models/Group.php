@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 
 class Group extends Model
 {
@@ -27,11 +28,6 @@ class Group extends Model
         'isPrivate',
     ];
 
-    public function pictureOrDefault()
-    {
-        return $this->picture ?? asset(config('caravel.groups.pictureFolder') . config('caravel.groups.pictureBase'));
-    }
-
     public function users()
     {
         return $this->belongsToMany('App\Models\User')->withTimestamps();
@@ -47,8 +43,9 @@ class Group extends Model
      * 
      * @param $state Group::REQUESTATUS
      */
-    public function scopeState(Builder $query, $state): Builder {
-        return $query->whereHas('users', function (Builder $q) use($state) {
+    public function scopeState(Builder $query, $state): Builder
+    {
+        return $query->whereHas('users', function (Builder $q) use ($state) {
             $q->where('isApprouved', $state);
         });
     }
@@ -86,33 +83,40 @@ class Group extends Model
     /**
      * Safely delete the picture
      */
-    public function removePicture(){
+    public function removePicture()
+    {
         //verify existence both in group and in file before deleting
-        if(isset($this->picture) && File::exists(public_path($this->picture))){ 
+        if (isset($this->picture) && File::exists(public_path($this->picture))) {
             File::delete(public_path($this->picture));
         }
     }
 
-    public function getStorageFolder() {
-        return config('smartmd.files.root') . "/groups/" . $this->id;
+    public function getStorageFolder()
+    {
+        return config('caravel.groups.pictureFolder') . $this->id;
     }
 
     /**
      * Delete the data (ex : files from comment) of the group in storage
      */
-    public function deleteStorage(){
+    public function deleteStorage()
+    {
+        $disks = array('public', 'public_uploads');
         //if the group has a storage, delete the entire directory (files)
-        if(Storage::exists($this->getStorageFolder())){
-            Storage::deleteDirectory($this->getStorageFolder());
+        foreach ($disks as $disk) {
+            if (Storage::disk($disk)->exists($this->getStorageFolder())) {
+                Storage::disk($disk)->deleteDirectory($this->getStorageFolder());
+            }
         }
     }
 
     /**
      * Safely delete the picture of the group if it exists
      */
-    public function deletePicture(){
+    public function deletePicture()
+    {
         //verify existence both in group and in file before deleting
-        if(isset($this->picture) && File::exists(public_path($this->picture))){ 
+        if (isset($this->picture) && File::exists(public_path($this->picture))) {
             File::delete(public_path($this->picture));
         }
     }
@@ -122,23 +126,35 @@ class Group extends Model
      * delete the group, including its picture 
      * and its eventual storage datas
      */
-    public function delete(): bool {
+    public function delete(): bool
+    {
         $this->deletePicture();
         $this->deleteStorage();
         return parent::delete();
     }
 
-    public static function getFilteredGroupsForUser($userId, $text) {
+    public static function getFilteredGroupsForUser($userId, $text)
+    {
         return Group::query()
-        ->select('groups.*', 'group_user.isApprouved as status')
-        ->leftJoin('group_user', function ($join) use($userId) {
-            $join->on('group_user.group_id','=','groups.id');
-            $join->on('group_user.user_id','=',DB::raw($userId));
-        })
-        ->where('name', 'LIKE', "%$text%")
-        ->where(function($query) {
-            $query->where('isApprouved', '!=', Group::ACCEPTED)
-                  ->orWhereNull('isApprouved');
-        });
+            ->select('groups.*', 'group_user.isApprouved as status')
+            ->leftJoin('group_user', function ($join) use ($userId) {
+                $join->on('group_user.group_id', '=', 'groups.id');
+                $join->on('group_user.user_id', '=', DB::raw($userId));
+            })
+            ->where('name', 'LIKE', "%$text%")
+            ->where(function ($query) {
+                $query->where('isApprouved', '!=', Group::ACCEPTED)
+                    ->orWhereNull('isApprouved');
+            });
+    }
+
+    /**
+     * Add full path of picture in serialization process.
+     *
+     * @return string
+     */
+    public function getPictureAttribute($value)
+    {
+        return $value ? URL::to('/') . '/uploads' . $value : $value;
     }
 }

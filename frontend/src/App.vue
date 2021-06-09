@@ -12,7 +12,7 @@
           />
         </router-link>
       </div>
-      <search-bar class="ml-2" v-if="isLoggedIn"></search-bar>
+      <search-bar class="ml-2 d-none d-md-flex" v-if="isLoggedIn"></search-bar>
 
       <v-spacer></v-spacer>
 
@@ -22,7 +22,7 @@
         <v-icon>mdi-bell-ring</v-icon>
       </v-btn>
 
-      <user-icon class="mr-3" v-if="isLoggedIn"></user-icon>
+      <user-menu class="mr-3" v-if="isLoggedIn"></user-menu>
     </v-app-bar>
 
     <v-main>
@@ -36,24 +36,25 @@ import Vue from "vue";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
 import axios from "axios";
-import { Getter } from "vuex-class";
-import UserIcon from "./components/UserIcon.vue";
+import UserMenu from "./components/UserMenu.vue";
 import AddContent from "./components/AddContent.vue";
 import SearchBar from "./components/SearchBar.vue";
+import auth from "@/store/modules/auth";
 
 @Component({
   components: {
-    UserIcon,
+    UserMenu,
     AddContent,
     SearchBar,
   },
 })
 export default class App extends Vue {
-  @Getter isLoggedIn!: boolean;
-  @Getter authToken!: string;
+  get isLoggedIn(): boolean {
+    return auth.isLoggedIn;
+  }
 
-  mounted(): void {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${this.authToken}`;
+  get token(): string {
+    return auth.token;
   }
 }
 </script>

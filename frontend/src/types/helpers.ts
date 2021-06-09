@@ -1,8 +1,3 @@
-export interface Credentials {
-  mail: string;
-  password: string;
-}
-
 export enum JoinStatus {
   PENDING = 0,
   REFUSED = 1,
@@ -16,3 +11,11 @@ export interface GroupForm {
   picture: File | undefined;
   isPrivate: boolean | undefined;
 }
+
+export interface GroupEditForm {
+  id: number;
+  name: string;
+  description: string;
+}
+
+export type Dictionary<T> = { [key: string]: T };

@@ -1,7 +1,8 @@
 import { Group } from "./group";
+import { Task } from "./task"
 
 export interface GroupState {
-  groups: Group[]
+  group: Group | undefined;
   status: string;
-  selected: Group | undefined;
+  tasks: Task[];
 }

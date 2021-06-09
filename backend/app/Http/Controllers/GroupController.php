@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FileUploadRequest;
 use App\Http\Requests\GroupRequest;
+use App\Http\Requests\GroupEditRequest;
 use App\Http\Requests\MemberGroupRequest;
 use App\Http\Requests\MemberStatusRequest;
 use App\Models\Group;
@@ -12,8 +13,6 @@ use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
-use function PHPUnit\Framework\isEmpty;
 
 class GroupController extends Controller
 {
@@ -31,7 +30,7 @@ class GroupController extends Controller
             $text = $request->input('text') ?? "";
             return $this->filtered($text);
         }
-        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user');
+        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user')->get();
         return response()->json($groups);
     }
 
@@ -68,7 +67,7 @@ class GroupController extends Controller
         $file = $data['file'];
 
         $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file);
-        
+
         return response()->json(
             [
                 'path' => route('groups.files', ['group' => $group, 'file' => $filepath]),
@@ -84,15 +83,15 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(GroupRequest $request, Group $group, UploadFileService $fileService)
+    public function update(GroupEditRequest $request, Group $group, UploadFileService $fileService)
     {
         $data = $request->validated();
 
-        if ($request->hasfile('picture')){
+        if ($request->hasfile('picture')) {
             $group->picture = $fileService->uploadFileToFolder($group->getStorageFolder(), $request->file('picture'));
         }
 
-        if ($request->has("user_id")) { 
+        if ($request->has("user_id")) {
             $this->changeLeader($group, $data['user_id']);
         }
 
@@ -105,15 +104,16 @@ class GroupController extends Controller
     /**
      * Delete the given member from the group
      */
-    public function removeMember(MemberGroupRequest $request, Group $group){
+    public function removeMember(MemberGroupRequest $request, Group $group)
+    {
         $data = $request->validated();
 
         //verify : only the group leader can kick someone
-        if(Auth::id() != $group->user_id){
+        if (Auth::id() != $group->user_id) {
             return response()->json(["message" => __('api.groups.admin_operation')], 403);
         }
 
-        if ($data['user_id'] == $group->user_id) 
+        if ($data['user_id'] == $group->user_id)
             return response()->json(['message' => __('api.groups.resource_restricted')], 403);
 
         $group->users()->detach($data['user_id']);
@@ -130,7 +130,7 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         //verify : User must be the leader of the group
-        if(!$this->user->can('delete', $group)){
+        if (!$this->user->can('delete', $group)) {
             return response()->json(["message" => __('api.groups.admin_operation')], 403);
         }
 
@@ -143,7 +143,8 @@ class GroupController extends Controller
      * Change status of user in a group
      * status can be found under Group::REQUESTSTATUS
      */
-    public function updateMemberStatus(MemberStatusRequest $request, Group $group) {
+    public function updateMemberStatus(MemberStatusRequest $request, Group $group)
+    {
         $data = $request->validated();
 
         if ($group->author == $data['user_id'])
@@ -157,17 +158,19 @@ class GroupController extends Controller
     /**
      * Change the leader of the group
      */
-    public function changeLeader(Group $group, User $user){
+    public function changeLeader(Group $group, User $user)
+    {
         //verify that the user is already in the group
-        if($group->users->find($user->id)){
+        if ($group->users->find($user->id)) {
             $group->user_id = $user->id;
         }
     }
 
-    public function join(Group $group){
+    public function join(Group $group)
+    {
         $userId = Auth::id();
         //verification of non existence (a refused/accepter/pending user can not ask again to join a group)
-        if($group->users()->find($userId) == null){
+        if ($group->users()->find($userId) == null) {
             $group->users()->attach($userId, ['isApprouved' => Group::PENDING]);
             return response()->json(["message" => TRUE]);
         }
@@ -178,12 +181,13 @@ class GroupController extends Controller
     /**
      * @returns JSON containing groups
      */
-    public function filtered(String $str){
+    public function filtered(String $str)
+    {
         //fetch current user
         $userId = Auth::id();
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        $groups = (!empty($str)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(1) : [];
+        $groups = (!empty($str)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(GroupController::PAGINATION_LIMIT) : [];
 
         return response()->json($groups);
     }
@@ -194,7 +198,8 @@ class GroupController extends Controller
      * @param int $group 
      * @return \Illuminate\Http\Response
      */
-    public function getFile(Group $group, $file) {
+    public function getFile(Group $group, $file)
+    {
         return response()->file(Storage::path($group->getStorageFolder() . "/" . $file));
     }
 

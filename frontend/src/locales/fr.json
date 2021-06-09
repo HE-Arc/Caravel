@@ -6,6 +6,9 @@
     "cancel": "Annuler",
     "back": "Revenir",
     "submit": "Envoyer",
+    "save": "Sauvegarder",
+    "success": "Action effectuée avec succès !",
+    "error_form": "Une ou plusieurs données sont invalides",
     "roles": {
       "student": "Etudiant",
       "teacher": "Professeur"
@@ -39,22 +42,22 @@
     "ask": "La demande a été envoyée",
     "create": {
       "title": "Création d'un groupe",
-      "step1": {
+      "name": {
         "name": "Définissez le nom du groupe et une image",
         "example": "ex.: INF XXX b 2020-2021",
         "label": "Nom de groupe",
         "placeholder": "Taper le nom de votre groupe",
         "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement !",
-        "image" : "Image du groupe"
+        "image": "Image du groupe"
       },
-      "step2": {
+      "description": {
         "name": "Description du groupe",
         "example": "ex. Super groupe d'informatique",
         "label": "Description du groupe",
         "placeholder": "Taper la description du groupe",
         "help": "Une description qui permette aux futurs membres de le trouver !"
       },
-      "step3": {
+      "type": {
         "name": "Type du groupe",
         "type1": {
           "icon": "mdi-lock",
@@ -67,10 +70,22 @@
           "subtitle": "Ce groupe représente une classe, les professeurs peuvent s'y inscrire sans co-optage"
         }
       },
-      "step4": {
-        "name": "Résumé du groupe"
-      },
+      "resume": "Résumé du groupe",
       "success": "Le groupe a été créé !"
+    }
+  },
+  "group": {
+    "tabs": {
+      "tasks": "Tâches",
+      "calendar": "Calendrier",
+      "timeline": "Chronologique",
+      "stats": "Statistiques",
+      "settings": "Paramètres"
+    },
+    "settings": {
+      "manage": "Options",
+      "members": "Membres",
+      "requests": "Requêtes"
     }
   },
   "profile": {
