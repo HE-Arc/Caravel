@@ -68,6 +68,7 @@ class SubjectModule extends VuexModule {
   @Action
   add(groupId: string, subject: Subject): Promise<AxiosResponse> {
     return new Promise<AxiosResponse>((resolve, reject) => {
+      this.REQUEST();
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects`,
         method: 'POST',
@@ -88,6 +89,7 @@ class SubjectModule extends VuexModule {
   @Action
   update(groupId: string, subject: Subject): Promise<AxiosResponse> {
     return new Promise<AxiosResponse>((resolve, reject) => {
+      this.REQUEST();
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects/${subject.id}`,
         method: 'PATCH',
@@ -108,6 +110,7 @@ class SubjectModule extends VuexModule {
   @Action
   delete(groupId: string, subject: Subject): Promise<AxiosResponse> {
     return new Promise<AxiosResponse>((resolve, reject) => {
+      this.REQUEST();
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects/${subject.id}`,
         method: 'DELETE',

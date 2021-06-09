@@ -67,6 +67,7 @@ class TasksModule extends VuexModule {
 
     @Action
     add(groupId: string, task: Task): Promise<AxiosResponse> {
+        this.REQUEST();
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios({
                 url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks`,
@@ -88,6 +89,7 @@ class TasksModule extends VuexModule {
     @Action
     update(groupId: string, task: Task): Promise<AxiosResponse> {
         return new Promise<AxiosResponse>((resolve, reject) => {
+            this.REQUEST();
             axios({
                 url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${task.id}`,
                 method: 'PATCH',
@@ -107,6 +109,7 @@ class TasksModule extends VuexModule {
 
     @Action
     delete(groupId: string, task: Task): Promise<AxiosResponse> {
+        this.REQUEST();
         return new Promise<AxiosResponse>((resolve, reject) => {
             axios({
                 url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${task.id}`,
