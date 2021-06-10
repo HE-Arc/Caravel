@@ -8,11 +8,18 @@
         <v-tabs v-model="activeTab" show-arrows class="ml-6">
           <v-tab
             v-for="(item, key) in tabs"
-            :key="key"
+            :key="item + key"
             :to="$router.resolve({ name: key }).href"
           >
             <v-icon class="mr-2">{{ item.icon }}</v-icon>
             {{ $t("group.tabs." + key) }}
+            <v-chip
+              class="ml-1"
+              small
+              color="error"
+              v-if="item.count != undefined && item.count > 0"
+              v-text="item.count"
+            />
           </v-tab>
         </v-tabs>
       </v-col>
@@ -30,7 +37,9 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import GroupSelector from "@/components/GroupSelector.vue";
 import groupModule from "@/store/modules/groups";
+import memberModule from "@/store/modules/members";
 import { Group } from "@/types/group";
+import { Dictionary } from "@/types/helpers";
 
 @Component({
   components: {
@@ -45,24 +54,31 @@ export default class GroupContainer extends Vue {
     return groupModule.group;
   }
 
+  get pendingCount(): number {
+    return memberModule.pending.length ?? 0;
+  }
+
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router
-  tabs = {
-    tasks: {
-      icon: "mdi-format-list-checkbox",
-    },
-    calendar: {
-      icon: "mdi-calendar",
-    },
-    timeline: {
-      icon: "mdi-chart-timeline",
-    },
-    stats: {
-      icon: "mdi-chart-box-outline",
-    },
-    settings: {
-      icon: "mdi-tune",
-    },
-  };
+  get tabs(): Dictionary<Dictionary<string | number>> {
+    return {
+      tasks: {
+        icon: "mdi-format-list-checkbox",
+      },
+      calendar: {
+        icon: "mdi-calendar",
+      },
+      timeline: {
+        icon: "mdi-chart-timeline",
+      },
+      stats: {
+        icon: "mdi-chart-box-outline",
+      },
+      settings: {
+        icon: "mdi-tune",
+        count: this.pendingCount,
+      },
+    };
+  }
 
   async created(): Promise<void> {
     try {

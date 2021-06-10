@@ -35,7 +35,6 @@
 import Vue from "vue";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
-import axios from "axios";
 import UserMenu from "./components/UserMenu.vue";
 import AddContent from "./components/AddContent.vue";
 import SearchBar from "./components/SearchBar.vue";

@@ -1,5 +1,6 @@
-export interface Group {
-  id: string;
+import { Data } from "./data";
+
+export interface Group extends Data {
   name: string;
   description: string;
   picture: string | undefined;

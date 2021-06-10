@@ -1,7 +1,11 @@
 import { Group } from "@/types/group";
-import { Task } from "@/types/task";
+import TaskModule from "@/store/modules/tasks";
+import SubjectModule from "@/store/modules/subjects";
+import MemberModule from "@/store/modules/members";
+import { GroupExtended } from "@/types/groupExtended";
 import store from "@/store";
 import axios, { AxiosResponse } from "axios";
+import Vue from "vue";
 import {
   VuexModule,
   Module,
@@ -20,7 +24,6 @@ import {
 class GroupModule extends VuexModule {
   _groups: Group[] = [];
   _status = "";
-  _tasks: Task[] = [];
   _groupId = "";
 
   get selectedId(): string {
@@ -39,10 +42,6 @@ class GroupModule extends VuexModule {
     return this._status;
   }
 
-  get tasks(): Task[] {
-    return this._tasks;
-  }
-
   //Mutation
   @Mutation
   private REQUEST() {
@@ -50,34 +49,42 @@ class GroupModule extends VuexModule {
   }
 
   @Mutation
-  private SET_GROUP(groupId: string) {
-    this._status = "group_selected";
-    this._groupId = groupId;
-    this._tasks = [];
+  protected LOAD_GROUPS(items: Group[]): void {
+    this._groups = items;
+    this._status = "loaded";
   }
 
   @Mutation
-  private GROUPS(groups: Group[]) {
-    this._status = "groups_loaded";
-    this._groups = groups;
+  protected UPSERT_GROUP(data: Group): void {
+    const index = this._groups.findIndex((item) => item.id == data.id);
+    if (index === -1) {
+      this._groups.push(data);
+      this._status = "added";
+    } else {
+      //see : https://gist.github.com/DawidMyslak/2b046cca5959427e8fb5c1da45ef7748
+      Vue.set(this._groups, index, data);
+      this._status = "modified";
+    }
   }
 
   @Mutation
-  private TASKS(tasks: Task[]) {
-    this._status = "tasks_loaded";
-    this._tasks = tasks;
+  protected REMOVE_GROUP(data: Group): void {
+    const index = this._groups.findIndex((item) => item.id == data.id);
+    if (index !== -1) {
+      this._groups.splice(index, 1);
+      this._status = "delete";
+    }
+  }
+
+  @Mutation
+  private SET_GROUP(group: GroupExtended) {
+    this._status = "selected";
+    this._groupId = group.id;
   }
 
   @Mutation
   private ERROR() {
     this._status = "error";
-  }
-
-  @Mutation
-  private ERROR_SELECT(groupId: string) {
-    this._status = `Group ${groupId} can't be selected`;
-    this._groupId = "";
-    this._tasks = [];
   }
 
   //Actions
@@ -86,12 +93,15 @@ class GroupModule extends VuexModule {
     return new Promise((resolve, reject) => {
       this.REQUEST();
       axios({
-        url: process.env.VUE_APP_API_BASE_URL + `groups/${id}/tasks`,
+        url: process.env.VUE_APP_API_BASE_URL + `groups/${id}`,
         method: "GET",
       })
         .then((response) => {
-          const tasks: Task[] = response.data;
-          this.TASKS(tasks);
+          const group: GroupExtended = response.data;
+          TaskModule.load(group.tasks);
+          SubjectModule.load(group.subjects);
+          MemberModule.load(group.members);
+          this.SET_GROUP(group);
           resolve(response);
         })
         .catch((err) => {
@@ -106,12 +116,12 @@ class GroupModule extends VuexModule {
     return new Promise((resolve, reject) => {
       this.REQUEST();
       axios({
-        url: process.env.VUE_APP_API_BASE_URL + `groups`,
+        url: process.env.VUE_APP_API_BASE_URL + "groups",
         method: "GET",
       })
         .then((response) => {
           const groups: Group[] = response.data;
-          this.GROUPS(groups);
+          this.LOAD_GROUPS(groups);
           resolve(response);
         })
         .catch((err) => {
@@ -124,10 +134,9 @@ class GroupModule extends VuexModule {
   @Action
   async selectGroup(groupId: string): Promise<void> {
     try {
-      this.SET_GROUP(groupId);
       await this.loadGroup(groupId);
     } catch {
-      this.ERROR_SELECT(groupId);
+      this.ERROR();
     }
   }
 
@@ -142,10 +151,34 @@ class GroupModule extends VuexModule {
           id: group.id,
           name: group.name,
           description: group.description,
+          user_id: group.user_id,
         },
       })
         .then((resp) => {
-          this.loadGroups();
+          const group: Group = resp.data;
+          this.UPSERT_GROUP(group);
+          resolve(resp);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  @Action
+  leave(group: Group): Promise<AxiosResponse> {
+    this.REQUEST();
+    return new Promise((resolve, reject) => {
+      axios({
+        url: process.env.VUE_APP_API_BASE_URL + `profile`,
+        method: "DELETE",
+        data: {
+          group_id: group.id,
+        },
+      })
+        .then((resp) => {
+          const group: Group = resp.data;
+          this.REMOVE_GROUP(group);
           resolve(resp);
         })
         .catch((err) => {

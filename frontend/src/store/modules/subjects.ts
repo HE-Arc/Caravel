@@ -8,6 +8,7 @@ import {
   Action,
   getModule,
 } from "vuex-module-decorators";
+import Vue from "vue";
 
 @Module({
   namespaced: true,
@@ -51,7 +52,7 @@ class SubjectModule extends VuexModule {
       this._subjects.push(subject);
       this._status = "added";
     } else {
-      this._subjects[index] = subject;
+      Vue.set(this._subjects, index, subject);
       this._status = "modified";
     }
   }
