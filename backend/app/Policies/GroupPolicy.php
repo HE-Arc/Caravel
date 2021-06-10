@@ -22,4 +22,21 @@ class GroupPolicy
         return $group->user_id === $user->id;
     }
 
+    /**
+     * Determine whether the user can update the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Group  $group
+     * @return mixed
+     */
+    public function update(User $user, Group $group)
+    {
+        $changes = $group->getDirty();
+
+        if (isset($changes['user_id'])) {
+            $userid = $group->getOriginal('user_id');
+            return $user->id == $userid;
+        }
+        return true;
+    }
 }

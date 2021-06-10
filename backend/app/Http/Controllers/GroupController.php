@@ -30,7 +30,7 @@ class GroupController extends Controller
             $text = $request->input('text') ?? "";
             return $this->filtered($text);
         }
-        $groups = $this->user->groups()->state(Group::ACCEPTED)->with('user')->get();
+        $groups = $this->user->groupsAvailable()->get();
         return response()->json($groups);
     }
 
@@ -91,11 +91,10 @@ class GroupController extends Controller
             $group->picture = $fileService->uploadFileToFolder($group->getStorageFolder(), $request->file('picture'));
         }
 
-        if ($request->has("user_id")) {
-            $this->changeLeader($group, $data['user_id']);
-        }
-
         $group->fill($data);
+
+        $this->authorize('update', $group);
+
         $group->save();
 
         return response()->json($group);
@@ -155,17 +154,6 @@ class GroupController extends Controller
         return response()->json(['message' => __('api.groups.member_updated')]);
     }
 
-    /**
-     * Change the leader of the group
-     */
-    public function changeLeader(Group $group, User $user)
-    {
-        //verify that the user is already in the group
-        if ($group->users->find($user->id)) {
-            $group->user_id = $user->id;
-        }
-    }
-
     public function join(Group $group)
     {
         $userId = Auth::id();
@@ -209,8 +197,9 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show(String $group)
     {
+        $group =  Group::with('members')->with('subjects')->find($group);
         return response()->json($group);
     }
 }

@@ -20,10 +20,10 @@ class GroupRequest extends FormRequest
             'description' => 'max:500',
             'isPrivate' => 'boolean',
             'picture' => 'image|max:4096',
-            'user_id' => Rule::exists('group_user','user_id')->where(function($query) use ($group) {
+            'user_id' => Rule::exists('group_user', 'user_id')->where(function ($query) use ($group) {
                 $query->where('group_id', $group->id)
-                      ->where('isAccepted', Group::ACCEPTED);
+                    ->where('isApprouved', Group::ACCEPTED);
             })
-        ];   
+        ];
     }
 }

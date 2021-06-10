@@ -26,6 +26,7 @@ class Group extends Model
         'name',
         'description',
         'isPrivate',
+        'user_id',
     ];
 
     public function users()
@@ -33,9 +34,9 @@ class Group extends Model
         return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
 
-    public function usersWithSubscription()
+    public function members()
     {
-        return $this->belongsToMany('App\Models\User')->withPivot('isApprouved')->withTimestamps();
+        return $this->users()->select(['users.id', 'users.name', 'users.picture', 'users.isTeacher', 'users.email'])->addSelect('group_user.isApprouved as status');
     }
 
     /**

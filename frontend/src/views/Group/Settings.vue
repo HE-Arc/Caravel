@@ -17,9 +17,15 @@
                 <v-icon v-text="item.icon"></v-icon>
               </v-list-item-icon>
               <v-list-item-content>
-                <v-list-item-title
-                  v-text="$t('group.settings.' + key)"
-                ></v-list-item-title>
+                <v-list-item-title>
+                  {{ $t("group.settings." + key) }}
+                  <v-chip
+                    x-small
+                    color="error"
+                    v-if="item.count != undefined && item.count > 0"
+                    v-text="item.count"
+                  />
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
@@ -46,6 +52,8 @@ import Component from "vue-class-component";
 import main from "@/store/modules/groups";
 import { Group } from "@/types/group";
 import GroupManage from "@/views/Group/Settings/Manage.vue";
+import memberModule from "@/store/modules/members";
+import { Dictionary } from "@/types/helpers";
 
 @Component({
   components: {
@@ -57,17 +65,24 @@ export default class GroupSettings extends Vue {
     return main.group;
   }
 
+  get pendingCount(): number {
+    return memberModule.pending.length ?? 0;
+  }
+
   activeTab = "";
-  items = {
-    manage: {
-      icon: "mdi-cog",
-    },
-    members: {
-      icon: "mdi-account-group",
-    },
-    requests: {
-      icon: "mdi-account-multiple-plus",
-    },
-  };
+  get items(): Dictionary<Dictionary<string | number>> {
+    return {
+      manage: {
+        icon: "mdi-cog",
+      },
+      members: {
+        icon: "mdi-account-group",
+      },
+      requests: {
+        icon: "mdi-account-multiple-plus",
+        count: this.pendingCount,
+      },
+    };
+  }
 }
 </script>

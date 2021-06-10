@@ -80,3 +80,10 @@ export default class AvatarUpload extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+//fix dark vuetify theme bug
+.avatar-cropper-btn {
+  color: rgb(34, 34, 34);
+}
+</style>

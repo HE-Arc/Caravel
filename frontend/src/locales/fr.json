@@ -6,9 +6,13 @@
     "cancel": "Annuler",
     "back": "Revenir",
     "submit": "Envoyer",
+    "quit": "Quitter",
+    "accept": "Accepter",
+    "refuse": "Refuser",
     "save": "Sauvegarder",
     "success": "Action effectuée avec succès !",
     "error_form": "Une ou plusieurs données sont invalides",
+    "itsme": "moi",
     "roles": {
       "student": "Etudiant",
       "teacher": "Professeur"
@@ -47,7 +51,7 @@
         "example": "ex.: INF XXX b 2020-2021",
         "label": "Nom de groupe",
         "placeholder": "Taper le nom de votre groupe",
-        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement !",
+        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement.",
         "image": "Image du groupe"
       },
       "description": {
@@ -55,7 +59,7 @@
         "example": "ex. Super groupe d'informatique",
         "label": "Description du groupe",
         "placeholder": "Taper la description du groupe",
-        "help": "Une description qui permette aux futurs membres de le trouver !"
+        "help": "Une description qui permette aux futurs membres de le trouver."
       },
       "type": {
         "name": "Type du groupe",
@@ -86,6 +90,21 @@
       "manage": "Options",
       "members": "Membres",
       "requests": "Requêtes"
+    },
+    "members": {
+      "give_lead": {
+        "label": "Promouvoir",
+        "help": "Promouvoir {0} en tant que chef du group"
+      },
+      "kick": "expulser",
+      "quit": "Quitter le groupe",
+      "leader": "{0} est le chef du groupe",
+      "rejected": "Membre refusé | Membres refusés",
+      "accepted": "Membre du group | Membres du groupe"
+    },
+    "request": {
+      "pending": "Membre en attente | Membres en attente",
+      "empty": "Aucun membre en attente"
     }
   },
   "profile": {

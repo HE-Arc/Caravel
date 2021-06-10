@@ -1,4 +1,4 @@
-export enum JoinStatus {
+export enum GroupStatus {
   PENDING = 0,
   REFUSED = 1,
   ACCEPTED = 2,

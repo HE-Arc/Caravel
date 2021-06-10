@@ -52,13 +52,13 @@
 <script lang="ts">
 import { Group } from "@/types/group";
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { JoinStatus } from "@/types/helpers";
+import { GroupStatus } from "@/types/helpers";
 import axios from "axios";
 
 @Component
 export default class GroupItem extends Vue {
   @Prop() group!: Group;
-  status = JoinStatus;
+  status = GroupStatus;
   isLoading = false;
 
   askJoin(): void {
@@ -74,7 +74,7 @@ export default class GroupItem extends Vue {
         this.$toast.error(err.response.data.message);
       })
       .finally(() => {
-        this.group.status = JoinStatus.PENDING;
+        this.group.status = this.status.PENDING;
       });
   }
 }
