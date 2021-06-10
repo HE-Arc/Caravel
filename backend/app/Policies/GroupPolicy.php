@@ -22,4 +22,12 @@ class GroupPolicy
         return $group->user_id === $user->id;
     }
 
+    public function update(User $user, Group $group)
+    {
+        $changes = $group->getDirty();
+        if (isset($changes['user_id'])) {
+            return $user->id === $group->user_id;
+        }
+        return true;
+    }
 }
