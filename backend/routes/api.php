@@ -38,9 +38,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     #members of groups (get, delete, no post as this is the role of the "join" mecanic)
     Route::get('groups/{group}/members', [GroupController::class, 'members']);
     Route::patch('groups/{group}/members', [GroupController::class, 'updateMemberStatus']);
-    Route::delete('groups/{group}/members/{user}', [GroupController::class, 'removeMember']);
+    Route::delete('groups/{group}/members', [GroupController::class, 'removeMember']);
 
-    Route::delete('profile/groups/{group}', [UserController::class, 'removeGroup']);
+    Route::delete('profile', [UserController::class, 'removeGroup']);
     Route::patch('profile', [ProfileController::class, 'update']);
-
 });
