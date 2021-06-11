@@ -19,7 +19,7 @@ class SubjectRequest extends FormRequest
         // caution : subject doesnt contain an id if is in creation mode 
         return [
             'name' => "required", "max:255", Rule::unique('subjects')->ignore($subject->id)->Where('group_id', $group->id),
-            'color' => 'required|size:6',
+            'color' => 'required|size:7',
             'ects' => 'required|integer'
         ];
     }

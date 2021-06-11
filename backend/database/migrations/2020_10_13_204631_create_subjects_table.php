@@ -17,8 +17,9 @@ class CreateSubjectsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name', 150);
-            $table->char('color', 6)->default('ad51cf'); //hex rgb color
+            $table->char('color', 7)->default('#ad51cf'); //hex rgb color
             $table->bigInteger('group_id')->unsigned();
+            $table->integer('ects', true);
             $table->index('group_id');
         });
 

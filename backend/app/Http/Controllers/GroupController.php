@@ -199,7 +199,7 @@ class GroupController extends Controller
      */
     public function show(String $group)
     {
-        $group =  Group::with('members')->with('subjects')->find($group);
+        $group =  Group::with('members')->with('tasks')->with('subjects')->find($group);
         return response()->json($group);
     }
 }
