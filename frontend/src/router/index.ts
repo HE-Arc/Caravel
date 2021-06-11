@@ -43,6 +43,13 @@ const routes: Array<RouteConfig> = [
         path: "tasks",
         name: "tasks",
         component: () => import("../views/Group/TaskList.vue"),
+        children: [
+          {
+            name: "newTask",
+            path: "new",
+            component: () => import("../views/Task/TaskNew.vue"),
+          },
+        ],
       },
       {
         path: "calendar",

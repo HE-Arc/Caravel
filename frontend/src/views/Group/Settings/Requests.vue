@@ -1,8 +1,10 @@
 <template>
-  <v-card>
-    <v-card-title
-      >{{ $tc("group.request.pending", members.length) }}
-    </v-card-title>
+  <v-card outlined>
+    <v-toolbar flat color="secondary lighten-2" dark>
+      <v-toolbar-title class="font-weight-light">
+        {{ $tc("group.request.pending", members.length) }}
+      </v-toolbar-title>
+    </v-toolbar>
     <v-card-text v-if="members.length > 0">
       <v-list rounded>
         <member-item

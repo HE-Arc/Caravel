@@ -24,6 +24,10 @@ class TasksModule extends VuexModule {
     return this._tasks;
   }
 
+  get projects(): Task[] {
+    return this._tasks.filter((item) => item.type);
+  }
+
   get status(): string {
     return this._status;
   }

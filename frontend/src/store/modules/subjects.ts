@@ -9,6 +9,7 @@ import {
   getModule,
 } from "vuex-module-decorators";
 import Vue from "vue";
+import groupModule from "@/store/modules/groups";
 
 @Module({
   namespaced: true,
@@ -67,8 +68,9 @@ class SubjectModule extends VuexModule {
   }
 
   @Action
-  add(groupId: string, subject: Subject): Promise<AxiosResponse> {
-    return new Promise<AxiosResponse>((resolve, reject) => {
+  add(subject: Subject): Promise<Subject> {
+    const groupId = groupModule.selectedId;
+    return new Promise<Subject>((resolve, reject) => {
       this.REQUEST();
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects`,
@@ -78,7 +80,7 @@ class SubjectModule extends VuexModule {
         .then((response) => {
           const subject: Subject = response.data;
           this.UPSERT_SUBJECT(subject);
-          resolve(response);
+          resolve(subject);
         })
         .catch((err) => {
           this.ERROR();
@@ -88,7 +90,8 @@ class SubjectModule extends VuexModule {
   }
 
   @Action
-  update(groupId: string, subject: Subject): Promise<AxiosResponse> {
+  update(subject: Subject): Promise<AxiosResponse> {
+    const groupId = groupModule.selectedId;
     return new Promise<AxiosResponse>((resolve, reject) => {
       this.REQUEST();
       axios({
@@ -111,7 +114,8 @@ class SubjectModule extends VuexModule {
   }
 
   @Action
-  delete(groupId: string, subject: Subject): Promise<AxiosResponse> {
+  delete(subject: Subject): Promise<AxiosResponse> {
+    const groupId = groupModule.selectedId;
     return new Promise<AxiosResponse>((resolve, reject) => {
       this.REQUEST();
       axios({

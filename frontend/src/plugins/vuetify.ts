@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib/framework";
 import colors from "vuetify/lib/util/colors";
+import en from "vuetify/src/locale/en"; // English
+import fr from "vuetify/src/locale/fr"; // fr
 
 Vue.use(Vuetify);
 
@@ -17,5 +19,9 @@ export default new Vuetify({
         secondary: colors.blueGrey,
       },
     },
+  },
+  lang: {
+    locales: { fr, en },
+    current: "fr",
   },
 });

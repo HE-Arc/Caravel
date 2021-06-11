@@ -4,6 +4,12 @@ export enum GroupStatus {
   ACCEPTED = 2,
 }
 
+export enum TaskType {
+  ASSIGNMENT = 1,
+  EXAM = 2,
+  PROJECT = 3,
+}
+
 export interface GroupForm {
   id: number;
   name: string;

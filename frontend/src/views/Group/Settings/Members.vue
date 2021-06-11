@@ -1,19 +1,20 @@
 <template>
-  <v-card v-if="group">
-    <v-card-title
-      >{{ $t("group.settings.members") }}
+  <v-card v-if="group" outlined>
+    <v-toolbar flat color="secondary lighten-2" dark>
+      <v-toolbar-title class="font-weight-light">
+        {{ $t("group.settings.members") }}
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         v-if="group.user_id != user.id"
         color="error"
-        outlined
         small
         @click="leaveGroup"
       >
         <v-icon>mdi-logout</v-icon>
         {{ $t("global.quit") }}
       </v-btn>
-    </v-card-title>
+    </v-toolbar>
     <v-card-text>
       <v-list rounded>
         <member-item
