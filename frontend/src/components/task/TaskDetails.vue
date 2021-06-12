@@ -23,6 +23,7 @@
                     menu-props="closeOnContentClick"
                     @create="addLabel"
                     v-model="task.subject_id"
+                    dense
                   >
                     <template v-slot:item="data">
                       <v-list-item-icon>
@@ -46,6 +47,7 @@
                     filled
                     :label="$t('task.form.due.label')"
                     :placeholder="$t('task.form.due.placeholder')"
+                    dense
                   />
                 </v-col>
                 <v-col cols="12">
@@ -55,6 +57,7 @@
                     :placeholder="$t('task.form.type.placeholder')"
                     filled
                     v-model.number="task.tasktype_id"
+                    dense
                   >
                     <template v-slot:item="{ item }">
                       <v-icon v-text="item.icon" class="mr-3" />
@@ -71,10 +74,21 @@
                     v-model="task.title"
                     :error-messages="errors.title"
                     filled
+                    dense
+                    autocomplete="off"
                   />
+                  <v-markdown-editor v-model="task.description" />
+                  <v-switch
+                    v-model="task.isPrivate"
+                    label="Is Private Task"
+                  ></v-switch>
                 </v-col>
               </v-row>
             </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="success" text>{{ $t("global.save") }}</v-btn>
+            </v-card-actions>
           </v-card>
         </v-form>
         <subject-details
@@ -98,12 +112,14 @@ import { Subject } from "@/types/subject";
 import SubjectDetails from "@/components/subject/SubjectDetails.vue";
 import Factory from "@/types/Factory";
 import SimpleDatePicker from "@/components/utility/simpledatepicker.vue";
+import VMarkdownEditor from "@/components/utility/markdown.vue";
 
 @Component({
   components: {
     VAutocompleteFilter,
     SubjectDetails,
     SimpleDatePicker,
+    VMarkdownEditor,
   },
 })
 export default class TaskDetails extends Vue {

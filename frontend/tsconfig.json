@@ -11,6 +11,8 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "noImplicitAny": false,
+    "allowJs": true,
     "baseUrl": ".",
     "types": [
       "webpack-env",
@@ -36,8 +38,7 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/components/utility/markdown.vue"
   ],
-  "noImplicitAny": false,
-  "allowJs": true,
 }
