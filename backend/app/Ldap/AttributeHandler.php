@@ -3,7 +3,7 @@
 namespace App\Ldap;
 
 use App\Models\User as DatabaseUser;
-use App\Models\Ldap\User as LdapUser;
+use LdapRecord\Models\ActiveDirectory\User as LdapUser;
 
 class AttributeHandler
 {
