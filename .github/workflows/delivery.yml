@@ -6,6 +6,8 @@ jobs:
   deliver-main:
     runs-on: self-hosted
     env:
+      configdir: /var/www/config/caravel
+      rootdir: /var/www/caravel
       backend: /var/www/caravel/backend
       frontend: /var/www/caravel/frontend/dist
 
@@ -20,7 +22,6 @@ jobs:
         run: |
           rsync --recursive ./backend ${{ env.backend }}
           cd ${{ env.backend }}
-# sudo chmod -R a+rw public/
           
       - name: Install composer Dependencies for Laravel
         run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
@@ -38,7 +39,14 @@ jobs:
         run: |
           rsync --recursive ./frontend/dist ${{ env.frontend }}
           cd ${{ env.frontend }}
-#          sudo chmod -R a+rw ../dist
+     
+      - name: Copy configuration files
+        run: cp ${{ env.configdir }}/* ${{ env.rootdir }}
+          
+#      - name: Set global permissions
+#        run: |
+#           sudo chown www-data:www-data -R ${{ env.backend }}
+#          sudo chmod -R 755 ${{ env.backend }}
 
 #      - name: restart server :-)
 #        run: sudo systemctl start nginx
