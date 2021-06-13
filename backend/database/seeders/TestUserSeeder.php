@@ -17,6 +17,14 @@ class TestUserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'id' => 1,
+            'name' => 'admin',
+            'email' => 'steve.mendesreis@he-arc.ch',
+            'password' => Hash::make('test'),
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        DB::table('users')->insert([
+            'id' => 2,
             'name' => 'test',
             'email' => 'steve.mendesreis@he-arc.ch',
             'password' => Hash::make('test'),
