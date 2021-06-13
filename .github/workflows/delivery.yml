@@ -38,7 +38,7 @@ jobs:
         run: |
           rsync --recursive ./frontend/dist ${{ env.frontend }}
           cd ${{ env.frontend }}
-          sudo chmod -R a+rw ../dist
+#          sudo chmod -R a+rw ../dist
 
 #      - name: restart server :-)
 #        run: sudo systemctl start nginx
