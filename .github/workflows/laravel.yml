@@ -1,13 +1,15 @@
-name: CaravelCI SQLite fast
+name: Laravel CI SQLite fast
 
 on:
   push:
 
+defaults:
+  run:
+    working-directory: ./backend
+
 jobs:
   tests:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./backend
 
     steps:
     - uses: actions/checkout@v2
