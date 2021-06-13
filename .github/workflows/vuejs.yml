@@ -15,7 +15,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run Vuejs installation
       run: npm ci
-      wor
     - name: Run Vuejs Build
       run: npm build
     - name: Run Vuejs unit test
