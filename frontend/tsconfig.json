@@ -39,5 +39,5 @@
     "node_modules"
   ],
   "noImplicitAny": false,
-  "allowJs": true,
+  "allowJs": true
 }

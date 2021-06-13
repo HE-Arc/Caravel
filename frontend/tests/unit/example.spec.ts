@@ -1,12 +1,25 @@
-import { shallowMount } from "@vue/test-utils";
-import HelloWorld from "@/components/HelloWorld.vue";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
+import AddContent from "@/components/AddContent.vue";
+import router from "@/router";
+import Vuetify from "vuetify";
 
-describe("HelloWorld.vue", () => {
+const localVue = createLocalVue();
+
+describe("AddContent.vue", () => {
+  let vuetify: Vuetify;
+
+  beforeEach(() => {
+    vuetify = new Vuetify();
+  });
+
   it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg },
+    const wrapper = shallowMount(AddContent, {
+      localVue,
+      vuetify,
+      router,
     });
-    expect(wrapper.text()).toMatch(msg);
+
+    const text = "";
+    expect(wrapper.text()).toMatch(text);
   });
 });

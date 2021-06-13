@@ -1,0 +1,21 @@
+name: CaravelCI SQLite fast
+
+on:
+  push:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./frontend
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Vuejs installation
+      run: npm ci
+    - name: Run Vuejs Build
+      run: npm build
+    - name: Run Vuejs unit test
+      run: npm test:unit
+    - name: Run VueJS Linter
+      run: npm run lint
