@@ -1,9 +1,6 @@
 name: Continus Delivery
 
-on: 
-  push:
-    branches:
-      - develop
+on: workflow_dispatch
 
 jobs:
   deliver-main:
