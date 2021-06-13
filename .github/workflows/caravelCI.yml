@@ -1,11 +1,15 @@
-name: CaravelCI MySQL complete
+name: Laravel CI MySQL complete
 on:
   push:
+
+defaults:
+  run:
+    working-directory: ./backend
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-    
+
     services:
       # mysql-service Label used to access the service container
       mysql-service:
@@ -32,10 +36,6 @@ jobs:
         php-version: '7.4'
     - name: Install composer Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Install NPM Dependencies
-      run: |
-        npm install
-        npm run dev
     - name: Generate key
       run: php artisan key:generate
     - name: Directory Permissions
