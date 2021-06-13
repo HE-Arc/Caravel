@@ -16,7 +16,7 @@ class CreateActionTypesTable extends Migration
         Schema::create('action_types', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->text('description')->nullable()->default('');
+            $table->text('description')->default('');
             $table->timestamps();
         });
     }
