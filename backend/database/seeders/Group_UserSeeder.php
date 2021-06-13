@@ -19,25 +19,20 @@ class Group_UserSeeder extends Seeder
 
         //prepare insertions with 2 basic links
         $insertions = [
-                [
-                    "userID" => 1,
-                    "groupID" => 1,
-                    "approved" => Group::PENDING,
-                ],
-                [
-                    "userID" => 1,
-                    "groupID" => 2,
-                    "approved" => Group::REFUSED,
-                ],
-                [
-                    "userID" => 1,
-                    "groupID" => 3,
-                    "approved" => Group::ACCEPTED,
-                ]
-            ];
+            [
+                "userID" => 1,
+                "groupID" => 2,
+                "approved" => Group::REFUSED,
+            ],
+            [
+                "userID" => 1,
+                "groupID" => 3,
+                "approved" => Group::ACCEPTED,
+            ]
+        ];
 
         //insert each insertion
-        foreach($insertions as $insertion){
+        foreach ($insertions as $insertion) {
             DB::table('group_user')->insert([
                 'user_id' => $insertion["userID"],
                 'group_id' => $insertion["groupID"],
