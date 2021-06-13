@@ -1,4 +1,4 @@
-name: CaravelCI SQLite fast
+name: VueJs CI
 
 on:
   push:
