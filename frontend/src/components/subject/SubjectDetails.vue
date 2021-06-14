@@ -104,11 +104,11 @@ export default class SubjectDetails extends Vue {
     }
   }
 
-  mounted() {
+  mounted(): void {
     this.subject = this.subjectData;
   }
 
-  clean() {
+  clean(): void {
     this.subject = Factory.getSubject();
   }
 

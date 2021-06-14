@@ -91,7 +91,7 @@
       "manage": "Options",
       "members": "Membres",
       "requests": "Requêtes",
-      "subjects": "Subjets"
+      "subjects": "Sujets"
     },
     "members": {
       "give_lead": {
@@ -133,6 +133,12 @@
       "title": {
         "label": "Titre",
         "placeholder": "Taper le nom de la tâche"
+      },
+      "startAt": {
+        "label": "Date de début"
+      },
+      "private": {
+        "label": "Cette tâche est privée"
       }
     },
     "types": {

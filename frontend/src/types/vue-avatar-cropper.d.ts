@@ -1,1 +1,1 @@
-declare module 'vue-avatar-cropper';
+declare module "vue-avatar-cropper";

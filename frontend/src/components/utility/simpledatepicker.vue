@@ -17,7 +17,7 @@
       ></v-text-field>
     </template>
     <v-date-picker
-      :min="nowDate"
+      :max="max"
       v-model="date"
       @input="menu = false"
     ></v-date-picker>
@@ -26,12 +26,24 @@
 
 <script lang="ts">
 import moment from "moment";
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class SimpleDatePicker extends Vue {
+  @Prop({ default: null }) max!: string | null;
+  @Prop({ default: moment().toISOString().substr(0, 10) }) value!: string;
   menu = false;
-  date = moment().toISOString().substr(0, 10);
-  nowDate = moment().toISOString().slice(0, 10);
+
+  get toDayDate(): string {
+    return moment().toISOString().substr(0, 10);
+  }
+
+  get date(): string {
+    return this.value;
+  }
+
+  set date(value: string) {
+    this.$emit("input", value);
+  }
 }
 </script>
