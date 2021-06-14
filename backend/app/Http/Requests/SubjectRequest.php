@@ -14,12 +14,16 @@ class SubjectRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Group $group, Subject $subject)
+    public function rules()
     {
         // caution : subject doesnt contain an id if is in creation mode 
+        $groupId = $this->group->id;
+        $subjectId = $this->subject ? $this->subject->id : null;
         return [
-            'name' => "required", "max:255", Rule::unique('subjects')->ignore($subject->id)->Where('group_id', $group->id),
-            'color' => 'required|size:6',
+            'name' => ["required", "max:255", Rule::unique('subjects')->ignore($subjectId)->where(function ($query) use ($groupId) {
+                return $query->where('group_id', $groupId);
+            })],
+            'color' => 'required|size:7',
             'ects' => 'required|integer'
         ];
     }

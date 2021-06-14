@@ -17,16 +17,29 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import groupModule from "@/store/modules/groups";
+import { Dictionary } from "@/types/helpers";
 
 @Component
 export default class AddContent extends Vue {
-  items = [
-    { title: "Group", to: this.$router.resolve({ name: "GroupSearch" }).href },
-    { title: "Task", to: this.$router.resolve({ name: "GroupSearch" }).href },
-    {
-      title: "Subject",
-      to: this.$router.resolve({ name: "GroupSearch" }).href,
-    },
-  ];
+  get items(): Dictionary<string>[] {
+    return [
+      {
+        title: "Group",
+        to: this.$router.resolve({ name: "GroupSearch" }).href,
+      },
+      {
+        title: "Task",
+        to: this.$router.resolve({
+          name: "newTask",
+          params: { group_id: groupModule.selectedId },
+        }).href,
+      },
+      {
+        title: "Subject",
+        to: this.$router.resolve({ name: "GroupSearch" }).href,
+      },
+    ];
+  }
 }
 </script>

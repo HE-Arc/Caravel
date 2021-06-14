@@ -26,7 +26,7 @@ class SubjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Group $group)
+    public function store(SubjectRequest $request, Group $group)
     {
         $subject = new Subject();
         $subject->group_id = $group->id;
@@ -81,6 +81,5 @@ class SubjectController extends Controller
             $subject->delete();
             return response()->json(__('api.subjects.delete_success'));
         }
-
     }
 }

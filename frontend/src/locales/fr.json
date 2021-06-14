@@ -7,12 +7,13 @@
     "back": "Revenir",
     "submit": "Envoyer",
     "quit": "Quitter",
+    "close": "Fermer",
     "accept": "Accepter",
     "refuse": "Refuser",
     "save": "Sauvegarder",
     "success": "Action effectuée avec succès !",
     "error_form": "Une ou plusieurs données sont invalides",
-    "itsme": "moi",
+    "itsme": "Oh c'est toi :-)",
     "roles": {
       "student": "Etudiant",
       "teacher": "Professeur"
@@ -51,7 +52,7 @@
         "example": "ex.: INF XXX b 2020-2021",
         "label": "Nom de groupe",
         "placeholder": "Taper le nom de votre groupe",
-        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement.",
+        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement",
         "image": "Image du groupe"
       },
       "description": {
@@ -59,7 +60,7 @@
         "example": "ex. Super groupe d'informatique",
         "label": "Description du groupe",
         "placeholder": "Taper la description du groupe",
-        "help": "Une description qui permette aux futurs membres de le trouver."
+        "help": "Une description qui permette aux utilisateur de quel groupe il s'agit"
       },
       "type": {
         "name": "Type du groupe",
@@ -89,7 +90,8 @@
     "settings": {
       "manage": "Options",
       "members": "Membres",
-      "requests": "Requêtes"
+      "requests": "Requêtes",
+      "subjects": "Sujets"
     },
     "members": {
       "give_lead": {
@@ -112,5 +114,67 @@
     "email": "Adresse mail",
     "name": "Nom complet",
     "update": "Le profile a été mis à jour."
+  },
+  "task": {
+    "create": "Créer une tâche",
+    "form": {
+      "subject": {
+        "label": "Subjet",
+        "placeholder": "Sélectionner le sujet de la tâche"
+      },
+      "type": {
+        "label": "Type de la tâche",
+        "placeholder": "Sélectionner le type de la tâche"
+      },
+      "due": {
+        "label": "Date prévue",
+        "placeholder": "Sélectionner la date d'échéance pour la tâche"
+      },
+      "title": {
+        "label": "Titre",
+        "placeholder": "Taper le nom de la tâche"
+      },
+      "startAt": {
+        "label": "Date de début"
+      },
+      "private": {
+        "label": "Cette tâche est privée"
+      }
+    },
+    "types": {
+      "1": {
+        "label": "Devoir | Devoirs",
+        "icon": "mdi-format-list-checks"
+      },
+      "2": {
+        "label": "Examen | Examens",
+        "icon": "mdi-file-certificate"
+      },
+      "3": {
+        "label": "Projet | Projets",
+        "icon": "mdi-folder-open"
+      }
+    }
+  },
+  "subject": {
+    "new": "Nouveau sujet",
+    "edit": "Edit le sujet",
+    "label": "Sujet | Sujets",
+    "form": {
+      "name": {
+        "label": "Nom du sujet",
+        "placeholder": "Taper le nom du sujet"
+      },
+      "ects": {
+        "label": "Nombre de crédit",
+        "placeholder": "Entrer le nombre de crédit",
+        "help": "Le nombre de crédits permet de pondérer la valeur du cours"
+      }
+    }
+  },
+  "autocomplete": {
+    "manage": "Gérer les {0}",
+    "create": "Créer un nouveau <b>{0}</b> '{1}' ?",
+    "nodata": "Aucune donnée trouvée"
   }
 }

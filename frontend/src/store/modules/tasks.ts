@@ -1,6 +1,8 @@
 import store from "@/store";
 import { Task } from "@/types/task";
+import { TaskForm } from "@/types/taskForm";
 import axios, { AxiosResponse } from "axios";
+import groupModule from "@/store/modules/groups";
 import {
   VuexModule,
   Module,
@@ -22,6 +24,10 @@ class TasksModule extends VuexModule {
 
   get tasks(): Task[] {
     return this._tasks;
+  }
+
+  get projects(): Task[] {
+    return this._tasks.filter((item) => item.type);
   }
 
   get status(): string {
@@ -66,7 +72,8 @@ class TasksModule extends VuexModule {
   }
 
   @Action
-  add(groupId: string, task: Task): Promise<AxiosResponse> {
+  add(task: TaskForm): Promise<AxiosResponse> {
+    const groupId = groupModule.selectedId;
     this.REQUEST();
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({

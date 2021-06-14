@@ -5,11 +5,12 @@
         <group-selector />
       </v-col>
       <v-col class="pa-0" cols="12">
-        <v-tabs v-model="activeTab" show-arrows class="ml-6">
+        <v-tabs v-model="activeTab" show-arrows class="main-tab">
           <v-tab
-            v-for="(item, key) in tabs"
+            v-for="(item, key, index) in tabs"
             :key="item + key"
             :to="$router.resolve({ name: key }).href"
+            v-bind:class="{ 'first-tab': index == 0 }"
           >
             <v-icon class="mr-2">{{ item.icon }}</v-icon>
             {{ $t("group.tabs." + key) }}
@@ -89,3 +90,12 @@ export default class GroupContainer extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.main-tab {
+  border-bottom: 1px solid rgba(151, 151, 151, 0.411);
+  & .first-tab {
+    margin-left: 20px;
+  }
+}
+</style>

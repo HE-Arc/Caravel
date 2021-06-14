@@ -1,6 +1,10 @@
 <template>
   <v-card v-if="group">
-    <v-card-title>{{ $t("group.tabs.settings") }}</v-card-title>
+    <v-toolbar flat color="secondary lighten-2" dark>
+      <v-toolbar-title class="font-weight-light">
+        {{ $t("group.tabs.settings") }}
+      </v-toolbar-title>
+    </v-toolbar>
     <v-card-text>
       <avatar-upload
         @handleResponse="handleUpload"

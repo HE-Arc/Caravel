@@ -14,11 +14,12 @@ class TaskRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Group $group)
+    public function rules()
     {
+        $groupId = $this->group->id;
         return [
             'title' => 'required|max:255',
-            'subject_id' => "required|exists:subjects,id,group_id,{$group->id}",
+            'subject_id' => "required|exists:subjects,id,group_id,{$groupId}",
             'start_at' => 'required|date|after_or_equal:today',
             'due_at' => 'required|date|after_or_equal:start_at',
             'description' => 'required',

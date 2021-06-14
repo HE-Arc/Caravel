@@ -8,7 +8,6 @@ use App\Http\Requests\GroupEditRequest;
 use App\Http\Requests\MemberGroupRequest;
 use App\Http\Requests\MemberStatusRequest;
 use App\Models\Group;
-use App\Models\User;
 use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -199,7 +198,7 @@ class GroupController extends Controller
      */
     public function show(String $group)
     {
-        $group =  Group::with('members')->with('subjects')->find($group);
+        $group =  Group::with('members')->with('tasks')->with('subjects')->find($group);
         return response()->json($group);
     }
 }
