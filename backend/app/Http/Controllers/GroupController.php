@@ -8,7 +8,6 @@ use App\Http\Requests\GroupEditRequest;
 use App\Http\Requests\MemberGroupRequest;
 use App\Http\Requests\MemberStatusRequest;
 use App\Models\Group;
-use App\Models\User;
 use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
