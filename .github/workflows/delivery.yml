@@ -52,5 +52,5 @@ jobs:
            sudo chown www-data:www-data -R ${{ env.rootdir }}
            sudo chmod -R 755 ${{ env.rootdir }}
 
-      - name: restart server :-)
+      - name: Restart server (last step)
         run: sudo service nginx start
