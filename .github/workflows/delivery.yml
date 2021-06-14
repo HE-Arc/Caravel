@@ -9,7 +9,7 @@ jobs:
       configdir: /var/www/config/caravel
       rootdir: /var/www/caravel
       backend: /var/www/caravel/backend
-      frontend: /var/www/caravel/frontend/dist
+      frontend: /var/www/caravel/frontend
       share: /var/www/shared
 
     steps:
@@ -35,7 +35,7 @@ jobs:
         working-directory: ./frontend
 
       - name: Copy frontend  
-        run: sudo rsync --recursive ./frontend/dist ${{ env.rootdir }}        
+        run: sudo rsync --recursive ./frontend/dist ${{ env.frontend }}
      
       - name: Copy configuration files
         run: sudo cp -rnf ${{ env.configdir }}/* ${{ env.rootdir }} 
