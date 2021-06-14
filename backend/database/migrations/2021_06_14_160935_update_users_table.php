@@ -14,8 +14,8 @@ class UpdateUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('firstname');
-            $table->string('lastname');
+            $table->string('firstname')->default("");
+            $table->string('lastname')->default("");
         });
     }
 
