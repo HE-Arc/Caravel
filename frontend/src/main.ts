@@ -9,6 +9,8 @@ import i18n from "./i18n";
 import VueToast from "vue-toast-notification";
 import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
+import VueTimeago from "vue-timeago";
+import moment from "moment";
 
 Vue.prototype.$http = Axios;
 
@@ -20,6 +22,19 @@ Vue.use(VueToast, {
 
 Vue.use(mavonEditor, {
   language: "fr",
+});
+
+moment.locale("fr");
+
+Vue.use(VueTimeago, {
+  name: "Timeago", // Component name, `Timeago` by default
+  locale: "fr", // Default locale
+  // We use `date-fns` under the hood
+  // So you can use all locales from it
+  locales: {
+    fr: require("date-fns/locale/fr"),
+    en: require("date-fns/locale/en"),
+  },
 });
 
 new Vue({

@@ -1,6 +1,6 @@
 <template>
   <v-card v-if="group">
-    <v-toolbar flat color="secondary lighten-2" dark>
+    <v-toolbar flat color="secondary lighten-2" dark dense>
       <v-toolbar-title class="font-weight-light">
         {{ $t("group.tabs.settings") }}
       </v-toolbar-title>
@@ -35,9 +35,8 @@
       />
     </v-card-text>
     <v-card-actions class="text-right align-right">
-      <v-btn text color="error">Annuler</v-btn>
       <v-spacer></v-spacer>
-      <v-btn text color="primary" @click="updateGroup">{{
+      <v-btn color="success" @click="updateGroup">{{
         $t("global.save")
       }}</v-btn>
     </v-card-actions>

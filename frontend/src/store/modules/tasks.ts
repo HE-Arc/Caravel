@@ -10,6 +10,7 @@ import {
   Action,
   getModule,
 } from "vuex-module-decorators";
+import { TaskType } from "@/types/helpers";
 
 @Module({
   namespaced: true,
@@ -27,7 +28,9 @@ class TasksModule extends VuexModule {
   }
 
   get projects(): Task[] {
-    return this._tasks.filter((item) => item.type);
+    return this._tasks.filter(
+      (item) => item.tasktype_id == TaskType.PROJECT.toString()
+    );
   }
 
   get status(): string {

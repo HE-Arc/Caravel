@@ -26,6 +26,11 @@ class SubjectModule extends VuexModule {
     return this._subjects;
   }
 
+  get getSubject() {
+    return (id: string): Subject | undefined =>
+      this._subjects.find((item) => item.id == id);
+  }
+
   get status(): string {
     return this._status;
   }

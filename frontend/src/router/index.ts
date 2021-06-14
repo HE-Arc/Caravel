@@ -49,6 +49,11 @@ const routes: Array<RouteConfig> = [
             path: "new",
             component: () => import("../views/Task/TaskNew.vue"),
           },
+          {
+            path: ":task_id",
+            name: "taskDisplay",
+            component: () => import("../views/Task/TaskDisplay.vue"),
+          },
         ],
       },
       {

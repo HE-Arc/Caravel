@@ -1,6 +1,6 @@
 <template>
   <v-card outlined>
-    <v-toolbar flat color="secondary lighten-2" dark>
+    <v-toolbar flat color="secondary lighten-2" dark dense>
       <v-toolbar-title class="font-weight-light">
         {{ $tc("group.request.pending", members.length) }}
       </v-toolbar-title>

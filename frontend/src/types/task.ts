@@ -8,5 +8,5 @@ export interface Task extends Data {
   isPrivate: boolean;
   subject_id: string;
   user_id: string;
-  type: string;
+  tasktype_id: string;
 }
