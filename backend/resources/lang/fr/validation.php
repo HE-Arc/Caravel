@@ -15,14 +15,14 @@ return [
     'accepted'             => 'Le champ :attribute doit être accepté.',
     'active_url'           => 'Le champ :attribute n\'est pas une URL valide.',
     'after'                => 'Le champ :attribute doit être une date postérieure au :date.',
-    'after_or_equal'       => 'Le champ :attribute doit être une date postérieure ou égale au :date.',
+    'after_or_equal'       => 'Le champ :attribute doit être une date postérieure ou égale à :date.',
     'alpha'                => 'Le champ :attribute doit contenir uniquement des lettres.',
     'alpha_dash'           => 'Le champ :attribute doit contenir uniquement des lettres, des chiffres et des tirets.',
     'alpha_num'            => 'Le champ :attribute doit contenir uniquement des chiffres et des lettres.',
     'array'                => 'Le champ :attribute doit être un tableau.',
     'attached'             => ':attribute est déjà attaché(e).',
-    'before'               => 'Le champ :attribute doit être une date antérieure au :date.',
-    'before_or_equal'      => 'Le champ :attribute doit être une date antérieure ou égale au :date.',
+    'before'               => 'Le champ :attribute doit être une date antérieure à :date.',
+    'before_or_equal'      => 'Le champ :attribute doit être une date antérieure ou égale à :date.',
     'between'              => [
         'array'   => 'Le tableau :attribute doit contenir entre :min et :max éléments.',
         'file'    => 'La taille du fichier de :attribute doit être comprise entre :min et :max kilo-octets.',
@@ -158,5 +158,13 @@ return [
         'title'                 => 'titre',
         'username'              => 'nom d\'utilisateur',
         'year'                  => 'année',
+        'start_at'              => 'date de début',
     ],
+    'values' => [
+        // or whatever fields you wanna translate
+        'start_at' => [
+            // or tomorrow
+            'today' => 'aujourd\'hui',
+        ]
+    ]
 ];
