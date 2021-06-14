@@ -20,7 +20,6 @@ class CreateSubjectsTable extends Migration
             $table->char('color', 7)->default('#ad51cf'); //hex rgb color
             $table->bigInteger('group_id')->unsigned();
             $table->integer('ects', true);
-            $table->index('group_id');
         });
 
         Schema::table('subjects', function (Blueprint $table) {
