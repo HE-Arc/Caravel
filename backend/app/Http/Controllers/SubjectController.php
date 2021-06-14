@@ -43,7 +43,7 @@ class SubjectController extends Controller
      * @param Subject $subject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Subject $subject)
+    public function update(SubjectRequest $request, Group $group, Subject $subject)
     {
         $updatedInstance = $this->persistData($request, $subject);
         return response()->json($updatedInstance);

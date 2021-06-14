@@ -36,7 +36,7 @@ class Group extends Model
 
     public function members()
     {
-        return $this->users()->select(['users.id', 'users.name', 'users.picture', 'users.isTeacher', 'users.email'])->addSelect('group_user.isApprouved as status');
+        return $this->users()->select(['users.id', 'users.name', 'users.firstname', 'users.lastname', 'users.picture', 'users.isTeacher', 'users.email'])->addSelect('group_user.isApprouved as status');
     }
 
     /**
@@ -78,7 +78,7 @@ class Group extends Model
      */
     public function tasks(): HasManyThrough
     {
-        return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject');
+        return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject')->orderBy('due_at', 'asc');
     }
 
     /**

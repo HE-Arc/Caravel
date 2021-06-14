@@ -68,7 +68,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'ldap',
-            'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            'model' => LdapRecord\Models\OpenLDAP\User::class,
             'rules' => [],
             'database' => [
                 'model' => App\Models\User::class,
@@ -76,6 +76,8 @@ return [
                 'sync_attributes' => [
                     'name' => 'cn',
                     'email' => 'mail',
+                    'firstname' => 'givenName',
+                    'lastname' => 'sn',
                     //App\Ldap\AttributeHandler::class,
                 ],
             ],
