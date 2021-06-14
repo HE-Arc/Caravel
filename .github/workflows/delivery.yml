@@ -19,12 +19,12 @@ jobs:
       - name: checkout main branch
         uses: actions/checkout@v2
           
-      - name: Copy backend Laravel 
-        run: sudo rsync --recursive ./backend ${{ env.rootdir }}
-          
       - name: Install composer Dependencies for Laravel
         run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
-        working-directory: ${{ env.backend }}
+        working-directory: ./backend
+          
+      - name: Copy backend Laravel 
+        run: sudo rsync --recursive ./backend ${{ env.rootdir }}
 
       - name: Install dependencies frontend
         run: npm install
@@ -35,7 +35,7 @@ jobs:
         working-directory: ./frontend
 
       - name: Copy frontend  
-        run: sudo rsync --recursive ./frontend/dist ${{ env.rootdir }}
+        run: sudo rsync --recursive ./frontend/dist ${{ env.rootdir }}        
      
       - name: Copy configuration files
         run: sudo cp ${{ env.configdir }}/* ${{ env.rootdir }}
@@ -49,8 +49,8 @@ jobs:
           
       - name: Set global permissions
         run: |
-           sudo chown www-data:www-data -R ${{ env.backend }}
-           sudo chmod -R 755 ${{ env.backend }}
+           sudo chown www-data:www-data -R ${{ env.rootdir }}
+           sudo chmod -R 755 ${{ env.rootdir }}
 
       - name: restart server :-)
         run: sudo service nginx start
