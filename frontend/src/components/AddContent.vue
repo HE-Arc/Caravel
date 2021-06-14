@@ -1,15 +1,26 @@
 <template>
   <div>
-    <v-menu offset-y min-width="100px">
+    <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon v-bind="attrs" v-on="on">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </template>
       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index">
-          <v-btn depressed rounded text :to="item.to">{{ item.title }}</v-btn>
-        </v-list-item>
+        <template v-for="(item, index) in items">
+          <v-list-item
+            :key="index"
+            @click="follow(item.to)"
+            v-if="!item.needGroup || hasGroupRoute"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ $t(`${item.key}.icon`) }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="ml-3 pr-3">
+              {{ $tc(`${item.key}.label`, 1) }}
+            </v-list-item-title>
+          </v-list-item>
+        </template>
       </v-list>
     </v-menu>
   </div>
@@ -17,29 +28,36 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import groupModule from "@/store/modules/groups";
 import { Dictionary } from "@/types/helpers";
 
 @Component
 export default class AddContent extends Vue {
-  get items(): Dictionary<string>[] {
+  get items(): Dictionary<string | boolean>[] {
     return [
       {
-        title: "Group",
-        to: this.$router.resolve({ name: "GroupSearch" }).href,
+        key: "group",
+        to: "GroupSearch",
+        needGroup: false,
       },
       {
-        title: "Task",
-        to: this.$router.resolve({
-          name: "newTask",
-          params: { group_id: groupModule.selectedId },
-        }).href,
+        key: "task",
+        to: "newTask",
+        needGroup: true,
       },
       {
-        title: "Subject",
-        to: this.$router.resolve({ name: "GroupSearch" }).href,
+        key: "subject",
+        to: "subjects",
+        needGroup: true,
       },
     ];
+  }
+
+  get hasGroupRoute(): boolean {
+    return this.$route.params.group_id != undefined;
+  }
+
+  follow(name: string): void {
+    this.$router.push({ name: name });
   }
 }
 </script>

@@ -18,6 +18,8 @@ class TestUserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'admin',
+            'firstname' => 'admin',
+            'lastname' => 'admin',
             'email' => 'steve.mendesreis@he-arc.ch',
             'password' => Hash::make('test'),
             'created_at' => now(),
@@ -26,6 +28,8 @@ class TestUserSeeder extends Seeder
         DB::table('users')->insert([
             'id' => 2,
             'name' => 'test',
+            'firstname' => 'test',
+            'lastname' => 'test',
             'email' => 'qwdqwd@testqwd.ch',
             'password' => Hash::make('test'),
             'created_at' => now(),

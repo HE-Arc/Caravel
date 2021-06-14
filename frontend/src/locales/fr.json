@@ -1,6 +1,7 @@
 {
   "global": {
     "clear": "Effacer",
+    "add": "Ajouter",
     "edit": "Modifier",
     "delete": "Supprimer",
     "finish": "Terminer",
@@ -82,6 +83,8 @@
     }
   },
   "group": {
+    "label": "Groupe | Groupes",
+    "icon": "mdi-account-supervisor-circle",
     "tabs": {
       "tasks": "Tâches",
       "calendar": "Calendrier",
@@ -118,7 +121,12 @@
     "update": "Le profile a été mis à jour."
   },
   "task": {
+    "label": "Tâche | Tâches",
+    "icon": "mdi-format-list-checks",
     "create": "Créer une tâche",
+    "createBy": "Ouvert par ",
+    "no_results": "Aucune tâche trouvée, créer {0} ?",
+    "create_link": "<b>une nouvelle tâche</b>",
     "form": {
       "subject": {
         "label": "Subjet",
@@ -162,6 +170,7 @@
     "new": "Nouveau sujet",
     "edit": "Modifier le sujet",
     "label": "Sujet | Sujets",
+    "icon": "mdi-format-list-bulleted-square",
     "form": {
       "name": {
         "label": "Nom du sujet",

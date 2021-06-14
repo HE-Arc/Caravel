@@ -17,7 +17,7 @@
             <v-chip
               class="ml-1"
               small
-              color="error"
+              :color="item.color"
               v-if="item.count != undefined && item.count > 0"
               v-text="item.count"
             />
@@ -38,6 +38,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import GroupSelector from "@/components/GroupSelector.vue";
 import groupModule from "@/store/modules/groups";
+import taskModule from "@/store/modules/tasks";
 import memberModule from "@/store/modules/members";
 import { Group } from "@/types/group";
 import { Dictionary } from "@/types/helpers";
@@ -59,11 +60,17 @@ export default class GroupContainer extends Vue {
     return memberModule.pending.length ?? 0;
   }
 
+  get tasksCount(): number {
+    return taskModule.tasks.length ?? 0;
+  }
+
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router
   get tabs(): Dictionary<Dictionary<string | number>> {
     return {
       tasks: {
-        icon: "mdi-format-list-checkbox",
+        icon: this.$t("task.icon").toString(),
+        count: this.tasksCount,
+        color: "",
       },
       calendar: {
         icon: "mdi-calendar",
@@ -77,6 +84,7 @@ export default class GroupContainer extends Vue {
       settings: {
         icon: "mdi-tune",
         count: this.pendingCount,
+        color: "error",
       },
     };
   }

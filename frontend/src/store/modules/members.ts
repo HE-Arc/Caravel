@@ -49,6 +49,11 @@ class MemberModule extends VuexModule {
     return this._items.filter((item) => item.status == GroupStatus.ACCEPTED);
   }
 
+  get getMember() {
+    return (id: string): Member | undefined =>
+      this._items.find((item) => item.id == id);
+  }
+
   get status(): string {
     return this._status;
   }
