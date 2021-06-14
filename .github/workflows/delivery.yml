@@ -38,7 +38,7 @@ jobs:
         run: sudo rsync --recursive ./frontend/dist ${{ env.rootdir }}        
      
       - name: Copy configuration files
-        run: sudo cp ${{ env.configdir }}/* ${{ env.rootdir }}
+        run: sudo cp -rnf ${{ env.configdir }}/* ${{ env.rootdir }} 
         
       - name: Create symlinks
         run: |
