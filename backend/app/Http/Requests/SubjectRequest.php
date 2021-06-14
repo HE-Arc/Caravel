@@ -24,7 +24,7 @@ class SubjectRequest extends FormRequest
                 return $query->where('group_id', $groupId);
             })],
             'color' => 'required|size:7',
-            'ects' => 'required|integer'
+            'ects' => 'required|integer|min:1'
         ];
     }
 }
