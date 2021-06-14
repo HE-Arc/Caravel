@@ -50,10 +50,12 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Group $group)
+    public function store(TaskRequest $request, Group $group)
     {
+        $max = $group->tasks->max('task_group_id');
         $task = new Task();
         $task->user_id = auth()->user()->id;
+        $task->task_group_id = $max + 1;
         $updatedInstance = $this->persistData($request, $group, $task);
         return response()->json($updatedInstance);
     }
