@@ -6,7 +6,9 @@
     @click:outside="close"
   >
     <v-card v-if="subject">
-      <v-card-title> {{ $t("subject.new") }} </v-card-title>
+      <v-card-title>
+        {{ subject.id == -1 ? $t("subject.new") : $t("subject.edit") }}
+      </v-card-title>
       <v-card-text>
         <v-text-field
           :label="$t('subject.form.name.label')"
@@ -92,7 +94,8 @@ export default class SubjectDetails extends Vue {
 
   async save(): Promise<void> {
     try {
-      const subject = await subjectModule.add(this.subject);
+      const subject = await subjectModule.save(this.subject);
+
       this.errors = {};
       this.$toast.success(this.$t("global.success").toString());
       this.handleSubject(subject);

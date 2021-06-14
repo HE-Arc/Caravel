@@ -87,6 +87,11 @@ const routes: Array<RouteConfig> = [
             name: "requests",
             component: () => import("../views/Group/Settings/Requests.vue"),
           },
+          {
+            path: "subjects",
+            name: "subjects",
+            component: () => import("../views/Group/Settings/Subjects.vue"),
+          },
         ],
       },
     ],
