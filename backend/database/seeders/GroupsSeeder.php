@@ -25,18 +25,18 @@ class GroupsSeeder extends Seeder
             "inf3-IIE"
         ];
 
-        foreach ($names as $name){
+        foreach ($names as $name) {
             //select random user as pseudo-creator
-            $user = User::inRandomOrder()->first();
+            $userId = 1;
             DB::table('groups')->insert([
                 'name' => $name,
                 'created_at' => now(),
                 'updated_at' => now(),
-                'user_id' => 1,//set him as leader
+                'user_id' => $userId, //set him as leader
             ]);
             //attach him
             $group = Group::where('name', $name)->first();
-            $group->users()->attach($user->id, ['isApprouved' => Group::ACCEPTED]);
+            $group->users()->attach($userId, ['isApprouved' => Group::ACCEPTED]);
         }
     }
 }

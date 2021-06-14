@@ -1,41 +1,52 @@
 name: Continus Delivery
 
-on: 
-  push:
-    branches:
-      - master
+on: workflow_dispatch
 
 jobs:
   deliver-main:
     runs-on: self-hosted
     env:
-      path: /var/www/app/
+      configdir: /var/www/config/caravel
+      rootdir: /var/www/caravel
+      backend: /var/www/caravel/backend
+      frontend: /var/www/caravel/frontend/dist
 
     steps:
-      - name: stop server during deployment
-        run: sudo sv stop nginx
+#      - name: stop server during deployment
+#        run: sudo systemctl stop nginx
 
       - name: checkout main branch
         uses: actions/checkout@v2
-        #with:
-          #ref: develop
-          #in case we want to deploy a certain branch (ex : serve main and develop at different points)
           
-      - name: copy repo at good place
+      - name: Copy backend Laravel 
         run: |
-          rsync --recursive . ${{ env.path }}
-          cd ${{ env.path }}
-          sudo chmod -R a+rw public/
+          rsync --recursive ./backend ${{ env.backend }}
+          cd ${{ env.backend }}
           
-      - name: Install composer Dependencies
-        run: sudo composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
-        working-directory: ${{ env.path }}
+      - name: Install composer Dependencies for Laravel
+        run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
+        working-directory: ${{ env.backend }}
 
-      - name: Install NPM Dependencies
+      - name: Install dependencies frontend
+        run: npm install
+        working-directory: ./frontend
+      
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./frontend
+
+      - name: Copy frontend  
         run: |
-          sudo npm install --production --unsafe-perm=true --allow-root
-          sudo npm run prod
-        working-directory: ${{ env.path }}
+          rsync --recursive ./frontend/dist ${{ env.frontend }}
+          cd ${{ env.frontend }}
+     
+      - name: Copy configuration files
+        run: cp ${{ env.configdir }}/* ${{ env.rootdir }}
+          
+#      - name: Set global permissions
+#        run: |
+#           sudo chown www-data:www-data -R ${{ env.backend }}
+#          sudo chmod -R 755 ${{ env.backend }}
 
-      - name: restart server :-)
-        run: sudo sv restart nginx
+#      - name: restart server :-)
+#        run: sudo systemctl start nginx
