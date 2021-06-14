@@ -12,8 +12,8 @@ jobs:
       frontend: /var/www/caravel/frontend/dist
 
     steps:
-#      - name: stop server during deployment
-#        run: sudo systemctl stop nginx
+      - name: stop server during deployment
+        run: sudo service nginx stop
 
       - name: checkout main branch
         uses: actions/checkout@v2
@@ -43,10 +43,10 @@ jobs:
       - name: Copy configuration files
         run: cp ${{ env.configdir }}/* ${{ env.rootdir }}
           
-#      - name: Set global permissions
-#        run: |
-#           sudo chown www-data:www-data -R ${{ env.backend }}
-#          sudo chmod -R 755 ${{ env.backend }}
+      - name: Set global permissions
+        run: |
+           sudo chown www-data:www-data -R ${{ env.backend }}
+           sudo chmod -R 755 ${{ env.backend }}
 
-#      - name: restart server :-)
-#        run: sudo systemctl start nginx
+      - name: restart server :-)
+        run: sudo service nginx start
