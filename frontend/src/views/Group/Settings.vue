@@ -83,7 +83,7 @@ export default class GroupSettings extends Vue {
         count: this.pendingCount,
       },
       subjects: {
-        icon: "mdi-list",
+        icon: "mdi-format-list-bulleted-square",
       },
     };
   }

@@ -1,6 +1,8 @@
 {
   "global": {
     "clear": "Effacer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
     "finish": "Terminer",
     "resume": "Continuer",
     "cancel": "Annuler",
@@ -158,7 +160,7 @@
   },
   "subject": {
     "new": "Nouveau sujet",
-    "edit": "Edit le sujet",
+    "edit": "Modifier le sujet",
     "label": "Sujet | Sujets",
     "form": {
       "name": {

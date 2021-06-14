@@ -78,9 +78,9 @@ class SubjectModule extends VuexModule {
         data: subject,
       })
         .then((response) => {
-          const subject: Subject = response.data;
-          this.UPSERT_SUBJECT(subject);
-          resolve(subject);
+          const data: Subject = response.data;
+          this.UPSERT_SUBJECT(data);
+          resolve(data);
         })
         .catch((err) => {
           this.ERROR();
@@ -90,9 +90,9 @@ class SubjectModule extends VuexModule {
   }
 
   @Action
-  update(subject: Subject): Promise<AxiosResponse> {
+  update(subject: Subject): Promise<Subject> {
     const groupId = groupModule.selectedId;
-    return new Promise<AxiosResponse>((resolve, reject) => {
+    return new Promise<Subject>((resolve, reject) => {
       this.REQUEST();
       axios({
         url:
@@ -104,7 +104,7 @@ class SubjectModule extends VuexModule {
         .then((response) => {
           const data: Subject = response.data;
           this.UPSERT_SUBJECT(data);
-          resolve(response);
+          resolve(data);
         })
         .catch((err) => {
           this.ERROR();
@@ -138,6 +138,15 @@ class SubjectModule extends VuexModule {
   @Action
   load(subjects: Subject[]) {
     this.LOAD_SUBJECTS(subjects);
+  }
+
+  @Action
+  async save(subject: Subject): Promise<Subject> {
+    if (subject.id == "" || subject.id == "-1") {
+      return this.add(subject);
+    } else {
+      return this.update(subject);
+    }
   }
 }
 
