@@ -10,6 +10,7 @@ jobs:
       rootdir: /var/www/caravel
       backend: /var/www/caravel/backend
       frontend: /var/www/caravel/frontend/dist
+      share: /var/www/shared
 
     steps:
       - name: stop server during deployment
@@ -19,9 +20,7 @@ jobs:
         uses: actions/checkout@v2
           
       - name: Copy backend Laravel 
-        run: |
-          rsync --recursive ./backend ${{ env.backend }}
-          cd ${{ env.backend }}
+        run: sudo rsync --recursive ./backend ${{ env.rootdir }}
           
       - name: Install composer Dependencies for Laravel
         run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
@@ -36,12 +35,17 @@ jobs:
         working-directory: ./frontend
 
       - name: Copy frontend  
-        run: |
-          rsync --recursive ./frontend/dist ${{ env.frontend }}
-          cd ${{ env.frontend }}
+        run: sudo rsync --recursive ./frontend/dist ${{ env.rootdir }}
      
       - name: Copy configuration files
-        run: cp ${{ env.configdir }}/* ${{ env.rootdir }}
+        run: sudo cp ${{ env.configdir }}/* ${{ env.rootdir }}
+        
+      - name: Create symlinks
+        run: |
+           sudo rm -R ${{ env.backend }}/storage
+           sudo ln -s ${{ env.share }}/storage ${{ env.backend }}/storage
+           sudo rm -R ${{ env.backend }}/public/uploads
+           sudo ln -s ${{ env.share }}/uploads ${{ env.backend }}/public/uploads
           
       - name: Set global permissions
         run: |
