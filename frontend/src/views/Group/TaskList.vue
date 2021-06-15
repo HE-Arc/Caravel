@@ -19,7 +19,7 @@
             >
           </div>
           <div class="text-h5 transition-swing"></div>
-          <v-list flat v-for="(items, key) in tasksGrouped" :key="items.length">
+          <v-list flat v-for="(items, key) in tasksGrouped" :key="key">
             <div class="text-h6 font-weight-light title-days">
               <span class="line">{{ key | capitalize }}</span>
             </div>
@@ -68,13 +68,6 @@ import moment from "moment";
 @Component({
   components: {
     TaskListItem,
-  },
-  filters: {
-    capitalize: function (value: string) {
-      if (!value) return "";
-      value = value.toString();
-      return value.charAt(0).toUpperCase() + value.slice(1);
-    },
   },
 })
 export default class TaskList extends Vue {

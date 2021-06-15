@@ -90,7 +90,7 @@ class MemberModule extends VuexModule {
   protected REMOVE_ITEM(data: Member): void {
     const index = this._items.findIndex((item) => item.id == data.id);
     if (index !== -1) {
-      this._items.splice(index, 1);
+      Vue.delete(this._items, index);
       this._status = "delete";
     }
   }

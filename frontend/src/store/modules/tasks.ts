@@ -1,8 +1,8 @@
 import store from "@/store";
 import { Task } from "@/types/task";
-import { TaskForm } from "@/types/taskForm";
 import axios, { AxiosResponse } from "axios";
 import groupModule from "@/store/modules/groups";
+import Vue from "vue";
 import {
   VuexModule,
   Module,
@@ -25,6 +25,11 @@ class TasksModule extends VuexModule {
 
   get tasks(): Task[] {
     return this._tasks;
+  }
+
+  get getTask() {
+    return (id: string): Task | undefined =>
+      this._tasks.find((item) => item.id == id);
   }
 
   get projects(): Task[] {
@@ -60,7 +65,7 @@ class TasksModule extends VuexModule {
       this._tasks.push(task);
       this._status = "added";
     } else {
-      this._tasks[index] = task;
+      Vue.set(this._tasks, index, task);
       this._status = "modified";
     }
   }
@@ -69,16 +74,16 @@ class TasksModule extends VuexModule {
   private REMOVE_TASK(task: Task) {
     const index = this._tasks.findIndex((item) => item.id == task.id);
     if (index !== -1) {
-      this._tasks.splice(index, 1);
+      Vue.delete(this._tasks, index);
       this._status = "delete";
     }
   }
 
   @Action
-  add(task: TaskForm): Promise<AxiosResponse> {
+  add(task: Task): Promise<Task> {
     const groupId = groupModule.selectedId;
     this.REQUEST();
-    return new Promise<AxiosResponse>((resolve, reject) => {
+    return new Promise<Task>((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks`,
         method: "POST",
@@ -87,7 +92,7 @@ class TasksModule extends VuexModule {
         .then((response) => {
           const data: Task = response.data;
           this.UPSERT_TASK(data);
-          resolve(response);
+          resolve(data);
         })
         .catch((err) => {
           this.ERROR();
@@ -97,8 +102,9 @@ class TasksModule extends VuexModule {
   }
 
   @Action
-  update(groupId: string, task: Task): Promise<AxiosResponse> {
-    return new Promise<AxiosResponse>((resolve, reject) => {
+  update(task: Task): Promise<Task> {
+    const groupId = groupModule.selectedId;
+    return new Promise<Task>((resolve, reject) => {
       this.REQUEST();
       axios({
         url:
@@ -110,7 +116,7 @@ class TasksModule extends VuexModule {
         .then((response) => {
           const data: Task = response.data;
           this.UPSERT_TASK(data);
-          resolve(response);
+          resolve(data);
         })
         .catch((err) => {
           this.ERROR();
@@ -120,7 +126,8 @@ class TasksModule extends VuexModule {
   }
 
   @Action
-  delete(groupId: string, task: Task): Promise<AxiosResponse> {
+  delete(task: Task): Promise<AxiosResponse> {
+    const groupId = groupModule.selectedId;
     this.REQUEST();
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
@@ -143,6 +150,15 @@ class TasksModule extends VuexModule {
   @Action
   load(tasks: Task[]) {
     this.LOAD_TASKS(tasks);
+  }
+
+  @Action
+  async save(task: Task): Promise<Task> {
+    if (task.id == "" || task.id == "-1") {
+      return this.add(task);
+    } else {
+      return this.update(task);
+    }
   }
 }
 

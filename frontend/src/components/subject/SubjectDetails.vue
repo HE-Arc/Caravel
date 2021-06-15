@@ -7,7 +7,7 @@
   >
     <v-card v-if="subject">
       <v-card-title>
-        {{ subject.id == -1 ? $t("subject.new") : $t("subject.edit") }}
+        {{ subject.id == "" ? $t("subject.new") : $t("subject.edit") }}
       </v-card-title>
       <v-card-text>
         <v-text-field
@@ -126,6 +126,7 @@ export default class SubjectDetails extends Vue {
 
   @Emit("close")
   populateClose(): boolean {
+    this.errors = {};
     return this.isActive;
   }
 
