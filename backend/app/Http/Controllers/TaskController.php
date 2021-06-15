@@ -159,9 +159,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Group $group, Task $task)
+    public function destroy(Task $task)
     {
-        if (auth()->user()->id == $task->user->id) {
+        if ($this->user->id == $task->user_id) {
             $task->delete();
             return response()->json(__('api.tasks.deleted'));
         }
