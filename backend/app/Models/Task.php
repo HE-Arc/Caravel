@@ -27,28 +27,20 @@ class Task extends Model
         'subject_id',
         'tasktype_id'
     ];
-    
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'due_at',
-        'start_at'
-    ];
 
     /**
      * Get the group's owner.
      */
     public function group()
     {
-        return $this->hasOneThrough('App\Models\Group', 'App\Models\Subject',
-                                    'group_id', // Foreign key on cars table...
-                                    'subject_id', // Foreign key on owners table...
-                                    'id', // Local key on mechanics table...
-                                    'id' // Local key on cars table...
-                                );
+        return $this->hasOneThrough(
+            'App\Models\Group',
+            'App\Models\Subject',
+            'group_id', // Foreign key on cars table...
+            'subject_id', // Foreign key on owners table...
+            'id', // Local key on mechanics table...
+            'id' // Local key on cars table...
+        );
     }
 
     /**
@@ -90,5 +82,4 @@ class Task extends Model
     {
         return $this->hasMany(Reaction::class);
     }
-
 }
