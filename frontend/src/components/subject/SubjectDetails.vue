@@ -16,12 +16,14 @@
           v-model="subject.name"
           :error-messages="errors.name"
           autocomplete="off"
+          @input="errors.name = []"
         ></v-text-field>
         <v-text-field
           v-model="subject.color"
           class="ma-0 pa-0"
           solo
           :error-messages="errors.color"
+          @input="errors.color = []"
         >
           <template v-slot:append>
             <v-menu
@@ -50,6 +52,7 @@
           :placeholder="$t('subject.form.ects.placeholder')"
           :messages="$t('subject.form.ects.help')"
           :error-messages="errors.ects"
+          @input="errors.ects = []"
         ></v-text-field>
       </v-card-text>
       <v-card-actions>

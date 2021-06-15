@@ -17,6 +17,9 @@
     "save": "Sauvegarder",
     "success": "Action effectuée avec succès !",
     "error_form": "Une ou plusieurs données sont invalides",
+    "errors": {
+      "unknown": "Une erreur inconnue s'est produite"
+    },
     "itsme": "Oh c'est toi :-)",
     "roles": {
       "student": "Etudiant",
@@ -64,7 +67,7 @@
         "example": "ex. Super groupe d'informatique",
         "label": "Description du groupe",
         "placeholder": "Taper la description du groupe",
-        "help": "Une description qui permette aux utilisateur de quel groupe il s'agit"
+        "help": "Une description qui explique à qui s'adresse ce groupe"
       },
       "type": {
         "name": "Type du groupe",
