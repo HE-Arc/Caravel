@@ -1,7 +1,7 @@
 <template>
-  <v-card v-if="group" outlined>
-    <v-toolbar flat color="secondary lighten-2" dark dense>
-      <v-toolbar-title class="font-weight-light">
+  <v-card v-if="group" flat>
+    <v-toolbar flat>
+      <v-toolbar-title class="text-h4 font-weight-light">
         {{ $t("group.settings.members") }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
