@@ -1,6 +1,7 @@
 {
   "global": {
     "clear": "Effacer",
+    "new": "nouveau",
     "add": "Ajouter",
     "edit": "Modifier",
     "delete": "Supprimer",
@@ -123,13 +124,18 @@
   "task": {
     "label": "Tâche | Tâches",
     "icon": "mdi-format-list-checks",
+    "states": {
+      "open": "Ouvert",
+      "close": "Fermé"
+    },
     "create": "Créer une tâche",
+    "edit": "Modifier une tâche",
     "createBy": "Ouvert par ",
     "no_results": "Aucune tâche trouvée, créer {0} ?",
     "create_link": "<b>une nouvelle tâche</b>",
     "form": {
       "subject": {
-        "label": "Subjet",
+        "label": "Sujet",
         "placeholder": "Sélectionner le sujet de la tâche"
       },
       "type": {

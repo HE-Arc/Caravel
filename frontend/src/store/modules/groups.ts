@@ -186,6 +186,22 @@ class GroupModule extends VuexModule {
         });
     });
   }
+
+  @Action
+  add(formData: FormData): Promise<Group> {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(process.env.VUE_APP_API_BASE_URL + "groups", formData)
+        .then((resp) => {
+          const group: Group = resp.data;
+          this.UPSERT_GROUP(group);
+          resolve(group);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 }
 
 const instance = getModule(GroupModule);

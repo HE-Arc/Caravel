@@ -67,7 +67,7 @@ class SubjectModule extends VuexModule {
   private REMOVE_SUBJECT(subject: Subject) {
     const index = this._subjects.findIndex((item) => item.id == subject.id);
     if (index !== -1) {
-      this._subjects.splice(index, 1);
+      Vue.delete(this._subjects, index);
       this._status = "delete";
     }
   }

@@ -23,6 +23,7 @@
                   v-model="group.name"
                   :messages="$t('groups.create.name.help')"
                   autocomplete="off"
+                  :error-messages="errors.name"
                 >
                 </v-text-field>
               </v-card-text>
@@ -35,6 +36,7 @@
                   filled
                   prepend-icon="mdi-camera"
                   v-model="group.picture"
+                  :error-messages="errors.picture"
                 ></v-file-input>
               </v-card-text>
             </v-card>
@@ -61,6 +63,7 @@
                   v-model="group.description"
                   :messages="$t('groups.create.description.help')"
                   autocomplete="off"
+                  :error-messages="errors.description"
                 >
                 </v-textarea>
               </v-card-text>
@@ -96,6 +99,9 @@
                       }}</v-icon>
                       <h3 class="mb-2">
                         {{ $t("groups.create.type.type2.title") }}
+                        <v-icon v-if="group.isPrivate === false" color="success"
+                          >mdi-check</v-icon
+                        >
                       </h3>
                       <small>{{
                         $t("groups.create.type.type2.subtitle")
@@ -116,6 +122,9 @@
                       }}</v-icon>
                       <h3 class="mb-2">
                         {{ $t("groups.create.type.type1.title") }}
+                        <v-icon v-if="group.isPrivate" color="success"
+                          >mdi-check</v-icon
+                        >
                       </h3>
                       <small>{{
                         $t("groups.create.type.type1.subtitle")
@@ -173,7 +182,7 @@
 import { GroupForm } from "@/types/helpers";
 import Vue from "vue";
 import Component from "vue-class-component";
-import axios from "axios";
+import groupModule from "@/store/modules/groups";
 import { Group } from "@/types/group";
 
 @Component({
@@ -188,6 +197,7 @@ export default class GroupNew extends Vue {
     picture: undefined,
     isPrivate: undefined,
   };
+  errors = {};
 
   get imageUrl(): string | undefined {
     if (!this.group.picture) return "";
@@ -198,25 +208,24 @@ export default class GroupNew extends Vue {
     this.group.name = (this.$route.query.text as string) ?? "";
   }
 
-  sendForm(): void {
+  async sendForm(): Promise<void> {
     const formData = new FormData();
     for (const [key, value] of Object.entries(this.group)) {
       if (value) formData.append(key, value);
     }
 
-    axios
-      .post(process.env.VUE_APP_API_BASE_URL + "groups", formData)
-      .then((response) => {
-        const group: Group = response.data;
-        this.$router.push({
-          name: "Group",
-          params: { group_id: group.id },
-        });
-        this.$toast.success(this.$t("groups.create.success").toString());
-      })
-      .catch((err) => {
-        this.$toast.error(err.response.data.message);
+    try {
+      this.errors = {};
+      const group: Group = await groupModule.add(formData);
+      this.$router.push({
+        name: "Group",
+        params: { group_id: group.id },
       });
+      this.$toast.success(this.$t("groups.create.success").toString());
+    } catch (err) {
+      this.errors = err.response.data.errors;
+      this.$toast.error(err.response.data.message);
+    }
   }
 }
 </script>

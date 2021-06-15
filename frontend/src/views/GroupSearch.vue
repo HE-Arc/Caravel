@@ -62,7 +62,7 @@
           </v-expand-transition>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn :disabled="!filters.text" @click="clear">
+            <v-btn v-if="filters.text" :disabled="!filters.text" @click="clear">
               {{ $t("global.clear") }}
               <v-icon right> mdi-close-circle </v-icon>
             </v-btn>

@@ -4,10 +4,10 @@
       <v-col cols="12">
         <v-form>
           <v-card outlined>
-            <v-toolbar flat color="primary" dark>
+            <v-toolbar flat>
               <v-icon class="mr-2">mdi-pencil</v-icon>
               <v-toolbar-title class="font-weight-light">
-                {{ $t("task.create") }}
+                {{ isNewTask ? $t("task.create") : $t("task.edit") }}
               </v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
@@ -37,7 +37,7 @@
                       </v-list-item-content>
                     </template>
                     <template v-slot:selection="data">
-                      <v-icon :color="data.item.color">mdi-square </v-icon>
+                      <v-icon :color="data.item.color">mdi-square</v-icon>
                       {{ data.item.text }}
                     </template>
                   </v-autocomplete-filter>
@@ -100,6 +100,7 @@
                     :error-messages="errors.description"
                   />
                   <v-switch
+                    v-if="isNewTask"
                     v-model="task.isPrivate"
                     :label="$t('task.form.private.label')"
                     :error-messages="errors.isPrivate"
@@ -109,7 +110,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="success" text @click="save">{{
+              <v-btn color="success" @click="save">{{
                 $t("global.save")
               }}</v-btn>
             </v-card-actions>
@@ -139,6 +140,7 @@ import Factory from "@/types/Factory";
 import SimpleDatePicker from "@/components/utility/simpledatepicker.vue";
 import VMarkdownEditor from "@/components/utility/markdown.vue";
 import moment from "moment";
+import { Task } from "@/types/task";
 
 @Component({
   components: {
@@ -155,10 +157,14 @@ export default class TaskDetails extends Vue {
   data!: TaskForm;
 
   errors = {};
-  task = Factory.getTaskForm();
+  task = this.data;
   subjectModal: Subject = Factory.getSubject();
   openSubjectForm = false;
   typesEnum = TaskType;
+
+  get isNewTask(): boolean {
+    return this.task.id == -1;
+  }
 
   get dueAt(): string {
     return this.task.due_at;
@@ -215,7 +221,8 @@ export default class TaskDetails extends Vue {
 
   async save(): Promise<void> {
     try {
-      await taskModule.add(this.task);
+      const task: Task = JSON.parse(JSON.stringify(this.task));
+      await taskModule.save(task);
       this.$toast.success(this.$t("global.success").toString());
       this.errors = {};
       this.$router.push({ name: "tasks" });
