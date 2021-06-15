@@ -26,7 +26,6 @@ export default class TaskCreateOrEdit extends Vue {
     if (this.$route.params.task_id == undefined) return Factory.getTaskForm();
     const id = this.$route.params.task_id;
     const task: TaskForm = JSON.parse(JSON.stringify(taskModule.getTask(id)));
-    console.log(task);
     return task;
   }
 }

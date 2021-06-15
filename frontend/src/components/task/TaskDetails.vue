@@ -17,7 +17,7 @@
                   <v-autocomplete-filter
                     :label="$t('task.form.subject.label')"
                     :placeholder="$t('task.form.subject.placeholder')"
-                    :manager="$router.resolve({ name: 'Home' }).href"
+                    :manager="$router.resolve({ name: 'subjects' }).href"
                     filled
                     :items="items"
                     menu-props="closeOnContentClick"
@@ -25,6 +25,7 @@
                     v-model="task.subject_id"
                     dense
                     :error-messages="errors.subject_id"
+                    @input="errors.subject_id = []"
                   >
                     <template v-slot:item="data">
                       <v-list-item-icon>
@@ -51,6 +52,7 @@
                     filled
                     dense
                     autocomplete="off"
+                    @input="errors.title = []"
                   >
                   </v-text-field>
                 </v-col>
@@ -63,6 +65,7 @@
                     v-model.number="task.tasktype_id"
                     dense
                     :error-messages="errors.tasktype_id"
+                    @input="errors.tasktype_id = []"
                   >
                     <template v-slot:item="{ item }">
                       <v-icon v-text="item.icon" class="mr-3" />
@@ -82,6 +85,7 @@
                     :placeholder="$t('task.form.due.placeholder')"
                     dense
                     :error-messages="errors.due_at"
+                    @input="errors.due_at = []"
                   />
                 </v-col>
                 <v-col cols="12">
@@ -93,6 +97,7 @@
                     :max="task.due_at"
                     v-if="showStartAt"
                     :error-messages="errors.start_at"
+                    @input="errors.start_at = []"
                   />
 
                   <v-markdown-editor
@@ -104,6 +109,7 @@
                     v-model="task.isPrivate"
                     :label="$t('task.form.private.label')"
                     :error-messages="errors.isPrivate"
+                    @input="errors.isPrivate = []"
                   ></v-switch>
                 </v-col>
               </v-row>

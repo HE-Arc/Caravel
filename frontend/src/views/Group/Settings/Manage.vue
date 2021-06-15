@@ -1,7 +1,7 @@
 <template>
-  <v-card v-if="group">
-    <v-toolbar flat color="secondary lighten-2" dark dense>
-      <v-toolbar-title class="font-weight-light">
+  <v-card v-if="group" flat>
+    <v-toolbar flat>
+      <v-toolbar-title class="text-h4 font-weight-light">
         {{ $t("group.tabs.settings") }}
       </v-toolbar-title>
     </v-toolbar>
@@ -22,6 +22,7 @@
         :messages="$t('groups.create.name.help')"
         autocomplete="off"
         :error-messages="errors.name"
+        @input="errors.name = []"
       />
     </v-card-text>
     <v-card-text>
@@ -32,11 +33,12 @@
         :messages="$t('groups.create.description.help')"
         autocomplete="off"
         :error-messages="errors.description"
+        @input="errors.description = []"
       />
     </v-card-text>
     <v-card-actions class="text-right align-right">
       <v-spacer></v-spacer>
-      <v-btn color="success" @click="updateGroup">{{
+      <v-btn text color="success" @click="updateGroup">{{
         $t("global.save")
       }}</v-btn>
     </v-card-actions>

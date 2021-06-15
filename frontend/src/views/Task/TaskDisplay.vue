@@ -34,9 +34,9 @@
             <v-btn small class="mr-1" :to="{ name: 'taskEdit' }">{{
               $t("global.edit")
             }}</v-btn>
-            <v-btn small @click="delTask" color="error">{{
-              $t("global.delete")
-            }}</v-btn>
+            <v-btn small @click="delTask" color="error">
+              {{ $t("global.delete") }}
+            </v-btn>
           </v-card-title>
           <v-card-subtitle>
             <v-icon>mdi-calendar</v-icon>
@@ -45,8 +45,6 @@
           <v-card-text>
             <markdown-it-vue class="md-body" :content="task.description" />
           </v-card-text>
-
-          <v-card-actions></v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -97,6 +95,17 @@ export default class TaskDisplay extends Vue {
   get subject(): Subject | undefined {
     if (!this.task) return undefined;
     return subjectModule.getSubject(this.task.subject_id);
+  }
+
+  async delTask(): Promise<void> {
+    if (!this.task) return;
+    try {
+      await taskModule.delete(this.task);
+      this.$router.push({ name: "tasks" });
+      this.$toast.success(this.$t("global.success").toString());
+    } catch (err) {
+      this.$toast.error(this.$t("global.errors.unknown").toString());
+    }
   }
 }
 </script>

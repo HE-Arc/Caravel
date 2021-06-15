@@ -2,7 +2,7 @@
   <v-container>
     <v-row v-if="group">
       <v-col cols="12" sm="4" md="3" lg="2">
-        <v-list nav dense outlined rounded>
+        <v-list nav dense rounded>
           <v-list-item-group color="primary">
             <v-list-item
               v-for="(item, key) in items"
