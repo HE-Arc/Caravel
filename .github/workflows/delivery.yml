@@ -44,7 +44,7 @@ jobs:
         run: |
            sudo rm -R ${{ env.backend }}/storage
            sudo ln -s ${{ env.share }}/storage ${{ env.backend }}/storage
-           sudo rm -R ${{ env.backend }}/uploads
+           sudo rm -R ${{ env.backend }}/public/uploads
            sudo ln -s ${{ env.share }}/uploads ${{ env.backend }}/public/uploads
           
       - name: Set global permissions
