@@ -18,6 +18,9 @@ jobs:
 
       - name: checkout main branch
         uses: actions/checkout@v2
+        
+      - name: Copy configuration files
+        run: sudo rsync --recursive ${{ env.configdir }} .
           
       - name: Install composer Dependencies for Laravel
         run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
@@ -36,9 +39,6 @@ jobs:
 
       - name: Copy frontend  
         run: sudo rsync --recursive ./frontend/dist ${{ env.frontend }}
-     
-      - name: Copy configuration files
-        run: sudo rsync --recursive ${{ env.configdir }} /var/www 
         
       - name: Create symlinks
         run: |
