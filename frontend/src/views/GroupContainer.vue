@@ -61,7 +61,7 @@ export default class GroupContainer extends Vue {
   }
 
   get tasksCount(): number {
-    return taskModule.tasks.length ?? 0;
+    return taskModule.tasksFuture.length ?? 0;
   }
 
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router

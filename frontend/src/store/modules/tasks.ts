@@ -11,6 +11,7 @@ import {
   getModule,
 } from "vuex-module-decorators";
 import { TaskType } from "@/types/helpers";
+import moment from "moment";
 
 @Module({
   namespaced: true,
@@ -25,6 +26,12 @@ class TasksModule extends VuexModule {
 
   get tasks(): Task[] {
     return this._tasks;
+  }
+
+  get tasksFuture(): Task[] {
+    return this._tasks.filter((task) =>
+      moment(task.due_at).isSameOrAfter(moment())
+    );
   }
 
   get getTask() {

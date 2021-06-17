@@ -196,5 +196,12 @@
     "manage": "Gérer les {0}",
     "create": "Créer un nouveau <b>{0}</b> '{1}' ?",
     "nodata": "Aucune donnée trouvée"
+  },
+  "calendar": {
+    "type": {
+      "month": "Mensuel",
+      "week": "Semaine",
+      "day": "Jour"
+    }
   }
 }
