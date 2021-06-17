@@ -72,12 +72,12 @@ import moment from "moment";
 })
 export default class TaskList extends Vue {
   get tasks(): Task[] {
-    return taskModule.tasks;
+    return taskModule.tasksFuture;
   }
 
   get tasksGrouped(): Dictionary<Task[]> {
     let tasksByDays = {};
-    taskModule.tasks.forEach((task: Task) => {
+    this.tasks.forEach((task: Task) => {
       const due = moment(task.due_at);
       const key = due.endOf("day").fromNow();
       if (tasksByDays[key] == undefined) {
