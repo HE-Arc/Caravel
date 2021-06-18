@@ -22,7 +22,7 @@ class TaskRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'subject_id' => "required|exists:subjects,id,group_id,{$groupId}",
-            'start_at' => $isProject ? 'required|date|after_or_equal:today' : 'date',
+            'start_at' => $isProject ? 'required|date|before_or_equal:due_at' : 'date',
             'due_at' => 'required|date|after_or_equal:start_at',
             'description' => 'required',
             'isPrivate' => 'boolean',

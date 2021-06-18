@@ -78,7 +78,13 @@ class Group extends Model
      */
     public function tasks(): HasManyThrough
     {
-        return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject')->orderBy('due_at', 'asc');
+        $userid =  auth()->user()->id;
+        return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject')
+            ->orderBy('due_at', 'asc')
+            ->where(function ($query) use ($userid) {
+                $query->where('isPrivate', '=', 0)
+                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
+            });
     }
 
     /**
