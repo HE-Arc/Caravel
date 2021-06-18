@@ -9,5 +9,6 @@ export interface Task extends Data {
   subject_id: string;
   user_id: string;
   tasktype_id: string;
+  task_group_id: string;
   created_at: Date | undefined;
 }
