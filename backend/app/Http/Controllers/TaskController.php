@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\Group;
 use App\Models\Comment;
 use Carbon\Carbon;
+use App\Http\Search\SearchEngine;
 
 class TaskController extends Controller
 {
@@ -24,22 +25,14 @@ class TaskController extends Controller
      * @param Group $group 
      * @return \Illuminate\Http\Response
      */
-    public function index(Group $group)
+    public function index(Request $request, Group $group)
     {
-        $userid =  auth()->user()->id;
-        $tasks = $group->tasks()->orderBy('due_at', 'asc')
-            ->where(function ($query) use ($userid) {
-                $query->where('isPrivate', '=', 0)
-                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-            })->whereDate('due_at', '>=', Carbon::now())->get();
+        $filters = $request->all();
+        //$filters['base'] = $group->id;
 
-        //TODO remove if not necessary
-        /*$projects = $group->tasks()->orderBy('due_at', 'asc')
-            ->where('tasktype_id', '=', TaskType::PROJECT)
-            ->where(function ($query) use ($userid) {
-                $query->where('isPrivate', '=', 0)
-                    ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-            })->whereDate('due_at', '>=', Carbon::now())->paginate(TaskController::PAGINATION_LIMIT);*/
+        $query = SearchEngine::applyFilters($group->tasks()->getQuery(), $filters, "Task");
+
+        $tasks = $query->get();
 
         return response()->json($tasks);
     }

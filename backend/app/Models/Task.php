@@ -28,6 +28,11 @@ class Task extends Model
         'tasktype_id'
     ];
 
+    protected $hidden = [
+        'laravel_through_key',
+        'name'
+    ];
+
     /**
      * Get the group's owner.
      */
