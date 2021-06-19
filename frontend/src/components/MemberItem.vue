@@ -6,7 +6,9 @@
         :alt="`${member.name} avatar`"
         :src="member.picture"
       ></v-img>
-      <span v-else class="white--text text-h6">{{ initials }}</span>
+      <span v-else class="white--text text-h6">
+        {{ member.name | initials }}
+      </span>
     </v-avatar>
 
     <v-list-item-content>
@@ -40,21 +42,6 @@ export default class MemberItem extends Vue {
   get isAdmin(): boolean {
     if (!groupModule.group) return false;
     return groupModule.group.user_id === this.member.id;
-  }
-
-  get initials(): string {
-    if (this.member.name === undefined) return "";
-
-    let split = this.member.name.split(" ");
-    let name = "";
-
-    if (split.length > 1) {
-      name = split[0].charAt(0) + split[split.length - 1].charAt(0);
-    } else {
-      name = this.member.name.replace(/[^a-zA-Z]/gi, "").substring(0, 2);
-    }
-
-    return name.toUpperCase();
   }
 }
 </script>

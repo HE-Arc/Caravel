@@ -34,11 +34,12 @@
         <timeago :datetime="task.created_at"></timeago>
       </v-list-item-subtitle>
     </v-list-item-content>
-    <v-list-item-action>
+    <v-list-item-action-text>
+      <v-icon v-if="task.isPrivate" class="mr-1">mdi-lock</v-icon>
       <v-chip small :color="subject.color" :dark="isTextDark">
         {{ subject.name }}
       </v-chip>
-    </v-list-item-action>
+    </v-list-item-action-text>
   </v-list-item>
 </template>
 

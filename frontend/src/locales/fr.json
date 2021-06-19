@@ -14,6 +14,7 @@
     "close": "Fermer",
     "accept": "Accepter",
     "refuse": "Refuser",
+    "reset": "Réinitialiser",
     "save": "Sauvegarder",
     "success": "Action effectuée avec succès !",
     "error_form": "Une ou plusieurs données sont invalides",
@@ -40,7 +41,9 @@
     "settings": "Paramètres"
   },
   "search": {
-    "label": "Rechercher une tâche"
+    "label": "Rechercher une tâche",
+    "author": "Auteur",
+    "type": "Type"
   },
   "groups": {
     "search-title": "Rechercher un groupe",
@@ -128,7 +131,7 @@
     "label": "Tâche | Tâches",
     "icon": "mdi-format-list-checks",
     "states": {
-      "open": "Ouvert",
+      "open": "A faire",
       "close": "Fermé"
     },
     "create": "Créer une tâche",
@@ -142,7 +145,7 @@
         "placeholder": "Sélectionner le sujet de la tâche"
       },
       "type": {
-        "label": "Type de la tâche",
+        "label": "Type",
         "placeholder": "Sélectionner le type de la tâche"
       },
       "due": {
@@ -178,6 +181,7 @@
   "subject": {
     "new": "Nouveau sujet",
     "edit": "Modifier le sujet",
+    "manage": "Gérer les sujets",
     "label": "Sujet | Sujets",
     "icon": "mdi-format-list-bulleted-square",
     "form": {
@@ -202,6 +206,19 @@
       "month": "Mensuel",
       "week": "Semaine",
       "day": "Jour"
+    }
+  },
+  "inputs": {
+    "selectmember": {
+      "label": "Membres",
+      "placeholder": "Sélectionner un membre"
+    },
+    "selectstate": {
+      "label": "Etat",
+      "placeholder": "Sélectionner un état"
+    },
+    "private": {
+      "label": "Privé"
     }
   }
 }

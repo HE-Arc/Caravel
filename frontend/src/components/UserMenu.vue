@@ -7,7 +7,9 @@
             v-if="user != undefined && user.picture"
             :src="user.picture"
           ></v-img>
-          <span v-else class="white--text text-h6">{{ initials }}</span>
+          <span v-else class="white--text text-h6">{{
+            user.name | initials
+          }}</span>
         </v-avatar>
       </v-btn>
     </template>
@@ -19,7 +21,9 @@
               v-if="user != undefined && user.picture"
               :src="user.picture"
             ></v-img>
-            <span v-else class="white--text text-h6">{{ initials }}</span>
+            <span v-else class="white--text text-h6">{{
+              user.name | initials
+            }}</span>
           </v-avatar>
           <h3>{{ user.name }}</h3>
           <p class="text-caption mt-1">
@@ -61,18 +65,6 @@ export default class UserMenu extends Vue {
     } catch {
       this.$toast.error(this.$t("login.failed").toString());
     }
-  }
-
-  get initials(): string {
-    if (this.user === undefined) return "";
-
-    let split = this.user?.name.split(" ");
-    let name =
-      split.length > 1
-        ? split[0].charAt(0) + split[split.length - 1].charAt(0)
-        : this.user?.name.charAt(0) + ".";
-
-    return name.toUpperCase();
   }
 
   goTo(routeName: string): void {

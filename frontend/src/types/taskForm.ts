@@ -5,6 +5,6 @@ export interface TaskForm {
   start_at: string;
   due_at: string;
   isPrivate: boolean;
-  subject_id: number;
-  tasktype_id: number;
+  subject_id: string;
+  tasktype_id: string;
 }

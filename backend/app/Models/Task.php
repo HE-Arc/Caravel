@@ -30,7 +30,6 @@ class Task extends Model
 
     protected $hidden = [
         'laravel_through_key',
-        'name'
     ];
 
     /**

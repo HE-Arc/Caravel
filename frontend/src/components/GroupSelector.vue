@@ -14,7 +14,7 @@
           <v-avatar color="secondary" size="32">
             <v-img v-if="group && group.picture" :src="group.picture"></v-img>
             <span v-else class="white--text text-h7">{{
-              initials(group.name)
+              group.name | initials
             }}</span>
           </v-avatar>
           <span class="font-weight-bold text-h6 ml-2">
@@ -32,7 +32,7 @@
           <v-avatar color="secondary" size="32">
             <v-img v-if="item && item.picture" :src="item.picture"></v-img>
             <span v-else class="white--text text-h7">{{
-              initials(item.name)
+              item.name | initials
             }}</span>
           </v-avatar>
           <v-list-item-title class="ml-3">{{ item.name }}</v-list-item-title>
@@ -57,11 +57,6 @@ export default class GroupSelector extends Vue {
     let groups = groupModule.groups;
 
     return groups.filter((group) => group.id != this.group?.id);
-  }
-
-  initials(groupName: string): string {
-    let name = groupName ? groupName.replace(/[^a-zA-Z]/gi, "") : "";
-    return name.substring(0, 2).toUpperCase();
   }
 
   async navTo(groupId: string): Promise<void> {

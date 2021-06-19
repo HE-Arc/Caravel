@@ -113,3 +113,9 @@ export default class GroupCalendar extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.v-calendar-daily__head {
+  min-height: 200px;
+}
+</style>

@@ -14,34 +14,11 @@
             <v-card-text>
               <v-row dense>
                 <v-col cols="12" sm="4" md="3">
-                  <v-autocomplete-filter
-                    :label="$t('task.form.subject.label')"
-                    :placeholder="$t('task.form.subject.placeholder')"
-                    :manager="$router.resolve({ name: 'subjects' }).href"
-                    filled
-                    :items="items"
-                    menu-props="closeOnContentClick"
-                    @create="addLabel"
+                  <select-subject
                     v-model="task.subject_id"
-                    dense
                     :error-messages="errors.subject_id"
                     @input="errors.subject_id = []"
-                  >
-                    <template v-slot:item="data">
-                      <v-list-item-icon>
-                        <v-icon :color="data.item.color">mdi-square</v-icon>
-                      </v-list-item-icon>
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          {{ data.item.text }}
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </template>
-                    <template v-slot:selection="data">
-                      <v-icon :color="data.item.color">mdi-square</v-icon>
-                      {{ data.item.text }}
-                    </template>
-                  </v-autocomplete-filter>
+                  ></select-subject>
                 </v-col>
                 <v-col cols="12" sm="8" md="9">
                   <v-text-field
@@ -57,25 +34,13 @@
                   </v-text-field>
                 </v-col>
                 <v-col cols="6">
-                  <v-select
-                    :items="types"
-                    :label="$t('task.form.type.label')"
-                    :placeholder="$t('task.form.type.placeholder')"
+                  <select-type
                     filled
-                    v-model.number="task.tasktype_id"
+                    v-model="task.tasktype_id"
                     dense
                     :error-messages="errors.tasktype_id"
                     @input="errors.tasktype_id = []"
-                  >
-                    <template v-slot:item="{ item }">
-                      <v-icon v-text="item.icon" class="mr-3" />
-                      {{ item.text }}
-                    </template>
-                    <template v-slot:selection="{ item }">
-                      <v-icon v-text="item.icon" class="mr-3" />
-                      {{ item.text }}
-                    </template>
-                  </v-select>
+                  ></select-type>
                 </v-col>
                 <v-col cols="6">
                   <simple-date-picker
@@ -122,12 +87,6 @@
             </v-card-actions>
           </v-card>
         </v-form>
-        <subject-details
-          :subjectData="subject"
-          :isActive="openSubjectForm"
-          @close="openSubjectForm = false"
-          @handle-subject="handleNewSubject"
-        />
       </v-col>
     </v-row>
   </v-container>
@@ -137,16 +96,16 @@
 import { TaskForm } from "@/types/taskForm";
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import VAutocompleteFilter from "@/components/utility/VAutocompleteFilter.vue";
-import { Dictionary, TaskType } from "@/types/helpers";
-import subjectModule from "@/store/modules/subjects";
+import { TaskType } from "@/types/helpers";
 import taskModule from "@/store/modules/tasks";
-import { Subject } from "@/types/subject";
 import SubjectDetails from "@/components/subject/SubjectDetails.vue";
 import Factory from "@/types/Factory";
 import SimpleDatePicker from "@/components/utility/simpledatepicker.vue";
 import VMarkdownEditor from "@/components/utility/markdown.vue";
 import moment from "moment";
 import { Task } from "@/types/task";
+import SelectType from "@/components/inputs/SelectType.vue";
+import SelectSubject from "@/components/inputs/SelectSubject.vue";
 
 @Component({
   components: {
@@ -154,6 +113,8 @@ import { Task } from "@/types/task";
     SubjectDetails,
     SimpleDatePicker,
     VMarkdownEditor,
+    SelectType,
+    SelectSubject,
   },
 })
 export default class TaskDetails extends Vue {
@@ -164,9 +125,6 @@ export default class TaskDetails extends Vue {
 
   errors = {};
   task = this.data;
-  subjectModal: Subject = Factory.getSubject();
-  openSubjectForm = false;
-  typesEnum = TaskType;
 
   get isNewTask(): boolean {
     return this.task.id == -1;
@@ -184,40 +142,7 @@ export default class TaskDetails extends Vue {
   }
 
   get showStartAt(): boolean {
-    return this.task.tasktype_id == TaskType.PROJECT;
-  }
-
-  get items(): Dictionary<string | number>[] {
-    const subjects: Subject[] = subjectModule.subjects;
-    if (!subjects) return [];
-    return subjects.map((item: Subject) => ({
-      value: item.id,
-      text: item.name,
-      color: item.color,
-    }));
-  }
-
-  get types(): Dictionary<string | number>[] {
-    return Object.values(TaskType)
-      .filter((key) => Number.isInteger(key))
-      .map((key) => ({
-        value: key,
-        text: this.$tc(`task.types.${key}.label`, 0).toString(),
-        icon: this.$t(`task.types.${key}.icon`).toString(),
-      }));
-  }
-
-  get subject(): Subject {
-    return this.subjectModal;
-  }
-
-  addLabel(text: string): void {
-    this.subjectModal.name = text;
-    this.openSubjectForm = true;
-  }
-
-  handleNewSubject(subject: Subject): void {
-    this.task.subject_id = parseInt(subject.id);
+    return this.task.tasktype_id == TaskType.PROJECT.toString();
   }
 
   @Watch("data")

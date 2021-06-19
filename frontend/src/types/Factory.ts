@@ -20,8 +20,8 @@ export default class Factory {
       start_at: moment().toISOString().substr(0, 10),
       due_at: moment().add(1, "days").toISOString().substr(0, 10),
       isPrivate: false,
-      subject_id: -1,
-      tasktype_id: -1,
+      subject_id: "",
+      tasktype_id: "",
     };
   }
 }

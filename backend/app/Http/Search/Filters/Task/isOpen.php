@@ -17,6 +17,6 @@ class isOpen implements Filter
      */
     public static function apply(Builder $builder, $value)
     {
-        return $value ? $builder->where('due_at', '>=', Carbon::now()) : $builder->where('due_at', '<', Carbon::now());
+        return $value ? $builder->where('due_at', '>=', Carbon::now()->startOfDay()) : $builder->where('due_at', '<', Carbon::now()->startOfDay());
     }
 }
