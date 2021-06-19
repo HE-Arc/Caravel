@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row dense>
     <v-col cols="12">
       <v-text-field
         :label="$t('search.label')"
@@ -20,7 +20,7 @@
         </template>
       </v-text-field>
     </v-col>
-    <v-col cols="12" v-if="hasFilter" class="d-flex align-center">
+    <v-col cols="12" v-if="hasFilter" class="d-flex align-center scrollable">
       <select-member
         dense
         solo
@@ -55,14 +55,17 @@
         hide-details
       />
       <v-checkbox
-        :value="filters.isPrivate"
+        :value="isPrivate"
         @change="updatePrivate"
         :label="$t('inputs.private.label')"
+        class="ml-2"
       ></v-checkbox>
-      <v-spacer></v-spacer>
+    </v-col>
+    <v-col cols="12">
       <v-btn @click="resetSearch" color="error" text v-if="!isEmpty">
-        <v-icon left>mdi-close-box</v-icon>{{ $t("global.reset") }}</v-btn
-      >
+        <v-icon left>mdi-close-box</v-icon>
+        {{ $t("global.reset") }}
+      </v-btn>
     </v-col>
   </v-row>
 </template>
@@ -95,11 +98,16 @@ export default class SearchBar extends Vue {
   enableWatcher = false;
 
   get isEmpty(): boolean {
-    let params = this.params;
-    if (params.isOpen == "1") {
-      delete params.isOpen;
+    const count = Object.keys(this.params).length;
+    return count == 1 && this.params.isOpen == "1";
+  }
+
+  get isPrivate(): boolean {
+    if (this.filters.isPrivate) {
+      return this.filters.isPrivate == "1";
+    } else {
+      return false;
     }
-    return Object.keys(this.params).length == 0;
   }
 
   filters: Dictionary<string> = {
@@ -121,7 +129,11 @@ export default class SearchBar extends Vue {
   }
 
   updatePrivate(value: boolean | null): void {
-    Vue.set(this.filters, "isPrivate", value ? "1" : "0");
+    if (value) {
+      Vue.set(this.filters, "isPrivate", "1");
+    } else {
+      Vue.delete(this.filters, "isPrivate");
+    }
   }
 
   mounted(): void {
@@ -171,6 +183,8 @@ export default class SearchBar extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import "~vuetify/src/styles/settings/_variables";
+
 .search-bar::v-deep {
   .v-icon,
   .v-text-field__slot .v-label,
@@ -183,19 +197,24 @@ export default class SearchBar extends Vue {
   margin-top: 4px !important;
   //margin-left: 30px;
 }
-
+//@media #{map-get($display-breakpoints, 'md-and-up')} {
 .v-select.fit,
 .fit::v-deep .v-select {
   margin-right: 5px;
-  //max-width: 200px;
+  max-width: 200px;
   float: left;
   width: min-content;
   min-width: 150px;
 }
+//}
 .v-select.fit::v-deep .v-select__selections,
 .fit::v-deep .v-select .v-select__selections {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.scrollable::v-deep {
+  overflow-x: auto;
 }
 </style>
