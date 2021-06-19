@@ -18,7 +18,7 @@
     <button id="pick-avatar">
       <v-avatar color="primary" class="profile" :size="size">
         <v-img v-if="picture" :src="picture"></v-img>
-        <span v-else class="white--text text-h6">{{ initials }}</span>
+        <span v-else class="white--text text-h6">{{ name | initials }}</span>
       </v-avatar>
     </button>
   </div>
@@ -52,21 +52,6 @@ export default class AvatarUpload extends Vue {
 
   get authToken(): string {
     return this.token ?? auth.token;
-  }
-
-  get initials(): string {
-    if (this.name === undefined) return "";
-
-    let split = this.name.split(" ");
-    let name = "";
-
-    if (split.length > 1) {
-      name = split[0].charAt(0) + split[split.length - 1].charAt(0);
-    } else {
-      name = this.name.replace(/[^a-zA-Z]/gi, "").substring(0, 2);
-    }
-
-    return name.toUpperCase();
   }
 
   handleUploaded(data: string): void {

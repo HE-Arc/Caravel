@@ -6,6 +6,14 @@
           <v-toolbar flat class="header-task">
             <v-toolbar-title class="text-subtitle-1 font-weight-light">
               <v-chip
+                :color="subject.color"
+                v-text="subject.name"
+                label
+                small
+                class="mr-1"
+                :dark="isTextDark"
+              />
+              <v-chip
                 :color="isDue ? 'success' : 'error'"
                 v-text="
                   isDue ? $t('task.states.open') : $t('task.states.close')
@@ -29,7 +37,9 @@
             }}</v-btn>
           </v-toolbar>
           <v-card-title>
-            <div class="text-h5">{{ task.title }}</div>
+            <div class="text-h5">
+              {{ task.title }} <v-icon v-if="task.isPrivate">mdi-lock</v-icon>
+            </div>
             <v-spacer></v-spacer>
             <v-btn small class="mr-1" :to="{ name: 'taskEdit' }">{{
               $t("global.edit")
@@ -62,6 +72,7 @@ import { Member } from "@/types/Member";
 import { Subject } from "@/types/subject";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
+import TinyColor from "tinycolor2";
 
 @Component({
   components: {
@@ -84,7 +95,7 @@ export default class TaskDisplay extends Vue {
 
   get isDue(): boolean {
     if (!this.task) return false;
-    return moment().endOf("days").isSameOrAfter(this.dueDate.endOf("days"));
+    return moment().endOf("day").isBefore(this.dueDate.endOf("day"));
   }
 
   get author(): Member | undefined {
@@ -95,6 +106,11 @@ export default class TaskDisplay extends Vue {
   get subject(): Subject | undefined {
     if (!this.task) return undefined;
     return subjectModule.getSubject(this.task.subject_id);
+  }
+
+  get isTextDark(): boolean {
+    const color = new TinyColor(this.subject?.color);
+    return color.getLuminance() < 0.228;
   }
 
   async delTask(): Promise<void> {
@@ -113,5 +129,9 @@ export default class TaskDisplay extends Vue {
 <style lang="scss" scoped>
 .header-task {
   border-bottom: 1px solid #efefef;
+}
+
+.text-h5 .v-icon {
+  vertical-align: unset;
 }
 </style>

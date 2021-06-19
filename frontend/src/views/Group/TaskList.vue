@@ -5,18 +5,23 @@
       <v-row>
         <v-col cols="12" md="8"></v-col>
       </v-row>
-      <v-row v-if="tasks.length > 0">
-        <v-col cols="12" md="8">
-          <div class="text-h5 font-weight-light">
-            {{ $tc("task.label", tasks.length) }}
-
+      <v-row>
+        <v-col cols="12" md="9">
+          <search-bar class="mb-4" :hasFilter="true" @handle-tasks="loadTasks">
             <v-btn
               color="success"
               class="float-right"
               :to="{ name: 'newTask' }"
               small
-              >{{ $t("global.add") }}</v-btn
-            >
+              >{{ $t("global.add") }}
+            </v-btn>
+          </search-bar>
+        </v-col>
+      </v-row>
+      <v-row v-if="tasks.length > 0">
+        <v-col cols="12" md="8">
+          <div class="text-h5 font-weight-light">
+            {{ $tc("task.label", tasks.length) }}
           </div>
           <div class="text-h5 transition-swing"></div>
           <v-list flat v-for="(items, key) in tasksGrouped" :key="key">
@@ -64,15 +69,23 @@ import { Task } from "@/types/task";
 import TaskListItem from "@/components/task/TaskItemList.vue";
 import { Dictionary } from "@/types/helpers";
 import moment from "moment";
+import SearchBar from "@/components/SearchBar.vue";
 
 @Component({
   components: {
     TaskListItem,
+    SearchBar,
   },
 })
 export default class TaskList extends Vue {
-  get tasks(): Task[] {
-    return taskModule.tasksFuture;
+  tasks: Task[] = [];
+
+  mounted(): void {
+    this.tasks = taskModule.tasksFuture;
+  }
+
+  loadTasks(tasks: Task[]): void {
+    this.tasks = tasks;
   }
 
   get tasksGrouped(): Dictionary<Task[]> {

@@ -90,18 +90,6 @@ export default class Profile extends Vue {
     return process.env.VUE_APP_API_BASE_URL + "profile";
   }
 
-  get initials(): string {
-    if (auth.user === undefined) return "";
-
-    let split = auth.user?.name.split(" ");
-    let name =
-      split.length > 1
-        ? split[0].charAt(0) + split[split.length - 1].charAt(0)
-        : auth.user?.name.charAt(0) + ".";
-
-    return name.toUpperCase();
-  }
-
   handleUpload(user: User): void {
     auth.update(user);
   }

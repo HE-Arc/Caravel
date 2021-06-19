@@ -16,6 +16,6 @@ class isPrivate implements Filter
      */
     public static function apply(Builder $builder, $value)
     {
-        return $value ? $builder->where('isPrivate', '=', 1) : $builder->where('isPrivate', '=', 0);
+        return $value ? $builder->where('isPrivate', '=', 1) : $builder;
     }
 }

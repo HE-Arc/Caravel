@@ -36,7 +36,7 @@
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
-            {{ $t("autocomplete.manage", [labelLower]) }}
+            {{ manageName }}
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -56,10 +56,12 @@ export default class VAutocompleteFilter extends Vue {
   @Prop({ default: "" }) manageName!: string;
   @Prop() items!: Dictionary<string | number | unknown>[];
   @Prop({ default: true }) checkDuplicate!: boolean;
+  @Prop({ default: true }) createNoData!: boolean;
   searchText: string | null = null;
 
   get canCreate(): boolean {
     return (
+      this.createNoData &&
       !(this.searchText == null || this.searchText == "") &&
       ((this.items &&
         !this.items.some((item) => item.text == this.searchText)) ||
