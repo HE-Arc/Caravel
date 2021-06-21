@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Copy configuration files
-        run: sudo rsync --recursive ${{ env.configdir }} .
+        run: rsync --recursive ${{ env.configdir }} .
           
       - name: Install composer Dependencies for Laravel
         run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
