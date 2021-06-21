@@ -36,7 +36,7 @@
       </v-list>
     </v-card-text>
     <v-card-text v-else>
-      {{ $t("group.request.empty") }}
+      {{ $t("subject.empty") }}
     </v-card-text>
     <subject-details
       :subjectData="subject"

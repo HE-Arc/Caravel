@@ -187,6 +187,7 @@
     "edit": "Modifier le sujet",
     "manage": "Gérer les sujets",
     "label": "Sujet | Sujets",
+    "empty": "Aucun sujet",
     "icon": "mdi-format-list-bulleted-square",
     "form": {
       "name": {
