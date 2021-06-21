@@ -67,7 +67,8 @@ export default class TaskItemList extends Vue {
   }
 
   get isTextDark(): boolean {
-    const color = new TinyColor(this.subject?.color);
+    if (!this.subject) return false;
+    const color = new TinyColor(this.subject.color);
     return color.getLuminance() < 0.228;
   }
 

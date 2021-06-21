@@ -60,8 +60,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
+import groupModule from "@/store/modules/groups";
 import { Task } from "@/types/task";
 import TaskListItem from "@/components/task/TaskItemList.vue";
 import { Dictionary, TaskType } from "@/types/helpers";
@@ -78,6 +79,15 @@ export default class TaskList extends Vue {
   tasks: Task[] = [];
 
   mounted(): void {
+    this.tasks = taskModule.tasksFuture;
+  }
+
+  get groupId(): string {
+    return groupModule.selectedId;
+  }
+
+  @Watch("groupId")
+  onGroupChange(): void {
     this.tasks = taskModule.tasksFuture;
   }
 
