@@ -183,6 +183,7 @@
     "new": "Nouveau sujet",
     "edit": "Modifier le sujet",
     "label": "Sujet | Sujets",
+    "empty": "Aucun sujet",
     "icon": "mdi-format-list-bulleted-square",
     "form": {
       "name": {
