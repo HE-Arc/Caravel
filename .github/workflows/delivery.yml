@@ -27,7 +27,9 @@ jobs:
         working-directory: ./backend
           
       - name: Copy backend Laravel 
-        run: sudo rsync --recursive ./backend ${{ env.rootdir }}
+        run: |
+          sudo rm -r ./backend/storage
+          sudo rsync --recursive ./backend ${{ env.rootdir }}
 
       - name: Install dependencies frontend
         run: npm install
