@@ -77,7 +77,7 @@ return [
                     'email' => 'mail',
                     'firstname' => 'givenName',
                     'lastname' => 'sn',
-                    App\Ldap\AttributeHandler::class,
+                    //App\Ldap\AttributeHandler::class,
                 ],
             ],
         ],
