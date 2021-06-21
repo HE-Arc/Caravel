@@ -74,7 +74,7 @@ export default class SelectSubject extends Vue {
   }
 
   handleNewSubject(subject: Subject): void {
-    this.subject = subject.id;
+    this.subject = subject.id.toString();
   }
 }
 </script>
