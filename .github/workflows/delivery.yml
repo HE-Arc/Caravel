@@ -44,8 +44,8 @@ jobs:
         
       - name: Create symlinks
         run: |
-           sudo ln -s ${{ env.share }}/storage ${{ env.backend }}/storage
-           sudo ln -s ${{ env.share }}/uploads ${{ env.backend }}/public/uploads
+           sudo ln -s ${{ env.share }}/storage ${{ env.backend }} -f
+           sudo ln -s ${{ env.share }}/uploads ${{ env.backend }}/public -f
           
       - name: Set global permissions
         run: |
