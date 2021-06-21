@@ -30,6 +30,10 @@
   "login": {
     "connexion": "Se connecter",
     "username": "Nom d'utilisateur",
+    "mail": {
+      "label": "Email",
+      "placerholder": "Taper votre adresse email @he-arc.ch"
+    },
     "password": "Mot de passe",
     "failed": "L'authentification a échouée",
     "logged_in": "Authentification réussie",

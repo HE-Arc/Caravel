@@ -28,7 +28,8 @@
                 <v-text-field
                   prepend-icon="mdi-account"
                   name="mail"
-                  :label="$t('login.username')"
+                  :label="$t('login.mail.label')"
+                  :placeholder="$t('login.mail.placerholder')"
                   type="text"
                   v-model="username"
                   outlined

@@ -72,13 +72,12 @@ return [
             'rules' => [],
             'database' => [
                 'model' => App\Models\User::class,
-                'sync_passwords' => true,
                 'sync_attributes' => [
                     'name' => 'cn',
                     'email' => 'mail',
                     'firstname' => 'givenName',
                     'lastname' => 'sn',
-                    //App\Ldap\AttributeHandler::class,
+                    App\Ldap\AttributeHandler::class,
                 ],
             ],
         ],

@@ -13,26 +13,31 @@ class AuthAPIController extends BaseController
      * Method to handle user json token auth
      */
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->only('mail', 'password');
-    
-        if (Auth::attempt($credentials)) {
+        $credentials2 = ["sAMAccountName" => $credentials['mail'], "password" => $credentials['password']];
+
+        if (Auth::attempt($credentials) || Auth::attempt($credentials2)) {
             /** @var User $user */
             $user = Auth::user();
 
             $user->load('groupsAvailable');
             $user->load('notifications');
-            
+
             $token = $user->createToken("token");
-    
-            return ['token' => $token->plainTextToken,
-                    'user' => $user];
+
+            return [
+                'token' => $token->plainTextToken,
+                'user' => $user
+            ];
         } else {
             return response()->json(['error' => "authentification failed."], 401);
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         // Get user who requested the logout
         $user = request()->user(); //or Auth::user()
         // Revoke current user token

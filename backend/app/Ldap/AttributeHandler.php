@@ -11,7 +11,16 @@ class AttributeHandler
     {
         //set isLdap, set isProf
         $user->isLDAP = 1;
-        //$database->name = $ldap->getFirstAttribute('cn');
-        //$database->email = $ldap->getFirstAttribute('mail');
+        $allowedOUs = explode(";", env("LDAP_TEACHERS_OUs", ""));
+
+        //check if user is in a allowedOU to 
+        foreach ($allowedOUs as $ou) {
+            if ($ldap->inside($ou)) {
+                $user->isTeacher = true;
+                return;
+            }
+        }
+
+        $user->isTeacher = false;
     }
 }
