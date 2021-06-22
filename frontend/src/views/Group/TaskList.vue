@@ -90,14 +90,8 @@ export default class TaskList extends Vue {
   }
 
   get tasks(): Task[] {
-    //console.log(this.searchBar, this.searchBar.isEmpty);
     return this.isFiltered ? this.filteredTasks : taskModule.tasksFuture;
   }
-
-  /*@Watch("groupId")
-  onGroupChange(): void {
-    this.tasks = taskModule.tasksFuture;
-  }*/
 
   updateState(state: boolean): void {
     this.isFiltered = state;
