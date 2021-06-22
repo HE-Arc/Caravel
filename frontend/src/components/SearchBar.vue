@@ -155,6 +155,11 @@ export default class SearchBar extends Vue {
     }, 500); // 0.5 sec delay
   }
 
+  @Watch("isEmpty")
+  onStateChange() {
+    this.updateState();
+  }
+
   loadData(): void {
     const groupId = groupModule.selectedId;
     this.isLoading = true;
@@ -178,6 +183,11 @@ export default class SearchBar extends Vue {
   @Emit()
   handleTasks(tasks: Task[]): Task[] {
     return tasks;
+  }
+
+  @Emit()
+  updateState(): boolean {
+    return !this.isEmpty;
   }
 }
 </script>

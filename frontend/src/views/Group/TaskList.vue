@@ -7,7 +7,13 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="9">
-          <search-bar class="mb-4" :hasFilter="true" @handle-tasks="loadTasks">
+          <search-bar
+            ref="searchBar"
+            class="mb-4"
+            :hasFilter="true"
+            @handle-tasks="loadTasks"
+            @update-state="updateState"
+          >
             <v-btn
               color="success"
               class="float-right"
@@ -60,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Ref, Vue, Watch } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import groupModule from "@/store/modules/groups";
 import { Task } from "@/types/task";
@@ -76,23 +82,29 @@ import SearchBar from "@/components/SearchBar.vue";
   },
 })
 export default class TaskList extends Vue {
-  tasks: Task[] = [];
-
-  mounted(): void {
-    this.tasks = taskModule.tasksFuture;
-  }
+  isFiltered = false;
+  filteredTasks: Task[] = [];
 
   get groupId(): string {
     return groupModule.selectedId;
   }
 
-  @Watch("groupId")
+  get tasks(): Task[] {
+    //console.log(this.searchBar, this.searchBar.isEmpty);
+    return this.isFiltered ? this.filteredTasks : taskModule.tasksFuture;
+  }
+
+  /*@Watch("groupId")
   onGroupChange(): void {
     this.tasks = taskModule.tasksFuture;
+  }*/
+
+  updateState(state: boolean): void {
+    this.isFiltered = state;
   }
 
   loadTasks(tasks: Task[]): void {
-    this.tasks = tasks;
+    this.filteredTasks = tasks;
   }
 
   get tasksGrouped(): Dictionary<Task[]> {

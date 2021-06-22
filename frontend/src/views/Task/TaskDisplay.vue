@@ -22,17 +22,17 @@
                 label
                 small
               />
-              <span class="px-1">
+              <span class="pl-1">
                 {{ $t("task.createBy") }}
               </span>
-              <v-avatar color="primary" class="profile mr-1" size="16">
+              <v-avatar color="primary" class="profile" size="16">
                 <v-img v-if="author.picture" :src="author.picture"></v-img>
               </v-avatar>
               {{ author.firstname }}
               <timeago :datetime="task.created_at"></timeago>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn small color="primary" :to="{ name: 'newTask' }">{{
+            <v-btn small color="success" :to="{ name: 'newTask' }">{{
               $t("global.new")
             }}</v-btn>
           </v-toolbar>
