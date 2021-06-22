@@ -10,7 +10,7 @@
         <template v-for="(item, index) in items">
           <v-list-item
             :key="index"
-            @click="follow(item.to)"
+            :to="{ name: item.to }"
             v-if="!item.needGroup || hasGroupRoute"
           >
             <v-list-item-icon>
@@ -54,10 +54,6 @@ export default class AddContent extends Vue {
 
   get hasGroupRoute(): boolean {
     return this.$route.params.group_id != undefined;
-  }
-
-  follow(name: string): void {
-    this.$router.push({ name: name });
   }
 }
 </script>
