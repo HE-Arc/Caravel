@@ -12,7 +12,10 @@
           />
         </router-link>
       </div>
-      <search-bar class="ml-2 d-none d-md-flex" v-if="isLoggedIn"></search-bar>
+      <quick-search
+        class="ml-2 d-none d-md-flex"
+        v-if="isLoggedIn"
+      ></quick-search>
 
       <v-spacer></v-spacer>
 
@@ -37,14 +40,14 @@ import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
 import UserMenu from "./components/UserMenu.vue";
 import AddContent from "./components/AddContent.vue";
-import SearchBar from "./components/SearchBar.vue";
 import auth from "@/store/modules/auth";
+import QuickSearch from "@/components/QuickSearch.vue";
 
 @Component({
   components: {
     UserMenu,
     AddContent,
-    SearchBar,
+    QuickSearch,
   },
 })
 export default class App extends Vue {
