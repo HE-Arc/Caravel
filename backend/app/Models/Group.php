@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\File;
@@ -29,7 +30,7 @@ class Group extends Model
         'user_id',
     ];
 
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\User')->withTimestamps();
     }
@@ -37,6 +38,11 @@ class Group extends Model
     public function members()
     {
         return $this->users()->select(['users.id', 'users.name', 'users.firstname', 'users.lastname', 'users.picture', 'users.isTeacher', 'users.email'])->addSelect('group_user.isApprouved as status');
+    }
+
+    public function usersAccepted()
+    {
+        return $this->users()->wherePivot('isApprouved', Group::ACCEPTED);
     }
 
     /**

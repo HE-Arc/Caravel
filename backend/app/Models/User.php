@@ -57,6 +57,7 @@ class User extends Authenticatable implements LdapAuthenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'fcm_tokens' => 'array',
     ];
 
     public function groups()
@@ -82,16 +83,6 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function groupsAvailable()
     {
         return $this->groups()->wherePivot('isApprouved', Group::ACCEPTED);
-    }
-
-    /**
-     * The Notifications that belong to the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function notifications(): BelongsToMany
-    {
-        return $this->belongsToMany(Action::class)->wherePivot('isTrash', 0);
     }
 
     public function comments()
@@ -162,5 +153,46 @@ class User extends Authenticatable implements LdapAuthenticatable
     public function getPictureAttribute($value)
     {
         return $value ? URL::to('/') . '/uploads' . $value : "";
+    }
+
+    /**
+     * Specifies the user's FCM token
+     *
+     * @return string|array
+     */
+    public function routeNotificationForFcm()
+    {
+        return $this->fcm_tokens;
+    }
+
+    public function addFcmToken($fcm)
+    {
+        if (empty($fcm)) return false;
+
+        $tokens = $this->fcm_tokens ?? [];
+        if (!in_array($fcm, $tokens)) {
+            array_push($tokens, $fcm);
+            $this->fcm_tokens = $tokens;
+            $this->save();
+            return true;
+        }
+
+        return false;
+    }
+
+    public function removeFcmToken($fcm)
+    {
+        if (empty($fcm)) return false;
+
+        $tokens = $this->fcm_tokens ?? [];
+
+        if (!empty($this->fcm_tokens) && in_array($fcm, $tokens)) {
+            $tokens = array_filter($tokens, fn ($e) => $e != $fcm);
+            $this->fcm_tokens = $tokens;
+            $this->save();
+            return true;
+        }
+
+        return false;
     }
 }

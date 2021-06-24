@@ -14,6 +14,7 @@
     "axios": "^0.21.1",
     "babel-plugin-require-context-hook": "^1.0.0",
     "core-js": "^3.6.5",
+    "firebase": "^8.6.8",
     "markdown-it-vue": "^1.1.6",
     "mavon-editor": "^2.9.1",
     "moment": "^2.29.1",
