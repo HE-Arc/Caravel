@@ -62,7 +62,7 @@ import { User } from "@/types/user";
 import Vue from "vue";
 import Component from "vue-class-component";
 import AvatarCropper from "vue-avatar-cropper";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/user";
 import AvatarUpload from "@/components/AvatarUpload.vue";
 
 @Component({

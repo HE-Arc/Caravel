@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-property-decorator";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/user";
 import { User } from "@/types/user";
 
 @Component
