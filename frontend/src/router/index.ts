@@ -4,7 +4,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import GroupsSearch from "../views/GroupSearch.vue";
 import GroupContainer from "../views/GroupContainer.vue";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/user";
 
 Vue.use(VueRouter);
 

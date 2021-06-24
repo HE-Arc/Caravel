@@ -2,6 +2,7 @@ import { Group } from "@/types/group";
 import TaskModule from "@/store/modules/tasks";
 import SubjectModule from "@/store/modules/subjects";
 import MemberModule from "@/store/modules/members";
+import UserModule from "@/store/modules/user";
 import { GroupExtended } from "@/types/groupExtended";
 import store from "@/store";
 import axios, { AxiosResponse } from "axios";
@@ -206,6 +207,6 @@ class GroupModule extends VuexModule {
 
 const instance = getModule(GroupModule);
 
-instance.loadGroups();
+if (UserModule.isLoggedIn) instance.loadGroups();
 
 export default instance;

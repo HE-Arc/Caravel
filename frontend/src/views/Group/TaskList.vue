@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import groupModule from "@/store/modules/groups";
 import { Task } from "@/types/task";

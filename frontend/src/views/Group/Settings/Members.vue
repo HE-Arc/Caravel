@@ -72,7 +72,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";
-import authModule from "@/store/modules/auth";
+import authModule from "@/store/modules/user";
 import memberModule from "@/store/modules/members";
 import { Group } from "@/types/group";
 import { Member } from "@/types/Member";
