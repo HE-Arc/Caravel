@@ -93,7 +93,7 @@
 </template>
 
 <script lang="ts">
-import { TaskForm } from "@/types/TaskForm";
+import { TaskForm } from "@/types/taskForm";
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import VAutocompleteFilter from "@/components/utility/VAutocompleteFilter.vue";
 import { TaskType } from "@/types/helpers";
@@ -103,7 +103,7 @@ import Factory from "@/types/Factory";
 import SimpleDatePicker from "@/components/utility/simpledatepicker.vue";
 import VMarkdownEditor from "@/components/utility/markdown.vue";
 import moment from "moment";
-import { Task } from "@/types/Task";
+import { Task } from "@/types/task";
 import SelectType from "@/components/inputs/SelectType.vue";
 import SelectSubject from "@/components/inputs/SelectSubject.vue";
 

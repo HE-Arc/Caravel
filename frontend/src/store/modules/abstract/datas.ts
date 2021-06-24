@@ -1,4 +1,4 @@
-import { Data } from "@/types/Data";
+import { Data } from "@/types/data";
 import { VuexModule, Mutation, Action } from "vuex-module-decorators";
 
 // inherance broken https://github.com/championswimmer/vuex-module-decorators/issues/125 wait for vue 3

@@ -40,7 +40,7 @@ import GroupSelector from "@/components/GroupSelector.vue";
 import groupModule from "@/store/modules/groups";
 import taskModule from "@/store/modules/tasks";
 import memberModule from "@/store/modules/members";
-import { Group } from "@/types/Group";
+import { Group } from "@/types/group";
 import { Dictionary } from "@/types/helpers";
 
 @Component({

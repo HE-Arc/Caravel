@@ -1,4 +1,4 @@
-import { Data } from "./Data";
+import { Data } from "./data";
 
 export interface Subject extends Data {
   id: string;

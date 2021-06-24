@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Group } from "@/types/Group";
+import { Group } from "@/types/group";
 import { Component, Vue } from "vue-property-decorator";
 import groupModule from "@/store/modules/groups";
 

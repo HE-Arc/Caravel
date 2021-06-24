@@ -69,7 +69,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import groupModule from "@/store/modules/groups";
-import { Task } from "@/types/Task";
+import { Task } from "@/types/task";
 import TaskListItem from "@/components/task/TaskItemList.vue";
 import { Dictionary, TaskType } from "@/types/helpers";
 import moment from "moment";

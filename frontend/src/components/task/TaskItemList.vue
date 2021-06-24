@@ -45,12 +45,12 @@
 </template>
 
 <script lang="ts">
-import { Task } from "@/types/Task";
+import { Task } from "@/types/task";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import memberModule from "@/store/modules/members";
 import subjectModule from "@/store/modules/subjects";
-import { Member } from "@/types/Member";
-import { Subject } from "@/types/Subject";
+import { Member } from "@/types/member";
+import { Subject } from "@/types/subject";
 import TinyColor from "tinycolor2";
 import { TaskType } from "@/types/helpers";
 
