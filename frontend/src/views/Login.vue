@@ -62,7 +62,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/user";
 
 @Component
 export default class Login extends Vue {

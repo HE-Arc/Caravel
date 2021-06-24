@@ -225,5 +225,17 @@
     "private": {
       "label": "Privé"
     }
+  },
+  "notifications": {
+    "1": {
+      "icon": "mdi-plus-thick"
+    },
+    "2": {
+      "icon": "mdi-pencil"
+    },
+    "3": {
+      "icon": "mdi-delete"
+    },
+    "empty": "Pas de notifications"
   }
 }

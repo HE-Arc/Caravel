@@ -1,7 +1,7 @@
-import { Group } from "./group";
+import { Group } from "./Group";
 import { Member } from "./Member";
-import { Subject } from "./subject";
-import { Task } from "./task";
+import { Subject } from "./Subject";
+import { Task } from "./Task";
 
 export interface GroupExtended extends Group {
   name: string;

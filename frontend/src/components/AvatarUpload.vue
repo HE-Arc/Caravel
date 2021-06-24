@@ -28,7 +28,7 @@
 import { Prop, Component, Vue, Emit } from "vue-property-decorator";
 import AvatarCropper from "vue-avatar-cropper";
 import { Dictionary } from "@/types/helpers";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/user";
 
 @Component({
   components: {

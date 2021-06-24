@@ -27,6 +27,8 @@ class ProfileRequest extends FormRequest
         return [
             'name' => ['min:3', 'max:150'],
             'picture' => 'image|max:4096',
+            'notif_id' => 'string',
+            'fcm' => 'string',
             'email' => ['email', Rule::unique('users')->ignore(auth()->id())],
         ];
     }

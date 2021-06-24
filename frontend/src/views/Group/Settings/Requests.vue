@@ -39,11 +39,11 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";
 import memberModule from "@/store/modules/members";
-import authModule from "@/store/modules/auth";
-import { Group } from "@/types/group";
+import authModule from "@/store/modules/user";
+import { Group } from "@/types/Group";
 import { Member } from "@/types/Member";
 import MemberItem from "@/components/MemberItem.vue";
-import { User } from "@/types/user";
+import { User } from "@/types/User";
 import { GroupStatus } from "@/types/helpers";
 
 @Component({

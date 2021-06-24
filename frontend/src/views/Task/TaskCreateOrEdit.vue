@@ -13,7 +13,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import TaskDetails from "@/components/task/TaskDetails.vue";
 import Factory from "@/types/Factory";
-import { TaskForm } from "@/types/taskForm";
+import { TaskForm } from "@/types/TaskForm";
 import taskModule from "@/store/modules/tasks";
 
 @Component({

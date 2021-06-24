@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { Dictionary } from "@/types/helpers";
-import { Subject } from "@/types/subject";
+import { Subject } from "@/types/Subject";
 import { Component, Vue, VModel } from "vue-property-decorator";
 import subjectModule from "@/store/modules/subjects";
 import SubjectDetails from "@/components/subject/SubjectDetails.vue";

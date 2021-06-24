@@ -22,17 +22,17 @@
                 label
                 small
               />
-              <span class="px-1">
+              <span class="pl-1">
                 {{ $t("task.createBy") }}
               </span>
-              <v-avatar color="primary" class="profile mr-1" size="16">
+              <v-avatar color="primary" class="profile" size="16">
                 <v-img v-if="author.picture" :src="author.picture"></v-img>
               </v-avatar>
               {{ author.firstname }}
               <timeago :datetime="task.created_at"></timeago>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn small color="primary" :to="{ name: 'newTask' }">{{
+            <v-btn small color="success" :to="{ name: 'newTask' }">{{
               $t("global.new")
             }}</v-btn>
           </v-toolbar>
@@ -62,14 +62,14 @@
 </template>
 
 <script lang="ts">
-import { Task } from "@/types/task";
+import { Task } from "@/types/Task";
 import { Component, Vue } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import subjectModule from "@/store/modules/subjects";
 import memberModule from "@/store/modules/members";
 import moment, { Moment } from "moment";
 import { Member } from "@/types/Member";
-import { Subject } from "@/types/subject";
+import { Subject } from "@/types/Subject";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";

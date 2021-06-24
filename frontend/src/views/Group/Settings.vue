@@ -50,7 +50,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import main from "@/store/modules/groups";
-import { Group } from "@/types/group";
+import { Group } from "@/types/Group";
 import GroupManage from "@/views/Group/Settings/Manage.vue";
 import memberModule from "@/store/modules/members";
 import { Dictionary } from "@/types/helpers";

@@ -152,7 +152,7 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy(Group $group, Task $task)
     {
         if ($this->user->id == $task->user_id) {
             $task->delete();

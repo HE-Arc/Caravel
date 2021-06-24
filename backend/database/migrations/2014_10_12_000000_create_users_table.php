@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('isLDAP')->default(0);
             $table->boolean('isTeacher')->default(0);
-            $table->string('fcm_token')->nullable();
+            $table->text('fcm_tokens')->nullable();
             $table->timestamps();
         });
     }

@@ -1,5 +1,5 @@
 import store from "@/store";
-import { Subject } from "@/types/subject";
+import { Subject } from "@/types/Subject";
 import axios, { AxiosResponse } from "axios";
 import {
   VuexModule,

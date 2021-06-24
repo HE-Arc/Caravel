@@ -30,7 +30,7 @@
             {{ user.email }}
           </p>
           <v-divider class="my-3"></v-divider>
-          <v-btn depressed rounded text @click="goTo('Profile')">{{
+          <v-btn depressed rounded text :to="{ name: 'Profile' }">{{
             $t("appbar.settings")
           }}</v-btn>
           <v-divider class="my-3"></v-divider>
@@ -45,8 +45,8 @@
 
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-property-decorator";
-import auth from "@/store/modules/auth";
-import { User } from "@/types/user";
+import auth from "@/store/modules/user";
+import { User } from "@/types/User";
 
 @Component
 export default class UserMenu extends Vue {
@@ -65,10 +65,6 @@ export default class UserMenu extends Vue {
     } catch {
       this.$toast.error(this.$t("login.failed").toString());
     }
-  }
-
-  goTo(routeName: string): void {
-    this.$router.push({ name: routeName }).catch((err) => err);
   }
 }
 </script>

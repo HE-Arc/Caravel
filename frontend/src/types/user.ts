@@ -1,5 +1,6 @@
-import { Data } from "./data";
-import { Group } from "./group";
+import { Data } from "./Data";
+import { Group } from "./Group";
+import Notification from "./notification";
 export interface User extends Data {
   name: string;
   email: string;
@@ -8,4 +9,5 @@ export interface User extends Data {
   isLDAP: boolean;
   isTeacher: boolean;
   groups_available: Group[];
+  notifications: Notification[];
 }

@@ -38,4 +38,20 @@ return [
     'users' => [
         'remove_group' => "Le group a été enlevé avec succès",
     ],
+    'notifications' => [
+        'task' => [
+            'create' => [ //create
+                'title' => "Nouvelle tâche",
+                'message' => "La tâche ':name' a été ajoutée au groupe ':group'"
+            ],
+            'update' => [ // update
+                'title' => "Tâche mise à jour",
+                'message' => "La tâche ':name' du groupe ':group' a été mise à jour"
+            ],
+            'delete' => [ // delete
+                'title' => "Tâche retirée",
+                'message' => "La tâche ':name' a été retirée dans le groupe ':group'"
+            ]
+        ]
+    ]
 ];

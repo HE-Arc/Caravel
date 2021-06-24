@@ -1,5 +1,6 @@
 <template>
   <v-list-item
+    v-if="task"
     class="task-item-list mb-2"
     :to="{
       name: 'taskDisplay',
@@ -44,12 +45,12 @@
 </template>
 
 <script lang="ts">
-import { Task } from "@/types/task";
+import { Task } from "@/types/Task";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import memberModule from "@/store/modules/members";
 import subjectModule from "@/store/modules/subjects";
 import { Member } from "@/types/Member";
-import { Subject } from "@/types/subject";
+import { Subject } from "@/types/Subject";
 import TinyColor from "tinycolor2";
 import { TaskType } from "@/types/helpers";
 

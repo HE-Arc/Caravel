@@ -79,7 +79,7 @@ import SelectType from "@/components/inputs/SelectType.vue";
 import SelectSubject from "@/components/inputs/SelectSubject.vue";
 import SelectMember from "@/components/inputs/SelectMember.vue";
 import SelectState from "@/components/inputs/SelectState.vue";
-import { Task } from "@/types/task";
+import { Task } from "@/types/Task";
 import axios from "axios";
 
 @Component({
@@ -155,6 +155,11 @@ export default class SearchBar extends Vue {
     }, 500); // 0.5 sec delay
   }
 
+  @Watch("isEmpty")
+  onStateChange(): void {
+    this.updateState();
+  }
+
   loadData(): void {
     const groupId = groupModule.selectedId;
     this.isLoading = true;
@@ -178,6 +183,11 @@ export default class SearchBar extends Vue {
   @Emit()
   handleTasks(tasks: Task[]): Task[] {
     return tasks;
+  }
+
+  @Emit()
+  updateState(): boolean {
+    return !this.isEmpty;
   }
 }
 </script>
