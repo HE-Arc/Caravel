@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { Group } from "@/types/Group";
+import { Group } from "@/types/group";
 import Vue from "vue";
 import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";

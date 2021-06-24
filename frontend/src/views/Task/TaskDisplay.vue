@@ -62,14 +62,14 @@
 </template>
 
 <script lang="ts">
-import { Task } from "@/types/Task";
+import { Task } from "@/types/task";
 import { Component, Vue } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import subjectModule from "@/store/modules/subjects";
 import memberModule from "@/store/modules/members";
 import moment, { Moment } from "moment";
-import { Member } from "@/types/Member";
-import { Subject } from "@/types/Subject";
+import { Member } from "@/types/member";
+import { Subject } from "@/types/subject";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";

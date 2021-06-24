@@ -30,7 +30,7 @@
 import { Dictionary } from "@/types/helpers";
 import { Component, Vue } from "vue-property-decorator";
 import memberModule from "@/store/modules/members";
-import { Member } from "@/types/Member";
+import { Member } from "@/types/member";
 
 @Component
 export default class SelectMember extends Vue {

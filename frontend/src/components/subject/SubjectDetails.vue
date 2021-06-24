@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { Subject } from "@/types/Subject";
+import { Subject } from "@/types/subject";
 import { Prop, Vue, Component, Emit, Watch } from "vue-property-decorator";
 import subjectModule from "@/store/modules/subjects";
 import Factory from "@/types/Factory";

@@ -50,7 +50,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import subjectModule from "@/store/modules/subjects";
-import { Subject } from "@/types/Subject";
+import { Subject } from "@/types/subject";
 import SubjectDetails from "@/components/subject/SubjectDetails.vue";
 import Factory from "@/types/Factory";
 

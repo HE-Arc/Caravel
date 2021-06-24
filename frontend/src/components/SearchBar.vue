@@ -79,7 +79,7 @@ import SelectType from "@/components/inputs/SelectType.vue";
 import SelectSubject from "@/components/inputs/SelectSubject.vue";
 import SelectMember from "@/components/inputs/SelectMember.vue";
 import SelectState from "@/components/inputs/SelectState.vue";
-import { Task } from "@/types/Task";
+import { Task } from "@/types/task";
 import axios from "axios";
 
 @Component({

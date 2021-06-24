@@ -1,4 +1,4 @@
-import { Data } from "./Data";
+import { Data } from "./data";
 
 export interface Task extends Data {
   title: string;

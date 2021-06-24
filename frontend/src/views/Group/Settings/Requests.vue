@@ -40,10 +40,10 @@ import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";
 import memberModule from "@/store/modules/members";
 import authModule from "@/store/modules/user";
-import { Group } from "@/types/Group";
-import { Member } from "@/types/Member";
+import { Group } from "@/types/group";
+import { Member } from "@/types/member";
 import MemberItem from "@/components/MemberItem.vue";
-import { User } from "@/types/User";
+import { User } from "@/types/user";
 import { GroupStatus } from "@/types/helpers";
 
 @Component({

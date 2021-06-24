@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { Group } from "@/types/Group";
+import { Group } from "@/types/group";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { GroupStatus } from "@/types/helpers";
 import axios from "axios";

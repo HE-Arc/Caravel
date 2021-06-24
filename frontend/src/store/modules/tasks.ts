@@ -1,5 +1,5 @@
 import store from "@/store";
-import { Task } from "@/types/Task";
+import { Task } from "@/types/task";
 import axios, { AxiosResponse } from "axios";
 import groupModule from "@/store/modules/groups";
 import Vue from "vue";

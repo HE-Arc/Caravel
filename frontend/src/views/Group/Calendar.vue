@@ -58,7 +58,7 @@ import Component from "vue-class-component";
 import moment, { Moment } from "moment";
 import taskModule from "@/store/modules/tasks";
 import subjectModule from "@/store/modules/subjects";
-import EventTask from "@/types/EventTask";
+import EventTask from "@/types/eventTask";
 import { TaskType } from "@/types/helpers";
 
 @Component({

@@ -1,9 +1,9 @@
-import { Group } from "@/types/Group";
+import { Group } from "@/types/group";
 import TaskModule from "@/store/modules/tasks";
 import SubjectModule from "@/store/modules/subjects";
 import MemberModule from "@/store/modules/members";
 import UserModule from "@/store/modules/user";
-import { GroupExtended } from "@/types/GroupExtended";
+import { GroupExtended } from "@/types/groupExtended";
 import store from "@/store";
 import axios, { AxiosResponse } from "axios";
 import Vue from "vue";

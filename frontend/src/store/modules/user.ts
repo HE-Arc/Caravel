@@ -1,5 +1,5 @@
 // src/store/modules/auth.ts
-import { User } from "@/types/User";
+import { User } from "@/types/user";
 import axios, { AxiosResponse } from "axios";
 import {
   VuexModule,

@@ -1,5 +1,5 @@
-import { Data } from "./Data";
-import { Group } from "./Group";
+import { Data } from "./data";
+import { Group } from "./group";
 import Notification from "./notification";
 export interface User extends Data {
   name: string;

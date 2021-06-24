@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts">
-import { Member } from "@/types/Member";
+import { Member } from "@/types/member";
 import authModule from "@/store/modules/user";
 import groupModule from "@/store/modules/groups";
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { User } from "@/types/User";
+import { User } from "@/types/user";
 
 @Component
 export default class MemberItem extends Vue {

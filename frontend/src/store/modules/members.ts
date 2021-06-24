@@ -1,6 +1,6 @@
 import store from "@/store";
 import { GroupStatus } from "@/types/helpers";
-import { Member } from "@/types/Member";
+import { Member } from "@/types/member";
 import axios, { AxiosResponse } from "axios";
 import {
   VuexModule,
