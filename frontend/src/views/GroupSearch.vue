@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { Group } from "@/types/group";
+import { Group } from "@/types/Group";
 import { Watch } from "vue-property-decorator";
 import Vue from "vue";
 import Component from "vue-class-component";

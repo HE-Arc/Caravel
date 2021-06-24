@@ -1,5 +1,5 @@
 // src/store/modules/auth.ts
-import { User } from "@/types/user";
+import { User } from "@/types/User";
 import axios, { AxiosResponse } from "axios";
 import {
   VuexModule,
@@ -10,6 +10,7 @@ import {
   MutationAction,
 } from "vuex-module-decorators";
 import store from "@/store";
+import Notification from "@/types/notification";
 
 interface BagSuccess {
   token: string;
@@ -50,6 +51,10 @@ class UserModule extends VuexModule {
     return this._status;
   }
 
+  get notifications(): Notification[] {
+    return this._user ? this._user.notifications : [];
+  }
+
   // MUTATION
   @Mutation
   private REQUEST() {
@@ -78,6 +83,12 @@ class UserModule extends VuexModule {
   @Mutation
   private UPDATE_FCM(token: string) {
     this._fcm_token = token;
+  }
+
+  @Mutation
+  private UPDATE_NOTIFS(notifs: Notification[]) {
+    if (!this._user) return;
+    this._user.notifications = notifs;
   }
 
   @MutationAction({ mutate: ["_user"] })
@@ -152,6 +163,32 @@ class UserModule extends VuexModule {
   init(): void {
     if (this.token)
       axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
+  }
+
+  @Action
+  async loadNotifications(): Promise<void> {
+    if (!this.isLoggedIn) return;
+
+    const resp = await axios({
+      url: process.env.VUE_APP_API_BASE_URL + "profile/notifications",
+    });
+
+    const notifs: Notification[] = resp.data;
+
+    this.UPDATE_NOTIFS(notifs);
+  }
+
+  @Action
+  async markAsRead(notif: Notification): Promise<void> {
+    if (!this.isLoggedIn) return;
+    await axios({
+      url: process.env.VUE_APP_API_BASE_URL + "profile/markAsRead",
+      method: "POST",
+      data: {
+        notif_id: notif.id,
+      },
+    });
+    await this.loadNotifications();
   }
 }
 

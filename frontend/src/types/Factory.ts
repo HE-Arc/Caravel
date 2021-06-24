@@ -1,6 +1,6 @@
 import moment from "moment";
-import { Subject } from "./subject";
-import { TaskForm } from "./taskForm";
+import { Subject } from "./Subject";
+import { TaskForm } from "./TaskForm";
 
 export default class Factory {
   static getSubject(): Subject {

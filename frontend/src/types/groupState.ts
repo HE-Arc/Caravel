@@ -1,5 +1,5 @@
-import { Group } from "./group";
-import { Task } from "./task";
+import { Group } from "./Group";
+import { Task } from "./Task";
 
 export interface GroupState {
   group: Group | undefined;

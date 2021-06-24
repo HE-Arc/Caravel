@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { User } from "@/types/user";
+import { User } from "@/types/User";
 import Vue from "vue";
 import Component from "vue-class-component";
 import AvatarCropper from "vue-avatar-cropper";

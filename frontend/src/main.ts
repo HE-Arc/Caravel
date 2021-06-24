@@ -12,6 +12,7 @@ import "mavon-editor/dist/css/index.css";
 import VueTimeago from "vue-timeago";
 import moment from "moment";
 import "@/filters";
+import messaging from "../firebase";
 
 Vue.prototype.$http = Axios;
 
@@ -23,6 +24,12 @@ Vue.use(VueToast, {
 
 Vue.use(mavonEditor, {
   language: "fr",
+});
+
+Vue.mixin({
+  computed: {
+    $messaging: () => messaging,
+  },
 });
 
 moment.locale("fr");

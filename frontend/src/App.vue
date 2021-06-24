@@ -21,9 +21,7 @@
 
       <add-content v-if="isLoggedIn"></add-content>
 
-      <v-btn icon v-if="isLoggedIn">
-        <v-icon>mdi-bell-ring</v-icon>
-      </v-btn>
+      <notificatons v-if="isLoggedIn"></notificatons>
 
       <user-menu class="mr-3" v-if="isLoggedIn"></user-menu>
     </v-app-bar>
@@ -40,14 +38,16 @@ import "vue-toast-notification/dist/theme-sugar.css";
 import Component from "vue-class-component";
 import UserMenu from "./components/UserMenu.vue";
 import AddContent from "./components/AddContent.vue";
-import auth from "@/store/modules/auth";
+import auth from "@/store/modules/user";
 import QuickSearch from "@/components/QuickSearch.vue";
+import Notificatons from "@/components/Notifications.vue";
 
 @Component({
   components: {
     UserMenu,
     AddContent,
     QuickSearch,
+    Notificatons,
   },
 })
 export default class App extends Vue {
@@ -55,8 +55,12 @@ export default class App extends Vue {
     return auth.isLoggedIn;
   }
 
-  get token(): string {
-    return auth.token;
+  async mounted(): Promise<void> {
+    try {
+      await Notification.requestPermission();
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 </script>

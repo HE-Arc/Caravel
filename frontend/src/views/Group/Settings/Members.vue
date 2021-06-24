@@ -74,10 +74,10 @@ import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";
 import authModule from "@/store/modules/user";
 import memberModule from "@/store/modules/members";
-import { Group } from "@/types/group";
+import { Group } from "@/types/Group";
 import { Member } from "@/types/Member";
 import MemberItem from "@/components/MemberItem.vue";
-import { User } from "@/types/user";
+import { User } from "@/types/User";
 
 @Component({
   components: {

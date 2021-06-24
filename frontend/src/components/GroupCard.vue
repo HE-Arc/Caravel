@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Group } from "@/types/group";
+import { Group } from "@/types/Group";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component

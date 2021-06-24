@@ -12,6 +12,7 @@
             :key="index"
             :to="{ name: item.to }"
             v-if="!item.needGroup || hasGroupRoute"
+            exact
           >
             <v-list-item-icon>
               <v-icon>{{ $t(`${item.key}.icon`) }}</v-icon>

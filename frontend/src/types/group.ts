@@ -1,4 +1,4 @@
-import { Data } from "./data";
+import { Data } from "./Data";
 
 export interface Group extends Data {
   name: string;

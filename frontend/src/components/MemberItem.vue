@@ -29,7 +29,7 @@ import { Member } from "@/types/Member";
 import authModule from "@/store/modules/user";
 import groupModule from "@/store/modules/groups";
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { User } from "@/types/user";
+import { User } from "@/types/User";
 
 @Component
 export default class MemberItem extends Vue {
