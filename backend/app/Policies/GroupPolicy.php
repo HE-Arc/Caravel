@@ -39,4 +39,12 @@ class GroupPolicy
         }
         return true;
     }
+
+    /**
+     * Determine if the logged user can update the group state
+     */
+    public function canChangeMember(User $user, Group $group)
+    {
+        return $group->usersAccepted->contains($user);
+    }
 }
