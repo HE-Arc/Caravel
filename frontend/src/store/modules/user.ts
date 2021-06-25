@@ -179,13 +179,16 @@ class UserModule extends VuexModule {
   }
 
   @Action
-  async markAsRead(notif: Notification): Promise<void> {
+  async markAsRead(notif: Notification[]): Promise<void> {
     if (!this.isLoggedIn) return;
+
+    const listIds = notif.map((item) => item.id);
+
     await axios({
       url: process.env.VUE_APP_API_BASE_URL + "profile/markAsRead",
       method: "POST",
       data: {
-        notif_id: notif.id,
+        notifs: listIds,
       },
     });
     await this.loadNotifications();
