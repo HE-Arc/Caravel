@@ -148,6 +148,13 @@ class GroupController extends Controller
         if ($group->author == $data['user_id'])
             return response()->json(['message' => __('api.groups.resource_restricted')], 403);
 
+        switch ($data['status_id']) {
+            case Group::ACCEPTED:
+            case Group::REFUSED:
+                $this->authorize('canChangeMember', $group);
+                break;
+        }
+
         $group->users()->updateExistingPivot($data['user_id'], array('isApprouved' => $data['status_id']), true);
 
         return response()->json(['message' => __('api.groups.member_updated')]);
@@ -155,10 +162,11 @@ class GroupController extends Controller
 
     public function join(Group $group)
     {
-        $userId = Auth::id();
+        $userId = $this->user->id;
         //verification of non existence (a refused/accepter/pending user can not ask again to join a group)
         if ($group->users()->find($userId) == null) {
-            $group->users()->attach($userId, ['isApprouved' => Group::PENDING]);
+            $stateApproval = ($this->user->isTeacher && !$group->isPrivate) ? Group::ACCEPTED : Group::PENDING;
+            $group->users()->attach($userId, ['isApprouved' => $stateApproval]);
             return response()->json(["message" => TRUE]);
         }
 

@@ -7,7 +7,8 @@ export default interface Notification {
         message: string;
         type: number;
         model: string;
-        model_id: number;
+        model_id: string;
+        group_id: string;
     };
     read_at: Date | null;
     created_at: Date | null;

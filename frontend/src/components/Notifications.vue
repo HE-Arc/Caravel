@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-menu offset-y>
+    <v-menu offset-y :close-on-content-click="false">
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon v-bind="attrs" v-on="on">
           <v-badge color="red" :content="items.length" v-if="hasItem">
@@ -10,49 +10,28 @@
         </v-btn>
       </template>
       <v-card elevation="16" max-width="400" class="mx-auto">
-        <v-virtual-scroll
-          :items="items"
-          height="300"
-          item-height="64"
-          width="400"
-          v-if="hasItem"
-        >
-          <template v-slot:default="{ item }">
-            <v-list-item
-              :key="item.id"
-              :to="{
-                name: converterTo(item.data.model),
-                params: {
-                  group_id: item.data.group_id,
-                  task_id: item.data.model_id,
-                },
-              }"
-              exact
-            >
-              <v-list-item-action>
-                <v-icon>{{
-                  $t(`notifications.${item.data.type}.icon`)
-                }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ item.data.title }}
-                </v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ item.data.message }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-btn fab small elevation="1" @click="markAsRead(item)">
-                  <v-icon small> mdi-email-open </v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </v-list-item>
-          </template>
-        </v-virtual-scroll>
+        <v-list three-line v-if="hasItem">
+          <v-virtual-scroll
+            :items="items"
+            height="300"
+            item-height="90"
+            width="400"
+          >
+            <template v-slot:default="{ item }">
+              <notification-item
+                :key="item.id"
+                :item="item"
+              ></notification-item>
+              <v-divider :key="item.id"></v-divider>
+            </template>
+          </v-virtual-scroll>
+        </v-list>
         <v-card-text v-else>
           {{ $t("notifications.empty") }}
         </v-card-text>
+        <v-card-actions>
+          <v-btn text color="primary">{{ $t("notifications.readAll") }}</v-btn>
+        </v-card-actions>
       </v-card>
     </v-menu>
   </div>
@@ -62,8 +41,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import userModule from "@/store/modules/user";
 import Notification from "@/types/notification";
+import NotificationItem from "@/components/notification/NotificationItem.vue";
 
-@Component
+@Component({
+  components: {
+    NotificationItem,
+  },
+})
 export default class Notifications extends Vue {
   converter = { Task: "taskDisplay" };
 
@@ -80,10 +64,17 @@ export default class Notifications extends Vue {
   }
 
   markAsRead(notif: Notification): void {
-    userModule.markAsRead(notif);
+    userModule.markAsRead([notif]);
+  }
+
+  markAllAsRead(): void {
+    userModule.markAsRead(this.items);
   }
 
   mounted(): void {
+    //first time load all
+    userModule.loadNotifications();
+
     this.$messaging.onMessage(() => {
       userModule.loadNotifications();
     });

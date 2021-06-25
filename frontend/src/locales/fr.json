@@ -236,6 +236,7 @@
     "3": {
       "icon": "mdi-delete"
     },
-    "empty": "Pas de notifications"
+    "empty": "Pas de notifications",
+    "readAll": "Marquer tout comme lu"
   }
 }
