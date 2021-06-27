@@ -22,7 +22,8 @@
         "laravel/framework": "^8.0",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.3"
+        "laravel/ui": "^3.3",
+        "staudenmeir/belongs-to-through": "^2.11"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",

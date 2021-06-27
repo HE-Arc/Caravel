@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, \Znck\Eloquent\Traits\BelongsToThrough;
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +29,11 @@ class Task extends Model
     ];
 
     protected $hidden = [
-        'laravel_through_key',
+        'reactions',
+    ];
+
+    protected $appends = [
+        'reactions_list',
     ];
 
     /**
@@ -37,14 +41,7 @@ class Task extends Model
      */
     public function group()
     {
-        return $this->hasOneThrough(
-            'App\Models\Group',
-            'App\Models\Subject',
-            'group_id', // Foreign key on cars table...
-            'subject_id', // Foreign key on owners table...
-            'id', // Local key on mechanics table...
-            'id' // Local key on cars table...
-        );
+        return $this->belongsToThrough('App\Models\Group', 'App\Models\Subject');
     }
 
     /**
@@ -85,5 +82,27 @@ class Task extends Model
     public function reactions(): HasMany
     {
         return $this->hasMany(Reaction::class);
+    }
+
+    public function getReactionsListAttribute()
+    {
+        $data = [];
+        $react = [];
+        $reactionList = [];
+
+        foreach ($this->reactions as $reaction) {
+            if (!isset($data[$reaction->type])) $data[$reaction->type] = [];
+            $data[$reaction->type][] = $reaction;
+            if ($reaction->user_id === Auth()->id()) $react[] = $reaction->type;
+        }
+
+        foreach ($data as $key => $reactions) {
+            $reactionList[$key] = [
+                'count' => count($reactions),
+                'hasReact' => in_array($key, $react),
+            ];
+        }
+
+        return $reactionList;
     }
 }

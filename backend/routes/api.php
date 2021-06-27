@@ -46,4 +46,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('profile/fcmToken', [ProfileController::class, 'removeFCMToken']);
     Route::post('profile/markAsRead', [ProfileController::class, 'markAsRead']);
     Route::patch('profile', [ProfileController::class, 'update']);
+
+    Route::patch('groups/{group}/reactions', [TaskController::class, 'updateReaction']);
 });
