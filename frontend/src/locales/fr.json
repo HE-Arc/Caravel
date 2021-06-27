@@ -238,5 +238,33 @@
     },
     "empty": "Pas de notifications",
     "readAll": "Marquer tout comme lu"
+  },
+  "reactions": {
+    "types": {
+      "1": {
+        "icon": "⏲️",
+        "label": "Trop long"
+      },
+      "2": {
+        "icon": "🧠",
+        "label": "Trop complexe"
+      },
+      "3": {
+        "icon": "🎯",
+        "label": "Manque d'informations"
+      },
+      "4": {
+        "icon": "📍",
+        "label": "Je suis perdu"
+      },
+      "5": {
+        "icon": "🤷",
+        "label": "Pas clair"
+      },
+      "6": {
+        "icon": "📑",
+        "label": "Peu d'intêrét"
+      }
+    }
   }
 }

@@ -55,6 +55,9 @@
           <v-card-text>
             <markdown-it-vue class="md-body" :content="task.description" />
           </v-card-text>
+          <v-card-actions>
+            <reactions :task="task"></reactions>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -73,10 +76,12 @@ import { Subject } from "@/types/subject";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";
+import Reactions from "@/components/Reactions.vue";
 
 @Component({
   components: {
     MarkdownItVue,
+    Reactions,
   },
 })
 export default class TaskDisplay extends Vue {
