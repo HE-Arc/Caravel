@@ -159,22 +159,21 @@ class TaskController extends Controller
         return response()->json(__('api.tasks.not_permitted'), 403);
     }
 
+    /**
+     * Update on/off on reaction
+     */
     public function updateReaction(ReactionRequest $request, Group $group)
     {
         $data = $request->validated();
         $type = intval($data['type']);
-        $reaction = Reaction::where('task_id', $data['task_id'])->where('type', abs($type))->first();
+        $reaction = Reaction::where('task_id', $data['task_id'])->where('type', $type)->first();
 
-        if ($type > 0) {
-            if (!$reaction) {
-                $reaction = (new Reaction())->fill($data);
-                $reaction->user_id = $this->user->id;
-                $reaction->save();
-            }
+        if ($reaction) {
+            $reaction->delete();
         } else {
-            if ($reaction) {
-                $reaction->delete();
-            }
+            $reaction = (new Reaction())->fill($data);
+            $reaction->user_id = $this->user->id;
+            $reaction->save();
         }
 
         $task = Task::with('reactions')->find($data['task_id']);

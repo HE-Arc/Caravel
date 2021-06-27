@@ -97,7 +97,8 @@ class Task extends Model
         }
 
         foreach ($data as $key => $reactions) {
-            $reactionList[$key] = [
+            $reactionList[] = [
+                'type' => $key,
                 'count' => count($reactions),
                 'hasReact' => in_array($key, $react),
             ];
