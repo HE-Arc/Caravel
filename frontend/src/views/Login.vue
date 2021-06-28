@@ -23,8 +23,8 @@
             />
           </v-toolbar>
           <v-container class="mt-3">
-            <v-card-text>
-              <v-form>
+            <v-form @submit.prevent="login">
+              <v-card-text>
                 <v-text-field
                   prepend-icon="mdi-account"
                   name="mail"
@@ -43,15 +43,15 @@
                   type="password"
                   outlined
                 ></v-text-field>
-              </v-form>
-            </v-card-text>
-            <v-spacer></v-spacer>
-            <v-card-actions>
+              </v-card-text>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="login" :loading="loading">{{
-                $t("login.connexion")
-              }}</v-btn>
-            </v-card-actions>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" type="submit" :loading="loading">{{
+                  $t("login.connexion")
+                }}</v-btn>
+              </v-card-actions>
+            </v-form>
           </v-container>
         </v-card>
       </v-flex>
