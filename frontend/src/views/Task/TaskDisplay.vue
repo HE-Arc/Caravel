@@ -41,11 +41,11 @@
               {{ task.title }} <v-icon v-if="task.isPrivate">mdi-lock</v-icon>
             </div>
             <v-spacer></v-spacer>
-            <v-btn small class="mr-1" :to="{ name: 'taskEdit' }">{{
-              $t("global.edit")
-            }}</v-btn>
-            <v-btn small @click="delTask" color="error">
-              {{ $t("global.delete") }}
+            <v-btn outlined small class="mr-1" :to="{ name: 'taskEdit' }">
+              <v-icon small> mdi-pencil </v-icon>
+            </v-btn>
+            <v-btn outlined small @click="delTask" color="error">
+              <v-icon small> mdi-delete </v-icon>
             </v-btn>
           </v-card-title>
           <v-card-subtitle>

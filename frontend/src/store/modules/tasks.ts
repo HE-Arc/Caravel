@@ -167,6 +167,27 @@ class TasksModule extends VuexModule {
       return this.update(task);
     }
   }
+
+  @Action
+  async postReaction({
+    taskId,
+    type,
+  }: {
+    taskId: string;
+    type: number;
+  }): Promise<void> {
+    const groupId = groupModule.selectedId;
+    const response = await axios.patch(
+      process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/reactions`,
+      {
+        task_id: taskId,
+        type: type,
+      }
+    );
+
+    const task: Task = response.data;
+    this.UPSERT_TASK(task);
+  }
 }
 
 const instance = getModule(TasksModule);

@@ -1,26 +1,28 @@
 <template>
   <v-row>
     <v-col>
-      <v-tooltip
-        bottom
-        v-for="reaction in reactions"
-        :key="`dense-${reaction.type}`"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-chip
-            :outlined="!reaction.hasReact"
-            @click="react(reaction.type)"
-            class="mr-2"
-            :color="reaction.hasReact ? 'primary' : 'default'"
-            v-bind="attrs"
-            v-on="on"
-          >
-            {{ $t(`reactions.types.${reaction.type}.icon`) }}
-            {{ reaction.count }}
-          </v-chip>
-        </template>
-        <span>{{ $t(`reactions.types.${reaction.type}.label`) }}</span>
-      </v-tooltip>
+      <span>
+        <v-tooltip
+          bottom
+          v-for="reaction in reactions"
+          :key="`dense-${reaction.type}`"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-chip
+              :outlined="!reaction.hasReact"
+              @click="react(reaction.type)"
+              class="mr-2"
+              :color="reaction.hasReact ? 'primary' : 'default'"
+              v-bind="attrs"
+              v-on="on"
+            >
+              {{ $t(`reactions.types.${reaction.type}.icon`) }}
+              {{ reaction.count }}
+            </v-chip>
+          </template>
+          <span>{{ $t(`reactions.types.${reaction.type}.label`) }}</span>
+        </v-tooltip>
+      </span>
 
       <v-menu offset-y :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
@@ -49,6 +51,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import Reaction from "@/types/Reaction";
 import { Task } from "@/types/task";
 import ReactionItem from "@/components/task/ReactionItem.vue";
+import taskModule from "@/store/modules/tasks";
 
 @Component({
   components: {
@@ -74,7 +77,8 @@ export default class Reactions extends Vue {
   }
 
   react(type: number): void {
-    console.log("do something on type", type);
+    const taskId: string = this.task.id;
+    taskModule.postReaction({ taskId, type });
   }
 }
 </script>

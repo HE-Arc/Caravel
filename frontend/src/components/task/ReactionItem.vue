@@ -19,7 +19,7 @@ export default class Reactions extends Vue {
   @Prop({ default: false }) isActive!: boolean;
 
   @Emit("click")
-  reacts() {
+  reacts(): number {
     return this.type;
   }
 }
