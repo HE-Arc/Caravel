@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CommentRequest extends FormRequest
+class QuestionRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,9 @@ class CommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required|string',
-            'question_id' => "sometimes|exists:App\Models\Question,id",
+            'description' => 'required_with:task_id|string',
+            'title' => 'required_with:task_id|string',
+            'task_id' => 'sometimes|exists:tasks,id',
         ];
     }
 }

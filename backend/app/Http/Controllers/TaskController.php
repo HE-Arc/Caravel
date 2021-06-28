@@ -94,13 +94,13 @@ class TaskController extends Controller
      */
     public function show(Group $group, Task $task)
     {
-        return response()->json($task);
+        return response()->json($task->load('questions.comments'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Group $group, Task $task)

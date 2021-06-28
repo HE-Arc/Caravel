@@ -11,6 +11,12 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'description',
+        'task_id',
+        'title',
+    ];
+
     /**
      * Get all of the comments for the Question
      *

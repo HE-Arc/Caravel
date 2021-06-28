@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
-use App\Notifications\Action;
 use App\Services\UploadFileService;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Profiler\Profile;
 
 class ProfileController extends Controller
 {
