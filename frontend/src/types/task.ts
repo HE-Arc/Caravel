@@ -1,4 +1,5 @@
 import { Data } from "./data";
+import Reaction from "./Reaction";
 
 export interface Task extends Data {
   title: string;
@@ -11,4 +12,5 @@ export interface Task extends Data {
   tasktype_id: string;
   task_group_id: string;
   created_at: Date | undefined;
+  reactions_list: Reaction[];
 }

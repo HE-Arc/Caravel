@@ -41,11 +41,11 @@
               {{ task.title }} <v-icon v-if="task.isPrivate">mdi-lock</v-icon>
             </div>
             <v-spacer></v-spacer>
-            <v-btn small class="mr-1" :to="{ name: 'taskEdit' }">{{
-              $t("global.edit")
-            }}</v-btn>
-            <v-btn small @click="delTask" color="error">
-              {{ $t("global.delete") }}
+            <v-btn outlined small class="mr-1" :to="{ name: 'taskEdit' }">
+              <v-icon small> mdi-pencil </v-icon>
+            </v-btn>
+            <v-btn outlined small @click="delTask" color="error">
+              <v-icon small> mdi-delete </v-icon>
             </v-btn>
           </v-card-title>
           <v-card-subtitle>
@@ -55,6 +55,9 @@
           <v-card-text>
             <markdown-it-vue class="md-body" :content="task.description" />
           </v-card-text>
+          <v-card-actions>
+            <reactions :task="task"></reactions>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -73,10 +76,12 @@ import { Subject } from "@/types/subject";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";
+import Reactions from "@/components/Reactions.vue";
 
 @Component({
   components: {
     MarkdownItVue,
+    Reactions,
   },
 })
 export default class TaskDisplay extends Vue {

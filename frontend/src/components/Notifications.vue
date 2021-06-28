@@ -9,7 +9,7 @@
           <v-icon v-else>mdi-bell-ring</v-icon>
         </v-btn>
       </template>
-      <v-card elevation="16" max-width="400" class="mx-auto">
+      <v-card elevation="16" width="400" class="mx-auto">
         <v-list three-line v-if="hasItem">
           <v-virtual-scroll
             :items="items"
@@ -22,7 +22,7 @@
                 :key="item.id"
                 :item="item"
               ></notification-item>
-              <v-divider :key="item.id"></v-divider>
+              <v-divider></v-divider>
             </template>
           </v-virtual-scroll>
         </v-list>
@@ -30,7 +30,9 @@
           {{ $t("notifications.empty") }}
         </v-card-text>
         <v-card-actions>
-          <v-btn text color="primary">{{ $t("notifications.readAll") }}</v-btn>
+          <v-btn text color="primary" @click="markAllAsRead()" v-if="hasItem">{{
+            $t("notifications.readAll")
+          }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-menu>

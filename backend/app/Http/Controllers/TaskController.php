@@ -3,21 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Http\Requests\ReactionRequest;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Request;
 use App\Models\Tasktype;
 use App\Models\Task;
+use App\Models\Reaction;
 use App\Models\Group;
 use App\Models\Comment;
-use Carbon\Carbon;
 use App\Http\Search\SearchEngine;
 
 class TaskController extends Controller
 {
-
-    // todo : let user decide the number of tasks to display in one page
-    public const PAGINATION_LIMIT = 30;
-
     /**
      * List of tasks.
      *
@@ -160,5 +157,27 @@ class TaskController extends Controller
         }
 
         return response()->json(__('api.tasks.not_permitted'), 403);
+    }
+
+    /**
+     * Update on/off on reaction
+     */
+    public function updateReaction(ReactionRequest $request, Group $group)
+    {
+        $data = $request->validated();
+        $type = intval($data['type']);
+        $reaction = Reaction::where('task_id', $data['task_id'])->where('type', $type)->first();
+
+        if ($reaction) {
+            $reaction->delete();
+        } else {
+            $reaction = (new Reaction())->fill($data);
+            $reaction->user_id = $this->user->id;
+            $reaction->save();
+        }
+
+        $task = Task::with('reactions')->find($data['task_id']);
+
+        return $task;
     }
 }

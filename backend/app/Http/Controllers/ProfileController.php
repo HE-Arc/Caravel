@@ -57,13 +57,12 @@ class ProfileController extends Controller
     public function markAsRead(ProfileRequest $request)
     {
         $data = $request->validated();
-        $unread = $this->user->unreadNotifications();
 
         if (isset($data['notifs'])) {
             $ids = $data['notifs'];
 
             foreach ($ids as $id) {
-                $notification = $unread->find($id);
+                $notification = $this->user->unreadNotifications()->find($id);
                 if ($notification) $notification->markAsRead();
             }
         }
