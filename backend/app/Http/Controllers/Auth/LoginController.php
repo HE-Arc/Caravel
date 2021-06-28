@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class LoginController extends BaseController
@@ -38,4 +39,13 @@ class LoginController extends BaseController
         $this->middleware('guest')->except('logout');
     }
 
+    protected function credentials(Request $request)
+    {
+        return [
+            'fallback' => [
+                'email' => $request->mail,
+                'password' => $request->password,
+            ]
+        ];
+    }
 }

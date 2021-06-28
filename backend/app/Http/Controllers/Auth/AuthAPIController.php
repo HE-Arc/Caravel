@@ -16,7 +16,14 @@ class AuthAPIController extends BaseController
     public function login(Request $request)
     {
         $credentials = $request->only('mail', 'password');
-        $credentials2 = ["sAMAccountName" => $credentials['mail'], "password" => $credentials['password']];
+        $credentials2 = [
+            'sAMAccountName' => $credentials['mail'],
+            'password' => $credentials['password'],
+            'fallback' => [
+                'email' => $request->mail,
+                'password' => $request->password,
+            ]
+        ];
 
         if (Auth::attempt($credentials) || Auth::attempt($credentials2)) {
             /** @var User $user */
