@@ -20,7 +20,8 @@ import {
   dynamic: true,
   store,
   name: "groups",
-  preserveState: localStorage.getItem("vuex") !== null,
+  preserveState:
+    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class GroupModule extends VuexModule {
   _groups: Group[] = [];

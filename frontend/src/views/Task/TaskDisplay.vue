@@ -29,7 +29,7 @@
                 <v-img v-if="author.picture" :src="author.picture"></v-img>
               </v-avatar>
               {{ author.firstname }}
-              <timeago :datetime="task.created_at"></timeago>
+              <timeago :datetime="task.created_at" :auto-update="60"></timeago>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn small color="success" :to="{ name: 'newTask' }">{{
@@ -41,10 +41,10 @@
               {{ task.title }} <v-icon v-if="task.isPrivate">mdi-lock</v-icon>
             </div>
             <v-spacer></v-spacer>
-            <v-btn outlined small class="mr-1" :to="{ name: 'taskEdit' }">
+            <v-btn small class="mr-1" :to="{ name: 'taskEdit' }">
               <v-icon small> mdi-pencil </v-icon>
             </v-btn>
-            <v-btn outlined small @click="delTask" color="error">
+            <v-btn small @click="delTask" color="error">
               <v-icon small> mdi-delete </v-icon>
             </v-btn>
           </v-card-title>
@@ -60,13 +60,16 @@
           </v-card-actions>
         </v-card>
       </v-col>
+      <v-col cols="12">
+        <questions></questions>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Task } from "@/types/task";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import subjectModule from "@/store/modules/subjects";
 import memberModule from "@/store/modules/members";
@@ -77,17 +80,18 @@ import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";
 import Reactions from "@/components/Reactions.vue";
+import Questions from "@/components/task/Question/Questions.vue";
 
 @Component({
   components: {
     MarkdownItVue,
     Reactions,
+    Questions,
   },
 })
 export default class TaskDisplay extends Vue {
   get task(): Task | undefined {
-    const id = this.$route.params.task_id;
-    return taskModule.getTask(id);
+    return taskModule.getCurrentTask;
   }
 
   get dueDate(): Moment {
@@ -127,6 +131,20 @@ export default class TaskDisplay extends Vue {
     } catch (err) {
       this.$toast.error(this.$t("global.errors.unknown").toString());
     }
+  }
+
+  mounted(): void {
+    this.loadTask();
+  }
+
+  @Watch("$route.params.task_id")
+  updateTask(): void {
+    this.loadTask();
+  }
+
+  private loadTask(): void {
+    const taskId = this.$route.params.task_id;
+    taskModule.selectTask(taskId);
   }
 }
 </script>

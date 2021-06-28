@@ -27,7 +27,8 @@ interface payloadChange {
   dynamic: true,
   store,
   name: "members",
-  preserveState: localStorage.getItem("vuex") !== null,
+  preserveState:
+    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class MemberModule extends VuexModule {
   _items: Member[] = [];

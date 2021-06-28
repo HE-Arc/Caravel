@@ -27,7 +27,8 @@ interface Credentials {
   dynamic: true,
   store,
   name: "auth",
-  preserveState: localStorage.getItem("vuex") !== null,
+  preserveState:
+    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class UserModule extends VuexModule {
   _user: User | undefined = undefined;

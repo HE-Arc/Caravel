@@ -2,6 +2,7 @@ import store from "@/store";
 import { Task } from "@/types/task";
 import axios, { AxiosResponse } from "axios";
 import groupModule from "@/store/modules/groups";
+import questionModule from "@/store/modules/questions";
 import Vue from "vue";
 import {
   VuexModule,
@@ -12,20 +13,31 @@ import {
 } from "vuex-module-decorators";
 import { TaskType } from "@/types/helpers";
 import moment from "moment";
+import TaskExtended from "@/types/TaskExtended";
 
 @Module({
   namespaced: true,
   dynamic: true,
   store,
   name: "tasks",
-  preserveState: localStorage.getItem("vuex") !== null,
+  preserveState:
+    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class TasksModule extends VuexModule {
   _tasks: Task[] = [];
   _status = "";
+  _taskId = "";
 
   get tasks(): Task[] {
     return this._tasks;
+  }
+
+  get selectedId(): string {
+    return this._taskId;
+  }
+
+  get getCurrentTask(): Task | undefined {
+    return this._tasks.find((item) => item.id == this._taskId);
   }
 
   get tasksFuture(): Task[] {
@@ -84,6 +96,12 @@ class TasksModule extends VuexModule {
       Vue.delete(this._tasks, index);
       this._status = "delete";
     }
+  }
+
+  @Mutation
+  private SET_TASK(task: TaskExtended) {
+    this._status = "selected";
+    this._taskId = task.id;
   }
 
   @Action
@@ -187,6 +205,38 @@ class TasksModule extends VuexModule {
 
     const task: Task = response.data;
     this.UPSERT_TASK(task);
+  }
+
+  //Actions
+  @Action
+  loadTask(id: string): Promise<AxiosResponse> {
+    const groupId = groupModule.selectedId;
+    return new Promise((resolve, reject) => {
+      this.REQUEST();
+      axios({
+        url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${id}`,
+        method: "GET",
+      })
+        .then((response) => {
+          const task: TaskExtended = response.data;
+          questionModule.load(task.questions);
+          this.SET_TASK(task);
+          resolve(response);
+        })
+        .catch((err) => {
+          this.ERROR();
+          reject(err);
+        });
+    });
+  }
+
+  @Action
+  async selectTask(taskId: string) {
+    try {
+      await this.loadTask(taskId);
+    } catch {
+      this.ERROR();
+    }
   }
 }
 

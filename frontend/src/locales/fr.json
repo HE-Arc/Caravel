@@ -266,5 +266,16 @@
         "label": "Peu d'intêrét"
       }
     }
+  },
+  "questions": {
+    "label": "{0} Question | {0} Questions",
+    "states": {
+      "0": {
+        "label": "Non résolu"
+      },
+      "1": {
+        "label": "Résolu"
+      }
+    }
   }
 }

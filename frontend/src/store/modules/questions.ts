@@ -1,5 +1,4 @@
 import store from "@/store";
-import { Subject } from "@/types/subject";
 import axios, { AxiosResponse } from "axios";
 import {
   VuexModule,
@@ -10,26 +9,27 @@ import {
 } from "vuex-module-decorators";
 import Vue from "vue";
 import groupModule from "@/store/modules/groups";
+import Question from "@/types/Question";
 
 @Module({
   namespaced: true,
   dynamic: true,
   store,
-  name: "subjects",
+  name: "questions",
   preserveState:
     localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
-class SubjectModule extends VuexModule {
-  _subjects: Subject[] = [];
+class QuestionModule extends VuexModule {
+  _questions: Question[] = [];
   _status = "";
 
-  get subjects(): Subject[] {
-    return this._subjects;
+  get questions(): Question[] {
+    return this._questions;
   }
 
-  get getSubject() {
-    return (id: string): Subject | undefined =>
-      this._subjects.find((item) => item.id == id);
+  get getQuestion() {
+    return (id: string): Question | undefined =>
+      this._questions.find((item) => item.id == id);
   }
 
   get status(): string {
@@ -47,45 +47,45 @@ class SubjectModule extends VuexModule {
   }
 
   @Mutation
-  private LOAD_SUBJECTS(subjects: Subject[]) {
-    this._subjects = subjects;
+  private LOAD_QUESTIONS(questions: Question[]) {
+    this._questions = questions;
     this._status = "loaded";
   }
 
   @Mutation
-  private UPSERT_SUBJECT(subject: Subject) {
-    const index = this._subjects.findIndex((item) => item.id == subject.id);
+  private UPSERT_QUESTION(question: Question) {
+    const index = this._questions.findIndex((item) => item.id == question.id);
     if (index === -1) {
-      this._subjects.push(subject);
+      this._questions.push(question);
       this._status = "added";
     } else {
-      Vue.set(this._subjects, index, subject);
+      Vue.set(this._questions, index, question);
       this._status = "modified";
     }
   }
 
   @Mutation
-  private REMOVE_SUBJECT(subject: Subject) {
-    const index = this._subjects.findIndex((item) => item.id == subject.id);
+  private REMOVE_QUESTION(question: Question) {
+    const index = this._questions.findIndex((item) => item.id == question.id);
     if (index !== -1) {
-      Vue.delete(this._subjects, index);
+      Vue.delete(this._questions, index);
       this._status = "delete";
     }
   }
 
   @Action
-  add(subject: Subject): Promise<Subject> {
+  add(question: Question): Promise<Question> {
     const groupId = groupModule.selectedId;
-    return new Promise<Subject>((resolve, reject) => {
+    return new Promise<Question>((resolve, reject) => {
       this.REQUEST();
       axios({
-        url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/subjects`,
+        url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/questions`,
         method: "POST",
-        data: subject,
+        data: question,
       })
         .then((response) => {
-          const data: Subject = response.data;
-          this.UPSERT_SUBJECT(data);
+          const data: Question = response.data;
+          this.UPSERT_QUESTION(data);
           resolve(data);
         })
         .catch((err) => {
@@ -96,20 +96,20 @@ class SubjectModule extends VuexModule {
   }
 
   @Action
-  update(subject: Subject): Promise<Subject> {
+  update(question: Question): Promise<Question> {
     const groupId = groupModule.selectedId;
-    return new Promise<Subject>((resolve, reject) => {
+    return new Promise<Question>((resolve, reject) => {
       this.REQUEST();
       axios({
         url:
           process.env.VUE_APP_API_BASE_URL +
-          `groups/${groupId}/subjects/${subject.id}`,
+          `groups/${groupId}/questions/${question.id}`,
         method: "PATCH",
-        data: subject,
+        data: question,
       })
         .then((response) => {
-          const data: Subject = response.data;
-          this.UPSERT_SUBJECT(data);
+          const data: Question = response.data;
+          this.UPSERT_QUESTION(data);
           resolve(data);
         })
         .catch((err) => {
@@ -120,18 +120,18 @@ class SubjectModule extends VuexModule {
   }
 
   @Action
-  delete(subject: Subject): Promise<AxiosResponse> {
+  delete(question: Question): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
     return new Promise<AxiosResponse>((resolve, reject) => {
       this.REQUEST();
       axios({
         url:
           process.env.VUE_APP_API_BASE_URL +
-          `groups/${groupId}/subjects/${subject.id}`,
+          `groups/${groupId}/questions/${question.id}`,
         method: "DELETE",
       })
         .then((response) => {
-          this.REMOVE_SUBJECT(subject);
+          this.REMOVE_QUESTION(question);
           resolve(response);
         })
         .catch((err) => {
@@ -142,20 +142,20 @@ class SubjectModule extends VuexModule {
   }
 
   @Action
-  load(subjects: Subject[]) {
-    this.LOAD_SUBJECTS(subjects);
+  load(questions: Question[]) {
+    this.LOAD_QUESTIONS(questions);
   }
 
   @Action
-  async save(subject: Subject): Promise<Subject> {
-    if (subject.id == "" || subject.id == "-1") {
-      return this.add(subject);
+  async save(question: Question): Promise<Question> {
+    if (question.id == "" || question.id == "-1") {
+      return this.add(question);
     } else {
-      return this.update(subject);
+      return this.update(question);
     }
   }
 }
 
-const instance = getModule(SubjectModule);
+const instance = getModule(QuestionModule);
 
 export default instance;
