@@ -14,7 +14,7 @@ class AddTitleToQuestionTable extends Migration
     public function up()
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->string('title', 255);
+            $table->string('title', 255)->default('');
         });
     }
 
