@@ -6,7 +6,7 @@
       size="32"
       v-if="!commentId"
     >
-      <v-img v-if="author.picture" :src="author.picture"></v-img>
+      <v-img v-if="author && author.picture" :src="author.picture"></v-img>
       <span v-else class="white--text text-h6">
         {{ author.name | initials }}
       </span>

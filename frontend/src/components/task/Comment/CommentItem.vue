@@ -133,6 +133,7 @@ import questionModule from "@/store/modules/questions";
 import QuestionForm from "@/types/QuestionForm";
 
 @Component({
+  name: "CommentItem",
   components: {
     MarkdownItVue,
     CommentForm,
