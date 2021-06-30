@@ -14,7 +14,7 @@ class AddEdfCommentTable extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->bigInteger('comment_question_id')->unsigned();
+            $table->bigInteger('comment_question_id')->unsigned()->nullable();
         });
     }
 

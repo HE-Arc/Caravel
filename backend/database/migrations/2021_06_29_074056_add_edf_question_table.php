@@ -14,7 +14,7 @@ class AddEdfQuestionTable extends Migration
     public function up()
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->bigInteger('question_task_id')->unsigned();
+            $table->bigInteger('question_task_id')->unsigned()->nullable();
         });
     }
 
