@@ -29,7 +29,7 @@
               class="ml-2"
               color="orange"
               small
-              v-if="isQuestionAuthor"
+              v-if="isAuthor"
               outlined
               label
             >
@@ -37,7 +37,7 @@
             </v-chip>
           </v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-tooltip bottom v-if="isAuthor && !comment.removed">
+          <v-tooltip bottom v-if="isQuestionAuthor && !comment.removed">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 icon
@@ -151,15 +151,16 @@ export default class CommentItem extends Vue {
   }
 
   get isAuthor(): boolean {
-    return userModule.user?.id == this.author?.id;
+    return this.comment.user_id == this.question.user_id;
   }
 
   get isQuestionAuthor(): boolean {
+    if (!this.author) return false;
     return userModule.user?.id == this.question.user_id;
   }
 
   get isTeacher(): boolean {
-    return userModule.isTeacher;
+    return this.author ? this.author.isTeacher : false;
   }
 
   get isSolver(): boolean {
