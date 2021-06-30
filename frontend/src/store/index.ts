@@ -8,7 +8,7 @@ config.rawError = true;
 Vue.use(Vuex);
 
 const vuexPersist = new VuexPersist({
-  key: "vuex",
+  key: process.env.VUE_APP_VUEX_VERSION_NAME,
   storage: window.localStorage,
 });
 

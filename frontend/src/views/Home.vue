@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import groupModule from "@/store/modules/groups";
+import userModule from "@/store/modules/user";
 import { Group } from "@/types/group";
 import GroupCard from "@/components/GroupCard.vue";
 
@@ -22,7 +22,8 @@ import GroupCard from "@/components/GroupCard.vue";
 })
 export default class Home extends Vue {
   get groups(): Group[] {
-    return groupModule.groups;
+    if (!userModule.user) return [];
+    return userModule.user?.groups_available;
   }
 }
 </script>

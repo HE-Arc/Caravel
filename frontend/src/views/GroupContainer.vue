@@ -8,7 +8,7 @@
         <v-tabs v-model="activeTab" show-arrows class="main-tab">
           <v-tab
             v-for="(item, key, index) in tabs"
-            :key="key"
+            :key="key + (item.count != undefined ? item.count : '')"
             :to="$router.resolve({ name: key }).href"
             v-bind:class="{ 'first-tab': index == 0 }"
           >
@@ -91,7 +91,7 @@ export default class GroupContainer extends Vue {
 
   async created(): Promise<void> {
     try {
-      groupModule.selectGroup(this.groupId);
+      await groupModule.selectGroup(this.groupId);
     } catch (err) {
       this.$toast.error(err.response.data.message);
     }

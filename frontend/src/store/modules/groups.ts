@@ -2,7 +2,6 @@ import { Group } from "@/types/group";
 import TaskModule from "@/store/modules/tasks";
 import SubjectModule from "@/store/modules/subjects";
 import MemberModule from "@/store/modules/members";
-import UserModule from "@/store/modules/user";
 import { GroupExtended } from "@/types/groupExtended";
 import store from "@/store";
 import axios, { AxiosResponse } from "axios";
@@ -20,7 +19,8 @@ import {
   dynamic: true,
   store,
   name: "groups",
-  preserveState: localStorage.getItem("vuex") !== null,
+  //preserveState:
+  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class GroupModule extends VuexModule {
   _groups: Group[] = [];
@@ -78,9 +78,9 @@ class GroupModule extends VuexModule {
   }
 
   @Mutation
-  private SET_GROUP(group: GroupExtended) {
+  private SET_GROUP(groupId: string) {
     this._status = "selected";
-    this._groupId = group.id;
+    this._groupId = groupId;
   }
 
   @Mutation
@@ -102,7 +102,6 @@ class GroupModule extends VuexModule {
           TaskModule.load(group.tasks);
           SubjectModule.load(group.subjects);
           MemberModule.load(group.members);
-          this.SET_GROUP(group);
           resolve(response);
         })
         .catch((err) => {
@@ -135,6 +134,7 @@ class GroupModule extends VuexModule {
   @Action
   async selectGroup(groupId: string): Promise<void> {
     try {
+      this.SET_GROUP(groupId);
       await this.loadGroup(groupId);
     } catch {
       this.ERROR();
@@ -206,7 +206,5 @@ class GroupModule extends VuexModule {
 }
 
 const instance = getModule(GroupModule);
-
-if (UserModule.isLoggedIn) instance.loadGroups();
 
 export default instance;

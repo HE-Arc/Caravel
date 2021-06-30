@@ -11,6 +11,7 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store";
 import Notification from "@/types/notification";
+import groupModule from "@/store/modules/groups";
 
 interface BagSuccess {
   token: string;
@@ -27,7 +28,8 @@ interface Credentials {
   dynamic: true,
   store,
   name: "auth",
-  preserveState: localStorage.getItem("vuex") !== null,
+  preserveState:
+    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class UserModule extends VuexModule {
   _user: User | undefined = undefined;
@@ -37,6 +39,10 @@ class UserModule extends VuexModule {
 
   get isLoggedIn(): boolean {
     return !!this._token;
+  }
+
+  get isTeacher(): boolean {
+    return this._user ? this._user?.isTeacher : false;
   }
 
   get user(): User | undefined {
@@ -99,6 +105,7 @@ class UserModule extends VuexModule {
 
   @Action
   async addFcmToken(fcm: string) {
+    if (!fcm || fcm == "") return;
     try {
       await axios({
         url: process.env.VUE_APP_API_BASE_URL + "profile/fcmToken",
@@ -138,9 +145,9 @@ class UserModule extends VuexModule {
         .then((resp) => {
           const token = resp.data.token;
           const user: User = resp.data.user;
-
           this.SUCCESS({ token, user });
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+          groupModule.loadGroups();
           resolve(resp);
         })
         .catch((err) => {
@@ -196,6 +203,7 @@ class UserModule extends VuexModule {
 }
 
 const instance = getModule(UserModule);
+
 instance.init();
 
 export default instance;

@@ -7,6 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +33,21 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         'groups' => GroupController::class,
         'groups.tasks' => TaskController::class,
         'groups.subjects' => SubjectController::class,
-        /*'groups.questions' => QuestionController::class,
-        'groups.comment' => CommentController::class,*/
+        'groups.questions' => QuestionController::class,
+        'groups.comments' => CommentController::class,
     ]);
+
+    /*Route::apiResources(
+        [
+            'groups.questions' => QuestionController::class,
+            'groups.comment' => CommentController::class,
+        ],
+        [
+            'except' => [
+                'index'
+            ],
+        ]
+    );*/
 
     #members of groups (get, delete, no post as this is the role of the "join" mecanic)
     Route::get('groups/{group}/members', [GroupController::class, 'members']);
@@ -43,7 +57,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('profile', [UserController::class, 'removeGroup']);
     Route::get('profile/notifications', [ProfileController::class, 'getNotifications']);
     Route::post('profile/fcmToken', [ProfileController::class, 'registerFCMToken']);
-    Route::delete('profile/fcmToken', [ProfileController::class, 'removeFCMToken']);
+    Route::delete('profile/fcmToken', [ProfileController::class, 'deleteFCMToken']);
     Route::post('profile/markAsRead', [ProfileController::class, 'markAsRead']);
     Route::patch('profile', [ProfileController::class, 'update']);
 

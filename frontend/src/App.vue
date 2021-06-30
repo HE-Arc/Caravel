@@ -41,6 +41,8 @@ import AddContent from "./components/AddContent.vue";
 import auth from "@/store/modules/user";
 import QuickSearch from "@/components/QuickSearch.vue";
 import Notificatons from "@/components/Notifications.vue";
+import groupModule from "@/store/modules/groups";
+import { Watch } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -51,8 +53,14 @@ import Notificatons from "@/components/Notifications.vue";
   },
 })
 export default class App extends Vue {
+  loaded = false;
+
   get isLoggedIn(): boolean {
     return auth.isLoggedIn;
+  }
+
+  beforeMount(): void {
+    this.init();
   }
 
   async mounted(): Promise<void> {
@@ -61,6 +69,18 @@ export default class App extends Vue {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  init(): void {
+    if (this.isLoggedIn && !this.loaded) {
+      this.loaded = true;
+      groupModule.loadGroups();
+    }
+  }
+
+  @Watch("isLoggedIn")
+  logInChange(): void {
+    this.init();
   }
 }
 </script>

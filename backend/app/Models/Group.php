@@ -91,7 +91,7 @@ class Group extends Model
             ->where(function ($query) use ($userid) {
                 $query->where('isPrivate', '=', 0)
                     ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-            });
+            })->with('questions.comments');
     }
 
     /**

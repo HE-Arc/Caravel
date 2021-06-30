@@ -22,7 +22,12 @@ return [
     ],
     'comments' => [
         'delete' => 'Le commentaire a été supprimé avec succès',
-        'delete_failed' => 'Ce commentaire ne peut être supprimé'
+        'delete_failed' => 'Ce commentaire ne peut être supprimé',
+        'removed' => "Le commentaire a été supprimé",
+    ],
+    'questions' => [
+        'delete' => 'La question a été supprimé avec succès',
+        'delete_failed' => 'Cette question ne peut être supprimé'
     ],
     'tasks' => [
         'deleted' => 'La tâche a été créée avec succès',
@@ -52,6 +57,22 @@ return [
                 'title' => "Tâche retirée",
                 'message' => "La tâche ':name' a été retirée dans le groupe ':group'"
             ]
-        ]
-    ]
+        ],
+        'question' => [
+            'create' => [ //create
+                'title' => "Nouvelle question",
+                'message' => "La question ':name' a été ajoutée sur ':group'"
+            ],
+            'update' => [ // update
+                'title' => "Question mise à jour",
+                'message' => "La question ':name' a été mise à jour sur ':group'"
+            ],
+        ],
+        'comment' => [
+            'create' => [ //create
+                'title' => "Nouveau commlentaire",
+                'message' => "Un commentaire a été ajoutée sur votre question dans le group ':group'"
+            ],
+        ],
+    ],
 ];

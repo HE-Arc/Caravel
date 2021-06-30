@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Comment;
-use App\Models\Group;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class CommentRequest extends FormRequest
 {
@@ -14,11 +11,12 @@ class CommentRequest extends FormRequest
      *
      * @return array
      */
-    public function rules(Group $group, Comment $comment)
+    public function rules()
     {
         return [
-            'description' => 'required',
-            'question_id' => "required|exists:App\Models\Question,id,group_id,{$group->id}"
+            'description' => 'required|string',
+            'question_id' => "sometimes|exists:App\Models\Question,id",
+            'reply_to' => "sometimes|exists:App\Models\Comment,id"
         ];
     }
 }
