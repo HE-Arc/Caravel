@@ -69,7 +69,7 @@
           <v-btn
             icon
             small
-            v-if="isAuthor && !comment.removed"
+            v-if="isLoggedAuthor && !comment.removed"
             :outlined="showFormEdit"
             @click="edit"
           >
@@ -79,7 +79,7 @@
             icon
             small
             color="error"
-            v-if="isAuthor && !comment.removed"
+            v-if="isLoggedAuthor && !comment.removed"
             @click="remove"
           >
             <v-icon small>mdi-delete</v-icon>
@@ -158,6 +158,11 @@ export default class CommentItem extends Vue {
   get isQuestionAuthor(): boolean {
     if (!this.author) return false;
     return userModule.user?.id == this.question.user_id;
+  }
+
+  get isLoggedAuthor(): boolean {
+    if (!this.author) return false;
+    return userModule.user?.id == this.comment.user_id;
   }
 
   get isTeacher(): boolean {
