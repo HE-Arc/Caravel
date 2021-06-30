@@ -16,6 +16,7 @@
     "refuse": "Refuser",
     "reset": "Réinitialiser",
     "save": "Sauvegarder",
+    "author": "Auteur",
     "success": "Action effectuée avec succès !",
     "error_form": "Une ou plusieurs données sont invalides",
     "errors": {
@@ -276,6 +277,19 @@
       "1": {
         "label": "Résolu"
       }
-    }
+    },
+    "mark_solved": "Résolu avec cette réponse",
+    "mark_unsolved": "Retirer la solution",
+    "solved": "Question résolue !",
+    "answer": "Réponse sélectionée par l'auteur",
+    "add": "Ajouter une question",
+    "comments": {
+      "add": "Ajouter un commentaire",
+      "delete": "Le commentaire a été supprimée"
+    },
+    "form": {
+      "title": "Titre de la question"
+    },
+    "delete": "La question a été supprimée"
   }
 }

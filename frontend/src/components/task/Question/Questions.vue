@@ -9,6 +9,11 @@
         :question="question"
       ></question-item>
     </v-expansion-panels>
+
+    <div class="text-h6 font-weight-light mt-8 mb-3">
+      {{ $t("questions.add") }}
+    </div>
+    <question-details :task_id="taskId" />
   </div>
 </template>
 
@@ -17,10 +22,13 @@ import Question from "@/types/Question";
 import { Component, Vue } from "vue-property-decorator";
 import questionModule from "@/store/modules/questions";
 import QuestionItem from "@/components/task/Question/QuestionItem.vue";
+import QuestionDetails from "@/components/task/Question/QuestionDetails.vue";
+import taskModule from "@/store/modules/tasks";
 
 @Component({
   components: {
     QuestionItem,
+    QuestionDetails,
   },
 })
 export default class Questions extends Vue {
@@ -30,6 +38,10 @@ export default class Questions extends Vue {
 
   get count(): number {
     return this.questions.length;
+  }
+
+  get taskId(): string {
+    return taskModule.selectedId;
   }
 }
 </script>

@@ -68,13 +68,14 @@ export default class VMarkdownEditor extends Vue {
   }
 
   test(): void {
-    const $vm: any = this.$refs.mavon;
+    const $vm: unknown = this.$refs.mavon;
     console.log($vm);
-    $vm.insertText($vm.getTextareaDom(), {
+    /*$vm.insertText($vm.getTextareaDom(), {
       prefix: "![mon test])",
       subfix: "",
       str: "",
     });
+    */
   }
 }
 </script>

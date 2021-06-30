@@ -121,6 +121,14 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   mode: "history",
   routes,
+  scrollBehavior: function (to) {
+    if (to.hash) {
+      return {
+        selector: to.hash,
+        offset: { x: 0, y: 50 },
+      };
+    }
+  },
 });
 
 export default router;

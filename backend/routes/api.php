@@ -57,7 +57,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('profile', [UserController::class, 'removeGroup']);
     Route::get('profile/notifications', [ProfileController::class, 'getNotifications']);
     Route::post('profile/fcmToken', [ProfileController::class, 'registerFCMToken']);
-    Route::delete('profile/fcmToken', [ProfileController::class, 'removeFCMToken']);
+    Route::delete('profile/fcmToken', [ProfileController::class, 'deleteFCMToken']);
     Route::post('profile/markAsRead', [ProfileController::class, 'markAsRead']);
     Route::patch('profile', [ProfileController::class, 'update']);
 

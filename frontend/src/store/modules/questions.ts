@@ -10,14 +10,17 @@ import {
 import Vue from "vue";
 import groupModule from "@/store/modules/groups";
 import Question from "@/types/Question";
+import Comment from "@/types/Comment";
+import CommentForm from "@/types/CommentForm";
+import QuestionForm from "@/types/QuestionForm";
 
 @Module({
   namespaced: true,
   dynamic: true,
   store,
   name: "questions",
-  preserveState:
-    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
+  //preserveState:
+  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class QuestionModule extends VuexModule {
   _questions: Question[] = [];
@@ -37,23 +40,23 @@ class QuestionModule extends VuexModule {
   }
 
   @Mutation
-  private ERROR() {
+  ERROR() {
     this._status = "error";
   }
 
   @Mutation
-  private REQUEST() {
+  REQUEST() {
     this._status = "loading";
   }
 
   @Mutation
-  private LOAD_QUESTIONS(questions: Question[]) {
+  LOAD_QUESTIONS(questions: Question[]) {
     this._questions = questions;
     this._status = "loaded";
   }
 
   @Mutation
-  private UPSERT_QUESTION(question: Question) {
+  UPSERT_QUESTION(question: Question) {
     const index = this._questions.findIndex((item) => item.id == question.id);
     if (index === -1) {
       this._questions.push(question);
@@ -65,7 +68,7 @@ class QuestionModule extends VuexModule {
   }
 
   @Mutation
-  private REMOVE_QUESTION(question: Question) {
+  REMOVE_QUESTION(question: Question) {
     const index = this._questions.findIndex((item) => item.id == question.id);
     if (index !== -1) {
       Vue.delete(this._questions, index);
@@ -74,13 +77,18 @@ class QuestionModule extends VuexModule {
   }
 
   @Action
-  add(question: Question): Promise<Question> {
+  upsertQuestion(question: QuestionForm): Promise<Question> {
     const groupId = groupModule.selectedId;
+    const method = question.id ? "PATCH" : "POST";
+    const suffix = question.id ? `/${question.id}` : "";
     return new Promise<Question>((resolve, reject) => {
       this.REQUEST();
       axios({
-        url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/questions`,
-        method: "POST",
+        url:
+          process.env.VUE_APP_API_BASE_URL +
+          `groups/${groupId}/questions` +
+          suffix,
+        method: method,
         data: question,
       })
         .then((response) => {
@@ -96,16 +104,42 @@ class QuestionModule extends VuexModule {
   }
 
   @Action
-  update(question: Question): Promise<Question> {
+  upsertComment(comment: CommentForm): Promise<Question> {
+    const groupId = groupModule.selectedId;
+    const method = comment.id ? "PATCH" : "POST";
+    const suffix = comment.id ? `/${comment.id}` : "";
+    return new Promise<Question>((resolve, reject) => {
+      this.REQUEST();
+      axios({
+        url:
+          process.env.VUE_APP_API_BASE_URL +
+          `groups/${groupId}/comments` +
+          suffix,
+        method: method,
+        data: comment,
+      })
+        .then((response) => {
+          const data: Question = response.data;
+          this.UPSERT_QUESTION(data);
+          resolve(data);
+        })
+        .catch((err) => {
+          this.ERROR();
+          reject(err);
+        });
+    });
+  }
+
+  @Action
+  deleteComment(comment: Comment): Promise<Question> {
     const groupId = groupModule.selectedId;
     return new Promise<Question>((resolve, reject) => {
       this.REQUEST();
       axios({
         url:
           process.env.VUE_APP_API_BASE_URL +
-          `groups/${groupId}/questions/${question.id}`,
-        method: "PATCH",
-        data: question,
+          `groups/${groupId}/comments/${comment.id}`,
+        method: "DELETE",
       })
         .then((response) => {
           const data: Question = response.data;
@@ -120,7 +154,7 @@ class QuestionModule extends VuexModule {
   }
 
   @Action
-  delete(question: Question): Promise<AxiosResponse> {
+  deleteQuestion(question: Question): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
     return new Promise<AxiosResponse>((resolve, reject) => {
       this.REQUEST();
@@ -144,15 +178,6 @@ class QuestionModule extends VuexModule {
   @Action
   load(questions: Question[]) {
     this.LOAD_QUESTIONS(questions);
-  }
-
-  @Action
-  async save(question: Question): Promise<Question> {
-    if (question.id == "" || question.id == "-1") {
-      return this.add(question);
-    } else {
-      return this.update(question);
-    }
   }
 }
 

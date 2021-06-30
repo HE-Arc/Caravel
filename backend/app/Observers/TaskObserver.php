@@ -68,7 +68,7 @@ class TaskObserver
         foreach ($users as $user) {
             if ($user->id != $user->id) {
                 $user->notify(new Action(
-                    __("api.notifications.task.${action}.title", ['name' => $task->title]),
+                    __("api.notifications.task.${action}.title"),
                     __("api.notifications.task.${action}.message", ['name' => $task->title, 'group' => $group->name]),
                     $task,
                     $type,

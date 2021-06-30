@@ -6,7 +6,9 @@ export default interface Question extends Timestamps {
     title: string;
     user_id: string;
     description: string;
-    isSolved: boolean;
+    solved_by: Comment | undefined;
     task_id: string;
     comments: Comment[];
+    question_task_id: string;
+    count_comments: string;
 }

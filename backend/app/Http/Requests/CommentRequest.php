@@ -16,6 +16,7 @@ class CommentRequest extends FormRequest
         return [
             'description' => 'required|string',
             'question_id' => "sometimes|exists:App\Models\Question,id",
+            'reply_to' => "sometimes|exists:App\Models\Comment,id"
         ];
     }
 }

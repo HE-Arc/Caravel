@@ -1,8 +1,19 @@
 import moment from "moment";
+import CommentForm from "./CommentForm";
+import QuestionForm from "./QuestionForm";
 import { Subject } from "./subject";
 import { TaskForm } from "./taskForm";
 
 export default class Factory {
+  static getQuestionForm(): QuestionForm {
+    return {
+      id: undefined,
+      title: "",
+      description: "",
+      task_id: "",
+      solved: undefined,
+    };
+  }
   static getSubject(): Subject {
     return {
       id: "",
@@ -22,6 +33,15 @@ export default class Factory {
       isPrivate: false,
       subject_id: "",
       tasktype_id: "",
+    };
+  }
+
+  static getCommentForm(): CommentForm {
+    return {
+      id: undefined,
+      reply_to: undefined,
+      description: "",
+      question_id: "",
     };
   }
 }

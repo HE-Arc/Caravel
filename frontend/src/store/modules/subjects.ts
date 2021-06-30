@@ -16,8 +16,8 @@ import groupModule from "@/store/modules/groups";
   dynamic: true,
   store,
   name: "subjects",
-  preserveState:
-    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
+  //preserveState:
+  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class SubjectModule extends VuexModule {
   _subjects: Subject[] = [];

@@ -20,8 +20,8 @@ import TaskExtended from "@/types/TaskExtended";
   dynamic: true,
   store,
   name: "tasks",
-  preserveState:
-    localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
+  //preserveState:
+  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class TasksModule extends VuexModule {
   _tasks: Task[] = [];

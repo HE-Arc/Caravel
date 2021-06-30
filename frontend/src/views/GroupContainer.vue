@@ -91,7 +91,7 @@ export default class GroupContainer extends Vue {
 
   async created(): Promise<void> {
     try {
-      groupModule.selectGroup(this.groupId);
+      await groupModule.selectGroup(this.groupId);
     } catch (err) {
       this.$toast.error(err.response.data.message);
     }

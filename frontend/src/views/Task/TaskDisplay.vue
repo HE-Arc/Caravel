@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="task">
     <v-row>
       <v-col cols="12">
         <v-card flat>
@@ -44,7 +44,7 @@
             <v-btn small class="mr-1" :to="{ name: 'taskEdit' }">
               <v-icon small> mdi-pencil </v-icon>
             </v-btn>
-            <v-btn small @click="delTask" color="error">
+            <v-btn small @click="delTask" color="error" v-if="isAuthor">
               <v-icon small> mdi-delete </v-icon>
             </v-btn>
           </v-card-title>
@@ -73,6 +73,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import subjectModule from "@/store/modules/subjects";
 import memberModule from "@/store/modules/members";
+import userModule from "@/store/modules/user";
 import moment, { Moment } from "moment";
 import { Member } from "@/types/member";
 import { Subject } from "@/types/subject";
@@ -110,6 +111,10 @@ export default class TaskDisplay extends Vue {
   get author(): Member | undefined {
     if (!this.task) return undefined;
     return memberModule.getMember(this.task.user_id);
+  }
+
+  get isAuthor(): boolean {
+    return userModule.user?.id == this.author?.id;
   }
 
   get subject(): Subject | undefined {

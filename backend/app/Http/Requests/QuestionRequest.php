@@ -17,6 +17,7 @@ class QuestionRequest extends FormRequest
             'description' => 'required_with:task_id|string',
             'title' => 'required_with:task_id|string',
             'task_id' => 'sometimes|exists:tasks,id',
+            'solved' => 'nullable|sometimes|exists:comments,id',
         ];
     }
 }
