@@ -58,6 +58,7 @@ export default class Notifications extends Vue {
   }
 
   get hasItem(): boolean {
+    if (!this.items) return false;
     return this.items.length > 0;
   }
 
