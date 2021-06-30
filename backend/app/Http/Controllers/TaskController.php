@@ -166,7 +166,7 @@ class TaskController extends Controller
     {
         $data = $request->validated();
         $type = intval($data['type']);
-        $reaction = Reaction::where('task_id', $data['task_id'])->where('type', $type)->first();
+        $reaction = Reaction::where('task_id', $data['task_id'])->where('type', $type)->where('user_id', $this->user->id)->first();
 
         if ($reaction) {
             $reaction->delete();
