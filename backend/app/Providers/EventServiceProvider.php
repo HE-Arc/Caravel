@@ -35,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
         Task::observe(TaskObserver::class);
-        //Question::observe(QuestionObserver::class);
-        //Comment::observe(CommentObserver::class);
+        Question::observe(QuestionObserver::class);
+        Comment::observe(CommentObserver::class);
     }
 }

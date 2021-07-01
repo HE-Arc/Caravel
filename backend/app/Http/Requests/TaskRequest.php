@@ -26,7 +26,7 @@ class TaskRequest extends FormRequest
             'due_at' => 'required|date|after_or_equal:start_at',
             'description' => 'required',
             'isPrivate' => 'boolean',
-            'tasktype_id' => ['required', 'integer', Rule::in(TaskType::TYPES)]
+            'tasktype_id' => ['required', 'integer', Rule::in(TaskType::TYPES)],
         ];
     }
 }

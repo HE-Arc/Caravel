@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\ReactionRequest;
+use App\Http\Requests\TaskFinishRequest;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Request;
 use App\Models\Tasktype;
@@ -177,6 +178,15 @@ class TaskController extends Controller
         }
 
         $task = Task::with('reactions')->find($data['task_id']);
+
+        return $task;
+    }
+
+    public function setFinished(TaskFinishRequest $request, Group $group)
+    {
+        /** @var Task */
+        $task = Task::find($request->task_id);
+        if (!empty($task)) $task->updateFinish($this->user->id, $request->hasFinished);
 
         return $task;
     }
