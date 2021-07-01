@@ -37,17 +37,24 @@
       </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-action-text>
-      <v-icon
-        @click.prevent="finished"
-        class="mr-2"
-        :color="task.has_finished ? 'success' : 'default'"
-      >
-        {{
-          task.has_finished
-            ? "mdi-checkbox-marked"
-            : "mdi-checkbox-blank-outline"
-        }}
-      </v-icon>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            @click.prevent="finished"
+            class="mr-2"
+            :color="task.has_finished ? 'success' : 'default'"
+            v-bind="attrs"
+            v-on="on"
+          >
+            {{
+              task.has_finished
+                ? "mdi-checkbox-marked"
+                : "mdi-checkbox-blank-outline"
+            }}
+          </v-icon>
+        </template>
+        <span>{{ $t("task.finish.tooltip") }}</span>
+      </v-tooltip>
       <v-icon v-if="task.isPrivate" class="mr-1">mdi-lock</v-icon>
       <v-chip small :color="subject.color" :dark="isTextDark">
         {{ subject.name }}
@@ -61,7 +68,7 @@ import { Task } from "@/types/task";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import memberModule from "@/store/modules/members";
 import subjectModule from "@/store/modules/subjects";
-import TaskModule from "@/store/modules/tasks";
+import taskModule from "@/store/modules/tasks";
 import { Member } from "@/types/member";
 import { Subject } from "@/types/subject";
 import TinyColor from "tinycolor2";
@@ -98,7 +105,7 @@ export default class TaskItemList extends Vue {
       hasFinished: this.task.has_finished,
     };
 
-    TaskModule.setFinish(data);
+    taskModule.setFinish(data);
   }
 }
 </script>
