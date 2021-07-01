@@ -2,6 +2,7 @@
   <v-list-item
     v-if="task"
     class="task-item-list mb-2"
+    :class="{ finished: task.has_finished }"
     :to="{
       name: 'taskDisplay',
       params: {
@@ -36,6 +37,24 @@
       </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-action-text>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-icon
+            @click.prevent="finished"
+            class="mr-2"
+            :color="task.has_finished ? 'success' : 'default'"
+            v-bind="attrs"
+            v-on="on"
+          >
+            {{
+              task.has_finished
+                ? "mdi-checkbox-marked"
+                : "mdi-checkbox-blank-outline"
+            }}
+          </v-icon>
+        </template>
+        <span>{{ $t("task.finish.tooltip") }}</span>
+      </v-tooltip>
       <v-icon v-if="task.isPrivate" class="mr-1">mdi-lock</v-icon>
       <v-chip small :color="subject.color" :dark="isTextDark">
         {{ subject.name }}
@@ -49,6 +68,7 @@ import { Task } from "@/types/task";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import memberModule from "@/store/modules/members";
 import subjectModule from "@/store/modules/subjects";
+import taskModule from "@/store/modules/tasks";
 import { Member } from "@/types/member";
 import { Subject } from "@/types/subject";
 import TinyColor from "tinycolor2";
@@ -76,6 +96,17 @@ export default class TaskItemList extends Vue {
   get isProject(): boolean {
     return this.task.tasktype_id == TaskType.PROJECT.toString();
   }
+
+  finished(): void {
+    this.task.has_finished = !this.task.has_finished;
+
+    const data = {
+      task_id: this.task.id,
+      hasFinished: this.task.has_finished,
+    };
+
+    taskModule.setFinish(data);
+  }
 }
 </script>
 
@@ -83,5 +114,8 @@ export default class TaskItemList extends Vue {
 .task-item-list {
   border: 1px solid #e8e8e8;
   border-radius: 10px;
+  &.finished {
+    opacity: 0.5;
+  }
 }
 </style>

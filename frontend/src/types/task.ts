@@ -13,4 +13,5 @@ export interface Task extends Data {
   task_group_id: string;
   created_at: Date | undefined;
   reactions_list: Reaction[];
+  has_finished: boolean;
 }

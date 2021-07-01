@@ -32,9 +32,15 @@
               <timeago :datetime="task.created_at" :auto-update="60"></timeago>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn small color="success" :to="{ name: 'newTask' }">{{
-              $t("global.new")
-            }}</v-btn>
+            <v-checkbox
+              small
+              v-model="task.has_finished"
+              color="primary"
+              @click="finished"
+              dense
+              hide-details=""
+              :label="$t('task.finish.label')"
+            />
           </v-toolbar>
           <v-card-title>
             <div class="text-h5">
@@ -150,6 +156,17 @@ export default class TaskDisplay extends Vue {
   private loadTask(): void {
     const taskId = this.$route.params.task_id;
     taskModule.selectTask(taskId);
+  }
+
+  finished(): void {
+    if (!this.task) return;
+
+    const data = {
+      task_id: this.task.id,
+      hasFinished: this.task.has_finished,
+    };
+
+    taskModule.setFinish(data);
   }
 }
 </script>

@@ -11,7 +11,7 @@ import {
   Action,
   getModule,
 } from "vuex-module-decorators";
-import { TaskType } from "@/types/helpers";
+import { Dictionary, TaskType } from "@/types/helpers";
 import moment from "moment";
 import TaskExtended from "@/types/TaskExtended";
 
@@ -148,6 +148,15 @@ class TasksModule extends VuexModule {
           reject(err);
         });
     });
+  }
+
+  @Action
+  async setFinish(data: Dictionary<unknown>) {
+    const groupId = groupModule.selectedId;
+    await axios.patch(
+      process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/finished`,
+      data
+    );
   }
 
   @Action

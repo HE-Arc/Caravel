@@ -62,4 +62,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::patch('profile', [ProfileController::class, 'update']);
 
     Route::patch('groups/{group}/reactions', [TaskController::class, 'updateReaction']);
+    Route::patch('groups/{group}/finished', [TaskController::class, 'setFinished']);
 });

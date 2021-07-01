@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
+
+use function PHPUnit\Framework\isEmpty;
 
 class Task extends Model
 {
@@ -34,6 +38,7 @@ class Task extends Model
 
     protected $appends = [
         'reactions_list',
+        'has_finished'
     ];
 
     /**
@@ -62,6 +67,16 @@ class Task extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The subscriptions that belong to the Task
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function subscriptions(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
     /**
@@ -105,5 +120,22 @@ class Task extends Model
         }
 
         return $reactionList;
+    }
+
+    public function getHasFinishedAttribute()
+    {
+        $user_id = Auth()->id();
+        if (empty($user_id)) return false;
+        return $this->subscriptions()->wherePivot('user_id', $user_id)->wherePivot('hasFinished', "1")->count() > 0;
+    }
+
+    public function updateFinish($user_id, $hasFinished)
+    {
+        $data = ['hasFinished' => $hasFinished];
+        $update = $this->subscriptions()->updateExistingPivot($user_id, $data);
+
+        if (empty($update)) {
+            $this->subscriptions()->attach($user_id, $data);
+        }
     }
 }

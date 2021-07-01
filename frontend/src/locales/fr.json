@@ -139,6 +139,10 @@
       "open": "A faire",
       "close": "Fermé"
     },
+    "finish": {
+      "tooltip": "Marquer cette tâche comme terminée pour moi",
+      "label": "Terminer pour moi"
+    },
     "create": "Créer une tâche",
     "edit": "Modifier une tâche",
     "createBy": "Ouvert par ",
