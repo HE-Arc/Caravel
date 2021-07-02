@@ -13,6 +13,8 @@ import VueTimeago from "vue-timeago";
 import moment from "moment";
 import "@/filters";
 import messaging from "../firebase";
+import NProgress from "vue-nprogress";
+import { NavigationGuardNext, Route } from "vue-router";
 
 Vue.prototype.$http = Axios;
 
@@ -21,6 +23,8 @@ Vue.config.productionTip = false;
 Vue.use(VueToast, {
   position: "top-right",
 });
+
+Vue.use(NProgress);
 
 Vue.use(mavonEditor, {
   language: "fr",
@@ -37,12 +41,23 @@ moment.locale("fr");
 Vue.use(VueTimeago, {
   name: "Timeago", // Component name, `Timeago` by default
   locale: "fr", // Default locale
-  // We use `date-fns` under the hood
-  // So you can use all locales from it
   locales: {
     fr: require("date-fns/locale/fr"),
     en: require("date-fns/locale/en"),
   },
+});
+
+const nprogress = new NProgress();
+
+router.beforeEach((to: Route, from: Route, next: NavigationGuardNext) => {
+  if (to.path) {
+    nprogress.start();
+  }
+  next();
+});
+
+router.afterEach(() => {
+  nprogress.done();
 });
 
 new Vue({

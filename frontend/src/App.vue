@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <nprogress-container></nprogress-container>
     <v-app-bar app color="white" flat>
       <div class="d-flex align-center">
         <router-link to="/">
@@ -43,6 +44,7 @@ import QuickSearch from "@/components/QuickSearch.vue";
 import Notificatons from "@/components/Notifications.vue";
 import groupModule from "@/store/modules/groups";
 import { Watch } from "vue-property-decorator";
+import NprogressContainer from "@/components/utility/NprogressContainer.vue";
 
 @Component({
   components: {
@@ -50,6 +52,7 @@ import { Watch } from "vue-property-decorator";
     AddContent,
     QuickSearch,
     Notificatons,
+    NprogressContainer,
   },
 })
 export default class App extends Vue {
