@@ -130,9 +130,13 @@ router.beforeEach((to: Route, from: Route, next: NavigationGuardNext) => {
     !auth.isLoggedIn &&
     (to.meta.isAuthNeeded == undefined || to.meta.isAuthNeeded)
   ) {
-    next("/login");
+    next({
+      path: "/login",
+      query: {
+        redirect: to.fullPath,
+      },
+    });
   }
-
   next();
 });
 
