@@ -17,7 +17,7 @@ class GroupEditRequest extends FormRequest
     {
         $groupId = $this->group->id;
         return [
-            'name' => "unique:groups,name," . $groupId . "|max:150",
+            'name' => "unique:groups,name," . $groupId . "|min:5|max:45",
             'description' => 'max:500',
             'isPrivate' => 'boolean',
             'picture' => 'image|max:4096',

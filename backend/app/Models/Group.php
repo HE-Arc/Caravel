@@ -30,6 +30,14 @@ class Group extends Model
         'user_id',
     ];
 
+    protected $hidden = [
+        'subscription',
+    ];
+
+    protected $appends = [
+        'metadata',
+    ];
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\User')->withTimestamps();
@@ -170,5 +178,14 @@ class Group extends Model
     public function getPictureAttribute($value)
     {
         return $value ? URL::to('/') . '/uploads' . $value : $value;
+    }
+
+    public function getMetadataAttribute()
+    {
+        return [
+            "members" =>  $this->members()->count(),
+            "subjects" => $this->subjects()->count(),
+            "tasks" => $this->tasks()->count(),
+        ];
     }
 }

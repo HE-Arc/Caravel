@@ -16,7 +16,7 @@ class GroupRequest extends FormRequest
     public function rules(Group $group)
     {
         return [
-            'name' => "required|unique:groups,name,{$group->id}|max:150",
+            'name' => "required|unique:groups,name,{$group->id}|min:5|max:45",
             'description' => 'max:500',
             'isPrivate' => 'boolean',
             'picture' => 'image|max:4096',
