@@ -42,24 +42,35 @@
         $t("global.save")
       }}</v-btn>
     </v-card-actions>
+    <v-divider v-if="isAuthorGroup" class="my-8" />
+    <v-card-actions>
+      <v-btn text color="error" @click="delGroup" v-if="isAuthorGroup">{{
+        $t("group.delete")
+      }}</v-btn>
+    </v-card-actions>
+    <confirm-modal ref="confirm" />
   </v-card>
 </template>
 
 <script lang="ts">
 import { Group } from "@/types/group";
-import Vue from "vue";
 import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";
 import AvatarUpload from "@/components/AvatarUpload.vue";
+import userModule from "@/store/modules/user";
 import { Dictionary } from "@/types/helpers";
+import ConfirmModal from "@/components/utility/ConfirmModal.vue";
+import { Ref, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
     AvatarUpload,
+    ConfirmModal,
   },
 })
 export default class GroupManage extends Vue {
   errors: Dictionary<string | string[]> = {};
+  @Ref() readonly confirm!: ConfirmModal;
 
   get group(): Group | undefined {
     return JSON.parse(JSON.stringify(groupModule.group));
@@ -67,6 +78,11 @@ export default class GroupManage extends Vue {
 
   get uploadURL(): string {
     return process.env.VUE_APP_API_BASE_URL + "groups/" + this.group?.id;
+  }
+
+  get isAuthorGroup(): boolean {
+    if (!userModule.user || !this.group) return false;
+    return userModule.user.id == this.group.user_id;
   }
 
   handleUpload(group: Group): void {
@@ -85,6 +101,23 @@ export default class GroupManage extends Vue {
     } catch (err) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error_form").toString());
+    }
+  }
+
+  async delGroup(): Promise<void> {
+    const title = this.$t("group.dialog.title").toString();
+    const message = this.$t("group.dialog.message").toString();
+    const reply = await this.confirm.open(title, message, {});
+    if (reply) {
+      if (this.group) {
+        try {
+          await groupModule.removeGroup(this.group.id);
+          this.$toast.success(this.$t("global.success").toString());
+          this.$router.push({ name: "Home" });
+        } catch (err) {
+          this.$toast.success(this.$t("global.errors.unknown").toString());
+        }
+      }
     }
   }
 }

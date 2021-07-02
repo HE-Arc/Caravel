@@ -16,6 +16,7 @@
     "refuse": "Refuser",
     "reset": "Réinitialiser",
     "save": "Sauvegarder",
+    "confirm": "Confirmer",
     "author": "Auteur",
     "success": "Action effectuée avec succès !",
     "error_form": "Une ou plusieurs données sont invalides",
@@ -51,6 +52,7 @@
     "type": "Type"
   },
   "groups": {
+    "mygroups": "Mes groupes",
     "search-title": "Rechercher un groupe",
     "search-input": "Nom du groupe",
     "search-type": "Commencer à taper pour rechercher",
@@ -97,6 +99,11 @@
   "group": {
     "label": "Groupe | Groupes",
     "icon": "mdi-account-supervisor-circle",
+    "delete": "Supprimer le groupe",
+    "dialog": {
+      "title": "Suppression du groupe",
+      "message": "Voulez vous vraiment supprimer le groupe ?"
+    },
     "tabs": {
       "tasks": "Tâches",
       "calendar": "Calendrier",
@@ -295,5 +302,10 @@
       "title": "Titre de la question"
     },
     "delete": "La question a été supprimée"
+  },
+  "home": {
+    "title": "Bienvenue sur Caravel !",
+    "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cette outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe spécifique. Il vous permet de visualer clairement les activités qu'il faut faire ou retrouver une activité passée.",
+    "submessage": "Mais assez discuté, commencer par créer ou trouver un groupe :-)"
   }
 }

@@ -69,10 +69,10 @@ class GroupModule extends VuexModule {
   }
 
   @Mutation
-  protected REMOVE_GROUP(data: Group): void {
-    const index = this._groups.findIndex((item) => item.id == data.id);
+  protected REMOVE_GROUP(groupId: string): void {
+    const index = this._groups.findIndex((item) => item.id == groupId);
     if (index !== -1) {
-      this._groups.splice(index, 1);
+      Vue.delete(this._groups, index);
       this._status = "delete";
     }
   }
@@ -179,7 +179,7 @@ class GroupModule extends VuexModule {
       })
         .then((resp) => {
           const group: Group = resp.data;
-          this.REMOVE_GROUP(group);
+          this.REMOVE_GROUP(group.id);
           resolve(resp);
         })
         .catch((err) => {
@@ -197,6 +197,21 @@ class GroupModule extends VuexModule {
           const group: Group = resp.data;
           this.UPSERT_GROUP(group);
           resolve(group);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  @Action
+  removeGroup(groupId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      axios
+        .delete(process.env.VUE_APP_API_BASE_URL + "groups/" + groupId)
+        .then(() => {
+          this.REMOVE_GROUP(groupId);
+          resolve();
         })
         .catch((err) => {
           reject(err);
