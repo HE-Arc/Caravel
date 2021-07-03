@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+
 class Question extends Model
 {
     use HasFactory;
@@ -36,13 +37,30 @@ class Question extends Model
     }
 
     /**
+     * Get all of the comments for the Question in a flat way
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function commentsFlat(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
      * Get all of the comments for the Question
      *
      * @return int
      */
     public function getCountCommentsAttribute(): int
     {
-        return $this->hasMany(Comment::class)->count();
+        return $this->commentsFlat()->count();
+    }
+
+    public function contributors()
+    {
+        $list = $this->commentsFlat->pluck('user_id')->toArray();
+
+        return User::findMany($list);
     }
 
     /**

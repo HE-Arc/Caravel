@@ -34,9 +34,9 @@ class Action extends Notification
         $this->title = $title;
         $this->message = $message;
         $this->model = $reflect->getShortName();
-        $this->model_id = $model->id;
-        $this->group_id = $group->id;
-        $this->type = $type;
+        $this->model_id = strval($model->id);
+        $this->group_id = strval($group->id);
+        $this->type = strval($type);
     }
 
     /**
