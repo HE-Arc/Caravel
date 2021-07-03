@@ -45,6 +45,7 @@ import Notificatons from "@/components/Notifications.vue";
 import groupModule from "@/store/modules/groups";
 import { Watch } from "vue-property-decorator";
 import NprogressContainer from "@/components/utility/NprogressContainer.vue";
+import firebase from "firebase";
 
 @Component({
   components: {
@@ -62,7 +63,7 @@ export default class App extends Vue {
     return auth.isLoggedIn;
   }
 
-  beforeMount(): void {
+  created(): void {
     this.init();
   }
 
@@ -78,6 +79,17 @@ export default class App extends Vue {
     if (this.isLoggedIn && !this.loaded) {
       this.loaded = true;
       groupModule.loadGroups();
+      firebase
+        .messaging()
+        .getToken({
+          vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY,
+        })
+        .then((token) => {
+          auth.addFcmToken(token);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 

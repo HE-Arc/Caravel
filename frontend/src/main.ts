@@ -32,7 +32,7 @@ Vue.use(mavonEditor, {
 
 Vue.mixin({
   computed: {
-    $messaging: () => messaging,
+    $messaging: () => messaging.messaging(),
   },
 });
 
