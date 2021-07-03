@@ -22,11 +22,11 @@ class CommentObserver extends AbstractActionObserver
 
     private function sendNotification(Comment $comment, $action, $type)
     {
-        $comment->load('question.task.group', 'task.author', 'question.commentsFlat');
+        $comment->load('question.task.group', 'question.task.author', 'question.commentsFlat');
 
         $group = $comment->question->task->group;
 
-        $users = $comment->question->contributors;
+        $users = $comment->question->contributors();
 
         foreach ($users as $user) {
             if ($this->user->id != $user->id) {
