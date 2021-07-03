@@ -105,8 +105,8 @@ export default class GroupManage extends Vue {
   }
 
   async delGroup(): Promise<void> {
-    const title = this.$t("group.dialog.title").toString();
-    const message = this.$t("group.dialog.message").toString();
+    const title = this.$t("group.dialog.confirm.title").toString();
+    const message = this.$t("group.dialog.confirm.message").toString();
     const reply = await this.confirm.open(title, message, {});
     if (reply) {
       if (this.group) {

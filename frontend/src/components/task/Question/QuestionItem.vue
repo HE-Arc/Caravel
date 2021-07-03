@@ -30,7 +30,7 @@
           </span>
           <v-avatar color="primary" class="profile ml-2 mr-1" size="24">
             <v-img v-if="author.picture" :src="author.picture"></v-img>
-            <span v-else class="white--text text-h6">
+            <span v-else class="white--text text-h7">
               {{ author.name | initials }}
             </span>
           </v-avatar>
@@ -87,13 +87,14 @@
         {{ $t("questions.comments.add") }}
       </div>
       <comment-form :questionId="question.id" />
+      <confirm-modal ref="confirm" />
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
 
 <script lang="ts">
 import Question from "@/types/Question";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 import MarkdownItVue from "markdown-it-vue";
 import Comment from "@/types/Comment";
 import memberModule from "@/store/modules/members";
@@ -103,6 +104,7 @@ import CommentForm from "@/components/task/Comment/CommentDetails.vue";
 import userModule from "@/store/modules/user";
 import QuestionDetails from "@/components/task/Question/QuestionDetails.vue";
 import questionModule from "@/store/modules/questions";
+import ConfirmModal from "@/components/utility/ConfirmModal.vue";
 
 @Component({
   components: {
@@ -110,9 +112,11 @@ import questionModule from "@/store/modules/questions";
     CommmentItem,
     CommentForm,
     QuestionDetails,
+    ConfirmModal,
   },
 })
 export default class QuestionItem extends Vue {
+  @Ref() readonly confirm!: ConfirmModal;
   @Prop() question!: Question;
   showFormEdit = false;
 
@@ -146,11 +150,14 @@ export default class QuestionItem extends Vue {
   }
 
   async remove(): Promise<void> {
-    try {
-      await questionModule.deleteQuestion(this.question);
-      this.$toast.success(this.$t("questions.delete").toString());
-    } catch {
-      this.$toast.error(this.$t("global.error_form").toString());
+    const reply = await this.confirm.open();
+    if (reply) {
+      try {
+        await questionModule.deleteQuestion(this.question);
+        this.$toast.success(this.$t("questions.delete").toString());
+      } catch {
+        this.$toast.error(this.$t("global.error_form").toString());
+      }
     }
   }
 }

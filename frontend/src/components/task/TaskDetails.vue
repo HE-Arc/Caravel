@@ -1,5 +1,5 @@
 <template>
-  <v-row dense>
+  <v-row dense v-if="task">
     <v-col cols="12">
       <v-form>
         <v-card outlined>
