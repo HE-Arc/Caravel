@@ -30,7 +30,7 @@
       <v-list-item-subtitle v-else>
         {{ $t("task.createBy") }}
         <v-avatar color="primary" class="profile" size="16">
-          <v-img v-if="author.picture" :src="author.picture"></v-img>
+          <v-img v-if="author && author.picture" :src="author.picture"></v-img>
         </v-avatar>
         {{ author.firstname }}
         <timeago :datetime="task.created_at"></timeago>

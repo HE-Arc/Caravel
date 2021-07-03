@@ -71,6 +71,7 @@ class GroupModule extends VuexModule {
   @Mutation
   protected REMOVE_GROUP(groupId: string): void {
     const index = this._groups.findIndex((item) => item.id == groupId);
+    console.log(index);
     if (index !== -1) {
       Vue.delete(this._groups, index);
       this._status = "delete";
@@ -178,7 +179,6 @@ class GroupModule extends VuexModule {
         },
       })
         .then((resp) => {
-          const group: Group = resp.data;
           this.REMOVE_GROUP(group.id);
           resolve(resp);
         })
