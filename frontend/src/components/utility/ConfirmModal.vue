@@ -6,33 +6,24 @@
     @keydown.esc="cancel"
   >
     <v-card>
-      <v-toolbar dark :color="options.color" dense flat>
-        <v-toolbar-title class="text-body-2 font-weight-bold grey--text">
+      <v-toolbar :color="options.color" flat>
+        <v-toolbar-title>
           {{ title }}
         </v-toolbar-title>
       </v-toolbar>
       <v-card-text
         v-show="!!message"
-        class="pa-4 black--text"
+        class="pa-4"
         v-html="message"
       ></v-card-text>
       <v-card-actions class="pt-3">
         <v-spacer></v-spacer>
-        <v-btn
-          v-if="!options.noconfirm"
-          color="grey"
-          text
-          class="body-2 font-weight-bold"
-          @click.native="cancel"
-          >{{ $t("global.cancel") }}</v-btn
-        >
-        <v-btn
-          color="primary"
-          class="body-2 font-weight-bold"
-          outlined
-          @click.native="agree"
-          >{{ $t("global.confirm") }}</v-btn
-        >
+        <v-btn v-if="!options.noconfirm" text @click.native="cancel">{{
+          $t("global.cancel")
+        }}</v-btn>
+        <v-btn color="primary" text @click.native="agree">{{
+          $t("global.confirm")
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -50,16 +41,16 @@ export default class ConfirmModal extends Vue {
   message = "";
   title = "";
   options = {
-    color: "grey lighten-3",
+    color: "",
     width: 400,
     zIndex: 200,
     noconfirm: false,
   };
 
   open(
-    title: string,
-    message: string,
-    options: Dictionary<string | number>
+    title: string = this.$t("global.dialog.confirm.title").toString(),
+    message: string = this.$t("global.dialog.confirm.message").toString(),
+    options: Dictionary<string | number> = {}
   ): Promise<boolean> {
     this.dialog = true;
     this.title = title;
