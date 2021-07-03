@@ -7,6 +7,7 @@ use App\Http\Requests\GroupRequest;
 use App\Http\Requests\GroupEditRequest;
 use App\Http\Requests\MemberGroupRequest;
 use App\Http\Requests\MemberStatusRequest;
+use App\Http\Search\SearchEngine;
 use App\Models\Group;
 use App\Services\UploadFileService;
 use Illuminate\Http\Request;
@@ -26,8 +27,7 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         if ($request->has('text')) {
-            $text = $request->input('text') ?? "";
-            return $this->filtered($text);
+            return $this->filtered($request);
         }
         $groups = $this->user->groupsAvailable()->get();
         return response()->json($groups);
@@ -176,15 +176,19 @@ class GroupController extends Controller
     /**
      * @returns JSON containing groups
      */
-    public function filtered(String $str)
+    public function filtered(Request $request)
     {
-        //fetch current user
-        $userId = Auth::id();
+        $filters = $request->all();
+
+        $userId = $this->user->id;
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        $groups = (!empty($str)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(GroupController::PAGINATION_LIMIT) : [];
+        //$groups = (!empty($filters)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(GroupController::PAGINATION_LIMIT) : [];
+        $query = SearchEngine::applyFilters(Group::getQueryForUser($userId), $filters, "Group");
 
-        return response()->json($groups);
+        $groups = $query->paginate(GroupController::PAGINATION_LIMIT);
+
+        return $groups;
     }
 
     /**
