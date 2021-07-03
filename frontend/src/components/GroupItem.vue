@@ -7,7 +7,18 @@
   >
     <div class="d-flex">
       <div>
-        <v-card-title class="text-h5" v-text="group.name"></v-card-title>
+        <v-card-title class="text-h5">
+          {{ group.name }}
+          <v-chip
+            v-if="group.isPrivate"
+            label
+            small
+            class="ml-2"
+            outlined
+            color="error"
+            >{{ $t("group.private") }}</v-chip
+          >
+        </v-card-title>
         <v-card-subtitle class="text-subtitle2 text-justify">
           <span class="mr-3">
             <v-icon>mdi-account-group</v-icon>
@@ -28,8 +39,11 @@
         </v-card-text>
 
         <v-card-actions class="mb-2" v-if="hasJoin">
+          <v-btn v-if="isMember" text color="success">
+            {{ $t("global.open") }}
+          </v-btn>
           <v-btn
-            v-if="group.status == status.PENDING"
+            v-else-if="group.status == status.PENDING"
             class="ml-2 mt-5"
             small
             color="warning"
