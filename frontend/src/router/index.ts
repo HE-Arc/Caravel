@@ -8,25 +8,19 @@ import auth from "@/store/modules/user";
 
 Vue.use(VueRouter);
 
-const ifAuthenticated = (to: Route, from: Route, next: NavigationGuardNext) => {
-  if (auth.isLoggedIn) {
-    next();
-    return;
-  }
-  next("/login");
-};
-
 const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "Home",
     component: Home,
-    beforeEnter: ifAuthenticated,
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
+    meta: {
+      isAuthNeeded: false,
+    },
   },
   {
     path: "/groups",
@@ -129,6 +123,21 @@ const router = new VueRouter({
       };
     }
   },
+});
+
+router.beforeEach((to: Route, from: Route, next: NavigationGuardNext) => {
+  if (
+    !auth.isLoggedIn &&
+    (to.meta.isAuthNeeded == undefined || to.meta.isAuthNeeded)
+  ) {
+    next({
+      path: "/login",
+      query: {
+        redirect: to.fullPath,
+      },
+    });
+  }
+  next();
 });
 
 export default router;

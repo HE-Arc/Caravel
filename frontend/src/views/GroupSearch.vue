@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col cols="12" md="10" offset-md="1" align="center">
         <v-card flat>
-          <v-card-title class="text-h4">
+          <v-card-title class="text-h4 font-weight-light">
             {{ $t("groups.search-title") }}
           </v-card-title>
           <v-spacer></v-spacer>
@@ -60,13 +60,6 @@
               </v-row>
             </v-container>
           </v-expand-transition>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn v-if="filters.text" :disabled="!filters.text" @click="clear">
-              {{ $t("global.clear") }}
-              <v-icon right> mdi-close-circle </v-icon>
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>

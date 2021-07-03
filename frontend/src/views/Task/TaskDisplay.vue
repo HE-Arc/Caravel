@@ -69,13 +69,14 @@
       <v-col cols="12">
         <questions></questions>
       </v-col>
+      <confirm-modal ref="confirm" />
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
 import { Task } from "@/types/task";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch, Ref } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import subjectModule from "@/store/modules/subjects";
 import memberModule from "@/store/modules/members";
@@ -88,15 +89,19 @@ import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";
 import Reactions from "@/components/Reactions.vue";
 import Questions from "@/components/task/Question/Questions.vue";
+import ConfirmModal from "@/components/utility/ConfirmModal.vue";
 
 @Component({
   components: {
     MarkdownItVue,
     Reactions,
     Questions,
+    ConfirmModal,
   },
 })
 export default class TaskDisplay extends Vue {
+  @Ref() readonly confirm!: ConfirmModal;
+
   get task(): Task | undefined {
     return taskModule.getCurrentTask;
   }
@@ -134,13 +139,16 @@ export default class TaskDisplay extends Vue {
   }
 
   async delTask(): Promise<void> {
-    if (!this.task) return;
-    try {
-      await taskModule.delete(this.task);
-      this.$router.push({ name: "tasks" });
-      this.$toast.success(this.$t("global.success").toString());
-    } catch (err) {
-      this.$toast.error(this.$t("global.errors.unknown").toString());
+    const reply = await this.confirm.open();
+    if (reply) {
+      if (!this.task) return;
+      try {
+        await taskModule.delete(this.task);
+        this.$router.push({ name: "tasks" });
+        this.$toast.success(this.$t("global.success").toString());
+      } catch (err) {
+        this.$toast.error(this.$t("global.errors.unknown").toString());
+      }
     }
   }
 

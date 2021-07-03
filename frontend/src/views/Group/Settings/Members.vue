@@ -65,11 +65,12 @@
         </div>
       </v-list>
     </v-card-text>
+    <confirm-modal ref="confirm" />
   </v-card>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { Vue, Ref } from "vue-property-decorator";
 import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";
 import authModule from "@/store/modules/user";
@@ -78,13 +79,17 @@ import { Group } from "@/types/group";
 import { Member } from "@/types/member";
 import MemberItem from "@/components/MemberItem.vue";
 import { User } from "@/types/user";
+import ConfirmModal from "@/components/utility/ConfirmModal.vue";
 
 @Component({
   components: {
     MemberItem,
+    ConfirmModal,
   },
 })
 export default class GroupMembers extends Vue {
+  @Ref() readonly confirm!: ConfirmModal;
+
   get user(): User | undefined {
     return authModule.user;
   }
@@ -125,13 +130,18 @@ export default class GroupMembers extends Vue {
   }
 
   async leaveGroup(): Promise<void> {
-    if (!this.group) return;
-    const group = this.group;
-    try {
-      await groupModule.leave(group);
-      this.$router.push({ name: "Home" });
-    } catch (err) {
-      this.$toast.error(err.response.data.message);
+    const title = this.$t("group.dialog.leave.title").toString();
+    const message = this.$t("group.dialog.leave.message").toString();
+    const reply = await this.confirm.open(title, message, {});
+    if (reply) {
+      if (!this.group) return;
+      const group = this.group;
+      try {
+        await groupModule.leave(group);
+        this.$router.push({ name: "Home" });
+      } catch (err) {
+        this.$toast.error(err.response.data.message);
+      }
     }
   }
 }

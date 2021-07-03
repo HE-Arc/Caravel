@@ -32,7 +32,7 @@ class TaskController extends Controller
 
         $tasks = $query->get();
 
-        return response()->json($tasks);
+        return $tasks;
     }
 
     /**

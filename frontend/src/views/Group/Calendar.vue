@@ -26,7 +26,7 @@
             </v-list>
           </v-menu>
           <v-spacer></v-spacer>
-          <span class="text-h4 font-weight-light" v-if="$refs.calendar">
+          <span class="text-h5 font-weight-light" v-if="$refs.calendar">
             {{ $refs.calendar.title }}
           </span>
           <v-spacer></v-spacer>

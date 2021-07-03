@@ -77,10 +77,6 @@ export default class Notifications extends Vue {
   mounted(): void {
     //first time load all
     userModule.loadNotifications();
-
-    this.$messaging.onMessage(() => {
-      userModule.loadNotifications();
-    });
   }
 }
 </script>

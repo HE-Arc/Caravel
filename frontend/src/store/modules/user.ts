@@ -148,6 +148,7 @@ class UserModule extends VuexModule {
           this.SUCCESS({ token, user });
           axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           groupModule.loadGroups();
+
           resolve(resp);
         })
         .catch((err) => {

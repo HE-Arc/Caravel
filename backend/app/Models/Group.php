@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class Group extends Model
 {
@@ -28,6 +30,14 @@ class Group extends Model
         'description',
         'isPrivate',
         'user_id',
+    ];
+
+    protected $hidden = [
+        'subscription',
+    ];
+
+    protected $appends = [
+        'metadata',
     ];
 
     public function users(): BelongsToMany
@@ -95,6 +105,15 @@ class Group extends Model
     }
 
     /**
+     * Get future tasks
+     */
+    public function tasksFuture()
+    {
+        return $this->tasks->where('due_at', '>=', Carbon::now()->startOfDay());
+    }
+
+
+    /**
      * Safely delete the picture
      */
     public function removePicture()
@@ -147,18 +166,13 @@ class Group extends Model
         return parent::delete();
     }
 
-    public static function getFilteredGroupsForUser($userId, $text)
+    public static function getQueryForUser($userId)
     {
         return Group::query()
             ->select('groups.*', 'group_user.isApprouved as status')
             ->leftJoin('group_user', function ($join) use ($userId) {
                 $join->on('group_user.group_id', '=', 'groups.id');
                 $join->on('group_user.user_id', '=', DB::raw($userId));
-            })
-            ->where('name', 'LIKE', "%$text%")
-            ->where(function ($query) {
-                $query->where('isApprouved', '!=', Group::ACCEPTED)
-                    ->orWhereNull('isApprouved');
             });
     }
 
@@ -170,5 +184,14 @@ class Group extends Model
     public function getPictureAttribute($value)
     {
         return $value ? URL::to('/') . '/uploads' . $value : $value;
+    }
+
+    public function getMetadataAttribute()
+    {
+        return [
+            "members" =>  $this->members()->count(),
+            "subjects" => $this->subjects()->count(),
+            "tasks" => $this->tasksFuture()->count(),
+        ];
     }
 }

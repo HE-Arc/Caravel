@@ -1,18 +1,49 @@
 <template>
-  <v-card elevation="2" color="lightPurple">
-    <div class="d-flex flex-no-wrap justify-space-between">
+  <v-card
+    elevation="2"
+    :to="
+      isMember ? { name: 'Group', params: { group_id: group.id } } : undefined
+    "
+  >
+    <div class="d-flex">
       <div>
-        <v-card-title class="text-h5" v-text="group.name"></v-card-title>
+        <v-card-title class="text-h5">
+          {{ group.name }}
+          <v-chip
+            v-if="group.isPrivate"
+            label
+            small
+            class="ml-2"
+            outlined
+            color="error"
+            >{{ $t("group.private") }}</v-chip
+          >
+        </v-card-title>
+        <v-card-subtitle class="text-subtitle2 text-justify">
+          <span class="mr-3">
+            <v-icon>mdi-account-group</v-icon>
+            {{ group.metadata.members }}
+          </span>
+          <span class="mr-3">
+            <v-icon>{{ $t("task.icon") }}</v-icon>
+            {{ group.metadata.tasks }}
+          </span>
+          <span>
+            <v-icon>{{ $t("subject.icon") }}</v-icon>
+            {{ group.metadata.subjects }}
+          </span>
+        </v-card-subtitle>
 
-        <v-card-subtitle
-          style="height: 50px; text-overflow: ellipsis"
-          class="text-justify"
-          v-text="group.description"
-        ></v-card-subtitle>
+        <v-card-text class="text-justify">
+          {{ group.description | limit(200) }}
+        </v-card-text>
 
-        <v-card-actions class="mb-2">
+        <v-card-actions class="mb-2" v-if="hasJoin">
+          <v-btn v-if="isMember" text color="success">
+            {{ $t("global.open") }}
+          </v-btn>
           <v-btn
-            v-if="group.status == status.PENDING"
+            v-else-if="group.status == status.PENDING"
             class="ml-2 mt-5"
             small
             color="warning"
@@ -35,13 +66,13 @@
             small
             color="success"
             :loading="isLoading"
-            @click="askJoin"
+            @click.prevent="askJoin"
           >
             {{ $t("groups.join") }}
           </v-btn>
         </v-card-actions>
       </div>
-
+      <v-spacer></v-spacer>
       <v-avatar class="ma-3" size="125" tile v-if="group.picture">
         <v-img :src="group.picture"></v-img>
       </v-avatar>
@@ -54,12 +85,18 @@ import { Group } from "@/types/group";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { GroupStatus } from "@/types/helpers";
 import axios from "axios";
+import groupModule from "@/store/modules/groups";
 
 @Component
 export default class GroupItem extends Vue {
   @Prop() group!: Group;
+  @Prop({ default: true }) hasJoin!: boolean;
   status = GroupStatus;
   isLoading = false;
+
+  get isMember(): boolean {
+    return groupModule.groups.some((item) => item.id == this.group.id);
+  }
 
   askJoin(): void {
     this.isLoading = true;
@@ -69,6 +106,7 @@ export default class GroupItem extends Vue {
     })
       .then(() => {
         this.$toast.info(this.$t("groups.ask").toString());
+        groupModule.loadGroups();
       })
       .catch((err) => {
         this.$toast.error(err.response.data.message);

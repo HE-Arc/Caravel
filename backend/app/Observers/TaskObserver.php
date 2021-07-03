@@ -5,15 +5,19 @@ namespace App\Observers;
 use App\Models\Group;
 use App\Models\Subject;
 use App\Models\Task;
-use App\Models\User;
 use App\Notifications\Action;
 use App\Notifications\ActionType;
 use Illuminate\Support\Facades\Auth;
 
-class TaskObserver
+class TaskObserver extends AbstractActionObserver
 {
-    /** @var User $user */
-    protected $user;
+
+    /**
+     * Handle events after all transactions are committed.
+     *
+     * @var bool
+     */
+    public $afterCommit = true;
 
 
     public function __construct()
@@ -66,7 +70,7 @@ class TaskObserver
         $users = $group->usersAccepted;
 
         foreach ($users as $user) {
-            if ($user->id != $user->id) {
+            if ($this->user->id != $user->id) {
                 $user->notify(new Action(
                     __("api.notifications.task.${action}.title"),
                     __("api.notifications.task.${action}.message", ['name' => $task->title, 'group' => $group->name]),

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fortawesome/vue-fontawesome": "^2.0.2",
+    "@types/nprogress": "^0.2.0",
     "axios": "^0.21.1",
     "babel-plugin-require-context-hook": "^1.0.0",
     "core-js": "^3.6.5",
@@ -25,6 +26,8 @@
     "vue-class-component": "^7.2.3",
     "vue-i18n": "^8.24.4",
     "vue-image-crop-upload": "^3.0.3",
+    "vue-nprogress": "^0.2.0",
+    "vue-nprogress-ts": "^1.0.0",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.2.0",
     "vue-timeago": "^5.1.3",

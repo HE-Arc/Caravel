@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <nprogress-container></nprogress-container>
     <v-app-bar app color="white" flat>
       <div class="d-flex align-center">
         <router-link to="/">
@@ -43,6 +44,8 @@ import QuickSearch from "@/components/QuickSearch.vue";
 import Notificatons from "@/components/Notifications.vue";
 import groupModule from "@/store/modules/groups";
 import { Watch } from "vue-property-decorator";
+import NprogressContainer from "@/components/utility/NprogressContainer.vue";
+import firebase from "firebase";
 
 @Component({
   components: {
@@ -50,6 +53,7 @@ import { Watch } from "vue-property-decorator";
     AddContent,
     QuickSearch,
     Notificatons,
+    NprogressContainer,
   },
 })
 export default class App extends Vue {
@@ -59,7 +63,7 @@ export default class App extends Vue {
     return auth.isLoggedIn;
   }
 
-  beforeMount(): void {
+  created(): void {
     this.init();
   }
 
@@ -75,6 +79,17 @@ export default class App extends Vue {
     if (this.isLoggedIn && !this.loaded) {
       this.loaded = true;
       groupModule.loadGroups();
+      firebase
+        .messaging()
+        .getToken({
+          vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY,
+        })
+        .then((token) => {
+          auth.addFcmToken(token);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 

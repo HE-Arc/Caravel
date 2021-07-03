@@ -75,7 +75,9 @@ export default class Login extends Vue {
     try {
       await auth.login({ mail, password });
       this.$toast.success(this.$t("login.logged_in").toString());
-      this.$router.push({ name: "Home" });
+      if (this.$route.query.redirect)
+        this.$router.push(this.$route.query.redirect.toString());
+      else this.$router.push({ name: "Home" });
     } catch {
       this.$toast.error(this.$t("login.failed").toString());
     }

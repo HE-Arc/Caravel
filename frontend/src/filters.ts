@@ -19,3 +19,13 @@ Vue.filter("initials", function (value: string) {
 
   return name.toUpperCase();
 });
+
+Vue.filter("limit", function (value: string, size: number) {
+  if (!value) return "";
+  value = value.toString();
+
+  if (value.length <= size) {
+    return value;
+  }
+  return value.substr(0, size) + "...";
+});

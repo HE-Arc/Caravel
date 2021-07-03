@@ -39,7 +39,7 @@ class QuestionObserver extends AbstractActionObserver
         $users = $group->usersAccepted;
 
         foreach ($users as $user) {
-            if ($user->id != $user->id) {
+            if ($this->user->id != $user->id) {
                 $user->notify(new Action(
                     __("api.notifications.question.${action}.title"),
                     __("api.notifications.question.${action}.message", ['name' => $question->title, 'group' => $group->name]),
