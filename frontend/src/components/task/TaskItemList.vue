@@ -39,8 +39,7 @@
           {{ task.questions.length }}</span
         >
         <span class="ml-2" v-if="task.reactions_list.length > 0"
-          ><v-icon small>mdi-drama-masks</v-icon>
-          {{ task.reactions_list.length }}</span
+          ><v-icon small>mdi-drama-masks</v-icon> {{ countReactions }}</span
         >
       </v-list-item-subtitle>
     </v-list-item-content>
@@ -103,6 +102,10 @@ export default class TaskItemList extends Vue {
 
   get isProject(): boolean {
     return this.task.tasktype_id == TaskType.PROJECT.toString();
+  }
+
+  get countReactions(): number {
+    return this.task.reactions_list.reduce((a, b) => a + b.count, 0);
   }
 
   finished(): void {
