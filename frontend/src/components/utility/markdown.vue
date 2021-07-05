@@ -6,21 +6,28 @@
     :toolbars="options"
     @imgAdd="uploadFile"
     ref="mavon"
+    :shortCut="false"
+    :subfield="false"
+    :scrollStyle="true"
+    :imageFilter="() => false"
   >
     <template v-slot:left-toolbar-after>
       <button
         type="button"
-        class="op-icon fa fa-mavon-paperclip"
+        class="op-icon text-center"
         title="test"
         aria-hidden="true"
-        @click="test"
-      ></button>
+        @click="uploadFile"
+      >
+        <v-icon small>mdi-file</v-icon>
+      </button>
     </template>
   </mavon-editor>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
+import groupModule from "@/store/modules/groups";
 
 @Component
 export default class VMarkdownEditor extends Vue {
@@ -30,8 +37,8 @@ export default class VMarkdownEditor extends Vue {
     header: true,
     underline: true,
     strikethrough: true,
-    mark: true,
-    superscript: true,
+    mark: false,
+    superscript: false,
     subscript: true,
     quote: true,
     ol: true,
@@ -41,13 +48,13 @@ export default class VMarkdownEditor extends Vue {
     code: true,
     table: true,
     fullscreen: true,
-    readmodel: true,
+    readmodel: false,
     help: true,
     undo: true,
     redo: true,
-    trash: true,
-    save: true,
-    navigation: true,
+    trash: false,
+    save: false,
+    navigation: false,
     alignleft: true,
     aligncenter: true,
     alignright: true,
@@ -58,16 +65,35 @@ export default class VMarkdownEditor extends Vue {
   mounted(): void {
     let select = document.querySelector(".v-note-wrapper.markdown-body");
     if (select)
-      select.addEventListener("drop", function (e: unknown) {
-        console.log("ça marche", e);
+      select.addEventListener("drop", (ev: Event) => {
+        // Prevent default behavior (Prevent file from being opened)
+        ev.preventDefault();
+
+        const e = ev as DragEvent;
+
+        const file = e.dataTransfer?.items[0].getAsFile();
+
+        if (file) {
+          this.handleFile(file);
+        }
       });
   }
 
-  uploadFile(): void {
-    //TODO upload
+  async handleFile(file: File): Promise<void> {
+    console.log(file);
+    const $vm: unknown = this.$refs.mavon;
+    const filelink = await groupModule.uploadFile(file);
+    console.log(filelink);
+    /* eslint-disable */
+    /* @ts-ignore */
+    $vm.insertText($vm.getTextareaDom(), {
+      prefix: `${filelink}`,
+      subfix: "",
+      str: "",
+    });
   }
 
-  test(): void {
+  uploadFile(): void {
     const $vm: unknown = this.$refs.mavon;
     console.log($vm);
     /*$vm.insertText($vm.getTextareaDom(), {

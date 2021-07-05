@@ -29,7 +29,7 @@
         <v-card-text v-else>
           {{ $t("notifications.empty") }}
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions v-if="hasItem">
           <v-btn text color="primary" @click="markAllAsRead()" v-if="hasItem">{{
             $t("notifications.readAll")
           }}</v-btn>

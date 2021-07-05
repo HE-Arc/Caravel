@@ -66,12 +66,12 @@ class GroupController extends Controller
         $file = $data['file'];
 
         $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file);
+        $explodedPath = explode("/", $filepath);
+
+        $filename = end($explodedPath);
 
         return response()->json(
-            [
-                'path' => route('groups.files', ['group' => $group, 'file' => $filepath]),
-                'message' => 'File uploaded'
-            ]
+            route('groups.files', ['group' => $group, 'file' => $filename])
         );
     }
 
