@@ -37,18 +37,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         'groups.comments' => CommentController::class,
     ]);
 
-    /*Route::apiResources(
-        [
-            'groups.questions' => QuestionController::class,
-            'groups.comment' => CommentController::class,
-        ],
-        [
-            'except' => [
-                'index'
-            ],
-        ]
-    );*/
-
     #members of groups (get, delete, no post as this is the role of the "join" mecanic)
     Route::get('groups/{group}/members', [GroupController::class, 'members']);
     Route::patch('groups/{group}/members', [GroupController::class, 'updateMemberStatus']);
