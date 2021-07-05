@@ -13,10 +13,11 @@ use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\URL;
+use Panoscape\History\HasOperations;
 
 class User extends Authenticatable implements LdapAuthenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap;
+    use HasApiTokens, HasFactory, Notifiable, AuthenticatesWithLdap, HasOperations;
 
     /**
      * The attributes that are mass assignable.
