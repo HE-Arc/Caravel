@@ -107,7 +107,7 @@ export default class TaskList extends Vue {
       const due = moment(task.due_at);
       const key = due.endOf("day").fromNow();
       if (tasksByDays[key] == undefined) {
-        tasksByDays[key] = [task];
+        Vue.set(tasksByDays, key, [task]);
       } else {
         tasksByDays[key].push(task);
       }
