@@ -70,7 +70,7 @@ return [
         ],
         'comment' => [
             'create' => [ //create
-                'title' => "Nouveau commlentaire",
+                'title' => "Nouveau commentaire",
                 'message' => "Un commentaire a été ajoutée sur votre question dans le group ':group'"
             ],
         ],
