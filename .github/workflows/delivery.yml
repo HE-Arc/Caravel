@@ -25,6 +25,10 @@ jobs:
       - name: Install composer Dependencies for Laravel
         run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
         working-directory: ./backend
+        
+      - name: Apply modifications on DB if needed for laravel
+        run: php artisan migrate
+        working-directory: ./backend
           
       - name: Copy backend Laravel 
         run: |
