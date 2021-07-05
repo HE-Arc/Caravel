@@ -95,7 +95,7 @@ class TaskController extends Controller
      */
     public function show(Group $group, Task $task)
     {
-        return response()->json($task->load('questions.comments'));
+        return $task->load('questions.comments');
     }
 
     /**

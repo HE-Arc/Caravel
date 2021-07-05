@@ -80,7 +80,9 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="success" @click="save">{{ $t("global.save") }}</v-btn>
+            <v-btn color="success" @click="save" :loading="isLoading">{{
+              $t("global.save")
+            }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -118,6 +120,7 @@ export default class TaskDetails extends Vue {
     default: () => Factory.getTaskForm(),
   })
   data!: TaskForm;
+  isLoading = false;
 
   errors = {};
   task = this.data;
@@ -147,6 +150,7 @@ export default class TaskDetails extends Vue {
   }
 
   async save(): Promise<void> {
+    this.isLoading = true;
     try {
       const task: Task = JSON.parse(JSON.stringify(this.task));
       await taskModule.save(task);
@@ -156,6 +160,8 @@ export default class TaskDetails extends Vue {
     } catch (err) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error_form").toString());
+    } finally {
+      this.isLoading = false;
     }
   }
 }

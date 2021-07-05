@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use Panoscape\History\HasHistories;
 
 class Group extends Model
 {
-    use HasFactory;
+    use HasFactory, HasHistories;
 
     //Const status code for the request status linking group and user
     public const PENDING = 0;
@@ -193,5 +193,10 @@ class Group extends Model
             "subjects" => $this->subjects()->count(),
             "tasks" => $this->tasksFuture()->count(),
         ];
+    }
+
+    public function getModelLabel()
+    {
+        return $this->name;
     }
 }

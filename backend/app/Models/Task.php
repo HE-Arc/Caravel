@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Panoscape\History\HasHistories;
+
 
 class Task extends Model
 {
-    use HasFactory, SoftDeletes, \Znck\Eloquent\Traits\BelongsToThrough;
+    use HasFactory, SoftDeletes, \Znck\Eloquent\Traits\BelongsToThrough, HasHistories;
 
     /**
      * The attributes that are mass assignable.
@@ -35,7 +37,8 @@ class Task extends Model
 
     protected $appends = [
         'reactions_list',
-        'has_finished'
+        'has_finished',
+        'histories_list'
     ];
 
     /**
@@ -119,6 +122,11 @@ class Task extends Model
         return $reactionList;
     }
 
+    public function getHistoriesListAttribute($query)
+    {
+        return $this->histories()->orderBy('performed_at', 'desc')->get();
+    }
+
     public function getHasFinishedAttribute()
     {
         $user_id = Auth()->id();
@@ -134,5 +142,10 @@ class Task extends Model
         if (empty($update)) {
             $this->subscriptions()->attach($user_id, $data);
         }
+    }
+
+    public function getModelLabel()
+    {
+        return $this->title;
     }
 }

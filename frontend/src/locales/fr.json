@@ -155,10 +155,19 @@
   },
   "task": {
     "label": "Tâche | Tâches",
+    "fields": {
+      "title": "@.lower:task.form.title.label",
+      "description": "description",
+      "subject_id": "@.lower:task.form.subject.label",
+      "due_at": "@.lower:task.form.due.label"
+    },
     "icon": "mdi-format-list-checks",
     "states": {
       "open": "A faire",
       "close": "Fermé"
+    },
+    "history": {
+      "label": "Modifié"
     },
     "finish": {
       "tooltip": "Marquer cette tâche comme terminée pour moi",
@@ -321,5 +330,15 @@
     "title": "Bienvenue sur Caravel !",
     "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cette outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe spécifique. Il vous permet de visualer clairement les activités qu'il faut faire ou retrouver une activité passée.",
     "submessage": "Mais assez discuté, commencez par créer ou trouver un groupe :-)"
+  },
+  "history": {
+    "label": "Historique",
+    "change": "Changement ",
+    "states": {
+      "1": "Création",
+      "2": "Mise à jour",
+      "3": "Suppression",
+      "4": "Restauration"
+    }
   }
 }
