@@ -1,6 +1,6 @@
 <template>
-  <v-container v-if="task">
-    <v-row>
+  <div v-if="task">
+    <v-row dense>
       <v-col cols="12">
         <v-card flat>
           <v-toolbar flat class="header-task">
@@ -30,7 +30,15 @@
               </v-avatar>
               {{ author.firstname }}
               <timeago :datetime="task.created_at" :auto-update="60"></timeago>
+              <v-icon v-if="task.histories_list.length > 0" dense
+                >mdi-circle-small</v-icon
+              >
+              <history-list
+                class="text-caption"
+                :histories="task.histories_list"
+              />
             </v-toolbar-title>
+
             <v-spacer></v-spacer>
             <v-checkbox
               small
@@ -71,7 +79,7 @@
       </v-col>
       <confirm-modal ref="confirm" />
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">
@@ -90,6 +98,7 @@ import TinyColor from "tinycolor2";
 import Reactions from "@/components/Reactions.vue";
 import Questions from "@/components/task/Question/Questions.vue";
 import ConfirmModal from "@/components/utility/ConfirmModal.vue";
+import HistoryList from "@/components/HistoryList.vue";
 
 @Component({
   components: {
@@ -97,6 +106,7 @@ import ConfirmModal from "@/components/utility/ConfirmModal.vue";
     Reactions,
     Questions,
     ConfirmModal,
+    HistoryList,
   },
 })
 export default class TaskDisplay extends Vue {

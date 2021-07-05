@@ -41,7 +41,14 @@
 
     <v-expansion-panel-content>
       <div class="mb-4">
-        <v-btn small icon :outlined="showFormEdit" @click="edit" class="mr-2">
+        <v-btn
+          small
+          icon
+          :outlined="showFormEdit"
+          @click="edit"
+          v-if="isAuthor"
+          class="mr-2"
+        >
           <v-icon small>mdi-pencil</v-icon>
         </v-btn>
         <v-btn small icon v-if="isAuthor" color="error" @click="remove">

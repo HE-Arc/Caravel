@@ -34,6 +34,14 @@
         </v-avatar>
         {{ author.firstname }}
         <timeago :datetime="task.created_at"></timeago>
+        <span class="ml-2" v-if="task.questions.length > 0"
+          ><v-icon small>mdi-message-question-outline</v-icon>
+          {{ task.questions.length }}</span
+        >
+        <span class="ml-2" v-if="task.reactions_list.length > 0"
+          ><v-icon small>mdi-drama-masks</v-icon>
+          {{ task.reactions_list.length }}</span
+        >
       </v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-action-text>
