@@ -10,7 +10,7 @@
         ></v-text-field>
         <v-markdown-editor
           v-model="questionForm.description"
-          :error-messages="errors.description"
+          :errors="errors.description"
           @input="errors.description = []"
         ></v-markdown-editor>
       </v-card-text>

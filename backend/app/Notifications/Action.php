@@ -8,6 +8,7 @@ use NotificationChannels\Fcm\FcmChannel;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmMessage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use ReflectionClass;
 
 class Action extends Notification
@@ -48,7 +49,6 @@ class Action extends Notification
     public function via($notifiable)
     {
         //faire le check pour le user (notifiable) si les paramètres sont ok
-
         return ['database', FcmChannel::class];
     }
 

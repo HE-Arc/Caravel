@@ -1,36 +1,50 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col class="mb-5" cols="12">
-        <group-selector />
-      </v-col>
-      <v-col class="pa-0" cols="12">
-        <v-tabs v-model="activeTab" show-arrows class="main-tab">
-          <v-tab
-            v-for="(item, key, index) in tabs"
-            :key="key + (item.count != undefined ? item.count : '')"
-            :to="$router.resolve({ name: key }).href"
-            v-bind:class="{ 'first-tab': index == 0 }"
-          >
-            <v-icon class="mr-2">{{ item.icon }}</v-icon>
-            {{ $t("group.tabs." + key) }}
-            <v-chip
-              class="ml-1"
-              small
-              :color="item.color"
-              v-if="item.count != undefined && item.count > 0"
-              v-text="item.count"
-            />
-          </v-tab>
-        </v-tabs>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12">
-        <router-view />
-      </v-col>
-    </v-row>
-  </v-container>
+  <div>
+    <v-container fluid v-show="!isLoading">
+      <v-row>
+        <v-col class="mb-5" cols="12">
+          <group-selector />
+        </v-col>
+        <v-col class="pa-0" cols="12">
+          <v-tabs v-model="activeTab" show-arrows class="main-tab">
+            <v-tab
+              v-for="(item, key, index) in tabs"
+              :key="key + (item.count != undefined ? item.count : '')"
+              :to="$router.resolve({ name: key }).href"
+              v-bind:class="{ 'first-tab': index == 0 }"
+            >
+              <v-icon class="mr-2">{{ item.icon }}</v-icon>
+              <span class="hidden-sm-and-down">
+                {{ $t("group.tabs." + key) }}
+              </span>
+
+              <v-chip
+                class="ml-1"
+                small
+                :color="item.color"
+                v-if="item.count != undefined && item.count > 0"
+                v-text="item.count"
+              />
+            </v-tab>
+          </v-tabs>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <router-view />
+        </v-col>
+      </v-row>
+    </v-container>
+    <div class="text-center" v-show="isLoading">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate
+        class="mt-5"
+      ></v-progress-circular>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -64,6 +78,10 @@ export default class GroupContainer extends Vue {
     return taskModule.tasksFuture.length ?? 0;
   }
 
+  get isLoading(): boolean {
+    return groupModule.status == "loading" || taskModule.status == "loading";
+  }
+
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router
   get tabs(): Dictionary<Dictionary<string | number>> {
     return {
@@ -93,7 +111,11 @@ export default class GroupContainer extends Vue {
     try {
       await groupModule.selectGroup(this.groupId);
     } catch (err) {
-      this.$toast.error(err.response.data.message);
+      if (err.response.status == 404) {
+        this.$router.push({ name: "NotFound" });
+      } else {
+        this.$toast.error(err.response.data.message);
+      }
     }
   }
 }

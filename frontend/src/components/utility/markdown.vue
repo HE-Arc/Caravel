@@ -23,12 +23,15 @@
         </button>
       </template>
     </mavon-editor>
+    <div class="red--text text-caption" v-if="!!errors">
+      {{ errors.join("\n") }}
+    </div>
     <upload-modal ref="modal" />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Vue, Component, Ref, Prop } from "vue-property-decorator";
 import groupModule from "@/store/modules/groups";
 import UploadModal from "@/components/utility/UploadModal.vue";
 
@@ -39,6 +42,7 @@ import UploadModal from "@/components/utility/UploadModal.vue";
 })
 export default class VMarkdownEditor extends Vue {
   @Ref() readonly modal!: UploadModal;
+  @Prop({ default: undefined }) errors!: string[] | undefined;
   imageTypes = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
   options = {
     bold: true,
@@ -73,7 +77,7 @@ export default class VMarkdownEditor extends Vue {
 
   mounted(): void {
     let select = document.querySelector(".v-note-wrapper.markdown-body");
-    if (select)
+    if (select) {
       select.addEventListener("drop", (ev: Event) => {
         // Prevent default behavior (Prevent file from being opened)
         ev.preventDefault();
@@ -84,6 +88,16 @@ export default class VMarkdownEditor extends Vue {
           this.handleFile(file);
         }
       });
+      select.addEventListener("paste", (ev: Event) => {
+        const e = ev as ClipboardEvent;
+
+        const file = e.clipboardData?.items[0].getAsFile();
+
+        if (file) {
+          this.handleFile(file);
+        }
+      });
+    }
   }
 
   async handleFile(file: File): Promise<void> {

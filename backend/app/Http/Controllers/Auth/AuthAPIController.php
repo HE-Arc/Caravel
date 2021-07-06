@@ -30,7 +30,6 @@ class AuthAPIController extends BaseController
             $user = Auth::user();
 
             $user->load('groupsAvailable');
-            $user->load('notifications');
 
             $token = $user->createToken("token");
 

@@ -49,6 +49,12 @@ class GroupModule extends VuexModule {
     this._status = "loading";
   }
 
+  //Mutation
+  @Mutation
+  private LOADED() {
+    this._status = "loaded";
+  }
+
   @Mutation
   protected LOAD_GROUPS(items: Group[]): void {
     this._groups = items;
@@ -103,6 +109,7 @@ class GroupModule extends VuexModule {
           TaskModule.load(group.tasks);
           SubjectModule.load(group.subjects);
           MemberModule.load(group.members);
+          this.LOADED();
           resolve(response);
         })
         .catch((err) => {
@@ -134,12 +141,8 @@ class GroupModule extends VuexModule {
 
   @Action
   async selectGroup(groupId: string): Promise<void> {
-    try {
-      this.SET_GROUP(groupId);
-      await this.loadGroup(groupId);
-    } catch {
-      this.ERROR();
-    }
+    this.SET_GROUP(groupId);
+    await this.loadGroup(groupId);
   }
 
   @Action
@@ -169,7 +172,6 @@ class GroupModule extends VuexModule {
 
   @Action
   leave(group: Group): Promise<AxiosResponse> {
-    this.REQUEST();
     return new Promise((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `profile`,
