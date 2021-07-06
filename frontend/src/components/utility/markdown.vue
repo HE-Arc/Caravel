@@ -1,36 +1,45 @@
 <template>
-  <mavon-editor
-    v-bind="$attrs"
-    v-on="$listeners"
-    language="fr"
-    :toolbars="options"
-    @imgAdd="uploadFile"
-    ref="mavon"
-    :shortCut="false"
-    :subfield="false"
-    :scrollStyle="true"
-    :imageFilter="() => false"
-  >
-    <template v-slot:left-toolbar-after>
-      <button
-        type="button"
-        class="op-icon text-center"
-        title="test"
-        aria-hidden="true"
-        @click="uploadFile"
-      >
-        <v-icon small>mdi-file</v-icon>
-      </button>
-    </template>
-  </mavon-editor>
+  <div>
+    <mavon-editor
+      v-bind="$attrs"
+      v-on="$listeners"
+      language="fr"
+      :toolbars="options"
+      ref="mavon"
+      :shortCut="false"
+      :subfield="false"
+      :scrollStyle="true"
+      :imageFilter="() => false"
+    >
+      <template v-slot:left-toolbar-after>
+        <button
+          type="button"
+          class="op-icon text-center"
+          title="test"
+          aria-hidden="true"
+          @click="openDialog"
+        >
+          <v-icon small>mdi-file</v-icon>
+        </button>
+      </template>
+    </mavon-editor>
+    <upload-modal ref="modal" />
+  </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Ref } from "vue-property-decorator";
 import groupModule from "@/store/modules/groups";
+import UploadModal from "@/components/utility/UploadModal.vue";
 
-@Component
+@Component({
+  components: {
+    UploadModal,
+  },
+})
 export default class VMarkdownEditor extends Vue {
+  @Ref() readonly modal!: UploadModal;
+  imageTypes = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
   options = {
     bold: true,
     italic: true,
@@ -59,7 +68,7 @@ export default class VMarkdownEditor extends Vue {
     aligncenter: true,
     alignright: true,
     subfield: true,
-    preview: true,
+    preview: false,
   };
 
   mounted(): void {
@@ -68,9 +77,7 @@ export default class VMarkdownEditor extends Vue {
       select.addEventListener("drop", (ev: Event) => {
         // Prevent default behavior (Prevent file from being opened)
         ev.preventDefault();
-
         const e = ev as DragEvent;
-
         const file = e.dataTransfer?.items[0].getAsFile();
 
         if (file) {
@@ -80,28 +87,25 @@ export default class VMarkdownEditor extends Vue {
   }
 
   async handleFile(file: File): Promise<void> {
-    console.log(file);
     const $vm: unknown = this.$refs.mavon;
     const filelink = await groupModule.uploadFile(file);
-    console.log(filelink);
+    let insert = `[${file.name}](${filelink})`;
+    insert = this.imageTypes.includes(file.type) ? "!" + insert : insert;
     /* eslint-disable */
     /* @ts-ignore */
     $vm.insertText($vm.getTextareaDom(), {
-      prefix: `${filelink}`,
+      prefix: insert,
       subfix: "",
       str: "",
     });
   }
 
-  uploadFile(): void {
-    const $vm: unknown = this.$refs.mavon;
-    console.log($vm);
-    /*$vm.insertText($vm.getTextareaDom(), {
-      prefix: "![mon test])",
-      subfix: "",
-      str: "",
-    });
-    */
+  async openDialog(): Promise<void> {
+    const file = await this.modal.open();
+
+    if (file) {
+      this.handleFile(file);
+    }
   }
 }
 </script>

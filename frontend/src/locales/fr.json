@@ -17,6 +17,7 @@
     "reset": "Réinitialiser",
     "save": "Sauvegarder",
     "confirm": "Confirmer",
+    "insert": "Insérer",
     "open": "Ouvrir",
     "author": "Auteur",
     "success": "Action effectuée avec succès !",
@@ -33,6 +34,10 @@
       "confirm": {
         "title": "Confirmer la suppression",
         "message": "Voulez vous vraiment supprimer cet élément ?"
+      },
+      "upload": {
+        "title": "Insérer un fichier ou une image",
+        "label": "Fichier ou image"
       }
     }
   },
