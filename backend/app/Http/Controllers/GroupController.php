@@ -116,7 +116,7 @@ class GroupController extends Controller
         if ($data['user_id'] == $group->user_id)
             return response()->json(['message' => __('api.groups.resource_restricted')], 403);
 
-        $group->users()->detach($data['user_id']);
+        $group->users()->updateExistingPivot($data['user_id'], array('isApprouved' => GROUP::LEFT), true);
 
         return response()->json(['message' => __('api.groups.member_updated')]);
     }
