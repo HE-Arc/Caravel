@@ -39,7 +39,7 @@ class UserModule extends VuexModule {
   _fcm_token = "";
 
   get isLoggedIn(): boolean {
-    return !!this._user;
+    return !!this._token;
   }
 
   get isTeacher(): boolean {
