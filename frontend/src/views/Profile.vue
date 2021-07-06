@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-8">
+  <v-container class="mt-8" v-if="!!authUser">
     <v-row>
       <v-col cols="12" md="4">
         <v-card dark class="text-center">

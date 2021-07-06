@@ -49,7 +49,6 @@ import GroupItem from "@/components/GroupItem.vue";
 })
 export default class Home extends Vue {
   get groups(): Group[] {
-    //if (!userModule.user) return [];
     return groupModule.groups;
   }
 

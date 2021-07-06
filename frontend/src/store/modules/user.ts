@@ -121,15 +121,17 @@ class UserModule extends VuexModule {
 
   @Action
   async removeFcmToken() {
-    try {
-      await axios({
-        url: process.env.VUE_APP_API_BASE_URL + "profile/fcmToken",
-        data: { fcm: this._fcm_token },
-        method: "DELETE",
-      });
-      this.UPDATE_FCM("");
-    } catch (err) {
-      console.log(err);
+    if (this._fcm_token) {
+      try {
+        await axios({
+          url: process.env.VUE_APP_API_BASE_URL + "profile/fcmToken",
+          data: { fcm: this._fcm_token },
+          method: "DELETE",
+        });
+        this.UPDATE_FCM("");
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 
@@ -161,8 +163,8 @@ class UserModule extends VuexModule {
   }
 
   @Action
-  logout(): void {
-    this.removeFcmToken();
+  async logout(): Promise<void> {
+    await this.removeFcmToken();
     this.DISCONNECT();
     localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
     delete axios.defaults.headers.common["Authorization"];
