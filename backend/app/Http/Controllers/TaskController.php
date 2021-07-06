@@ -26,7 +26,6 @@ class TaskController extends Controller
     public function index(Request $request, Group $group)
     {
         $filters = $request->all();
-        //$filters['base'] = $group->id;
 
         $query = SearchEngine::applyFilters($group->tasks()->getQuery(), $filters, "Task");
 
@@ -99,22 +98,6 @@ class TaskController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Group $group, Task $task)
-    {
-        return response()->json([
-            'group' => $group,
-            'types' => TaskType::TYPES_KEY,
-            'subjects' => $group->subjects,
-            'task' => $task
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param Request $request
@@ -124,6 +107,7 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, Group $group, Task $task)
     {
+        unset($request['isPrivate']); //this property cannot be updated
         $updatedInstance = $this->persistData($request, $group, $task);
         return response()->json($updatedInstance);
     }

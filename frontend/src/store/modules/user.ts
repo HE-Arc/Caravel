@@ -39,7 +39,7 @@ class UserModule extends VuexModule {
   _fcm_token = "";
 
   get isLoggedIn(): boolean {
-    return !!this._token;
+    return !!this._user;
   }
 
   get isTeacher(): boolean {
@@ -137,8 +137,14 @@ class UserModule extends VuexModule {
 
   //ACTIONS
   @Action
-  login({ mail, password }: Credentials): Promise<AxiosResponse> {
+  async login({ mail, password }: Credentials): Promise<AxiosResponse> {
     this.REQUEST();
+
+    const data = await axios.get(
+      process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie"
+    );
+    const token = data.config.headers["X-XSRF-TOKEN"];
+
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + "login",
@@ -146,12 +152,9 @@ class UserModule extends VuexModule {
         method: "POST",
       })
         .then((resp) => {
-          const token = resp.data.token;
           const user: User = resp.data.user;
           this.SUCCESS({ token, user });
-          axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
           groupModule.loadGroups();
-
           resolve(resp);
         })
         .catch((err) => {
@@ -167,13 +170,6 @@ class UserModule extends VuexModule {
     await this.removeFcmToken();
     this.DISCONNECT();
     localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
-    delete axios.defaults.headers.common["Authorization"];
-  }
-
-  @Action
-  init(): void {
-    if (this.token)
-      axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
   }
 
   @Action
@@ -207,7 +203,5 @@ class UserModule extends VuexModule {
 }
 
 const instance = getModule(UserModule);
-
-instance.init();
 
 export default instance;

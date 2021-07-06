@@ -67,13 +67,12 @@ class GroupController extends Controller
         $file = $data['file'];
 
         $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file, -1, false);
-        //$explodedPath = explode("/", $filepath);
-        //route('groups.files', ['group' => $group, 'file' => $filename])
-
-        //$filename = end($explodedPath);
+        $explodedPath = explode("/", $filepath);
+        $filename = end($explodedPath);
+        $fullpath = route('groups.files', ['group' => $group, 'file' => $filename]);
 
         return response()->json(
-            URL::to('/') . '/uploads' . $filepath
+            $fullpath
         );
     }
 
@@ -116,7 +115,7 @@ class GroupController extends Controller
         if ($data['user_id'] == $group->user_id)
             return response()->json(['message' => __('api.groups.resource_restricted')], 403);
 
-        $group->users()->detach($data['user_id']);
+        $group->users()->updateExistingPivot($data['user_id'], array('isApprouved' => GROUP::LEFT), true);
 
         return response()->json(['message' => __('api.groups.member_updated')]);
     }
@@ -185,7 +184,6 @@ class GroupController extends Controller
         $userId = $this->user->id;
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        //$groups = (!empty($filters)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(GroupController::PAGINATION_LIMIT) : [];
         $query = SearchEngine::applyFilters(Group::getQueryForUser($userId), $filters, "Group");
 
         $groups = $query->paginate(GroupController::PAGINATION_LIMIT);
@@ -204,5 +202,16 @@ class GroupController extends Controller
         $group->load('members', 'tasks', 'subjects');
 
         return response()->json($group);
+    }
+
+    /**
+     * Retrieve uploaded file
+     *
+     * @param int $group 
+     * @return \Illuminate\Http\Response
+     */
+    public function getFile(Group $group, $file)
+    {
+        return response()->file(Storage::path($group->getStorageFolder() . "/" . $file));
     }
 }

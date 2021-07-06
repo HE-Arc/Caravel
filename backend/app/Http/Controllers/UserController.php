@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RemoveGroupRequest;
+use App\Models\Group;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        $this->user->groups()->detach($data['group_id']);
+        $this->user->groups()->updateExistingPivot($data['group_id'], ["isApprouved" => Group::LEFT], true);
 
         return response()->json(['message' => __('api.users.remove_group')]);
     }

@@ -23,7 +23,8 @@ class Group extends Model
     public const PENDING = 0;
     public const REFUSED = 1;
     public const ACCEPTED = 2;
-    public const REQUESTSTATUS = array(Group::PENDING, Group::ACCEPTED, Group::REFUSED);
+    public const LEFT = 3;
+    public const REQUESTSTATUS = array(Group::PENDING, Group::ACCEPTED, Group::REFUSED, GROUP::LEFT);
 
     protected $fillable = [
         'name',

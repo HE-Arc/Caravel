@@ -31,10 +31,7 @@ class AuthAPIController extends BaseController
 
             $user->load('groupsAvailable');
 
-            $token = $user->createToken("token");
-
             return [
-                'token' => $token->plainTextToken,
                 'user' => $user
             ];
         } else {

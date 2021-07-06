@@ -7,13 +7,14 @@
       trigger="#pick-avatar"
       upload-form-name="picture"
       :upload-headers="{
-        Authorization: `Bearer ${authToken}`,
         Accept: 'application/json',
+        'X-XSRF-TOKEN': xsrfToken,
       }"
       :upload-url="uploadUrl"
       :upload-form-data="{
         _method: 'PATCH',
       }"
+      :withCredentials="true"
     />
     <button id="pick-avatar">
       <v-avatar color="primary" class="profile" :size="size">
@@ -28,7 +29,7 @@
 import { Prop, Component, Vue, Emit } from "vue-property-decorator";
 import AvatarCropper from "vue-avatar-cropper";
 import { Dictionary } from "@/types/helpers";
-import auth from "@/store/modules/user";
+import userModule from "@/store/modules/user";
 
 @Component({
   components: {
@@ -50,8 +51,8 @@ export default class AvatarUpload extends Vue {
     };
   }
 
-  get authToken(): string {
-    return this.token ?? auth.token;
+  get xsrfToken(): string {
+    return userModule.token;
   }
 
   handleUploaded(data: string): void {
