@@ -18,7 +18,7 @@ class UploadFileService
      * @param bool $sqaureIt true to square image 
      * 
      */
-    public function uploadFileToFolder(string $folder, File $file, $size = 250, $squareIt = true, $imagedisk = 'public_uploads'): string
+    public function uploadFileToFolder(string $folder, File $file, $size = 250, $squareIt = true, $disk = 'public_uploads'): string
     {
         $name = $file->hashName();
 
@@ -38,10 +38,10 @@ class UploadFileService
                 }
                 $file = (string) $im->encode();
                 $folder .= $name;
-                return Storage::disk($imagedisk)->put($folder, $file) ? $folder : null;
+                return Storage::disk($disk)->put($folder, $file) ? $folder : null;
             }
         }
 
-        return Storage::put($folder, $file) ? $folder . $name : null;
+        return Storage::disk($disk)->put($folder, $file) ? $folder . $name : null;
     }
 }

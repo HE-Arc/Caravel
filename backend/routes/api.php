@@ -23,10 +23,12 @@ use App\Http\Controllers\CommentController;
 
 Route::post('login', [AuthAPIController::class, 'login'])->name('login');
 
+//Route::get('groups/{group}/files/{file}', [GroupController::class, 'getFile'])->name('groups.files');
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('logout', [AuthAPIController::class, 'logout'])->name('logout');
     Route::post('groups/{group}/files', [GroupController::class, 'upload'])->name('groups.upload');
-    Route::get('groups/{group}/files/{file}', [GroupController::class, 'getFile'])->name('groups.files');
+
     Route::post('groups/{group}/members', [GroupController::class, 'join']);
 
     Route::apiResources([
