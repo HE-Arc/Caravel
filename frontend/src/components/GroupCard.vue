@@ -13,7 +13,7 @@
           <v-btn
             text
             color="primary"
-            :to="{ name: 'Group', params: { group_id: group.id } }"
+            :to="{ name: 'tasks', params: { group_id: group.id } }"
             >OPEN</v-btn
           >
         </v-card-actions>
