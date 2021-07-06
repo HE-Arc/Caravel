@@ -3,6 +3,7 @@
     <v-card>
       <v-card-text>
         <v-text-field
+          class="mb-5"
           :label="$t('questions.form.title')"
           v-model="questionForm.title"
           :error-messages="errors.title"
