@@ -40,7 +40,7 @@ export default class UploadModal extends Vue {
   resolve: ((value: File | PromiseLike<File>) => void) | undefined;
   reject: ((value: File | PromiseLike<File>) => void) | undefined;
   title = "";
-  file!: File | null;
+  file: File | null = null;
   options = {
     color: "",
     width: 400,
