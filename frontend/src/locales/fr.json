@@ -167,7 +167,8 @@
       "subject_id": "@.lower:task.form.subject.label",
       "due_at": "@.lower:task.form.due.label",
       "tasktype_id": "@.lower:task.form.type.label",
-      "start_at": "@.lower:task.form.startAt.label"
+      "start_at": "@.lower:task.form.startAt.label",
+      "isPrivate": "@.lower:task.form.private.label"
     },
     "icon": "mdi-format-list-checks",
     "states": {
