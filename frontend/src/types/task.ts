@@ -1,5 +1,6 @@
 import { Data } from "./data";
 import History from "./History";
+import Question from "./Question";
 import Reaction from "./Reaction";
 
 export interface Task extends Data {
@@ -15,5 +16,6 @@ export interface Task extends Data {
   created_at: Date | undefined;
   reactions_list: Reaction[];
   has_finished: boolean;
+  questions: Question[];
   histories_list: History[];
 }

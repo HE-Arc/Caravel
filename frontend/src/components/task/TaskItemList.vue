@@ -34,11 +34,11 @@
         </v-avatar>
         {{ author.firstname }}
         <timeago :datetime="task.created_at"></timeago>
-        <span class="ml-2" v-if="task.questions.length > 0"
+        <span class="ml-2" v-if="hasQuestions"
           ><v-icon small>mdi-message-question-outline</v-icon>
           {{ task.questions.length }}</span
         >
-        <span class="ml-2" v-if="task.reactions_list.length > 0"
+        <span class="ml-2" v-if="hasReactions"
           ><v-icon small>mdi-drama-masks</v-icon> {{ countReactions }}</span
         >
       </v-list-item-subtitle>
@@ -106,6 +106,14 @@ export default class TaskItemList extends Vue {
 
   get countReactions(): number {
     return this.task.reactions_list.reduce((a, b) => a + b.count, 0);
+  }
+
+  get hasQuestions(): boolean {
+    return this.task.questions && this.task.questions.length > 0;
+  }
+
+  get hasReactions(): boolean {
+    return this.task.reactions_list && this.task.reactions_list.length > 0;
   }
 
   finished(): void {
