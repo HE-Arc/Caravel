@@ -2,7 +2,7 @@
   <v-card
     elevation="2"
     :to="
-      isMember ? { name: 'Group', params: { group_id: group.id } } : undefined
+      isMember ? { name: 'tasks', params: { group_id: group.id } } : undefined
     "
   >
     <div class="d-flex">
