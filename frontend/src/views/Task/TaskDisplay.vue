@@ -182,15 +182,19 @@ export default class TaskDisplay extends Vue {
     }
   }
 
-  finished(): void {
+  async finished(): Promise<void> {
     if (!this.task) return;
 
     const data = {
       task_id: this.task.id,
       hasFinished: this.task.has_finished,
     };
-
-    taskModule.setFinish(data);
+    try {
+      await taskModule.setFinish(data);
+      this.$toast.success(this.$t("global.success").toString());
+    } catch (err) {
+      this.$toast.error(this.$t("global.errors.unknown").toString());
+    }
   }
 }
 </script>

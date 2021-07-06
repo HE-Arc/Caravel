@@ -165,13 +165,14 @@ class GroupController extends Controller
     {
         $userId = $this->user->id;
         //verification of non existence (a refused/accepter/pending user can not ask again to join a group)
+        $stateApproval = ($this->user->isTeacher && !$group->isPrivate) ? Group::ACCEPTED : Group::PENDING;
         if ($group->users()->find($userId) == null) {
-            $stateApproval = ($this->user->isTeacher && !$group->isPrivate) ? Group::ACCEPTED : Group::PENDING;
-            $group->users()->attach($userId, ['isApprouved' => $stateApproval]);
-            return response()->json(["message" => TRUE]);
+            $group->users()->attach($userId, ['isApprouved' => $stateApproval], true);
+        } else {
+            $group->users()->updateExistingPivot($userId, ['isApprouved' => $stateApproval], true);
         }
 
-        return response()->json(['message' => __('api.global.operation_failed')], 400);
+        return response()->json(['message' => true]);
     }
 
     /**
