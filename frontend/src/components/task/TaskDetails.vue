@@ -152,11 +152,11 @@ export default class TaskDetails extends Vue {
   async save(): Promise<void> {
     this.isLoading = true;
     try {
-      const task: Task = JSON.parse(JSON.stringify(this.task));
-      await taskModule.save(task);
+      const taskForm: Task = JSON.parse(JSON.stringify(this.task));
+      const task = await taskModule.save(taskForm);
       this.$toast.success(this.$t("global.success").toString());
       this.errors = {};
-      this.$router.push({ name: "tasks" });
+      this.$router.push({ name: "taskDisplay", params: { task_id: task.id } });
     } catch (err) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error_form").toString());
