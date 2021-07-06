@@ -66,7 +66,8 @@
 
                 <v-markdown-editor
                   v-model="task.description"
-                  :error-messages="errors.description"
+                  :errors="errors.description"
+                  @input="errors.description = []"
                 />
                 <v-switch
                   v-if="isNewTask"

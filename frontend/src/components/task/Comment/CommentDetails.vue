@@ -15,7 +15,7 @@
       v-model="commentForm.description"
       :value="description"
       @input="updateDescription"
-      :error-messages="errors.description"
+      :errors="errors.description"
     ></v-markdown-editor>
     <v-btn color="success" class="float-right mt-3" @click="save">
       {{ commentId ? $t("global.save") : $t("global.add") }}
@@ -74,6 +74,7 @@ export default class CommentDetails extends Vue {
   }
 
   updateDescription(value: string): void {
+    this.errors["description"] = [];
     this.commentForm.description = value;
   }
 }
