@@ -107,7 +107,7 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, Group $group, Task $task)
     {
-        unset($request['isPrivate']); //this property cannot be updated
+        $request->unset("isPrivate");
         $updatedInstance = $this->persistData($request, $group, $task);
         return response()->json($updatedInstance);
     }
