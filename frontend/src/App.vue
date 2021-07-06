@@ -98,8 +98,8 @@ export default class App extends Vue {
           console.log(err);
         });
       await groupModule.loadGroups();
-      this.loaded = true;
     }
+    this.loaded = true;
   }
 
   @Watch("isLoggedIn")
