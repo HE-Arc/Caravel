@@ -185,7 +185,6 @@ class GroupController extends Controller
         $userId = $this->user->id;
 
         //get all groups corresponding to the requested string (regex) excluding the one already containing the user
-        //$groups = (!empty($filters)) ? Group::getFilteredGroupsForUser($userId, $str)->paginate(GroupController::PAGINATION_LIMIT) : [];
         $query = SearchEngine::applyFilters(Group::getQueryForUser($userId), $filters, "Group");
 
         $groups = $query->paginate(GroupController::PAGINATION_LIMIT);

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Group;
-use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Tasktype;
 use Illuminate\Validation\Rule;
