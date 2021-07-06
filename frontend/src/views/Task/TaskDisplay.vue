@@ -171,9 +171,15 @@ export default class TaskDisplay extends Vue {
     this.loadTask();
   }
 
-  private loadTask(): void {
-    const taskId = this.$route.params.task_id;
-    taskModule.selectTask(taskId);
+  async loadTask(): Promise<void> {
+    try {
+      const taskId = this.$route.params.task_id;
+      await taskModule.selectTask(taskId);
+    } catch (err) {
+      if (err.response.status == 404) {
+        this.$router.push({ name: "NotFound" });
+      }
+    }
   }
 
   finished(): void {

@@ -199,9 +199,10 @@ class GroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(String $group)
+    public function show(Group $group)
     {
-        $group =  Group::with('members')->with('tasks')->with('subjects')->find($group);
+        $group->load('members', 'tasks', 'subjects');
+
         return response()->json($group);
     }
 }

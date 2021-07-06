@@ -134,12 +134,8 @@ class GroupModule extends VuexModule {
 
   @Action
   async selectGroup(groupId: string): Promise<void> {
-    try {
-      this.SET_GROUP(groupId);
-      await this.loadGroup(groupId);
-    } catch {
-      this.ERROR();
-    }
+    this.SET_GROUP(groupId);
+    await this.loadGroup(groupId);
   }
 
   @Action

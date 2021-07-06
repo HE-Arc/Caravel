@@ -110,6 +110,11 @@ const routes: Array<RouteConfig> = [
     name: "Profile",
     component: () => import("../views/Profile.vue"),
   },
+  {
+    path: "*",
+    name: "NotFound",
+    component: () => import("../views/PageNotFound.vue"),
+  },
 ];
 
 const router = new VueRouter({

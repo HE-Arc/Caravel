@@ -96,7 +96,11 @@ export default class GroupContainer extends Vue {
     try {
       await groupModule.selectGroup(this.groupId);
     } catch (err) {
-      this.$toast.error(err.response.data.message);
+      if (err.response.status == 404) {
+        this.$router.push({ name: "NotFound" });
+      } else {
+        this.$toast.error(err.response.data.message);
+      }
     }
   }
 }

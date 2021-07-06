@@ -240,12 +240,8 @@ class TasksModule extends VuexModule {
   }
 
   @Action
-  async selectTask(taskId: string) {
-    try {
-      await this.loadTask(taskId);
-    } catch {
-      this.ERROR();
-    }
+  async selectTask(taskId: string): Promise<AxiosResponse> {
+    return await this.loadTask(taskId);
   }
 }
 
