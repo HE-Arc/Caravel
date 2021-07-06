@@ -16,6 +16,8 @@ import messaging from "../firebase";
 import NProgress from "vue-nprogress";
 import { NavigationGuardNext, Route } from "vue-router";
 
+Axios.defaults.withCredentials = true;
+
 Vue.prototype.$http = Axios;
 
 Vue.config.productionTip = false;
