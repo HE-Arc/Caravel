@@ -13,7 +13,10 @@
             v-bind:class="{ 'first-tab': index == 0 }"
           >
             <v-icon class="mr-2">{{ item.icon }}</v-icon>
-            {{ $t("group.tabs." + key) }}
+            <span class="hidden-sm-and-down">
+              {{ $t("group.tabs." + key) }}
+            </span>
+
             <v-chip
               class="ml-1"
               small
