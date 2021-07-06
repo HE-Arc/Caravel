@@ -27,7 +27,7 @@
       <v-menu offset-y :close-on-content-click="false">
         <template v-slot:activator="{ on, attrs }">
           <v-chip outlined v-bind="attrs" v-on="on">
-            <v-icon size="28">mdi-dots-horizontal</v-icon>
+            <v-icon size="20" color="grey">mdi-tag-faces</v-icon>
           </v-chip>
         </template>
         <v-card elevation="16" class="mx-auto">

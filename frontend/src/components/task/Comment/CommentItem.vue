@@ -117,12 +117,13 @@
         class="ml-5"
       ></comment-item>
     </div>
+    <confirm-modal ref="confirm" />
   </div>
 </template>
 
 <script lang="ts">
 import Comment from "@/types/Comment";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Ref } from "vue-property-decorator";
 import memberModule from "@/store/modules/members";
 import userModule from "@/store/modules/user";
 import { Member } from "@/types/member";
@@ -131,18 +132,22 @@ import Question from "@/types/Question";
 import CommentForm from "@/components/task/Comment/CommentDetails.vue";
 import questionModule from "@/store/modules/questions";
 import QuestionForm from "@/types/QuestionForm";
+import ConfirmModal from "@/components/utility/ConfirmModal.vue";
 
 @Component({
   name: "CommentItem",
   components: {
     MarkdownItVue,
     CommentForm,
+    ConfirmModal,
   },
 })
 export default class CommentItem extends Vue {
   @Prop() comment!: Comment;
   @Prop() question!: Question;
   @Prop({ default: false }) selected!: boolean;
+  @Ref() readonly confirm!: ConfirmModal;
+
   showFormReply = false;
   showFormEdit = false;
 
@@ -182,10 +187,13 @@ export default class CommentItem extends Vue {
   }
 
   async remove(): Promise<void> {
-    try {
-      await questionModule.deleteComment(this.comment);
-    } catch (err) {
-      console.log(err);
+    const reply = await this.confirm.open();
+    if (reply) {
+      try {
+        await questionModule.deleteComment(this.comment);
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 

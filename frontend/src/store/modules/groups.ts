@@ -218,6 +218,26 @@ class GroupModule extends VuexModule {
         });
     });
   }
+
+  @Action
+  async uploadFile(file: File): Promise<string> {
+    const form = new FormData();
+    form.append("file", file);
+    try {
+      const file = await axios.post(
+        process.env.VUE_APP_API_BASE_URL + `groups/${this.selectedId}/files`,
+        form,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return file.data;
+    } catch (err) {
+      return "";
+    }
+  }
 }
 
 const instance = getModule(GroupModule);

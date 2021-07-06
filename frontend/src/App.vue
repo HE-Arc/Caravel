@@ -28,7 +28,16 @@
     </v-app-bar>
 
     <v-main>
-      <router-view />
+      <router-view v-show="loaded" />
+      <div class="text-center" v-show="!loaded">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+          class="mt-5"
+        ></v-progress-circular>
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -75,10 +84,8 @@ export default class App extends Vue {
     }
   }
 
-  init(): void {
+  async init(): Promise<void> {
     if (this.isLoggedIn && !this.loaded) {
-      this.loaded = true;
-      groupModule.loadGroups();
       firebase
         .messaging()
         .getToken({
@@ -90,6 +97,8 @@ export default class App extends Vue {
         .catch((err) => {
           console.log(err);
         });
+      await groupModule.loadGroups();
+      this.loaded = true;
     }
   }
 

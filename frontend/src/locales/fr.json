@@ -17,6 +17,7 @@
     "reset": "Réinitialiser",
     "save": "Sauvegarder",
     "confirm": "Confirmer",
+    "insert": "Insérer",
     "open": "Ouvrir",
     "author": "Auteur",
     "success": "Action effectuée avec succès !",
@@ -33,6 +34,10 @@
       "confirm": {
         "title": "Confirmer la suppression",
         "message": "Voulez vous vraiment supprimer cet élément ?"
+      },
+      "upload": {
+        "title": "Insérer un fichier ou une image",
+        "label": "Fichier ou image"
       }
     }
   },
@@ -159,7 +164,9 @@
       "title": "@.lower:task.form.title.label",
       "description": "description",
       "subject_id": "@.lower:task.form.subject.label",
-      "due_at": "@.lower:task.form.due.label"
+      "due_at": "@.lower:task.form.due.label",
+      "tasktype_id": "@.lower:task.form.type.label",
+      "start_at": "@.lower:task.form.startAt.label"
     },
     "icon": "mdi-format-list-checks",
     "states": {
@@ -333,12 +340,19 @@
   },
   "history": {
     "label": "Historique",
-    "change": "Changement ",
+    "change": "Changement de ",
     "states": {
       "1": "Création",
       "2": "Mise à jour",
       "3": "Suppression",
       "4": "Restauration"
+    }
+  },
+  "markdown": {
+    "toolbar": {
+      "uploadfile": {
+        "label": "Charger un fichier"
+      }
     }
   }
 }

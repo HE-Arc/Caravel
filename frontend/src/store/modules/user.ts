@@ -12,6 +12,7 @@ import {
 import store from "@/store";
 import Notification from "@/types/notification";
 import groupModule from "@/store/modules/groups";
+import Vue from "vue";
 
 interface BagSuccess {
   token: string;
@@ -94,7 +95,7 @@ class UserModule extends VuexModule {
   @Mutation
   private UPDATE_NOTIFS(notifs: Notification[]) {
     if (!this._user) return;
-    this._user.notifications = notifs;
+    Vue.set(this._user, "notifications", notifs);
   }
 
   @MutationAction({ mutate: ["_user"] })

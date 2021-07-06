@@ -13,6 +13,7 @@ use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class GroupController extends Controller
 {
@@ -65,13 +66,14 @@ class GroupController extends Controller
 
         $file = $data['file'];
 
-        $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file);
+        $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file, -1, false);
+        //$explodedPath = explode("/", $filepath);
+        //route('groups.files', ['group' => $group, 'file' => $filename])
+
+        //$filename = end($explodedPath);
 
         return response()->json(
-            [
-                'path' => route('groups.files', ['group' => $group, 'file' => $filepath]),
-                'message' => 'File uploaded'
-            ]
+            URL::to('/') . '/uploads' . $filepath
         );
     }
 
@@ -189,17 +191,6 @@ class GroupController extends Controller
         $groups = $query->paginate(GroupController::PAGINATION_LIMIT);
 
         return $groups;
-    }
-
-    /**
-     * Retrieve uploaded file
-     *
-     * @param int $group 
-     * @return \Illuminate\Http\Response
-     */
-    public function getFile(Group $group, $file)
-    {
-        return response()->file(Storage::path($group->getStorageFolder() . "/" . $file));
     }
 
     /**
