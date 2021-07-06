@@ -39,7 +39,7 @@ class UserModule extends VuexModule {
   _fcm_token = "";
 
   get isLoggedIn(): boolean {
-    return !!this._token;
+    return !!this._user;
   }
 
   get isTeacher(): boolean {
@@ -140,7 +140,10 @@ class UserModule extends VuexModule {
   async login({ mail, password }: Credentials): Promise<AxiosResponse> {
     this.REQUEST();
 
-    await axios.get(process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie");
+    const data = await axios.get(
+      process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie"
+    );
+    const token = data.config.headers["X-XSRF-TOKEN"];
 
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
@@ -149,7 +152,6 @@ class UserModule extends VuexModule {
         method: "POST",
       })
         .then((resp) => {
-          const token = resp.data.token;
           const user: User = resp.data.user;
           this.SUCCESS({ token, user });
           groupModule.loadGroups();
@@ -168,7 +170,6 @@ class UserModule extends VuexModule {
     await this.removeFcmToken();
     this.DISCONNECT();
     localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
-    delete axios.defaults.headers.common["Authorization"];
   }
 
   @Action

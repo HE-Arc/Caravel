@@ -42,6 +42,6 @@ class UploadFileService
             }
         }
 
-        return Storage::disk($disk)->put($folder, $file) ? $folder . $name : null;
+        return Storage::put($folder, $file) ? $folder . $name : null;
     }
 }

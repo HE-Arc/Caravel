@@ -67,13 +67,12 @@ class GroupController extends Controller
         $file = $data['file'];
 
         $filepath = $fileService->uploadFileToFolder($group->getStorageFolder(), $file, -1, false);
-        //$explodedPath = explode("/", $filepath);
-        //route('groups.files', ['group' => $group, 'file' => $filename])
-
-        //$filename = end($explodedPath);
+        $explodedPath = explode("/", $filepath);
+        $filename = end($explodedPath);
+        $fullpath = route('groups.files', ['group' => $group, 'file' => $filename]);
 
         return response()->json(
-            URL::to('/') . '/uploads' . $filepath
+            $fullpath
         );
     }
 
@@ -203,5 +202,16 @@ class GroupController extends Controller
         $group->load('members', 'tasks', 'subjects');
 
         return response()->json($group);
+    }
+
+    /**
+     * Retrieve uploaded file
+     *
+     * @param int $group 
+     * @return \Illuminate\Http\Response
+     */
+    public function getFile(Group $group, $file)
+    {
+        return response()->file(Storage::path($group->getStorageFolder() . "/" . $file));
     }
 }

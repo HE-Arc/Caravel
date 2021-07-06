@@ -8,7 +8,6 @@
               <v-col cols="12" class="align-center">
                 <avatar-upload
                   @handleResponse="handleUpload"
-                  :token="authToken"
                   :upload-url="uploadURL"
                   :picture="authUser.picture"
                   :name="authUser.name"
@@ -73,10 +72,6 @@ import AvatarUpload from "@/components/AvatarUpload.vue";
 })
 export default class Profile extends Vue {
   showCrop = false;
-
-  get authToken(): string {
-    return auth.token;
-  }
 
   get authUser(): User | undefined {
     return auth.user;
