@@ -87,6 +87,17 @@ export default class VMarkdownEditor extends Vue {
   }
 
   async handleFile(file: File): Promise<void> {
+    const max: number =
+      parseInt(process.env.VUE_APP_MARKDOWN_FILE_MAX_SIZE) ?? 4194304;
+
+    const sizeMb = max / (1024 * 1024);
+    if (file.size > max) {
+      this.$toast.error(
+        this.$t("global.errors.toobig", [sizeMb.toString()]).toString()
+      );
+      return;
+    }
+
     const $vm: unknown = this.$refs.mavon;
     const filelink = await groupModule.uploadFile(file);
     let insert = `[${file.name}](${filelink})`;
