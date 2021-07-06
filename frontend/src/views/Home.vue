@@ -1,6 +1,6 @@
 <template>
   <v-container class="mt-4">
-    <v-row v-if="hasGroups">
+    <v-row v-show="hasGroups">
       <v-col cols="12">
         <div class="text-h4 font-weight-light">{{ $t("groups.mygroups") }}</div>
       </v-col>
@@ -8,7 +8,7 @@
         <group-item :group="group" :hasJoin="false" />
       </v-col>
     </v-row>
-    <v-row v-else>
+    <v-row v-show="!hasGroups">
       <v-col cols="12" class="text-center" offset-md="3" md="6">
         <v-card flat>
           <v-card-title class="justify-center text-h3 font-weight-thin my-6">
@@ -36,7 +36,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import userModule from "@/store/modules/user";
 import groupModule from "@/store/modules/groups";
 import { Group } from "@/types/group";
 import GroupCard from "@/components/GroupCard.vue";
@@ -49,10 +48,8 @@ import GroupItem from "@/components/GroupItem.vue";
   },
 })
 export default class Home extends Vue {
-  e1 = 1;
-
   get groups(): Group[] {
-    if (!userModule.user) return [];
+    //if (!userModule.user) return [];
     return groupModule.groups;
   }
 
