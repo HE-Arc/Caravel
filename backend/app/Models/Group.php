@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Panoscape\History\HasHistories;
 
 class Group extends Model
@@ -35,6 +36,7 @@ class Group extends Model
 
     protected $hidden = [
         'subscription',
+        'stats'
     ];
 
     protected $appends = [
@@ -202,10 +204,11 @@ class Group extends Model
             "members" =>  $this->members->count(),
             "subjects" => $this->subjects->count(),
             "tasks" => $this->tasksFuture()->count(),
-            "stat" => [
+            "wes" => [
                 "min" => $this->stats->min('wes'),
                 "max" => $this->stats->max('wes'),
                 "median" => $this->stats->median('wes'),
+                "current" => $this->getCurrentWeekScore(),
             ]
         ];
     }
@@ -213,5 +216,42 @@ class Group extends Model
     public function getModelLabel()
     {
         return $this->name;
+    }
+
+    public function getCurrentWeekScore()
+    {
+        $now = CarbonImmutable::now();
+        $start = $now->startOfWeek()->format("Y-m-d");
+        $end = $now->endOfWeek()->format("Y-m-d");
+
+        $sum = 0;
+        $tasks = $this->tasks()->whereBetween("due_at", [$start, $end])->get();
+        $projects = $this->tasks()->where("tasktype_id", Tasktype::PROJECT)->whereDate("start_at", "<", $start)->whereDate("due_at", ">", $end)->get();
+        $subjects = [];
+        $div = 0;
+
+        foreach ($tasks as $task) {
+            $coef = $task->tasktype_id == Tasktype::PROJECT ? 1.5 : 1;
+            $sum += $task->subject->ects * $coef;
+            array_push($subjects, $task->subject);
+        }
+
+        foreach ($projects as $project) {
+            $sum += $project->subject->ects;
+            array_push($subjects, $project->subject);
+        }
+
+        $subjects = array_unique($subjects);
+
+        $div = array_reduce($subjects, function ($carry, $subject) {
+            $carry += $subject->ects;
+            return $carry;
+        }, 0);
+
+        if ($sum > 0) {
+            return intval(($sum * 10) / $div);
+        } else {
+            return 0;
+        }
     }
 }

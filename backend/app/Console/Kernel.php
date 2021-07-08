@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(new CalculateWorkLoad)->weeklyOn(1, '03:00');
+        $schedule->call(new CalculateWorkLoad)->weeklyOn(0, "03:00");
     }
 
     /**
