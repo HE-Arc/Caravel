@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container fluid v-show="!isLoading">
+    <v-container fluid v-if="isLoaded">
       <v-row>
         <v-col class="mb-5" cols="12">
           <group-selector />
@@ -35,7 +35,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <div class="text-center" v-show="isLoading">
+    <div class="text-center" v-else>
       <v-progress-circular
         :size="70"
         :width="7"
@@ -78,8 +78,8 @@ export default class GroupContainer extends Vue {
     return taskModule.tasksFuture.length ?? 0;
   }
 
-  get isLoading(): boolean {
-    return groupModule.status == "loading" || taskModule.status == "loading";
+  get isLoaded(): boolean {
+    return groupModule.status == "loaded" && taskModule.status == "loaded";
   }
 
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router

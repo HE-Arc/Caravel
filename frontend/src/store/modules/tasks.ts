@@ -82,10 +82,8 @@ class TasksModule extends VuexModule {
     const index = this._tasks.findIndex((item) => item.id == task.id);
     if (index === -1) {
       this._tasks.push(task);
-      this._status = "added";
     } else {
       Vue.set(this._tasks, index, task);
-      this._status = "modified";
     }
   }
 
@@ -100,14 +98,12 @@ class TasksModule extends VuexModule {
 
   @Mutation
   private SET_TASK(task: TaskExtended) {
-    this._status = "selected";
     this._taskId = task.id;
   }
 
   @Action
   add(task: Task): Promise<Task> {
     const groupId = groupModule.selectedId;
-    this.REQUEST();
     return new Promise<Task>((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks`,
@@ -162,7 +158,6 @@ class TasksModule extends VuexModule {
   @Action
   delete(task: Task): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
-    this.REQUEST();
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
         url:
@@ -221,7 +216,6 @@ class TasksModule extends VuexModule {
   loadTask(id: string): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
     return new Promise((resolve, reject) => {
-      this.REQUEST();
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${id}`,
         method: "GET",

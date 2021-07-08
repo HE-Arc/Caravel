@@ -26,6 +26,8 @@ class AuthAPIController extends BaseController
         ];
 
         if (Auth::attempt($credentials) || Auth::attempt($credentials2)) {
+            $request->session()->regenerate();
+
             /** @var User $user */
             $user = Auth::user();
 

@@ -11,7 +11,6 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store";
 import Notification from "@/types/notification";
-import groupModule from "@/store/modules/groups";
 import Vue from "vue";
 
 interface BagSuccess {
@@ -154,7 +153,6 @@ class UserModule extends VuexModule {
         .then((resp) => {
           const user: User = resp.data.user;
           this.SUCCESS({ token, user });
-          groupModule.loadGroups();
           resolve(resp);
         })
         .catch((err) => {

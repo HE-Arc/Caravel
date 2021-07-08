@@ -16,6 +16,7 @@
     "babel-plugin-require-context-hook": "^1.0.0",
     "core-js": "^3.6.5",
     "firebase": "^8.6.8",
+    "gantt-schedule-timeline-calendar": "^3.7.1",
     "markdown-it-vue": "^1.1.6",
     "mavon-editor": "^2.9.1",
     "moment": "^2.29.1",
