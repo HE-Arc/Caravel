@@ -84,11 +84,11 @@ export default class GroupCalendar extends Vue {
     taskModule.tasks.forEach((item) =>
       events.push({
         name: item.title,
-        start: moment(item.start_at).toDate(),
-        end:
+        start:
           item.tasktype_id == TaskType.PROJECT.toString()
-            ? moment(item.due_at).toDate()
-            : undefined,
+            ? moment(item.start_at).toDate()
+            : moment(item.due_at).toDate(),
+        end: moment(item.due_at).toDate(),
         color: subjectModule.getSubject(item.subject_id)?.color,
         timed: false,
         id: item.id,
