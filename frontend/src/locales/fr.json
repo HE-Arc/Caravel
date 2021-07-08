@@ -361,5 +361,8 @@
     "title": "La page n'a pas été trouvée.",
     "subtitle-1": "Le page que vous essayez d'atteindre n'existe pas ou peut-être fait-elle partie d'un univers parallèle.",
     "subtitle-2": "Essayez de revenir sur la page d'accueil ou tentez de contacter votre administrateur si le problème persiste."
+  },
+  "timeline": {
+    "zoom": "Niveau de détails"
   }
 }

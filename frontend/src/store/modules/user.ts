@@ -154,7 +154,6 @@ class UserModule extends VuexModule {
         .then((resp) => {
           const user: User = resp.data.user;
           this.SUCCESS({ token, user });
-          groupModule.loadGroups();
           resolve(resp);
         })
         .catch((err) => {
