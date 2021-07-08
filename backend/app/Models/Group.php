@@ -41,6 +41,10 @@ class Group extends Model
         'metadata',
     ];
 
+    protected $with = [
+        'stats',
+    ];
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\User')->withTimestamps();
@@ -78,6 +82,11 @@ class Group extends Model
         return $this->hasMany('App\Models\Subject');
     }
 
+    public function stats()
+    {
+        return $this->hasMany('App\Models\GroupStat');
+    }
+
     /**
      * Get all of the GroupStat for the Group
      *
@@ -95,14 +104,14 @@ class Group extends Model
      */
     public function tasks(): HasManyThrough
     {
-        $userid =  auth()->user()->id;
+        $userid = (auth()->user()) ? auth()->user()->id : -1;
         return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject')
             ->select(['tasks.*'])
             ->orderBy('due_at', 'asc')
             ->where(function ($query) use ($userid) {
                 $query->where('isPrivate', '=', 0)
                     ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-            })->with('questions.comments');
+            });
     }
 
     /**
@@ -190,9 +199,14 @@ class Group extends Model
     public function getMetadataAttribute()
     {
         return [
-            "members" =>  $this->members()->count(),
-            "subjects" => $this->subjects()->count(),
+            "members" =>  $this->members->count(),
+            "subjects" => $this->subjects->count(),
             "tasks" => $this->tasksFuture()->count(),
+            "stat" => [
+                "min" => $this->stats->min('wes'),
+                "max" => $this->stats->max('wes'),
+                "median" => $this->stats->median('wes'),
+            ]
         ];
     }
 
