@@ -150,17 +150,18 @@ export default class Gantt extends Vue {
           content: [
             (vido, props) => {
               const { onChange, html } = vido;
-              let letter = props.item.label.charAt(0).toUpperCase();
+              let icon = this.$t(
+                `task.types.${props.item.type}.icon`
+              ).toString();
               onChange((newProps) => {
                 if (newProps.item) {
                   props = newProps;
-                  letter = props.item.label.charAt(0).toUpperCase();
+                  icon = this.$t(
+                    `task.types.${props.item.type}.icon`
+                  ).toString();
                 }
               });
 
-              const icon = this.$t(
-                `task.types.${props.item.type}.icon`
-              ).toString();
               return (content) =>
                 html`<div
                     class="item-clickable"
@@ -177,7 +178,7 @@ export default class Gantt extends Vue {
       actions: {
         "chart-timeline-items-row-item": [
           (element, data) => {
-            element.addEventListener("click", (event) => {
+            element.addEventListener("click", () => {
               this.$router.push({
                 name: "taskDisplay",
                 params: { task_id: data.item.task_id },
@@ -197,7 +198,7 @@ export default class Gantt extends Vue {
     });
   }
 
-  updateZoom() {
+  updateZoom(): void {
     this.state.update("config.chart.time.zoom", this.zoom);
   }
 

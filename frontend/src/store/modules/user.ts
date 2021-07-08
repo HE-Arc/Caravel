@@ -11,7 +11,6 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store";
 import Notification from "@/types/notification";
-import groupModule from "@/store/modules/groups";
 import Vue from "vue";
 
 interface BagSuccess {
