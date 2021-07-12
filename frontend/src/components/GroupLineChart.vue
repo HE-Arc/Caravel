@@ -39,7 +39,10 @@ export default class GroupLineChart extends Mixins(mixins.reactiveProp, Line) {
   }
 
   get labels(): string[] {
-    return this.stats.map((item) => moment(item.create_at).format("D MMM YY"));
+    return this.stats.map((item) => {
+      const date = moment(item.create_at);
+      return this.$t("stats.week-of") + date.format("D MMM YY");
+    });
   }
 
   get hasValues(): boolean {
