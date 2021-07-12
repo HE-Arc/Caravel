@@ -1,10 +1,16 @@
 <template>
   <v-card flat :width="width" v-if="hasValues">
     <v-sheet class="text-center px-5">
-      <span class="text-h5 font-weight-black">
-        {{ currentValue }}
-        <strong class="text-caption font-weight-thin">WES</strong>
-      </span>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <span class="text-h5 font-weight-black" v-bind="attrs" v-on="on">
+            {{ currentValue }}
+            <strong class="text-caption font-weight-thin">WES</strong>
+          </span>
+        </template>
+        <span>{{ $t("stats.wes") }}</span>
+      </v-tooltip>
+
       <v-sparkline
         :key="String(avg)"
         :smooth="16"

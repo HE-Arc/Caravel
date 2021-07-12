@@ -367,8 +367,9 @@
   },
   "stats": {
     "trend-next": "Tendance des prochaines semaines",
-    "wes": "Score de charge par semaine",
+    "wes": "Score de charge (Week Score)",
     "trend-all": "Toutes les données",
+    "calendar-wes": "Score de la semaine : {0}",
     "score": {
       "median": "Score médian",
       "max": "Score maximum",

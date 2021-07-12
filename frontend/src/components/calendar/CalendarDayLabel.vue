@@ -1,16 +1,33 @@
 <template>
   <div>
-    <span :class="`indicator pattern-${category}`" :style="color"></span>
-    <v-btn
-      elevation="0"
-      :color="isSelected ? 'primary' : 'transparent'"
-      fab
-      rounded
-      small
-      :to="{ name: 'newTask', query: { start_at: props.date } }"
-    >
-      {{ dayLabel }}
-    </v-btn>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <span
+          :class="`indicator pattern-${category}`"
+          :style="color"
+          v-bind="attrs"
+          v-on="on"
+        ></span>
+      </template>
+      <span>{{ $t("stats.calendar-wes", [weekScore]) }}</span>
+    </v-tooltip>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          elevation="0"
+          :color="isSelected ? 'primary' : 'transparent'"
+          fab
+          rounded
+          small
+          :to="{ name: 'newTask', query: { start_at: props.date } }"
+          v-bind="attrs"
+          v-on="on"
+        >
+          {{ dayLabel }}
+        </v-btn>
+      </template>
+      <span>{{ $t("task.create") }}</span>
+    </v-tooltip>
   </div>
 </template>
 
@@ -24,7 +41,7 @@ import interpolate from "color-interpolate";
 @Component
 export default class CalendarDayLabel extends Vue {
   @Prop() props!: Dictionary<string | number | boolean>;
-  gradients = ["#f72047", "#ffd200", "#60f720"];
+  gradients = ["#60f720", "#ffd200", "#f72047"];
 
   get weekScore(): number {
     const start = moment(this.props.date.toString()).startOf("isoWeek");
