@@ -371,8 +371,10 @@
     "trend-all": "Toutes les données",
     "score": {
       "median": "Score médian",
-      "max": "Score Maximum",
-      "min": "Score minimum"
-    }
+      "max": "Score maximum",
+      "min": "Score minimum",
+      "current": "Score actuel"
+    },
+    "week-of": "Semaine du "
   }
 }
