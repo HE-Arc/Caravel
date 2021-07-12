@@ -3,7 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-import Axios from "axios";
+import Axios, { AxiosError } from "axios";
 import vuetify from "./plugins/vuetify";
 import i18n from "./i18n";
 import VueToast from "vue-toast-notification";
@@ -15,6 +15,7 @@ import "@/filters";
 import messaging from "../firebase";
 import NProgress from "vue-nprogress";
 import { NavigationGuardNext, Route } from "vue-router";
+import userModule from "@/store/modules/user";
 
 Axios.defaults.withCredentials = true;
 
@@ -61,6 +62,24 @@ router.beforeEach((to: Route, from: Route, next: NavigationGuardNext) => {
 router.afterEach(() => {
   nprogress.done();
 });
+
+Axios.interceptors.response.use(
+  (reponse) => reponse,
+  (error: AxiosError) => {
+    switch (error.response?.status) {
+      case 401:
+        userModule.logout();
+        router.push({
+          name: "Login",
+          query: { redirect: router.currentRoute.fullPath },
+        });
+        break;
+      case 403:
+        router.replace({ name: "Forbidden" });
+        break;
+    }
+  }
+);
 
 new Vue({
   router,

@@ -79,6 +79,7 @@ export default class Login extends Vue {
         this.$router.push(this.$route.query.redirect.toString());
       else this.$router.push({ name: "Home" });
     } catch {
+      auth.logout();
       this.$toast.error(this.$t("login.failed").toString());
     }
   }

@@ -15,7 +15,6 @@ import { Dictionary, TaskType } from "@/types/helpers";
 import moment from "moment";
 import TaskExtended from "@/types/TaskExtended";
 import GroupStat from "@/types/GroupStat";
-import { Subject } from "@/types/subject";
 import subjectModule from "@/store/modules/subjects";
 
 @Module({
@@ -66,7 +65,6 @@ class TasksModule extends VuexModule {
 
     while (start.isBefore(finishLine)) {
       const end = moment(start).endOf("isoWeek");
-      const subjects = new Set<Subject>();
       let sum = 0;
 
       const tasks = this._tasks.filter((task) =>
@@ -85,7 +83,6 @@ class TasksModule extends VuexModule {
         const coef = task.tasktype_id == TaskType.PROJECT.toString() ? 1.5 : 1;
         if (sub) {
           sum += sub.ects * coef;
-          subjects.add(sub);
         }
       });
 
@@ -93,13 +90,12 @@ class TasksModule extends VuexModule {
         const sub = subjectModule.getSubject(task.subject_id);
         if (sub) {
           sum += sub.ects;
-          subjects.add(sub);
         }
       });
 
-      const div = Array.from(subjects).reduce((a, b) => a + b.ects, 0);
+      //const div = Array.from(subjects).reduce((a, b) => a + b.ects, 0);
 
-      const wes = sum > 0 ? ((sum * 10) / div) | 0 : 0;
+      const wes = sum > 0 ? (sum / 10) | 0 : 0;
 
       stats.push({
         id: (id++).toString(),

@@ -21,12 +21,15 @@ class CommentController extends Controller
 
     public function update(CommentRequest $request, Group $group, Comment $comment)
     {
-        return $this->persistData($request, $group, $comment);
+        if ($this->user->id == $comment->user->id) {
+            return $this->persistData($request, $group, $comment);
+        }
+        return response()->json(__('api.global.access_denied'), 403);
     }
 
     protected function persistData(CommentRequest $request, Group $group, Comment $comment)
     {
-        if ($comment->remove) return response(
+        if ($comment->removed) return response(
             "update not possible on this data",
             403
         ); // if attempt has been made to put data on a removed data, it may be an attack
@@ -46,7 +49,7 @@ class CommentController extends Controller
     {
         if ($this->user->id == $comment->user_id) {
             $questionId = $comment->question_id;
-            //var_dump($comment->replyTo()->count());
+
             if ($comment->replyTo()->count() > 0) {
                 $comment->removed = true;
                 $comment->save();

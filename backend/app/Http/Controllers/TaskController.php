@@ -7,7 +7,6 @@ use App\Http\Requests\ReactionRequest;
 use App\Http\Requests\TaskFinishRequest;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Http\Request;
-use App\Models\Tasktype;
 use App\Models\Task;
 use App\Models\Reaction;
 use App\Models\Group;
@@ -51,10 +50,8 @@ class TaskController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Create a comment
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function comment(CommentRequest $request, Group $group, Task $task)
     {

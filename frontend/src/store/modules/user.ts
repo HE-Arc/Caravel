@@ -12,6 +12,7 @@ import {
 import store from "@/store";
 import Notification from "@/types/notification";
 import Vue from "vue";
+import firebase from "firebase";
 
 interface BagSuccess {
   token: string;
@@ -136,31 +137,29 @@ class UserModule extends VuexModule {
 
   //ACTIONS
   @Action
-  async login({ mail, password }: Credentials): Promise<AxiosResponse> {
+  async login({ mail, password }: Credentials): Promise<void> {
     this.REQUEST();
 
     const data = await axios.get(
       process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie"
     );
+
     const token = data.config.headers["X-XSRF-TOKEN"];
 
-    return new Promise<AxiosResponse>((resolve, reject) => {
-      axios({
-        url: process.env.VUE_APP_API_BASE_URL + "login",
-        data: { mail, password },
-        method: "POST",
-      })
-        .then((resp) => {
-          const user: User = resp.data.user;
-          this.SUCCESS({ token, user });
-          resolve(resp);
-        })
-        .catch((err) => {
-          this.ERROR();
-          localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
-          reject(err);
-        });
+    const response: AxiosResponse = await axios({
+      url: process.env.VUE_APP_API_BASE_URL + "login",
+      data: { mail, password },
+      method: "POST",
     });
+
+    const user: User = response.data.user;
+    this.SUCCESS({ token, user });
+
+    const fcmToken = await firebase
+      .messaging()
+      .getToken({ vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY });
+
+    this.addFcmToken(fcmToken);
   }
 
   @Action
