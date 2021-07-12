@@ -1,9 +1,13 @@
 <template>
   <div>
     <v-container fluid v-if="isLoaded">
-      <v-row>
-        <v-col class="mb-5" cols="12">
-          <group-selector />
+      <v-row align="center">
+        <v-col class="mb-5 mt-4" cols="">
+          <v-row align="center">
+            <group-selector class="ml-2" />
+            <v-spacer></v-spacer>
+            <group-indicator class="mr-5 hidden-sm-and-down" :width="150" />
+          </v-row>
         </v-col>
         <v-col class="pa-0" cols="12">
           <v-tabs v-model="activeTab" show-arrows class="main-tab">
@@ -56,10 +60,12 @@ import taskModule from "@/store/modules/tasks";
 import memberModule from "@/store/modules/members";
 import { Group } from "@/types/group";
 import { Dictionary } from "@/types/helpers";
+import GroupIndicator from "@/components/GroupIndicator.vue";
 
 @Component({
   components: {
     GroupSelector,
+    GroupIndicator,
   },
 })
 export default class GroupContainer extends Vue {

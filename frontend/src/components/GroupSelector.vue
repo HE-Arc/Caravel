@@ -1,5 +1,5 @@
 <template>
-  <div v-if="group">
+  <span v-if="group">
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -19,7 +19,7 @@
           </v-avatar>
           <span class="font-weight-bold text-h6 ml-2">
             {{ group.name }}
-            <v-icon v-if="groups.length > 1">mdi-menu-down</v-icon>
+            <v-icon v-if="hasManyGroups">mdi-menu-down</v-icon>
           </span>
         </v-btn>
       </template>
@@ -39,7 +39,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-  </div>
+  </span>
 </template>
 
 <script lang="ts">
@@ -54,9 +54,11 @@ export default class GroupSelector extends Vue {
   }
 
   get groups(): Group[] {
-    let groups = groupModule.groups;
+    return groupModule.groups.filter((group) => group.id != this.group?.id);
+  }
 
-    return groups.filter((group) => group.id != this.group?.id);
+  get hasManyGroups(): boolean {
+    return this.groups.length > 0;
   }
 
   async navTo(groupId: string): Promise<void> {

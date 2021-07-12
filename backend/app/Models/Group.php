@@ -36,7 +36,6 @@ class Group extends Model
 
     protected $hidden = [
         'subscription',
-        'stats'
     ];
 
     protected $appends = [
@@ -204,12 +203,6 @@ class Group extends Model
             "members" =>  $this->members->count(),
             "subjects" => $this->subjects->count(),
             "tasks" => $this->tasksFuture()->count(),
-            "wes" => [
-                "min" => $this->stats->min('wes'),
-                "max" => $this->stats->max('wes'),
-                "median" => $this->stats->median('wes'),
-                "current" => $this->getCurrentWeekScore(),
-            ]
         ];
     }
 
@@ -220,9 +213,14 @@ class Group extends Model
 
     public function getCurrentWeekScore()
     {
-        $now = CarbonImmutable::now();
-        $start = $now->startOfWeek()->format("Y-m-d");
-        $end = $now->endOfWeek()->format("Y-m-d");
+        return $this->getWeekScore(CarbonImmutable::now());
+    }
+
+    public function getWeekScore($date)
+    {
+        $now = $date;
+        $start = $now->startOfWeek(Carbon::MONDAY)->format("Y-m-d");
+        $end = $now->endOfWeek(Carbon::SUNDAY)->format("Y-m-d");
 
         $sum = 0;
         $tasks = $this->tasks()->whereBetween("due_at", [$start, $end])->get();
