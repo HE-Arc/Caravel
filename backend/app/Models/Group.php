@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Panoscape\History\HasHistories;
 
 class Group extends Model
@@ -39,6 +40,10 @@ class Group extends Model
 
     protected $appends = [
         'metadata',
+    ];
+
+    protected $with = [
+        'stats',
     ];
 
     public function users(): BelongsToMany
@@ -78,6 +83,11 @@ class Group extends Model
         return $this->hasMany('App\Models\Subject');
     }
 
+    public function stats()
+    {
+        return $this->hasMany('App\Models\GroupStat');
+    }
+
     /**
      * Get all of the GroupStat for the Group
      *
@@ -95,14 +105,14 @@ class Group extends Model
      */
     public function tasks(): HasManyThrough
     {
-        $userid =  auth()->user()->id;
+        $userid = (auth()->user()) ? auth()->user()->id : -1;
         return $this->hasManyThrough('App\Models\Task', 'App\Models\Subject')
             ->select(['tasks.*'])
             ->orderBy('due_at', 'asc')
             ->where(function ($query) use ($userid) {
                 $query->where('isPrivate', '=', 0)
                     ->orWhere('isPrivate', '=', 1)->where('user_id', '=', $userid);
-            })->with('questions.comments');
+            });
     }
 
     /**
@@ -190,8 +200,8 @@ class Group extends Model
     public function getMetadataAttribute()
     {
         return [
-            "members" =>  $this->members()->count(),
-            "subjects" => $this->subjects()->count(),
+            "members" =>  $this->members->count(),
+            "subjects" => $this->subjects->count(),
             "tasks" => $this->tasksFuture()->count(),
         ];
     }
@@ -199,5 +209,47 @@ class Group extends Model
     public function getModelLabel()
     {
         return $this->name;
+    }
+
+    public function getCurrentWeekScore()
+    {
+        return $this->getWeekScore(CarbonImmutable::now());
+    }
+
+    public function getWeekScore($date)
+    {
+        $now = $date;
+        $start = $now->startOfWeek(Carbon::MONDAY)->format("Y-m-d");
+        $end = $now->endOfWeek(Carbon::SUNDAY)->format("Y-m-d");
+
+        $sum = 0;
+        $tasks = $this->tasks()->whereBetween("due_at", [$start, $end])->get();
+        $projects = $this->tasks()->where("tasktype_id", Tasktype::PROJECT)->whereDate("start_at", "<", $start)->whereDate("due_at", ">", $end)->get();
+        $subjects = [];
+        $div = 0;
+
+        foreach ($tasks as $task) {
+            $coef = $task->tasktype_id == Tasktype::PROJECT ? 1.5 : 1;
+            $sum += $task->subject->ects * $coef;
+            array_push($subjects, $task->subject);
+        }
+
+        foreach ($projects as $project) {
+            $sum += $project->subject->ects;
+            array_push($subjects, $project->subject);
+        }
+
+        $subjects = array_unique($subjects);
+
+        $div = array_reduce($subjects, function ($carry, $subject) {
+            $carry += $subject->ects;
+            return $carry;
+        }, 0);
+
+        if ($sum > 0) {
+            return intval(($sum * 10) / $div);
+        } else {
+            return 0;
+        }
     }
 }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class GroupStat extends Model
 {
     use HasFactory;
+
+    protected $hidden = [
+        'updated_at',
+        'group_id',
+    ];
 }

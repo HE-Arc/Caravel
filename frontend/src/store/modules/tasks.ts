@@ -14,6 +14,9 @@ import {
 import { Dictionary, TaskType } from "@/types/helpers";
 import moment from "moment";
 import TaskExtended from "@/types/TaskExtended";
+import GroupStat from "@/types/GroupStat";
+import { Subject } from "@/types/subject";
+import subjectModule from "@/store/modules/subjects";
 
 @Module({
   namespaced: true,
@@ -46,7 +49,99 @@ class TasksModule extends VuexModule {
     );
   }
 
-  get getTask() {
+  get stats(): GroupStat[] | undefined {
+    if (!this.tasks) return undefined;
+
+    const min = this.tasks.reduce((current, item) =>
+      moment(current.due_at).isBefore(moment(item.due_at)) ? current : item
+    ).due_at;
+    const max = this.tasks.reduce((current, item) =>
+      moment(current.due_at).isAfter(moment(item.due_at)) ? current : item
+    ).due_at;
+
+    const start = moment(min).startOf("isoWeek");
+    const finishLine = moment(max);
+    const stats: GroupStat[] = [];
+    let id = 1;
+
+    while (start.isBefore(finishLine)) {
+      const end = moment(start).endOf("isoWeek");
+      const subjects = new Set<Subject>();
+      let sum = 0;
+
+      const tasks = this._tasks.filter((task) =>
+        moment(task.due_at).isBetween(start, end)
+      );
+
+      const projects = this._tasks.filter(
+        (task) =>
+          task.tasktype_id == TaskType.PROJECT.toString() &&
+          moment(task.start_at).isBefore(start) &&
+          moment(task.due_at).isAfter(end)
+      );
+
+      tasks.forEach((task) => {
+        const sub = subjectModule.getSubject(task.subject_id);
+        const coef = task.tasktype_id == TaskType.PROJECT.toString() ? 1.5 : 1;
+        if (sub) {
+          sum += sub.ects * coef;
+          subjects.add(sub);
+        }
+      });
+
+      projects.forEach((task) => {
+        const sub = subjectModule.getSubject(task.subject_id);
+        if (sub) {
+          sum += sub.ects;
+          subjects.add(sub);
+        }
+      });
+
+      const div = Array.from(subjects).reduce((a, b) => a + b.ects, 0);
+
+      const wes = sum > 0 ? ((sum * 10) / div) | 0 : 0;
+
+      stats.push({
+        id: (id++).toString(),
+        create_at: start.toDate(),
+        wes: wes,
+      });
+
+      start.add(1, "w");
+    }
+
+    return stats;
+  }
+
+  get minMaxWeekScore(): number[] {
+    if (!this.stats) return [0, 0];
+    return this.stats.reduce(
+      (acc, val) => {
+        acc[0] = acc[0] == -1 || val.wes < acc[0] ? val.wes : acc[0];
+        acc[1] = acc[1] == -1 || val.wes > acc[1] ? val.wes : acc[1];
+        return acc;
+      },
+      [-1, -1]
+    );
+  }
+
+  get medianWeekScore(): number {
+    //https://stackoverflow.com/questions/45309447/calculating-median-javascript
+    if (!this.stats) return 0;
+    const values = this.stats.map((item) => item.wes);
+    const v = values.sort((a, b) => a - b);
+    const mid = Math.floor(v.length / 2);
+    const median = v.length % 2 !== 0 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
+    return median;
+  }
+
+  get currentWeekScore(): number | undefined {
+    return this.stats?.find((item) =>
+      moment(item.create_at).isSame(moment(), "isoWeek")
+    )?.wes;
+  }
+
+  get getTask(): (id: string) => Task | undefined {
     return (id: string): Task | undefined =>
       this._tasks.find((item) => item.id == id);
   }

@@ -364,5 +364,15 @@
   },
   "timeline": {
     "zoom": "Niveau de détails"
+  },
+  "stats": {
+    "trend-next": "Tendance des prochaines semaines",
+    "wes": "Score de charge par semaine",
+    "trend-all": "Toutes les données",
+    "score": {
+      "median": "Score médian",
+      "max": "Score Maximum",
+      "min": "Score minimum"
+    }
   }
 }
