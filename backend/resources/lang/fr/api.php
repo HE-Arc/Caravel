@@ -15,6 +15,7 @@ return [
 
     'global' => [
         'operation_failed' => "L'opération a échouée.",
+        'access_denied' => "Vous n'avez pas les droits pour effectuer cette action."
     ],
     'subjects' => [
         'linked' => 'Ce sujet ne peut être supprimé car il y a encore des tâches liées',

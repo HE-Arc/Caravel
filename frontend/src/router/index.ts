@@ -111,6 +111,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Profile.vue"),
   },
   {
+    path: "/403",
+    name: "Forbidden",
+    component: () => import("../views/Forbidden.vue"),
+  },
+  {
     path: "*",
     name: "NotFound",
     component: () => import("../views/PageNotFound.vue"),

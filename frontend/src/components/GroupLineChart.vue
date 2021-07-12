@@ -53,7 +53,7 @@ export default class GroupLineChart extends Mixins(mixins.reactiveProp, Line) {
     return taskModule.medianWeekScore;
   }
 
-  public renderChart!: (chartData: unknown, options: unknown) => void;
+  public renderChart!: (chartData: unknown, options?: unknown) => void;
 
   mounted(): void {
     this.renderChart(
