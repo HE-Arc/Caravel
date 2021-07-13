@@ -78,6 +78,7 @@ Axios.interceptors.response.use(
         router.replace({ name: "Forbidden" });
         break;
     }
+    return Promise.reject(error);
   }
 );
 

@@ -2,13 +2,15 @@
   <v-container class="mt-5">
     <v-row no-gutters>
       <v-col cols="12" md="10" offset-md="1">
-        <h1 class="mb-5">{{ $t("groups.create.title") }}</h1>
+        <div class="text-h4 font-weight-light mb-5">
+          {{ $t("groups.create.title") }}
+        </div>
         <v-stepper v-model="e6" vertical flat>
           <v-stepper-step
             :complete="e6 > 1"
             step="1"
             editable
-            :rules="[() => group.name != undefined, () => group.name != '']"
+            :rules="[() => !errors.name]"
           >
             {{ $t("groups.create.name.name") }}
             <small>{{ $t("groups.create.name.example") }}</small>
@@ -24,20 +26,9 @@
                   :messages="$t('groups.create.name.help')"
                   autocomplete="off"
                   :error-messages="errors.name"
+                  @change="errors.name = undefined"
                 >
                 </v-text-field>
-              </v-card-text>
-              <v-card-text>
-                <v-avatar v-if="group.picture" class="mb-5">
-                  <img :src="imageUrl" :alt="group.name" />
-                </v-avatar>
-                <v-file-input
-                  :label="$t('groups.create.name.image')"
-                  filled
-                  prepend-icon="mdi-camera"
-                  v-model="group.picture"
-                  :error-messages="errors.picture"
-                ></v-file-input>
               </v-card-text>
             </v-card>
             <v-btn
@@ -49,7 +40,12 @@
             </v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 2" step="2" editable>
+          <v-stepper-step
+            :complete="e6 > 2"
+            step="2"
+            editable
+            :rules="[() => !errors.description]"
+          >
             {{ $t("groups.create.description.name") }}
             <small> {{ $t("groups.create.description.example") }} </small>
           </v-stepper-step>
@@ -64,6 +60,7 @@
                   :messages="$t('groups.create.description.help')"
                   autocomplete="off"
                   :error-messages="errors.description"
+                  @change="errors.description = undefined"
                 >
                 </v-textarea>
               </v-card-text>
@@ -88,9 +85,9 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-card
-                    :elevation="group.isPrivate === false ? '8' : '1'"
+                    :elevation="group.isPrivate === 0 ? '8' : '1'"
                     :ripple="true"
-                    @click="group.isPrivate = false"
+                    @click="group.isPrivate = 0"
                     style="margin: auto"
                   >
                     <v-card-text class="text-center pa-10">
@@ -99,7 +96,7 @@
                       }}</v-icon>
                       <h3 class="mb-2">
                         {{ $t("groups.create.type.type2.title") }}
-                        <v-icon v-if="group.isPrivate === false" color="success"
+                        <v-icon v-if="group.isPrivate === 0" color="success"
                           >mdi-check</v-icon
                         >
                       </h3>
@@ -111,9 +108,9 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-card
-                    :elevation="group.isPrivate === true ? '8' : '1'"
+                    :elevation="group.isPrivate === 1 ? '8' : '1'"
                     :ripple="true"
-                    @click="group.isPrivate = true"
+                    @click="group.isPrivate = 1"
                     style="margin: auto"
                   >
                     <v-card-text class="text-center pa-10">
@@ -223,8 +220,9 @@ export default class GroupNew extends Vue {
       });
       this.$toast.success(this.$t("groups.create.success").toString());
     } catch (err) {
+      //console.log("err", err);
       this.errors = err.response.data.errors;
-      this.$toast.error(err.response.data.message);
+      this.$toast.error(this.$t("global.error_form").toString());
     }
   }
 }

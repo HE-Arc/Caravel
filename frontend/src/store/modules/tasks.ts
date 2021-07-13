@@ -205,7 +205,6 @@ class TasksModule extends VuexModule {
           resolve(data);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
         });
     });
@@ -229,7 +228,6 @@ class TasksModule extends VuexModule {
           resolve(data);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
         });
     });
