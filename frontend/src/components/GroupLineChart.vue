@@ -71,6 +71,22 @@ export default class GroupLineChart extends Mixins(mixins.reactiveProp, Line) {
       {
         responsive: true,
         maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              gridLines: {
+                drawOnChartArea: false,
+              },
+            },
+          ],
+          yAxes: [
+            {
+              gridLines: {
+                drawOnChartArea: false,
+              },
+            },
+          ],
+        },
       }
     );
   }
