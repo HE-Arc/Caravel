@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="8">
-        <v-card class="mx-auto text-center" color="green" dark>
+        <v-card class="mx-auto text-center">
           <v-card-title
             class="text-h4 font-weight-thin justify-center"
             color="rgba(0, 0, 0, .12)"
