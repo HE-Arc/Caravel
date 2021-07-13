@@ -13,12 +13,11 @@ use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 
 class GroupController extends Controller
 {
 
-    public const PAGINATION_LIMIT = 15;
+    public const PAGINATION_LIMIT = 10;
 
     /**
      * Display a listing of the resource.
@@ -176,11 +175,16 @@ class GroupController extends Controller
     }
 
     /**
-     * @returns JSON containing groups
+     * Apply filters based on query params and
+     * return a list of groups for the logged user
      */
     public function filtered(Request $request)
     {
         $filters = $request->all();
+
+        $filters = array_filter($filters);
+
+        if (empty($filters)) return ["data" => []];
 
         $userId = $this->user->id;
 

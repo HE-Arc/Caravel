@@ -66,9 +66,9 @@
   },
   "groups": {
     "mygroups": "Mes groupes",
-    "search-title": "Rechercher un groupe",
+    "search-title": "Rechercher ou créer un groupe",
     "search-input": "Nom du groupe",
-    "search-type": "Commencer à taper pour rechercher",
+    "search-type": "Entrez le nom du groupe",
     "join": "Demande d'adhésion",
     "pending": "En attente",
     "refused": "Demande refusée",

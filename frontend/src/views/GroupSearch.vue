@@ -15,7 +15,21 @@
               prepend-icon="mdi-magnify"
               clearable
               autocomplete="off"
-            ></v-text-field>
+            >
+              <template #append-outer>
+                <v-btn
+                  :disabled="!filters.text"
+                  color="success"
+                  small
+                  :to="{
+                    name: 'GroupNew',
+                    query: { text: filters.text },
+                  }"
+                >
+                  {{ $t("global.add") }}</v-btn
+                >
+              </template>
+            </v-text-field>
           </v-card-text>
           <v-divider dark></v-divider>
           <v-expand-transition>
