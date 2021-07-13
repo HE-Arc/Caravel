@@ -80,7 +80,7 @@ class TasksModule extends VuexModule {
 
       tasks.forEach((task) => {
         const sub = subjectModule.getSubject(task.subject_id);
-        const coef = task.tasktype_id == TaskType.PROJECT.toString() ? 1.5 : 1;
+        const coef = task.tasktype_id == TaskType.PROJECT.toString() ? 2 : 1;
         if (sub) {
           sum += sub.ects * coef;
         }
@@ -93,9 +93,7 @@ class TasksModule extends VuexModule {
         }
       });
 
-      //const div = Array.from(subjects).reduce((a, b) => a + b.ects, 0);
-
-      const wes = sum > 0 ? (sum / 10) | 0 : 0;
+      const wes = sum > 0 ? sum | 0 : 0;
 
       stats.push({
         id: (id++).toString(),
@@ -124,7 +122,7 @@ class TasksModule extends VuexModule {
   get medianWeekScore(): number {
     //https://stackoverflow.com/questions/45309447/calculating-median-javascript
     if (!this.stats) return 0;
-    const values = this.stats.map((item) => item.wes);
+    const values = this.stats.map((item) => item.wes).filter((wes) => wes != 0);
     const v = values.sort((a, b) => a - b);
     const mid = Math.floor(v.length / 2);
     const median = v.length % 2 !== 0 ? v[mid] : (v[mid - 1] + v[mid]) / 2;

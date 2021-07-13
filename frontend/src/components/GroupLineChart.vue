@@ -12,8 +12,9 @@ import { Line, mixins } from "vue-chartjs-typescript";
   mixins: [mixins.reactiveProp],
 })
 export default class GroupLineChart extends Mixins(mixins.reactiveProp, Line) {
-  @Prop({ default: 5 }) showNext!: number;
+  @Prop({ default: undefined }) showNext: number | undefined;
   @Prop({ default: true }) fromNow!: boolean;
+  @Prop({ default: undefined }) fontColor!: string;
 
   get group(): Group | undefined {
     return groupModule.group;
@@ -63,12 +64,14 @@ export default class GroupLineChart extends Mixins(mixins.reactiveProp, Line) {
           {
             label: this.$t("stats.wes"),
             backgroundColor: "#9feda3",
-            color: "#fff",
             data: this.values,
           },
         ],
       },
-      { responsive: true, maintainAspectRatio: false }
+      {
+        responsive: true,
+        maintainAspectRatio: false,
+      }
     );
   }
 }
