@@ -75,5 +75,9 @@ return [
                 'message' => "Un commentaire a été ajoutée sur votre question dans le group ':group'"
             ],
         ],
+        'FCM' => [
+            'title' => "Caravel",
+            'message' => ":count nouvelles notifications"
+        ]
     ],
 ];
