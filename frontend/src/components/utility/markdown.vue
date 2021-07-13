@@ -10,6 +10,7 @@
       :subfield="false"
       :scrollStyle="true"
       :imageFilter="() => false"
+      :xssOptions="{}"
     >
       <template v-slot:left-toolbar-after>
         <button
