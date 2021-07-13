@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,7 @@ use Panoscape\History\HasHistories;
 
 class Group extends Model
 {
-    use HasFactory, HasHistories;
+    use HasFactory, HasHistories, SoftDeletes;
 
     //Const status code for the request status linking group and user
     public const PENDING = 0;
