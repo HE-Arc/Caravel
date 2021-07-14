@@ -16,27 +16,31 @@ const firebaseConfig = {
 
 const fire = firebase.initializeApp(firebaseConfig);
 
-fire.messaging().onMessage((payload) => {
-  userModule.loadNotifications();
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: "/android-chrome-144x144.png",
-  };
-
-  if (!("Notification" in window)) {
-    console.log("This browser does not support system notifications");
-  } else if (Notification.permission === "granted") {
-    const notification = new Notification(
-      notificationTitle,
-      notificationOptions
-    );
-    notification.onclick = function (event) {
-      event.preventDefault();
-      window.open(payload.notification.click_action, "_blank");
-      notification.close();
+try {
+  fire.messaging().onMessage((payload) => {
+    userModule.loadNotifications();
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      icon: "/android-chrome-144x144.png",
     };
-  }
-});
+
+    if (!("Notification" in window)) {
+      console.log("This browser does not support system notifications");
+    } else if (Notification.permission === "granted") {
+      const notification = new Notification(
+        notificationTitle,
+        notificationOptions
+      );
+      notification.onclick = function (event) {
+        event.preventDefault();
+        window.open(payload.notification.click_action, "_blank");
+        notification.close();
+      };
+    }
+  });
+} catch {
+  //not supported
+}
 
 export default fire;
