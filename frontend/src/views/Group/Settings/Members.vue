@@ -137,8 +137,8 @@ export default class GroupMembers extends Vue {
       if (!this.group) return;
       const group = this.group;
       try {
-        await groupModule.leave(group);
         this.$router.push({ name: "Home" });
+        await groupModule.leave(group);
       } catch (err) {
         this.$toast.error(err.response.data.message);
       }
