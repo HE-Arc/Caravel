@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
   transpileDependencies: ["vuetify"],
 
@@ -9,4 +11,12 @@ module.exports = {
       enableInSFC: false,
     },
   },
+  configureWebpack: {
+    plugins: [
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/
+      })
+    ]
+  }
 };

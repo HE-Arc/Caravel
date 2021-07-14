@@ -11,6 +11,7 @@ import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import VueTimeago from "vue-timeago";
 import moment from "moment";
+import "moment/locale/fr";
 import "@/filters";
 import messaging from "../firebase";
 import NProgress from "vue-nprogress";
