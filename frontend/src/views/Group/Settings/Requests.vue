@@ -6,27 +6,31 @@
       </v-toolbar-title>
     </v-toolbar>
     <v-card-text v-if="members.length > 0">
-      <v-list rounded>
-        <member-item
-          v-for="member in members"
-          :key="member.id"
-          :member="member"
-        >
-          <v-btn
-            color="success"
-            small
-            class="mx-2"
-            @click="changeStatus(member, status.ACCEPTED)"
-            >{{ $t("global.accept") }}</v-btn
-          >
-          <v-btn
-            color="error"
-            small
-            @click="changeStatus(member, status.REFUSED)"
-            >{{ $t("global.refuse") }}</v-btn
-          >
-        </member-item>
-      </v-list>
+      <paginate :items="members" :perPage="10">
+        <template #default="{ items }">
+          <v-list rounded>
+            <member-item
+              v-for="member in items"
+              :key="member.id"
+              :member="member"
+            >
+              <v-btn
+                color="success"
+                small
+                class="mx-2"
+                @click="changeStatus(member, status.ACCEPTED)"
+                >{{ $t("global.accept") }}</v-btn
+              >
+              <v-btn
+                color="error"
+                small
+                @click="changeStatus(member, status.REFUSED)"
+                >{{ $t("global.refuse") }}</v-btn
+              >
+            </member-item>
+          </v-list>
+        </template>
+      </paginate>
     </v-card-text>
     <v-card-text v-else>
       {{ $t("group.request.empty") }}
@@ -45,10 +49,12 @@ import { Member } from "@/types/member";
 import MemberItem from "@/components/MemberItem.vue";
 import { User } from "@/types/user";
 import { GroupStatus } from "@/types/helpers";
+import Paginate from "@/components/utility/Paginate.vue";
 
 @Component({
   components: {
     MemberItem,
+    Paginate,
   },
 })
 export default class GroupMembers extends Vue {

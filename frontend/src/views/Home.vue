@@ -17,8 +17,18 @@
       <v-col cols="12">
         <div class="text-h4 font-weight-light">{{ $t("groups.mygroups") }}</div>
       </v-col>
-      <v-col v-for="(group, i) in groups" :key="i" cols="12">
-        <group-item :group="group" :hasJoin="false" />
+      <v-col cols="12">
+        <paginate :items="groups" :perPage="5">
+          <template #default="{ items }">
+            <group-item
+              v-for="group in items"
+              :group="group"
+              :key="group.id"
+              :hasJoin="false"
+              class="mt-3"
+            />
+          </template>
+        </paginate>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -47,15 +57,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import groupModule from "@/store/modules/groups";
 import { Group } from "@/types/group";
 import GroupItem from "@/components/GroupItem.vue";
+import Paginate from "@/components/utility/Paginate.vue";
 
 @Component({
   components: {
     GroupItem,
+    Paginate,
   },
 })
 export default class Home extends Vue {

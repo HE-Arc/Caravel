@@ -41,7 +41,7 @@ export default class Gantt extends Vue {
   @Ref("gstc") wrapper!: HTMLElement;
   gstc!: GSTCResult;
   state!: State;
-  zoom = 20;
+  zoom = 23;
 
   get tasks(): Task[] {
     return taskModule.tasksFuture;
@@ -111,9 +111,6 @@ export default class Gantt extends Vue {
   }
 
   mounted(): void {
-    /**
-     * @type { import("gantt-schedule-timeline-calendar").Config }
-     */
     const label = this.$tc("subject.label", this.subjects.size);
     const config = {
       licenseKey:
@@ -190,6 +187,8 @@ export default class Gantt extends Vue {
     };
 
     this.state = GSTC.api.stateFromConfig(config);
+    this.state.update("config.chart.time.zoom", this.zoom);
+
     const state = this.state;
 
     this.gstc = GSTC({
