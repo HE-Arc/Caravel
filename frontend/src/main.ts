@@ -68,14 +68,17 @@ Axios.interceptors.response.use(
   (error: AxiosError) => {
     switch (error.response?.status) {
       case 401:
-        userModule.logout();
-        router.push({
-          name: "Login",
-          query: { redirect: router.currentRoute.fullPath },
-        });
+        if (router.currentRoute.name != "login") {
+          userModule.logout();
+          router.push({
+            name: "Login",
+            query: { redirect: router.currentRoute.fullPath },
+          });
+        }
         break;
       case 403:
-        router.replace({ name: "Forbidden" });
+        if (router.currentRoute.name != "Forbidden")
+          router.replace({ name: "Forbidden" });
         break;
     }
     return Promise.reject(error);
