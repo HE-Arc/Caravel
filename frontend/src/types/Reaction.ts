@@ -1,5 +1,5 @@
 export default interface Reaction {
-    type: number;
-    count: number;
-    hasReact: boolean;
+  type: number;
+  count: number;
+  hasReact: boolean;
 }
