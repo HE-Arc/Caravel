@@ -46,20 +46,32 @@
             </div>
             <task-list-item v-for="task in items" :key="task.id" :task="task" />
           </v-list>
+          <div class="text-center">
+            <v-pagination
+              v-show="pages > 1"
+              v-model="page"
+              :length="pages"
+              circle
+            ></v-pagination>
+          </div>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" v-if="projects.length > 0">
           <div class="text-h5 font-weight-light">
             {{ $tc("task.types.3.label", projects.length) }}
           </div>
-          <v-list flat>
-            <task-list-item
-              v-for="task in projects"
-              :key="task.id"
-              :task="task"
-              :hasDueDate="true"
-            >
-            </task-list-item>
-          </v-list>
+          <paginate :items="projects" :perPage="5">
+            <template #default="{ items }">
+              <v-list flat>
+                <task-list-item
+                  v-for="task in items"
+                  :key="task.id"
+                  :task="task"
+                  :hasDueDate="true"
+                >
+                </task-list-item>
+              </v-list>
+            </template>
+          </paginate>
         </v-col>
       </v-row>
       <v-row v-else>
@@ -79,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue } from "vue-property-decorator";
+import { Component, Ref, Vue, Watch } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import groupModule from "@/store/modules/groups";
 import { Task } from "@/types/task";
@@ -87,20 +99,35 @@ import TaskListItem from "@/components/task/TaskItemList.vue";
 import { Dictionary, TaskType } from "@/types/helpers";
 import moment from "moment";
 import SearchBar from "@/components/SearchBar.vue";
+import Paginate from "@/components/utility/Paginate.vue";
 
 @Component({
   components: {
     TaskListItem,
     SearchBar,
+    Paginate,
   },
 })
 export default class TaskList extends Vue {
   @Ref() readonly search!: SearchBar;
   isFiltered = false;
   filteredTasks: Task[] = [];
+  page = 1;
+  perPage = 10;
 
   get groupId(): string {
     return groupModule.selectedId;
+  }
+
+  get pages(): number {
+    return Math.ceil(this.tasks.length / this.perPage);
+  }
+
+  get visibleTasks(): Task[] {
+    return this.tasks.slice(
+      (this.page - 1) * this.perPage,
+      this.page * this.perPage
+    );
   }
 
   get tasks(): Task[] {
@@ -121,7 +148,7 @@ export default class TaskList extends Vue {
 
   get tasksGrouped(): Dictionary<Task[]> {
     let tasksByDays = {};
-    this.tasks.forEach((task: Task) => {
+    this.visibleTasks.forEach((task: Task) => {
       const due = moment(task.due_at);
       const key = due.endOf("day").fromNow();
       if (tasksByDays[key] == undefined) {
@@ -137,6 +164,11 @@ export default class TaskList extends Vue {
     return this.tasks.filter(
       (item) => item.tasktype_id == TaskType.PROJECT.toString()
     );
+  }
+
+  @Watch("tasks")
+  updatePage(): void {
+    this.page = 1;
   }
 }
 </script>
