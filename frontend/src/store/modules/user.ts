@@ -14,11 +14,6 @@ import Notification from "@/types/notification";
 import Vue from "vue";
 import firebase from "firebase";
 
-interface BagSuccess {
-  token: string;
-  user: User;
-}
-
 interface Credentials {
   mail: string;
   password: string;
@@ -35,11 +30,10 @@ interface Credentials {
 class UserModule extends VuexModule {
   _user: User | undefined = undefined;
   _status = "";
-  _token = "";
   _fcm_token = "";
 
   get isLoggedIn(): boolean {
-    return !!this._token;
+    return this._status == "success";
   }
 
   get isTeacher(): boolean {
@@ -48,10 +42,6 @@ class UserModule extends VuexModule {
 
   get user(): User | undefined {
     return this._user;
-  }
-
-  get token(): string {
-    return this._token;
   }
 
   get status(): string {
@@ -64,36 +54,34 @@ class UserModule extends VuexModule {
 
   // MUTATION
   @Mutation
-  private REQUEST() {
+  REQUEST() {
     this._status = "loading";
   }
 
   @Mutation
-  private SUCCESS({ token, user }: BagSuccess) {
-    this._status = "success";
-    this._token = token;
+  SUCCESS(user: User) {
     this._user = user;
+    this._status = "success";
   }
 
   @Mutation
-  private ERROR() {
+  ERROR() {
     this._status = "error";
   }
 
   @Mutation
-  private DISCONNECT() {
+  DISCONNECT() {
     this._status = "";
     this._user = undefined;
-    this._token = "";
   }
 
   @Mutation
-  private UPDATE_FCM(token: string) {
+  UPDATE_FCM(token: string) {
     this._fcm_token = token;
   }
 
   @Mutation
-  private UPDATE_NOTIFS(notifs: Notification[]) {
+  UPDATE_NOTIFS(notifs: Notification[]) {
     if (!this._user) return;
     Vue.set(this._user, "notifications", notifs);
   }
@@ -140,11 +128,7 @@ class UserModule extends VuexModule {
   async login({ mail, password }: Credentials): Promise<void> {
     this.REQUEST();
 
-    const data = await axios.get(
-      process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie"
-    );
-
-    const token = data.config.headers["X-XSRF-TOKEN"];
+    await axios.get(process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie");
 
     const response: AxiosResponse = await axios({
       url: process.env.VUE_APP_API_BASE_URL + "login",
@@ -153,7 +137,7 @@ class UserModule extends VuexModule {
     });
 
     const user: User = response.data.user;
-    this.SUCCESS({ token, user });
+    this.SUCCESS(user);
 
     const fcmToken = await firebase
       .messaging()
