@@ -13,7 +13,7 @@ import VueTimeago from "vue-timeago";
 import moment from "moment";
 import "moment/locale/fr";
 import "@/filters";
-import messaging from "../firebase";
+import firebase from "@/fcm";
 import NProgress from "vue-nprogress";
 import { NavigationGuardNext, Route } from "vue-router";
 import userModule from "@/store/modules/user";
@@ -36,7 +36,7 @@ Vue.use(mavonEditor, {
 
 Vue.mixin({
   computed: {
-    $messaging: () => messaging.messaging(),
+    $messaging: () => firebase.messaging(),
   },
 });
 

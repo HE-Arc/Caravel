@@ -12,7 +12,7 @@ import {
 import store from "@/store";
 import Notification from "@/types/notification";
 import Vue from "vue";
-import firebase from "firebase";
+import firebase from "@/fcm";
 
 interface Credentials {
   mail: string;
