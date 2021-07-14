@@ -37,7 +37,7 @@ class CheckGroup
         $group->loadMissing('usersAccepted');
 
         if (empty($group) || !$group->usersAccepted->contains($user)) {
-            abort(403, "Access denied");
+            abort(403, __("api.global.403"));
         }
 
         return $next($request);
