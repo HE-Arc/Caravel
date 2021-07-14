@@ -18,6 +18,6 @@ export interface Group extends Data {
       min: number;
       max: number;
       median: number;
-    }
-  }
+    };
+  };
 }
