@@ -111,9 +111,6 @@ export default class Gantt extends Vue {
   }
 
   mounted(): void {
-    /**
-     * @type { import("gantt-schedule-timeline-calendar").Config }
-     */
     const label = this.$tc("subject.label", this.subjects.size);
     const config = {
       licenseKey:
@@ -143,9 +140,6 @@ export default class Gantt extends Vue {
       chart: {
         items: this.generateItems,
         grid: {},
-        time: {
-          zoom: this.zoom,
-        },
       },
       slots: {
         // item content slot that will show circle with letter next to item label
@@ -193,6 +187,8 @@ export default class Gantt extends Vue {
     };
 
     this.state = GSTC.api.stateFromConfig(config);
+    this.state.update("config.chart.time.zoom", this.zoom);
+
     const state = this.state;
 
     this.gstc = GSTC({
