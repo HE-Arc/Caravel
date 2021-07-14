@@ -48,13 +48,17 @@ class TasksModule extends VuexModule {
     );
   }
 
-  get stats(): GroupStat[] | undefined {
-    if (!this.tasks) return undefined;
+  get publicTasks(): Task[] {
+    return this._tasks.filter((item) => !item.isPrivate);
+  }
 
-    const min = this.tasks.reduce((current, item) =>
+  get stats(): GroupStat[] | undefined {
+    if (!this.publicTasks) return undefined;
+
+    const min = this.publicTasks.reduce((current, item) =>
       moment(current.due_at).isBefore(moment(item.due_at)) ? current : item
     ).due_at;
-    const max = this.tasks.reduce((current, item) =>
+    const max = this.publicTasks.reduce((current, item) =>
       moment(current.due_at).isAfter(moment(item.due_at)) ? current : item
     ).due_at;
 
@@ -67,11 +71,11 @@ class TasksModule extends VuexModule {
       const end = moment(start).endOf("isoWeek");
       let sum = 0;
 
-      const tasks = this._tasks.filter((task) =>
+      const tasks = this.publicTasks.filter((task) =>
         moment(task.due_at).isBetween(start, end)
       );
 
-      const projects = this._tasks.filter(
+      const projects = this.publicTasks.filter(
         (task) =>
           task.tasktype_id == TaskType.PROJECT.toString() &&
           moment(task.start_at).isBefore(start) &&
@@ -80,7 +84,7 @@ class TasksModule extends VuexModule {
 
       tasks.forEach((task) => {
         const sub = subjectModule.getSubject(task.subject_id);
-        const coef = task.tasktype_id == TaskType.PROJECT.toString() ? 1.5 : 1;
+        const coef = task.tasktype_id == TaskType.PROJECT.toString() ? 2 : 1;
         if (sub) {
           sum += sub.ects * coef;
         }
@@ -93,9 +97,7 @@ class TasksModule extends VuexModule {
         }
       });
 
-      //const div = Array.from(subjects).reduce((a, b) => a + b.ects, 0);
-
-      const wes = sum > 0 ? (sum / 10) | 0 : 0;
+      const wes = sum > 0 ? sum | 0 : 0;
 
       stats.push({
         id: (id++).toString(),
@@ -124,7 +126,7 @@ class TasksModule extends VuexModule {
   get medianWeekScore(): number {
     //https://stackoverflow.com/questions/45309447/calculating-median-javascript
     if (!this.stats) return 0;
-    const values = this.stats.map((item) => item.wes);
+    const values = this.stats.map((item) => item.wes).filter((wes) => wes != 0);
     const v = values.sort((a, b) => a - b);
     const mid = Math.floor(v.length / 2);
     const median = v.length % 2 !== 0 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
@@ -160,6 +162,11 @@ class TasksModule extends VuexModule {
   @Mutation
   private REQUEST() {
     this._status = "loading";
+  }
+
+  @Mutation
+  private FINISH() {
+    this._status = "loaded";
   }
 
   @Mutation
@@ -207,7 +214,6 @@ class TasksModule extends VuexModule {
           resolve(data);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
         });
     });
@@ -217,7 +223,6 @@ class TasksModule extends VuexModule {
   update(task: Task): Promise<Task> {
     const groupId = groupModule.selectedId;
     return new Promise<Task>((resolve, reject) => {
-      this.REQUEST();
       axios({
         url:
           process.env.VUE_APP_API_BASE_URL +
@@ -231,7 +236,6 @@ class TasksModule extends VuexModule {
           resolve(data);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
         });
     });
@@ -306,6 +310,7 @@ class TasksModule extends VuexModule {
   @Action
   loadTask(id: string): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
+    this.REQUEST();
     return new Promise((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${id}`,
@@ -320,6 +325,9 @@ class TasksModule extends VuexModule {
         .catch((err) => {
           this.ERROR();
           reject(err);
+        })
+        .finally(() => {
+          this.FINISH();
         });
     });
   }

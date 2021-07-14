@@ -66,9 +66,9 @@
   },
   "groups": {
     "mygroups": "Mes groupes",
-    "search-title": "Rechercher un groupe",
+    "search-title": "Rechercher ou créer un groupe",
     "search-input": "Nom du groupe",
-    "search-type": "Commencer à taper pour rechercher",
+    "search-type": "Entrez le nom du groupe",
     "join": "Demande d'adhésion",
     "pending": "En attente",
     "refused": "Demande refusée",
@@ -372,7 +372,9 @@
   },
   "stats": {
     "trend-next": "Tendance des prochaines semaines",
-    "wes": "Score de charge (Week Score)",
+    "unit": "WES",
+    "wes": "Score de charge de travail",
+    "wes-current": "Score de charge de travail de la semaine en cours",
     "trend-all": "Toutes les données",
     "calendar-wes": "Score de la semaine : {0}",
     "score": {

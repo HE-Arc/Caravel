@@ -1,6 +1,6 @@
 <template>
   <div>
-    <gantt />
+    <gantt v-if="isLoaded" />
   </div>
 </template>
 
@@ -8,9 +8,14 @@
 import { Vue } from "vue-property-decorator";
 import Component from "vue-class-component";
 import Gantt from "@/components/Gantt.vue";
+import taskModule from "@/store/modules/tasks";
 
 @Component({
   components: { Gantt },
 })
-export default class Timeline extends Vue {}
+export default class Timeline extends Vue {
+  get isLoaded(): boolean {
+    return taskModule.status == "loaded";
+  }
+}
 </script>

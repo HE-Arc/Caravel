@@ -1,6 +1,19 @@
 <template>
   <v-container class="mt-4">
-    <v-row v-show="hasGroups">
+    <v-row v-if="!isLoaded">
+      <v-col cols="12">
+        <div class="text-center" v-show="!isLoaded">
+          <v-progress-circular
+            :size="70"
+            :width="7"
+            color="primary"
+            indeterminate
+            class="mt-5"
+          ></v-progress-circular>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row v-else-if="hasGroups">
       <v-col cols="12">
         <div class="text-h4 font-weight-light">{{ $t("groups.mygroups") }}</div>
       </v-col>
@@ -8,7 +21,7 @@
         <group-item :group="group" :hasJoin="false" />
       </v-col>
     </v-row>
-    <v-row v-show="!hasGroups">
+    <v-row v-else>
       <v-col cols="12" class="text-center" offset-md="3" md="6">
         <v-card flat>
           <v-card-title class="justify-center text-h3 font-weight-thin my-6">
@@ -52,6 +65,10 @@ export default class Home extends Vue {
 
   get hasGroups(): boolean {
     return this.groups.length > 0;
+  }
+
+  get isLoaded(): boolean {
+    return groupModule.status == "loaded";
   }
 }
 </script>

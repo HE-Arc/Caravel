@@ -5,23 +5,27 @@
         <template v-slot:activator="{ on, attrs }">
           <span class="text-h5 font-weight-black" v-bind="attrs" v-on="on">
             {{ currentValue }}
-            <strong class="text-caption font-weight-thin">WES</strong>
+            <strong class="text-caption font-weight-thin">{{
+              $t("stats.unit")
+            }}</strong>
           </span>
         </template>
-        <span>{{ $t("stats.wes") }}</span>
+        <span>{{ $t("stats.wes-current") }}</span>
       </v-tooltip>
 
-      <v-sparkline
-        :key="String(avg)"
-        :smooth="16"
-        :gradient="['#f72047', '#ffd200', '#1feaea']"
-        :value="values"
-        auto-draw
-        auto-line-width
-        stroke-linecap="round"
-        v-bind="$attrs"
-        v-on="$listeners"
-      ></v-sparkline>
+      <router-link :to="{ name: 'stats' }">
+        <v-sparkline
+          :key="String(avg)"
+          :smooth="16"
+          :gradient="['#f72047', '#ffd200', '#1feaea']"
+          :value="values"
+          auto-draw
+          auto-line-width
+          stroke-linecap="round"
+          v-bind="$attrs"
+          v-on="$listeners"
+        ></v-sparkline>
+      </router-link>
     </v-sheet>
   </v-card>
 </template>
@@ -65,7 +69,7 @@ export default class GroupIndicator extends Vue {
   }
 
   get hasValues(): boolean {
-    return this.values.length > 1;
+    return this.values.length > 0;
   }
 
   get avg(): number {

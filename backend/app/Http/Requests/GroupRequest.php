@@ -17,7 +17,7 @@ class GroupRequest extends FormRequest
     {
         return [
             'name' => "required|unique:groups,name,{$group->id}|min:5|max:45",
-            'description' => 'max:500',
+            'description' => 'required|max:500',
             'isPrivate' => 'boolean',
             'picture' => 'image|max:4096',
             'user_id' => Rule::exists('group_user', 'user_id')->where(function ($query) use ($group) {

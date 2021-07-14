@@ -110,6 +110,10 @@ export default class SearchBar extends Vue {
     }
   }
 
+  public get isLoaded(): boolean {
+    return !this.isLoading;
+  }
+
   filters: Dictionary<string> = {
     isOpen: "1",
   };

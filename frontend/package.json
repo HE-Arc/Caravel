@@ -10,7 +10,6 @@
     "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
   "dependencies": {
-    "@fortawesome/vue-fontawesome": "^2.0.2",
     "@types/nprogress": "^0.2.0",
     "@types/tinycolor2": "^1.4.3",
     "axios": "^0.21.1",

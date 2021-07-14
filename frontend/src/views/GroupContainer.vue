@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-container fluid v-if="isLoaded">
-      <v-row align="center">
+    <v-container fluid v-show="isLoaded">
+      <v-row align="center" v-if="isLoaded">
         <v-col class="mb-5 mt-4" cols="">
           <v-row align="center">
             <group-selector class="ml-2" />
@@ -34,12 +34,23 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" v-show="isLoaded">
           <router-view />
+        </v-col>
+        <v-col cols="12">
+          <div class="text-center" v-show="!isLoaded">
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              color="primary"
+              indeterminate
+              class="mt-5"
+            ></v-progress-circular>
+          </div>
         </v-col>
       </v-row>
     </v-container>
-    <div class="text-center" v-else>
+    <div class="text-center" v-show="!isLoaded">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -84,8 +95,16 @@ export default class GroupContainer extends Vue {
     return taskModule.tasksFuture.length ?? 0;
   }
 
+  get isGroupLoaded(): boolean {
+    return groupModule.status == "loaded";
+  }
+
+  get isTasksLoaded(): boolean {
+    return taskModule.status == "loaded";
+  }
+
   get isLoaded(): boolean {
-    return groupModule.status == "loaded" && taskModule.status == "loaded";
+    return this.isGroupLoaded && this.isTasksLoaded;
   }
 
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router
@@ -118,7 +137,7 @@ export default class GroupContainer extends Vue {
       await groupModule.selectGroup(this.groupId);
     } catch (err) {
       if (err.response.status == 404) {
-        this.$router.push({ name: "NotFound" });
+        this.$router.replace({ name: "NotFound" });
       } else {
         this.$toast.error(err.response.data.message);
       }

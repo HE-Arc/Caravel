@@ -29,7 +29,6 @@
 import { Prop, Component, Vue, Emit } from "vue-property-decorator";
 import AvatarCropper from "vue-avatar-cropper";
 import { Dictionary } from "@/types/helpers";
-import userModule from "@/store/modules/user";
 
 @Component({
   components: {
@@ -52,7 +51,12 @@ export default class AvatarUpload extends Vue {
   }
 
   get xsrfToken(): string {
-    return userModule.token;
+    const tokenName = "XSRF-TOKEN=";
+    const val = document.cookie
+      .split(";")
+      .filter((item) => item.trim().startsWith(tokenName))
+      .map((item) => decodeURIComponent(item.replace(tokenName, "")));
+    return val[0] ?? "";
   }
 
   handleUploaded(data: string): void {

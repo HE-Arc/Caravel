@@ -177,7 +177,7 @@ export default class TaskDisplay extends Vue {
       await taskModule.selectTask(taskId);
     } catch (err) {
       if (err.response.status == 404) {
-        this.$router.push({ name: "NotFound" });
+        this.$router.replace({ name: "NotFound" });
       }
     }
   }
