@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="isTasksLoaded">
     <v-row>
       <v-col cols="12">
         <v-sheet tile height="54" class="d-flex">
@@ -93,6 +93,10 @@ export default class GroupCalendar extends Vue {
 
   get stats(): GroupStat[] | undefined {
     return taskModule.stats;
+  }
+
+  get isTasksLoaded(): boolean {
+    return taskModule.status == "loaded";
   }
 
   get events(): EventTask[] {

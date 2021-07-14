@@ -63,17 +63,22 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import auth from "@/store/modules/user";
+import groupModule from "@/store/modules/groups";
 
 @Component
 export default class Login extends Vue {
   username = "";
   password = "";
+  isLoading = false;
 
   async login(): Promise<void> {
     let mail = this.username;
     let password = this.password;
+    this.isLoading = true;
+
     try {
       await auth.login({ mail, password });
+      await groupModule.loadGroups();
       this.$toast.success(this.$t("login.logged_in").toString());
       if (this.$route.query.redirect)
         this.$router.push(this.$route.query.redirect.toString());
@@ -81,11 +86,13 @@ export default class Login extends Vue {
     } catch {
       auth.logout();
       this.$toast.error(this.$t("login.failed").toString());
+    } finally {
+      this.isLoading = false;
     }
   }
 
   get loading(): boolean {
-    return auth.status == "loading";
+    return this.isLoading;
   }
 }
 </script>

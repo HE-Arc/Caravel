@@ -48,13 +48,17 @@ class TasksModule extends VuexModule {
     );
   }
 
-  get stats(): GroupStat[] | undefined {
-    if (!this.tasks) return undefined;
+  get publicTasks(): Task[] {
+    return this._tasks.filter((item) => !item.isPrivate);
+  }
 
-    const min = this.tasks.reduce((current, item) =>
+  get stats(): GroupStat[] | undefined {
+    if (!this.publicTasks) return undefined;
+
+    const min = this.publicTasks.reduce((current, item) =>
       moment(current.due_at).isBefore(moment(item.due_at)) ? current : item
     ).due_at;
-    const max = this.tasks.reduce((current, item) =>
+    const max = this.publicTasks.reduce((current, item) =>
       moment(current.due_at).isAfter(moment(item.due_at)) ? current : item
     ).due_at;
 
@@ -67,11 +71,11 @@ class TasksModule extends VuexModule {
       const end = moment(start).endOf("isoWeek");
       let sum = 0;
 
-      const tasks = this._tasks.filter((task) =>
+      const tasks = this.publicTasks.filter((task) =>
         moment(task.due_at).isBetween(start, end)
       );
 
-      const projects = this._tasks.filter(
+      const projects = this.publicTasks.filter(
         (task) =>
           task.tasktype_id == TaskType.PROJECT.toString() &&
           moment(task.start_at).isBefore(start) &&
@@ -161,6 +165,11 @@ class TasksModule extends VuexModule {
   }
 
   @Mutation
+  private FINISH() {
+    this._status = "loaded";
+  }
+
+  @Mutation
   private LOAD_TASKS(tasks: Task[]) {
     this._tasks = tasks;
     this._status = "loaded";
@@ -214,7 +223,6 @@ class TasksModule extends VuexModule {
   update(task: Task): Promise<Task> {
     const groupId = groupModule.selectedId;
     return new Promise<Task>((resolve, reject) => {
-      this.REQUEST();
       axios({
         url:
           process.env.VUE_APP_API_BASE_URL +
@@ -302,6 +310,7 @@ class TasksModule extends VuexModule {
   @Action
   loadTask(id: string): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
+    this.REQUEST();
     return new Promise((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks/${id}`,
@@ -316,6 +325,9 @@ class TasksModule extends VuexModule {
         .catch((err) => {
           this.ERROR();
           reject(err);
+        })
+        .finally(() => {
+          this.FINISH();
         });
     });
   }

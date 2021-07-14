@@ -372,7 +372,9 @@
   },
   "stats": {
     "trend-next": "Tendance des prochaines semaines",
-    "wes": "Score de charge (Week Score)",
+    "unit": "WES",
+    "wes": "Score de charge de travail",
+    "wes-current": "Score de charge de travail de la semaine en cours",
     "trend-all": "Toutes les données",
     "calendar-wes": "Score de la semaine : {0}",
     "score": {

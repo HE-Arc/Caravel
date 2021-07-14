@@ -77,7 +77,6 @@ class GroupModule extends VuexModule {
   @Mutation
   protected REMOVE_GROUP(groupId: string): void {
     const index = this._groups.findIndex((item) => item.id == groupId);
-    console.log(index);
     if (index !== -1) {
       Vue.delete(this._groups, index);
       this._status = "delete";
@@ -172,6 +171,7 @@ class GroupModule extends VuexModule {
 
   @Action
   leave(group: Group): Promise<AxiosResponse> {
+    this.REQUEST();
     return new Promise((resolve, reject) => {
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `profile`,
@@ -186,6 +186,9 @@ class GroupModule extends VuexModule {
         })
         .catch((err) => {
           reject(err);
+        })
+        .finally(() => {
+          this.LOADED();
         });
     });
   }

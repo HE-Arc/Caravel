@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="isLoaded">
     <v-row>
       <v-col cols="12" md="8">
         <v-card class="mx-auto text-center">
@@ -77,6 +77,10 @@ import taskModule from "@/store/modules/tasks";
   },
 })
 export default class GroupStats extends Vue {
+  get isLoaded(): boolean {
+    return taskModule.status == "loaded";
+  }
+
   get medianScore(): number {
     return taskModule.medianWeekScore;
   }
