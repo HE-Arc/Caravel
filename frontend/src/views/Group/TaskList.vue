@@ -8,7 +8,7 @@
       <v-row>
         <v-col cols="12" md="9">
           <search-bar
-            ref="searchBar"
+            ref="search"
             class="mb-4"
             :hasFilter="true"
             @handle-tasks="loadTasks"
@@ -24,7 +24,20 @@
           </search-bar>
         </v-col>
       </v-row>
-      <v-row v-if="tasks.length > 0">
+      <v-row v-if="!isLoaded()">
+        <v-col cols="12">
+          <div class="text-center">
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              color="primary"
+              indeterminate
+              class="mt-5"
+            ></v-progress-circular>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-else-if="tasks.length > 0">
         <v-col cols="12" md="8">
           <div class="text-h5 transition-swing"></div>
           <v-list flat v-for="(items, key) in tasksGrouped" :key="key">
@@ -66,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Ref, Vue } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import groupModule from "@/store/modules/groups";
 import { Task } from "@/types/task";
@@ -82,6 +95,7 @@ import SearchBar from "@/components/SearchBar.vue";
   },
 })
 export default class TaskList extends Vue {
+  @Ref() readonly search!: SearchBar;
   isFiltered = false;
   filteredTasks: Task[] = [];
 
@@ -99,6 +113,10 @@ export default class TaskList extends Vue {
 
   loadTasks(tasks: Task[]): void {
     this.filteredTasks = tasks;
+  }
+
+  isLoaded(): boolean {
+    return this.search ? this.search.isLoaded || !this.isFiltered : true;
   }
 
   get tasksGrouped(): Dictionary<Task[]> {
