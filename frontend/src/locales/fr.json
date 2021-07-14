@@ -374,7 +374,7 @@
     "trend-next": "Tendance des prochaines semaines",
     "unit": "WES",
     "wes": "Score de charge de travail",
-    "wes-current": "Score de charge de travail de la semaine en cours",
+    "wes-current": "Score de charge de travail de la semaine en cours (WES : Week Effort Score)",
     "trend-all": "Toutes les données",
     "calendar-wes": "Score de la semaine : {0}",
     "score": {
