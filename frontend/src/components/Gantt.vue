@@ -41,7 +41,7 @@ export default class Gantt extends Vue {
   @Ref("gstc") wrapper!: HTMLElement;
   gstc!: GSTCResult;
   state!: State;
-  zoom = 20;
+  zoom = 23;
 
   get tasks(): Task[] {
     return taskModule.tasksFuture;
@@ -143,6 +143,9 @@ export default class Gantt extends Vue {
       chart: {
         items: this.generateItems,
         grid: {},
+        time: {
+          zoom: this.zoom,
+        },
       },
       slots: {
         // item content slot that will show circle with letter next to item label
