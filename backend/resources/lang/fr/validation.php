@@ -104,7 +104,7 @@ return [
     'required'             => 'Le champ :attribute est obligatoire.',
     'required_if'          => 'Le champ :attribute est obligatoire quand la valeur de :other est :value.',
     'required_unless'      => 'Le champ :attribute est obligatoire sauf si :other est :values.',
-    'required_with'        => 'Le champ :attribute est obligatoire quand :values est présent.',
+    'required_with'        => 'Le champ :attribute est obligatoire',
     'required_with_all'    => 'Le champ :attribute est obligatoire quand :values sont présents.',
     'required_without'     => 'Le champ :attribute est obligatoire quand :values n\'est pas présent.',
     'required_without_all' => 'Le champ :attribute est requis quand aucun de :values n\'est présent.',
@@ -159,6 +159,12 @@ return [
         'username'              => 'nom d\'utilisateur',
         'year'                  => 'année',
         'start_at'              => 'date de début',
+        'subject_id'            => 'sujet',
+        'tasktype_id'           => 'type',
+        'due_at'                => 'date prévue',
+        'ects'                  => 'nombre de crédit',
+        'color'                 => 'couleur',
+        'task_id'               => 'tâche'
     ],
     'values' => [
         // or whatever fields you wanna translate
