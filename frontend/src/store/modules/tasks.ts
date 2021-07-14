@@ -53,7 +53,7 @@ class TasksModule extends VuexModule {
   }
 
   get stats(): GroupStat[] | undefined {
-    if (!this.publicTasks) return undefined;
+    if (this.publicTasks.length == 0) return undefined;
 
     const min = this.publicTasks.reduce((current, item) =>
       moment(current.due_at).isBefore(moment(item.due_at)) ? current : item
