@@ -175,6 +175,11 @@ export default class GroupSearch extends Vue {
       });
   }
 
+  @Watch("$route.query", { deep: true })
+  updateFilters(): void {
+    this.filters = Object.assign({}, this.filters, this.$route.query);
+  }
+
   clear(): void {
     this.enableWatcher = false;
     this.results = [];
