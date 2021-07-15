@@ -62,7 +62,6 @@ export default class VAutocompleteFilter extends Vue {
   get canCreate(): boolean {
     return (
       this.createNoData &&
-      !(this.searchText == null || this.searchText == "") &&
       ((this.items &&
         !this.items.some((item) => item.text == this.searchText)) ||
         !this.checkDuplicate)

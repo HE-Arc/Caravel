@@ -23,7 +23,7 @@
           </span>
         </v-btn>
       </template>
-      <v-list v-if="groups && groups.length > 0">
+      <v-list v-if="groups && groups.length > 0" max-height="500">
         <v-list-item
           v-for="(item, index) in groups"
           :key="index"
@@ -71,3 +71,9 @@ export default class GroupSelector extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.test {
+  display: inline;
+}
+</style>

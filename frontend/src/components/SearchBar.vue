@@ -141,12 +141,17 @@ export default class SearchBar extends Vue {
   }
 
   mounted(): void {
-    if (Object.keys(this.$route.query).length !== 0) this.enableWatcher = true;
+    if (Object.keys(this.$route.query).length !== 0) {
+      this.filters = {};
+      this.enableWatcher = true;
+    }
     this.filters = Object.assign({}, this.filters, this.$route.query);
   }
 
   @Watch("filters", { deep: true })
   onPropertyChange(): void {
+    this.updateFilters();
+
     if (!this.enableWatcher) {
       this.enableWatcher = true;
       return;
@@ -164,8 +169,12 @@ export default class SearchBar extends Vue {
     this.updateState();
   }
 
+  get groupId(): string {
+    return groupModule.selectedId;
+  }
+
   loadData(): void {
-    const groupId = groupModule.selectedId;
+    const groupId = this.groupId;
     this.isLoading = true;
     axios({
       url: process.env.VUE_APP_API_BASE_URL + `groups/${groupId}/tasks`,
@@ -192,6 +201,16 @@ export default class SearchBar extends Vue {
   @Emit()
   updateState(): boolean {
     return !this.isEmpty;
+  }
+
+  @Watch("groupId")
+  updatedGroup(): void {
+    this.resetSearch();
+  }
+
+  @Emit()
+  updateFilters(): Dictionary<string> {
+    return this.filters;
   }
 }
 </script>

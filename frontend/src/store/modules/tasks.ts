@@ -190,7 +190,6 @@ class TasksModule extends VuexModule {
     const index = this._tasks.findIndex((item) => item.id == task.id);
     if (index !== -1) {
       Vue.delete(this._tasks, index);
-      this._status = "delete";
     }
   }
 

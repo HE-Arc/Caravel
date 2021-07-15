@@ -70,24 +70,17 @@
 
 <script lang="ts">
 import { Subject } from "@/types/subject";
-import { Prop, Vue, Component, Emit, Watch } from "vue-property-decorator";
+import { Vue, Component } from "vue-property-decorator";
 import subjectModule from "@/store/modules/subjects";
 import Factory from "@/types/Factory";
 import { Dictionary } from "@/types/helpers";
 
 @Component
 export default class SubjectDetails extends Vue {
-  @Prop({ default: false }) isActive!: boolean;
-  @Prop({
-    default: Factory.getSubject(),
-  })
-  subjectData!: Subject;
+  showDialog = false;
   subject = Factory.getSubject();
-
-  get showDialog(): boolean {
-    return this.isActive;
-  }
-
+  resolve: ((value: Subject | PromiseLike<Subject>) => void) | undefined;
+  reject: ((value: boolean | PromiseLike<boolean>) => void) | undefined;
   errors: Dictionary<string | string[]> = {};
   menu = false;
 
@@ -95,47 +88,34 @@ export default class SubjectDetails extends Vue {
     return this.menu;
   }
 
+  public open(subject: Subject = Factory.getSubject()): Promise<Subject> {
+    this.subject = JSON.parse(JSON.stringify(subject));
+    this.showDialog = true;
+
+    return new Promise<Subject>((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+  }
+
   async save(): Promise<void> {
     try {
       const subject = await subjectModule.save(this.subject);
 
       this.errors = {};
-      this.$toast.success(this.$t("global.success").toString());
-      this.handleSubject(subject);
-      this.populateClose();
-      //close
+      this.showDialog = false;
+
+      if (this.resolve) this.resolve(subject);
     } catch (err) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error_form").toString());
     }
   }
 
-  mounted(): void {
-    this.subject = this.subjectData;
-  }
-
-  clean(): void {
-    this.subject = Factory.getSubject();
-  }
-
-  @Watch("subjectData")
-  onDataChange(val: Subject): void {
-    this.subject = val;
-  }
-
   close(): void {
-    if (!this.isMenuOpen) this.populateClose();
-  }
-
-  @Emit("close")
-  populateClose(): boolean {
     this.errors = {};
-    return this.isActive;
-  }
-
-  @Emit()
-  handleSubject(subject: Subject): Subject {
-    return subject;
+    this.showDialog = false;
+    if (this.reject) this.reject(false);
   }
 
   get swatchStyle(): Dictionary<string> {

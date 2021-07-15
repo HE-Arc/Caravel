@@ -73,6 +73,8 @@
                   v-if="isNewTask"
                   v-model="task.isPrivate"
                   :label="$t('task.form.private.label')"
+                  hint
+                  :messages="$t('task.form.private.hint')"
                   :error-messages="errors.isPrivate"
                   @input="errors.isPrivate = []"
                 ></v-switch>
@@ -139,6 +141,10 @@ export default class TaskDetails extends Vue {
     const start = moment(this.task.start_at, "YYYY-MM-DD");
     this.task.due_at = value;
     if (start.isAfter(due)) this.task.start_at = value;
+  }
+
+  mounted(): void {
+    this.task = Object.assign({}, this.task, this.$route.query);
   }
 
   get showStartAt(): boolean {

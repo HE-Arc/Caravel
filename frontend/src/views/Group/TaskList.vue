@@ -13,11 +13,12 @@
             :hasFilter="true"
             @handle-tasks="loadTasks"
             @update-state="updateState"
+            @update-filters="updateFilters"
           >
             <v-btn
               color="success"
               class="float-right"
-              :to="{ name: 'newTask' }"
+              :to="{ name: 'newTask', query: { title: activeFilters.text } }"
               small
               >{{ $t("global.add") }}
             </v-btn>
@@ -114,6 +115,7 @@ export default class TaskList extends Vue {
   filteredTasks: Task[] = [];
   page = 1;
   perPage = 10;
+  activeFilters: Dictionary<string> = {};
 
   get groupId(): string {
     return groupModule.selectedId;
@@ -169,6 +171,10 @@ export default class TaskList extends Vue {
   @Watch("tasks")
   updatePage(): void {
     this.page = 1;
+  }
+
+  updateFilters(filters: Dictionary<string>): void {
+    this.activeFilters = filters;
   }
 }
 </script>

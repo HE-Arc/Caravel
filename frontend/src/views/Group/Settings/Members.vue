@@ -4,16 +4,6 @@
       <v-toolbar-title class="text-h4 font-weight-light">
         {{ $t("group.settings.members") }}
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        v-if="group.user_id != user.id"
-        color="error"
-        small
-        @click="leaveGroup"
-      >
-        <v-icon>mdi-logout</v-icon>
-        {{ $t("global.quit") }}
-      </v-btn>
     </v-toolbar>
     <v-card-text>
       <v-list rounded>
@@ -136,22 +126,6 @@ export default class GroupMembers extends Vue {
       this.$toast.success(this.$t("global.success").toString());
     } catch (err) {
       this.$toast.error(err.response.data.message);
-    }
-  }
-
-  async leaveGroup(): Promise<void> {
-    const title = this.$t("group.dialog.leave.title").toString();
-    const message = this.$t("group.dialog.leave.message").toString();
-    const reply = await this.confirm.open(title, message, {});
-    if (reply) {
-      if (!this.group) return;
-      const group = this.group;
-      try {
-        this.$router.push({ name: "Home" });
-        await groupModule.leave(group);
-      } catch (err) {
-        this.$toast.error(err.response.data.message);
-      }
     }
   }
 }

@@ -208,7 +208,8 @@
         "label": "Date de début"
       },
       "private": {
-        "label": "Cette tâche est privée"
+        "label": "Cette tâche est privée",
+        "hint": "Vous seul pourrez voir cette tâche et elle ne sera pas comptabilisée dans le calcul de la charge de travail"
       }
     },
     "types": {
@@ -247,7 +248,7 @@
   },
   "autocomplete": {
     "manage": "Gérer les {0}",
-    "create": "Créer un nouveau <b>{0}</b> '{1}' ?",
+    "create": "Créer un nouveau {0} <b>{1}</b> ?",
     "nodata": "Aucune donnée trouvée"
   },
   "calendar": {

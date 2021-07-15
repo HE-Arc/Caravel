@@ -69,7 +69,7 @@ Axios.interceptors.response.use(
   (error: AxiosError) => {
     switch (error.response?.status) {
       case 401:
-        if (router.currentRoute.name != "login") {
+        if (router.currentRoute.name != "Login") {
           userModule.logout();
           router.push({
             name: "Login",

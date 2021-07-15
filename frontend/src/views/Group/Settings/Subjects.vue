@@ -42,52 +42,61 @@
     <v-card-text v-else>
       {{ $t("subject.empty") }}
     </v-card-text>
-    <subject-details
-      :subjectData="subject"
-      :isActive="openSubjectForm"
-      @close="openSubjectForm = false"
-    />
+    <subject-details ref="subjectForm" />
+    <confirm-modal ref="confirm" />
   </v-card>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
 import subjectModule from "@/store/modules/subjects";
 import { Subject } from "@/types/subject";
 import SubjectDetails from "@/components/subject/SubjectDetails.vue";
 import Factory from "@/types/Factory";
 import Paginate from "@/components/utility/Paginate.vue";
+import { Ref, Vue, Component } from "vue-property-decorator";
+import ConfirmModal from "@/components/utility/ConfirmModal.vue";
 
 @Component({
   components: {
     SubjectDetails,
     Paginate,
+    ConfirmModal,
   },
 })
 export default class Subjects extends Vue {
-  openSubjectForm = false;
-
+  @Ref() readonly subjectForm!: SubjectDetails;
+  @Ref() readonly confirm!: ConfirmModal;
   subject = Factory.getSubject();
 
   get subjects(): Subject[] {
     return subjectModule.subjects;
   }
 
-  edit(subject: Subject): void {
-    this.subject = subject;
-    this.openSubjectForm = true;
+  async edit(subject: Subject): Promise<void> {
+    try {
+      await this.subjectForm.open(subject);
+      this.$toast.success(this.$t("global.success").toString());
+    } catch (err) {
+      this.$toast.error(this.$t("global.error_form").toString());
+    }
   }
 
-  add(): void {
-    this.subject = Factory.getSubject();
-    this.openSubjectForm = true;
+  async add(): Promise<void> {
+    try {
+      await this.subjectForm.open();
+      this.$toast.success(this.$t("global.success").toString());
+    } catch (err) {
+      this.$toast.error(this.$t("global.error_form").toString());
+    }
   }
 
   async remove(subject: Subject): Promise<void> {
     try {
-      await subjectModule.delete(subject);
-      this.$toast.success(this.$t("global.success").toString());
+      const reply = await this.confirm.open();
+      if (reply) {
+        await subjectModule.delete(subject);
+        this.$toast.success(this.$t("global.success").toString());
+      }
     } catch (err) {
       this.$toast.error(err.response.data);
     }

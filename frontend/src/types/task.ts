@@ -18,4 +18,5 @@ export interface Task extends Data {
   has_finished: boolean;
   questions: Question[];
   histories_list: History[];
+  questions_count: string;
 }

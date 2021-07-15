@@ -114,7 +114,7 @@
         :key="reply.id"
         :comment="reply"
         :question="question"
-        class="ml-5"
+        class="ml-10"
       ></comment-item>
     </div>
     <confirm-modal ref="confirm" />
@@ -217,7 +217,7 @@ export default class CommentItem extends Vue {
     float: left;
   }
   .v-card {
-    width: 90%;
+    width: 100%;
   }
 }
 </style>
