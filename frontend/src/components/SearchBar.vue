@@ -150,6 +150,8 @@ export default class SearchBar extends Vue {
 
   @Watch("filters", { deep: true })
   onPropertyChange(): void {
+    this.updateFilters();
+
     if (!this.enableWatcher) {
       this.enableWatcher = true;
       return;
@@ -204,6 +206,11 @@ export default class SearchBar extends Vue {
   @Watch("groupId")
   updatedGroup(): void {
     this.resetSearch();
+  }
+
+  @Emit()
+  updateFilters(): Dictionary<string> {
+    return this.filters;
   }
 }
 </script>

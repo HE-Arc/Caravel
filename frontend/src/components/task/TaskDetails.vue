@@ -141,6 +141,10 @@ export default class TaskDetails extends Vue {
     if (start.isAfter(due)) this.task.start_at = value;
   }
 
+  mounted(): void {
+    this.task = Object.assign({}, this.task, this.$route.query);
+  }
+
   get showStartAt(): boolean {
     return this.task.tasktype_id == TaskType.PROJECT.toString();
   }
