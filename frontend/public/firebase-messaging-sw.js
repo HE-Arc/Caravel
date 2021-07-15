@@ -1,8 +1,8 @@
 //firebase-messaging-sw.js
 
 // Firebase App (the core Firebase SDK) is always required and must be listed first
-import firebase from 'firebase/app';
-import 'firebase/messaging';
+importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-messaging.js');
 
 var firebaseConfig = {
     apiKey: "AIzaSyB1i9a5ps5_jtRFqIriiTTFcr3JuYVkcLM",
