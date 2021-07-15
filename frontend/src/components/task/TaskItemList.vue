@@ -1,6 +1,6 @@
 <template>
   <v-list-item
-    v-if="task"
+    v-if="task && subject"
     class="task-item-list mb-2"
     :class="{ finished: task.has_finished }"
     :to="{
