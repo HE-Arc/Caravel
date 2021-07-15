@@ -4,6 +4,16 @@
       <v-toolbar-title class="text-h4 font-weight-light">
         {{ $t("group.tabs.settings") }}
       </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="group.user_id != user.id"
+        color="error"
+        small
+        @click="leaveGroup"
+      >
+        <v-icon>mdi-logout</v-icon>
+        {{ $t("global.quit") }}
+      </v-btn>
     </v-toolbar>
     <v-card-text>
       <avatar-upload
@@ -61,6 +71,8 @@ import userModule from "@/store/modules/user";
 import { Dictionary } from "@/types/helpers";
 import ConfirmModal from "@/components/utility/ConfirmModal.vue";
 import { Ref, Vue } from "vue-property-decorator";
+import { User } from "@/types/user";
+import authModule from "@/store/modules/user";
 
 @Component({
   components: {
@@ -74,6 +86,10 @@ export default class GroupManage extends Vue {
 
   get group(): Group | undefined {
     return JSON.parse(JSON.stringify(groupModule.group));
+  }
+
+  get user(): User | undefined {
+    return authModule.user;
   }
 
   get uploadURL(): string {
@@ -117,6 +133,22 @@ export default class GroupManage extends Vue {
         } catch (err) {
           this.$toast.success(this.$t("global.errors.unknown").toString());
         }
+      }
+    }
+  }
+
+  async leaveGroup(): Promise<void> {
+    const title = this.$t("group.dialog.leave.title").toString();
+    const message = this.$t("group.dialog.leave.message").toString();
+    const reply = await this.confirm.open(title, message, {});
+    if (reply) {
+      if (!this.group) return;
+      const group = this.group;
+      try {
+        this.$router.push({ name: "Home" });
+        await groupModule.leave(group);
+      } catch (err) {
+        this.$toast.error(err.response.data.message);
       }
     }
   }
