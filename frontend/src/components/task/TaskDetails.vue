@@ -73,6 +73,8 @@
                   v-if="isNewTask"
                   v-model="task.isPrivate"
                   :label="$t('task.form.private.label')"
+                  hint
+                  :messages="$t('task.form.private.hint')"
                   :error-messages="errors.isPrivate"
                   @input="errors.isPrivate = []"
                 ></v-switch>
