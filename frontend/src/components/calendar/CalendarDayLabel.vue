@@ -19,7 +19,7 @@
           fab
           rounded
           small
-          :to="{ name: 'newTask', query: { start_at: props.date } }"
+          :to="{ name: 'newTask', query: { due_at: props.date } }"
           v-bind="attrs"
           v-on="on"
         >
