@@ -38,7 +38,8 @@ class Task extends Model
     protected $appends = [
         'reactions_list',
         'has_finished',
-        'histories_list'
+        'histories_list',
+        'questions_count'
     ];
 
     /**
@@ -125,6 +126,11 @@ class Task extends Model
     public function getHistoriesListAttribute($query)
     {
         return $this->histories()->orderBy('performed_at', 'desc')->get();
+    }
+
+    public function getQuestionsCountAttribute()
+    {
+        return $this->questions()->count();
     }
 
     public function getHasFinishedAttribute()
