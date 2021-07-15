@@ -77,7 +77,7 @@ export default class Subjects extends Vue {
       await this.subjectForm.open(subject);
       this.$toast.success(this.$t("global.success").toString());
     } catch (err) {
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
     }
   }
 
@@ -86,7 +86,7 @@ export default class Subjects extends Vue {
       await this.subjectForm.open();
       this.$toast.success(this.$t("global.success").toString());
     } catch (err) {
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
     }
   }
 

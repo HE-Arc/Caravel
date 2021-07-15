@@ -108,7 +108,7 @@ export default class SubjectDetails extends Vue {
       if (this.resolve) this.resolve(subject);
     } catch (err) {
       this.errors = err.response.data.errors;
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
     }
   }
 

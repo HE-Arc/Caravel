@@ -163,7 +163,7 @@ export default class QuestionItem extends Vue {
         await questionModule.deleteQuestion(this.question);
         this.$toast.success(this.$t("questions.delete").toString());
       } catch {
-        this.$toast.error(this.$t("global.error_form").toString());
+        this.$toast.error(this.$t("global.error-form").toString());
       }
     }
   }

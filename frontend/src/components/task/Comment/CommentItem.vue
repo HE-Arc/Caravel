@@ -53,8 +53,8 @@
             </template>
             {{
               isSolver
-                ? $t("questions.mark_unsolved")
-                : $t("questions.mark_solved")
+                ? $t("questions.mark-unsolved")
+                : $t("questions.mark-solved")
             }}
           </v-tooltip>
           <v-btn
