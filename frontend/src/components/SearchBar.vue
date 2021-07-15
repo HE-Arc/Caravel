@@ -141,7 +141,10 @@ export default class SearchBar extends Vue {
   }
 
   mounted(): void {
-    if (Object.keys(this.$route.query).length !== 0) this.enableWatcher = true;
+    if (Object.keys(this.$route.query).length !== 0) {
+      this.filters = {};
+      this.enableWatcher = true;
+    }
     this.filters = Object.assign({}, this.filters, this.$route.query);
   }
 
