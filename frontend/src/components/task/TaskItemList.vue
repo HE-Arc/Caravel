@@ -36,7 +36,7 @@
         <timeago :datetime="task.created_at"></timeago>
         <span class="ml-2" v-if="hasQuestions"
           ><v-icon small>mdi-message-question-outline</v-icon>
-          {{ task.questions.length }}</span
+          {{ task.questions_count }}</span
         >
         <span class="ml-2" v-if="hasReactions"
           ><v-icon small>mdi-drama-masks</v-icon> {{ countReactions }}</span
@@ -109,7 +109,7 @@ export default class TaskItemList extends Vue {
   }
 
   get hasQuestions(): boolean {
-    return this.task.questions && this.task.questions.length > 0;
+    return this.task.questions_count != "0";
   }
 
   get hasReactions(): boolean {
