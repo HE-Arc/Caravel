@@ -77,12 +77,12 @@
       </v-row>
       <v-row v-else>
         <v-col cols="12" md="8">
-          <i18n path="task.no_results" tag="label">
+          <i18n path="task.no-results" tag="label">
             <router-link
               :to="{
                 name: 'newTask',
               }"
-              v-html="$t('task.create_link')"
+              v-html="$t('task.create-link')"
             />
           </i18n>
         </v-col>

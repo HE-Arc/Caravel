@@ -44,16 +44,16 @@
 
               <h4 v-else-if="hasNoResult">
                 <i18n
-                  path="groups.no_results"
+                  path="groups.no-results"
                   tag="label"
-                  for="groups.no_results_link"
+                  for="groups.no-results-link"
                 >
                   <router-link
                     :to="{
                       name: 'GroupNew',
                       query: { text: filters.text },
                     }"
-                    >{{ $t("groups.create_link", [filters.text]) }}</router-link
+                    >{{ $t("groups.create-link", [filters.text]) }}</router-link
                   >
                 </i18n>
               </h4>
@@ -106,8 +106,7 @@ export default class GroupSearch extends Vue {
   delayTimer = 0;
 
   mounted(): void {
-    if (JSON.stringify(this.$route.query) !== JSON.stringify(this.params))
-      this.filters = Object.assign({}, this.filters, this.$route.query);
+    this.filters = Object.assign({}, this.filters, this.$route.query);
 
     this.enableWatcher = true;
   }
@@ -174,6 +173,11 @@ export default class GroupSearch extends Vue {
       .finally(() => {
         this.isLoading = false;
       });
+  }
+
+  @Watch("$route.query", { deep: true })
+  updateFilters(): void {
+    this.filters = Object.assign({}, this.filters, this.$route.query);
   }
 
   clear(): void {

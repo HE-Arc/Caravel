@@ -222,7 +222,7 @@ export default class GroupNew extends Vue {
     } catch (err) {
       //console.log("err", err);
       this.errors = err.response.data.errors;
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
     }
   }
 }

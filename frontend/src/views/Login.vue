@@ -79,7 +79,7 @@ export default class Login extends Vue {
     try {
       await auth.login({ mail, password });
       await groupModule.loadGroups();
-      this.$toast.success(this.$t("login.logged_in").toString());
+      this.$toast.success(this.$t("login.logged-in").toString());
       if (this.$route.query.redirect)
         this.$router.push(this.$route.query.redirect.toString());
       else this.$router.push({ name: "Home" });

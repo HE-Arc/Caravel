@@ -73,7 +73,7 @@ export default class QuestionDetails extends Vue {
       this.handleSave();
     } catch (err) {
       this.errors = err.response.data.errors;
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
     } finally {
       this.isLoading = false;
     }

@@ -28,11 +28,11 @@
                       v-on="on"
                       @click="changeLeader(member)"
                     >
-                      {{ $t("group.members.give_lead.label") }}
+                      {{ $t("group.members.give-lead.label") }}
                     </v-btn>
                   </template>
                   <span>
-                    {{ $t("group.members.give_lead.help", [member.name]) }}
+                    {{ $t("group.members.give-lead.help", [member.name]) }}
                   </span>
                 </v-tooltip>
 
