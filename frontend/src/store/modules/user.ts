@@ -12,7 +12,6 @@ import {
 import store from "@/store";
 import Notification from "@/types/notification";
 import Vue from "vue";
-import firebase from "@/fcm";
 
 interface Credentials {
   mail: string;
@@ -138,12 +137,6 @@ class UserModule extends VuexModule {
 
     const user: User = response.data.user;
     this.SUCCESS(user);
-
-    const fcmToken = await firebase
-      .messaging()
-      .getToken({ vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY });
-
-    this.addFcmToken(fcmToken);
   }
 
   @Action

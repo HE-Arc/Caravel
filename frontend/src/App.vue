@@ -69,14 +69,6 @@ export default class App extends Vue {
     this.init();
   }
 
-  async mounted(): Promise<void> {
-    try {
-      await Notification.requestPermission();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   async init(): Promise<void> {
     if (this.isLoggedIn && !this.loaded) {
       await groupModule.loadGroups();

@@ -33,6 +33,7 @@
                   type="text"
                   v-model="username"
                   outlined
+                  :rules="[(value) => !!value]"
                 ></v-text-field>
                 <v-text-field
                   id="password"
@@ -42,14 +43,19 @@
                   :label="$t('login.password')"
                   type="password"
                   outlined
+                  :rules="[(value) => !!value]"
                 ></v-text-field>
               </v-card-text>
               <v-spacer></v-spacer>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" type="submit" :loading="loading">{{
-                  $t("login.connexion")
-                }}</v-btn>
+                <v-btn
+                  color="primary"
+                  type="submit"
+                  :loading="loading"
+                  :disabled="!username || !password"
+                  >{{ $t("login.connexion") }}</v-btn
+                >
               </v-card-actions>
             </v-form>
           </v-container>
@@ -64,6 +70,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import auth from "@/store/modules/user";
 import groupModule from "@/store/modules/groups";
+import firebase from "@/fcm";
 
 @Component
 export default class Login extends Vue {
@@ -79,15 +86,38 @@ export default class Login extends Vue {
     try {
       await auth.login({ mail, password });
       await groupModule.loadGroups();
+      this.askNotifs();
       this.$toast.success(this.$t("login.logged-in").toString());
       if (this.$route.query.redirect)
         this.$router.push(this.$route.query.redirect.toString());
       else this.$router.push({ name: "Home" });
-    } catch {
+    } catch (err) {
+      console.log(err);
       auth.logout();
       this.$toast.error(this.$t("login.failed").toString());
     } finally {
       this.isLoading = false;
+    }
+  }
+
+  async askNotifs() {
+    try {
+      if ("Notification" in window) {
+        if (Notification.permission === "denied") return;
+        else if (Notification.permission !== "granted") {
+          const reply = await Notification.requestPermission();
+          if (reply !== "granted") return;
+        }
+
+        const fcmToken = await firebase
+          .messaging()
+          .getToken({ vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY });
+        auth.addFcmToken(fcmToken);
+      } else {
+        console.log("notifications are not supported");
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 
