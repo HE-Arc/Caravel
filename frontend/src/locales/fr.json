@@ -47,7 +47,7 @@
     "username": "Nom d'utilisateur",
     "mail": {
       "label": "Email",
-      "placerholder": "Taper votre adresse email @he-arc.ch"
+      "placerholder": "email @he-arc.ch ou nom d'utilisateur he-arc"
     },
     "password": "Mot de passe",
     "failed": "L'authentification a échouée",
