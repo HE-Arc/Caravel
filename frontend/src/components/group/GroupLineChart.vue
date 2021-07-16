@@ -69,6 +69,14 @@ export default class GroupLineChart extends Mixins(mixins.reactiveProp, Line) {
         ],
       },
       {
+        tooltips: {
+          mode: "index",
+          intersect: false,
+        },
+        hover: {
+          mode: "index",
+          intersect: false,
+        },
         responsive: true,
         maintainAspectRatio: false,
         scales: {

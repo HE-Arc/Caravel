@@ -95,10 +95,10 @@ import { Subject } from "@/types/subject";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";
-import Reactions from "@/components/Reactions.vue";
+import Reactions from "@/components/task/Reactions.vue";
 import Questions from "@/components/task/Question/Questions.vue";
 import ConfirmModal from "@/components/utility/ConfirmModal.vue";
-import HistoryList from "@/components/HistoryList.vue";
+import HistoryList from "@/components/task/HistoryList.vue";
 
 @Component({
   components: {

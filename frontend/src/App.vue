@@ -30,6 +30,7 @@
     <v-main>
       <router-view />
     </v-main>
+    <footer-app />
   </v-app>
 </template>
 
@@ -45,6 +46,7 @@ import Notificatons from "@/components/Notifications.vue";
 import groupModule from "@/store/modules/groups";
 import { Watch } from "vue-property-decorator";
 import NprogressContainer from "@/components/utility/NprogressContainer.vue";
+import FooterApp from "@/views/Footer.vue";
 
 @Component({
   components: {
@@ -53,6 +55,7 @@ import NprogressContainer from "@/components/utility/NprogressContainer.vue";
     QuickSearch,
     Notificatons,
     NprogressContainer,
+    FooterApp,
   },
 })
 export default class App extends Vue {
@@ -64,14 +67,6 @@ export default class App extends Vue {
 
   created(): void {
     this.init();
-  }
-
-  async mounted(): Promise<void> {
-    try {
-      await Notification.requestPermission();
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   async init(): Promise<void> {

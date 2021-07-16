@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import HistoryItem from "@/components/HistoryItem.vue";
+import HistoryItem from "@/components/task/HistoryItem.vue";
 
 @Component({
   components: {
