@@ -60,7 +60,7 @@
 import { Vue, Component } from "vue-property-decorator";
 import groupModule from "@/store/modules/groups";
 import { Group } from "@/types/group";
-import GroupItem from "@/components/GroupItem.vue";
+import GroupItem from "@/components/group/GroupItem.vue";
 import Paginate from "@/components/utility/Paginate.vue";
 
 @Component({

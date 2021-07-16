@@ -86,7 +86,7 @@ import { Watch } from "vue-property-decorator";
 import Vue from "vue";
 import Component from "vue-class-component";
 import axios from "axios";
-import GroupItem from "@/components/GroupItem.vue";
+import GroupItem from "@/components/group/GroupItem.vue";
 import { Dictionary } from "node_modules/vue-router/types/router";
 
 @Component({

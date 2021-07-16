@@ -68,7 +68,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import GroupLineChart from "@/components/GroupLineChart.vue";
+import GroupLineChart from "@/components/group/GroupLineChart.vue";
 import taskModule from "@/store/modules/tasks";
 
 @Component({

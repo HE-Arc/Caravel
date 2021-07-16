@@ -66,7 +66,7 @@
 import { Group } from "@/types/group";
 import Component from "vue-class-component";
 import groupModule from "@/store/modules/groups";
-import AvatarUpload from "@/components/AvatarUpload.vue";
+import AvatarUpload from "@/components/utility/AvatarUpload.vue";
 import userModule from "@/store/modules/user";
 import { Dictionary } from "@/types/helpers";
 import ConfirmModal from "@/components/utility/ConfirmModal.vue";

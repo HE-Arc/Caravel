@@ -65,13 +65,13 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import GroupSelector from "@/components/GroupSelector.vue";
+import GroupSelector from "@/components/group/GroupSelector.vue";
 import groupModule from "@/store/modules/groups";
 import taskModule from "@/store/modules/tasks";
 import memberModule from "@/store/modules/members";
 import { Group } from "@/types/group";
 import { Dictionary } from "@/types/helpers";
-import GroupIndicator from "@/components/GroupIndicator.vue";
+import GroupIndicator from "@/components/group/GroupIndicator.vue";
 
 @Component({
   components: {
