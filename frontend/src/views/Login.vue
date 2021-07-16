@@ -100,7 +100,7 @@ export default class Login extends Vue {
     }
   }
 
-  async askNotifs() {
+  async askNotifs(): Promise<void> {
     try {
       if ("Notification" in window) {
         if (Notification.permission === "denied") return;
