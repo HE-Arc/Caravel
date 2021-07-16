@@ -129,7 +129,7 @@ export default class Login extends Vue {
 
 <style lang="scss" scoped>
 .toolbar-login {
-  background: linear-gradient(329deg, #c58af5 0%, rgba(92, 25, 146, 0.98) 100%);
+  background: linear-gradient(329deg, #5c6bc0 0%, #8191f1 100%);
   &::v-deep > div {
     justify-content: center;
     height: 100% !important;
