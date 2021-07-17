@@ -115,7 +115,6 @@ export default class SubjectDetails extends Vue {
   close(): void {
     this.errors = {};
     this.showDialog = false;
-    if (this.reject) this.reject(false);
   }
 
   get swatchStyle(): Dictionary<string> {
