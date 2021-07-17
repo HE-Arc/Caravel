@@ -69,12 +69,12 @@
           <v-card-text>
             <markdown-it-vue class="md-body" :content="task.description" />
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions v-if="!task.isPrivate">
             <reactions :task="task"></reactions>
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" v-if="!task.isPrivate">
         <questions></questions>
       </v-col>
       <confirm-modal ref="confirm" />
