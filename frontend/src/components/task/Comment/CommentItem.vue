@@ -47,6 +47,7 @@
                 @click="markSolved"
                 v-bind="attrs"
                 v-on="on"
+                :loading="loadingReply"
               >
                 <v-icon small>mdi-check-decagram-outline</v-icon>
               </v-btn>
@@ -147,6 +148,7 @@ export default class CommentItem extends Vue {
   @Prop() question!: Question;
   @Prop({ default: false }) selected!: boolean;
   @Ref() readonly confirm!: ConfirmModal;
+  loadingReply = false;
 
   showFormReply = false;
   showFormEdit = false;
@@ -198,6 +200,8 @@ export default class CommentItem extends Vue {
   }
 
   async markSolved(): Promise<void> {
+    this.loadingReply = true;
+
     try {
       let questionForm = this.question as unknown as QuestionForm;
       questionForm.solved = this.isSolver ? "" : this.comment.id;
@@ -206,6 +210,8 @@ export default class CommentItem extends Vue {
     } catch (err) {
       console.log(err);
     }
+
+    this.loadingReply = false;
   }
 }
 </script>

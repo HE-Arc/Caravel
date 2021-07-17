@@ -9,7 +9,7 @@
       <v-card-text>
         <v-btn
           v-for="link in linksFiltered"
-          :key="link"
+          :key="link.href"
           class="mx-4 white--text"
           icon
           :href="link.href"
@@ -49,6 +49,11 @@ export default class FooterApp extends Vue {
       href: "https://discord.gg/GMMSaKWwZU",
       icon: "mdi-discord",
       auth: true,
+    },
+    {
+      href: "/getstarted",
+      icon: "mdi-book",
+      auth: false,
     },
   ];
 

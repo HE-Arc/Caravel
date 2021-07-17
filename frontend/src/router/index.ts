@@ -110,16 +110,45 @@ const routes: Array<RouteConfig> = [
     path: "/403",
     name: "Forbidden",
     component: () => import("../views/Forbidden.vue"),
+    meta: {
+      isAuthNeeded: false,
+    },
+  },
+  {
+    path: "/getstarted",
+    name: "GetStarted",
+    component: () => import("../views/GetStarted/GetStarted.vue"),
+    meta: {
+      isAuthNeeded: false,
+    },
   },
   {
     path: "*",
     name: "NotFound",
     component: () => import("../views/PageNotFound.vue"),
+    meta: {
+      isAuthNeeded: false,
+    },
   },
 ];
 
 const router = new VueRouter({
   mode: "history",
+  scrollBehavior: (to) => {
+    if (to.hash) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            selector: to.hash,
+            behavior: "smooth",
+            offset: { x: 0, y: 50 },
+          });
+        }, 0);
+      });
+    } else {
+      return { x: 0, y: 0 };
+    }
+  },
   routes,
 });
 

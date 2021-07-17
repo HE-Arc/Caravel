@@ -35,6 +35,9 @@
 import { Vue, Component, Ref, Prop } from "vue-property-decorator";
 import groupModule from "@/store/modules/groups";
 import UploadModal from "@/components/utility/UploadModal.vue";
+import mavonEditor from "mavon-editor";
+
+Vue.use(mavonEditor);
 
 @Component({
   components: {

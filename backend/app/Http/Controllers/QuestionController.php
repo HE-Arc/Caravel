@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestionRequest;
 use App\Models\Group;
-use App\Models\Task;
 use App\Models\Question;
 
 class QuestionController extends Controller
@@ -21,7 +20,7 @@ class QuestionController extends Controller
 
     public function update(QuestionRequest $request, Group $group, Question $question)
     {
-        if ($this->user->id == $question->user->id) {
+        if ($this->user->id == $question->user_id) {
             return $this->persistData($request, $group, $question);
         }
         return response()->json(__('api.global.access_denied'), 403);
