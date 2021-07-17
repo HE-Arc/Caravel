@@ -7,7 +7,6 @@ import Axios, { AxiosError } from "axios";
 import vuetify from "./plugins/vuetify";
 import i18n from "./i18n";
 import VueToast from "vue-toast-notification";
-import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import VueTimeago from "vue-timeago";
 import moment from "moment";
@@ -29,10 +28,6 @@ Vue.use(VueToast, {
 });
 
 Vue.use(NProgress);
-
-Vue.use(mavonEditor, {
-  language: "fr",
-});
 
 Vue.mixin({
   computed: {
