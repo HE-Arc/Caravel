@@ -18,6 +18,14 @@ module.exports = {
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/
       })
-    ]
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.md$/i,
+          loader: "raw-loader",
+        },
+      ],
+    },
   }
 };

@@ -339,7 +339,8 @@
   "home": {
     "title": "Bienvenue sur Caravel !",
     "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cette outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe spécifique. Il vous permet de visualer clairement les activités qu'il faut faire ou retrouver une activité passée.",
-    "submessage": "Mais assez discuté, commencez par créer ou trouver un groupe :-)"
+    "submessage": "Si vous ne connaissez pas Caravel, commencez par lire le guide de démarrage :-)",
+    "bouton": "Guide de démarage"
   },
   "history": {
     "label": "Historique",

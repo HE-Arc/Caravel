@@ -46,9 +46,16 @@
             </p>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn text color="primary" :to="{ name: 'GroupSearch' }">{{
-              $t("groups.search-title")
-            }}</v-btn>
+            <v-btn
+              x-large
+              color="primary"
+              class="mx-4"
+              :to="{ name: 'GetStarted' }"
+              outlined
+            >
+              {{ $t("home.bouton") }}
+              <v-icon class="ml-2"> mdi-arrow-right </v-icon>
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
