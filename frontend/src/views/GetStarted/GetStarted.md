@@ -72,14 +72,19 @@ La liste exhaustives des réactions :
 * 🤷 Lien avec le cours pas clair 
    * l'intérêt n'est pas clair, pas assez motivée, l'importance du devoir n'est pas comprise par l'étudiant
 * 📑 Peu d'intérêt
-   * Par exemple pas de feedback, l'étudiant ne voit pas d'intérêt de s'investir
+   * par exemple pas de feedback, l'étudiant ne voit pas d'intérêt de s'investir
+
+#### Références
+* [Engage Engineering Students in Homework : Attribution of low completion](https://core.ac.uk/download/pdf/268108261.pdf)
+* https://www.teachthought.com/pedagogy/why-students-dont-do-their-homework-and-what-you-can-do-about-it/
+* https://www.academicgates.com/blog/six-reasons-why-students-fail-to-complete-their-homework/43/view
 
 ### Question
 Il est possible de demander de l'aide aux autres membres du groupe à travers des questions qui peuvent être posées directement sur une tâche, voici un exemple de question : 
 
 ![Question](/img/getstarted/question.png)
 
-Une fois la questions posée, les différents membres du groupe pourront répondre à votre question via un jeu de commentaire.
+Une fois la question posée, les différents membres du groupe pourront répondre à votre question via un jeu de commentaire.
 
 #### Résolution
 Lors qu'une question est résolue, il est possible pour l'auteur de la question de marquer la question comme résolue, pour cela il doit se rendre sur le commentaire qui a permis la résolution de la question, un bouton d'action est sur le commentaire et permet de marquer le commentaire comme étant la solution et ainsi de passer l'état de la question en résolu. 
@@ -106,4 +111,4 @@ Week Effort Score (WES) = `$\sum_{subjects} C_s * (N_E + N_A + N_{PW} + 2 * N_{P
 Il est à noter que lors d'une semaine de rendu de projet, la tâche est comptabilisée deux fois car les projets sont considérés comme des tâches plus conséquentes qui demandent à la fin du travail un peu plus d'implication.
 
 ## Explorez !
-Vous pouvez maintenant vous promener librement sur l'application, si vous n'avez pas encore de groupe [essayez de créer ou de rechercher un group](/groups) :-)
+Vous pouvez maintenant vous promener librement sur l'application, si vous n'avez pas encore de groupe [essayez de créer ou de rechercher un groupe](/groups) :-)
