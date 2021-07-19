@@ -1,10 +1,11 @@
 ---
-title: "Caravel - Rapport"
+title: "Projet N°227 : Caravel"
 author: [Mendes Reis Steve]
 date: \today
-subject: "Traitement d'image"
-keywords: [Laravel, VueJS, TypeScript, OpenCV, Rubiks, cube]
+subject: "Travail de Bachelor"
+keywords: [Laravel, VueJS, TypeScript]
 subtitle: | 
+          |  Rapport
           |  Travail de Bachelor
           |  A l'attention de MM. XXX
 version: 1.0.0
