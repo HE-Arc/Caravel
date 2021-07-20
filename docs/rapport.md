@@ -219,7 +219,11 @@ Enfin, l'outil permet aux élèves de toujours être à jour quant aux tâches �
 
 ## Conception
 
+Cette partie va s'attèle à décrire les problématiques ainsi que les solutions qui ont été trouvées.
+
 ### Rôles et use cases
+
+Cette partie explicite les différents rôles disponibles au sein de caravel ainsi que les actions possibles.
 
 #### Rôles fonctionnels
 
@@ -238,6 +242,8 @@ Les deux rôles seront donc les suivants :
 * Professeur
 * Elève
   * Rôle par défaut
+
+Il a été décidé de ne pas appliquer de droit spécifique pour l'un ou l'autre des rôles car un historique des actions de chaque utilisateur sera mis en place et donc il possible en tout temps de trouver qui a effectué la moindre modification sur une tâche, il a donc été choisi de laisser libre tout utilisateur de modifier une tâche même s'il en est pas l'auteur. Ceci afin d'encourage la collaboration sur les différentes tâches.
 
 ### Use cases
 
@@ -320,8 +326,8 @@ La liste exhaustives des réactions :
 
 Plusieurs références ont été utilisées pour déterminer ces réactions :
 
-* Un article écrit dans le American Journal of Engineering Education (AJEE)  @reaction1
-* Ainsi que deux autres articles @reaction2 et @reaction3 disponibles en ligne
+* Un article de journal écrit dans le American Journal of Engineering Education (AJEE)  @reaction1
+* Ainsi que deux autres articles web @reaction2 et @reaction3
 
 #### Participation aux réactions
 
@@ -333,7 +339,7 @@ La question s'est posée quant à l'anonymisation des résultats, une réflexion
 
 ### Système de notifications
 
-La construction des notifications au niveau de Laravel sera basée sur le système de notification issue de la [documentation officiel](https://laravel.com/docs/8.x/notifications)
+La construction des notifications au niveau de Laravel sera basée sur le système de notification issue de la [documentation officiel](https://laravel.com/docs/8.x/notifications). Le système de notifications a pu pour de permettre à l'utilisateur de se rendre compte des différentes mise à jour qu'il y a eu lors de leur absence : un devoir ajouté ou une modification sur un devoir peut vite passé inaperçu.
 
 #### Canaux de distribution
 
@@ -360,12 +366,6 @@ Les différentes notifications seront paramétrable depuis le compte de l'utilis
 
 ![Maquette des paramètres de notifications](assets/113505354-86fa6580-953e-11eb-8eaf-ce3290dca0f9.png){width=350}
 
-#### Référence pour l'implémentation
-
-* Intégration de PWA avec Vue.js, @notif1.
-* Intégration de Firebase Cloud Message avec Laravel et Vue.js, @notif2.
-* Documentation officiel de Firebase Cloud Message, @notif3.
-
 ### Gestion de la charge de travail
 
 Afin de mieux estimer la charge de travail chaque branche accueillera un nouveau paramètre, le nombre de crédits ETCS (un crédit représente une charge de travail d'environ 25 à 30 heures de travail). Ces crédits servent de critère de pondération pour les différentes branches.
@@ -376,15 +376,21 @@ A partir de ces données une cotation **par semaine** est créée : le Work Load
 
 Les détails des calculs sont donnés par les formules suivantes :
 
+```
 $$N_A = Nombre\ de\ devoirs$$
+
 $$N_E = Nombre\ de\ Examens\ ou\ CP$$
+
 $$N_{PS} = Nombre\ de\ projet\ en\ cours\ (qui\ ne\ sont\ pas\ à\ rendre)$$
+
 $$N_{PW} = Nombre\ de\ projet\ à\ rendre$$
+
 $$C_S = Nombre\ de\ crédit\ pour\ le\ sujet\ (cours)$$
 
 $$Week\ Effort\ Score\ (WES) = \sum_{subjects} C_s * (N_E + N_A + N_{PW} + 2 * N_{PS})$$
 
 $$Work\ Load\ Score (WLS) = \frac{WES}{\widetilde{WES}}$$
+```
 
 #### Comptabilisation des projets
 
@@ -408,31 +414,139 @@ Le score de certaines semaines risque de poser des problèmes, il faut donc évi
 
 ### Système d'authentification
 
+L'actuel Caravel utilise un système de notification interne à l'application, il est donc nécessaire que chaque nouvel utilisateur d'enregistrer avant de pouvoir se connecter sur l'application. Afin de facilité cette démarche, une solution de SSO avec Google et GitHub ont été mis en place. Dans la nouvelle version de Caravel, on souhaite permettre à l'utilisateur de se connecter via l'annuaire interne de l'école (LDAP). Cela permettra de directement récupérer des infos pertinentes sur l'utilisateur ainsi que de déterminé son statut (professeur ou élève). L'utilisation du LDAP devrait permettre à terme de pouvoir enrôler les utilisateurs directement dans des classes.
+
 ## Définitions des routes
 
-swagger
+Les routes sont définies en utilisant le principe REST et donc avec l'utilisation des verbes HTTP : GET, POST, PUT/PATCH, DELETE. La génération des routes est fait avec l'outil en ligne Swagger (Open API), sur lequel on peut retrouver la [documentation de l'api Caravel](https://app.swaggerhub.com/apis-docs/M4n0x/Caravel/1.0.0#/).
+
+## Stratégie & conception de test
+
+Cette partie décrit la stratégie ainsi que la conception des tests nécessaire au bon fonctionnement de l'application. Il renseigne aussi les risques liés au projet.
+
+### Attentes de la qualité du produit
+
+* Interface facile à utiliser
+* Bonne qualité de code
+* Site conforme aux normes standard du Web
+
+### Objectifs de tests
+
+Le but des différents tests est de s'assurer que le code produit est de bonne qualité tant dans sa réalisation que dans son fonctionnement, en outre il permet de mettre en place des tests qui permettent de ne pas régresser d'une version à l'autre en maintenant une qualité de produit constante entre les différentes phases de développement.
+
+* Avoir un code maintenable
+* Avoir un bon temps de réponse
+* Permettre une charge d’au moins 40 personnes
+
+### Périmètre de tests
+
+* Test unitaire avec PHPUnit (et Jest côté Vue.js)
+* Qualité de code avec SonarCloud
+
+### Gestion des risques
+
+
+| Description                                                                                                         |    Source    | Probabilité | Impact | Criticité | Résolution                                                                                                                                              |
+| --------------------------------------------------------------------------------------------------------------------- | :-------------: | :------------: | :------: | :----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Retard sur le planning                                                                                              |    Interne    |      4      |   6   |    0.7    | Découper les tâches de manière a facilement pouvoir évaluer le temps de mise en place (éviter les tâches avec trop d'action en même temps)        |
+| Login SSO                                                                                                           |    Interne    |      7      |   8   |    0.8    | Voir la documentation, rapidement voir avec un professeur, réévaluer la faisabilité                                                                   |
+| L'appel des terrasses et de la bière                                                                               | psychologique |      10      |   5   |    0.5    | boire de la bière sans alcool et éviter tout contact social, par exemple en effectuant du télétravail, afin d'éviter les collègues, ces tentateurs |
+| Mauvaise évaluation de la charge de travail du à l'absence de connaissance approfondie sur certaines technologies |    interne    |      8      |   7   |    0.9    | En référé le plus rapidement possible au mandant et adapter les objectifs en fonction de retard pris                                                  |
+
+#### Etapes principales
+
+1. Tests unitaires PHPUnit (et Jest côté VueJS)
+2. Tests avec utilisateurs
+3. Analyser la qualité de code avec SonarCloud
+4. Analyser les résultats dans le rapport de tests
+
+#### Environnement et outils de tests
+
+##### GitHub
+
+Pour l’intégration continue et la livraison continue GitHub sera utilisé.
+
+##### SonarCloud
+
+La version cloud de SonarQube sera utilisée afin d’analyser la qualité du code.
 
 ## Maquettes
 
+Cette section regroupe les différentes maquettes créées pour la nouvelle version de Caravel. Ces maquettes ont été réalisées avec l'outil Figma avec une licence étudiante.
+
+![Maquette : page de login](assets/20210720_133107_image.png){width=600}
+
+![Maquette : page liste des tâches](assets/20210720_133302_image.png){width=600}
+
+![Maquette : page affichage d'une tâche](assets/20210720_134056_image.png){width=450}
+
+![Maquette : page vue mensuelle](assets/20210720_134130_image.png){width=500}
+
+![Maquette : page vue timeline](assets/20210720_134149_image.png){width=500}
+
+![Maquette : page de statistiques](assets/20210720_134222_image.png){width=500}
+
+Il est de plus possible de consulter la [version interactive](https://www.figma.com/proto/WHGPKvp8GgmoqsaOP7mFlz/Caravel-mockup) de la maquette directement sur le site de Figma.
+
 ## Planning
 
-voir annexe
+voir annexe Planning.png
 
 ## Méthodologie de travail
 
-Gitlab, git flow
+La méthodologie de travail se base sur l'utilisation GitFlow qui consiste à créer 3 différentes canaux :
+
+![GitFlow workflow feature branches](assets/gitflow-workflow-feature-branches.png)
+
+1. La branche `master` qui est une branche qui est toujours fonctionnel et stable (release candidate)
+2. La branche `develop` qui possède les dernières fonctionnalités mais n'est pas forcément stable
+3. Les branches dites `features` qui sont créées pour chaque nouvelle fonctionnalité.
+
+Lorsqu'une `feature` est aboutie et est validée par l'équipe de développement, elle est alors poussée sur la branche `develop` pour validation, pour une fois que la branche `develop` est considérée comme stable, celle-ci peut être poussée sur la branche `master`.
+
+Cette méthodologie implique une bonne analyse en amont des tâches à effectuer ainsi qu'une découpage minutieux des tâches afin de garder des branches `features` simple et concise. Mais permet un suivi clair de l'avancement du projet ainsi qu'une revue plus simple de chaque nouvelle fonctionnalité mais demande un effort supplémentaire (création d'une branche et d'une pull request pour chaque fonctionnalité).
 
 \newpage
 
-# Développement
+# Implémentation
+
+Dans cette section il s'agit d'expliquer les différentes étapes majeures qui ont permis la réalisation du projets ainsi que d'expliciter les différents choix techniques effectués.
+
+## POC
+
+## Authentification
+
+Le processus d'authentification un peu plus complexe dans une application où le frontend et le backend sont séparés, le processus peut être résumé simplement par le schéma suivant :
+
+![Schéma d'interaction pour l'authentification](assets/20210720_160251_image.png)
+
+### Local Storage vs Cookies
+
+La complexité réside dans le choix du stockage du token au niveau du client, en effet une des solutions les plus utilisées est le stockage du token au niveau du Local Storage, cependant il s'agit d'une mauvaise pratique, comme le cite cet article de @localStorage.
+
+L'autre solution consiste à utiliser les cookies ainsi que le flag "httponly" qui bloque l'accès à ce dernier dès que ce flag est paramétré à vrai et c'est la solution qui est recommandée dans la documentation de Laravel, nous y reviendront par la suite dans la section suivante.
+
+### Sanctum vs Passport
+
+Laravel propose deux systèmes d'authentifications, le premier [Sanctum](https://laravel.com/docs/8.x/sanctum) est un système léger d'authentification basé sur des tokens, le second [Passport](https://laravel.com/docs/8.x/passport) est un système d'authentification lourd qui utilise OAuth2, OAuth2 est un protocol qui permet aux utilisateurs la connection avec d'autres applications externe tel que Google ou encore GitHub. Ce dernier est donc plus lourd et présuppose une bonne connaissance du protocole OAuth2. Comme l'utilisation de OAuth2 n'est pas nécessaire, Sanctum a été choisi, c'est d'ailleurs une recommandation issue de la [documentation de Laravel](https://laravel.com/docs/8.x/passport#passport-or-sanctum).
+
+![Laravel Sanctum Explained : SPA Authentication - DEV Community @sanctum \label{figSanctum}](assets/bpekb8vyseptvpp91vdt.png){width=400}
+
+Dans la \ref{figSanctum} 
 
 ## DevOps CI/CD
+
+A
+
+### Configuration de environnement
 
 ## Configuration de production
 
 ## Firebase Cloud Messaging
 
-## Authentification
+* Intégration de PWA avec Vue.js, @notif1.
+* Intégration de Firebase Cloud Message avec Laravel et Vue.js, @notif2.
+* Documentation officiel de Firebase Cloud Message, @notif3.
 
 ## Frontend
 
@@ -482,9 +596,29 @@ Vue.set(...)
 
 # User tests
 
+Afin de tester globalement l'application la réalisation d'un test utilisateur à eu lieu à St-Imier, le 07 juillet 2021.
+
+Il y a eu au total 6 personnes interrogées dans le cadre de ce user test, les résultats des différents retours par les utilisateurs sont décrits dans le paragraphe qui suit, il s'agit essentiellement de données brutes.
+
 ## Scénario
 
+- Connectez-vous sur Caravel
+- Vous êtes dans la classe "INF DLM-B 2021" et vous souhaiteriez créer un espace pour votre classe sur Caravel
+- Vous vous souvenez d'un devoir pour le mardi 20 juillet pour le cours d'infographie : "Lire tout le livre de WebGL"  que vous souhaiteriez partager à votre classe à travers Caravel.
+- Vous prenez connaissance de l'existence du groupe "INF DLM-B 2019" et vous décidez de rejoindre le groupe.
+- Un utilisateur vient d'accepter votre demande d'accès à la classe "INF DLM-B 2019", vous souhaitez maintenant accéder au groupe pour voir ce qu'il contient.
+- En arrivant sur le groupe "INF DLM-B 2019" vous apercevez la tâche "Faire l'exercice 1" d'infographie, vous prenez le temps de le lire et décidez que ce travail n'est pas de votre niveau, vous souhaitez réagir à la tâche pour montrer votre opinion.
+- Malgré votre réaction, vous entreprenez quand même de réaliser le devoir, vous bloquez immédiatement sur le point 1a, vous souhaitez demander "Comment résoudre l'exo 1a" à vos camarades qui se trouvent sur le groupe.
+- En parcourant les diverses tâches du groupe "INF DLM-B 2019" vous apercevez la tâche "Séance de travail", sur celle-ci se trouve une question "A quelle heure à lieu la séance ?" Vous connaissez la réponse (17h30) et décidez d'y répondre.
+- En revenant sur votre question que vous avez posée "Comment résoudre l'exo 1a" vous apercevez que quelqu'un a répondu à votre question, la réponse vous convient, vous décidez que cette réponse est suffisante et passez l'état de la question en résolu.
+- Grâce à l'aide fournie par vos camarades sur la tâche "Faire l'exercice 1" d'infographie, vous avez réussi l'exercice, vous décidez de marquer cette exercice comme terminé pour vous.
+- Vous réalisez que la tâche que vous avez ajoutée "Lire tout le livre de WebGL" était une erreur vous décidez de supprimer cette tâche.
+- D'ailleurs vous décidez que le groupe "INF DLM-B 2019" est beaucoup mieux que le groupe que vous avez créé, comme ce dernier n'est plus utile et qu'il n'y a que vous, vous décidez alors de supprimer le groupe.
+- Finalement vous avez décidé de changer de classe, vous préférez donc quitter le groupe "INF DLM-B 2019".
+
 ## Résultats
+
+En Annexe ?
 
 \newpage
 
