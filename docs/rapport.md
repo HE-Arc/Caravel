@@ -339,7 +339,7 @@ La question s'est posée quant à l'anonymisation des résultats, une réflexion
 
 ### Système de notifications
 
-La construction des notifications au niveau de Laravel sera basée sur le système de notification issue de la [documentation officiel](https://laravel.com/docs/8.x/notifications). Le système de notifications a pu pour de permettre à l'utilisateur de se rendre compte des différentes mise à jour qu'il y a eu lors de leur absence : un devoir ajouté ou une modification sur un devoir peut vite passé inaperçu.
+Les notifications sont des éléments importants car ils permettent aux utilisateurs de toujours rester à jour par rapport au contenu de leurs groupes.
 
 #### Canaux de distribution
 
@@ -362,7 +362,7 @@ La liste exhaustive des actions qui peuvent déclencher une notification :
 * Accepté dans un groupe
 * Refusé d'un groupe
 
-Les différentes notifications seront paramétrable depuis le compte de l'utilisateur.
+Les différentes notifications peuvent être paramétrables depuis le compte de l'utilisateur.
 
 ![Maquette des paramètres de notifications](assets/113505354-86fa6580-953e-11eb-8eaf-ce3290dca0f9.png){width=350}
 
@@ -418,7 +418,7 @@ L'actuel Caravel utilise un système de notification interne à l'application, i
 
 ## Définitions des routes
 
-Les routes sont définies en utilisant le principe REST et donc avec l'utilisation des verbes HTTP : GET, POST, PUT/PATCH, DELETE. La génération des routes est fait avec l'outil en ligne Swagger (Open API), sur lequel on peut retrouver la [documentation de l'api Caravel](https://app.swaggerhub.com/apis-docs/M4n0x/Caravel/1.0.0#/).
+Les routes sont définies en utilisant le principe REST et donc avec l'utilisation des verbes HTTP : GET, POST, PUT/PATCH, DELETE. La génération des routes est documentée avec l'outil en ligne Swagger (Open API), sur lequel on peut retrouver la [documentation de l'api Caravel](https://app.swaggerhub.com/apis-docs/M4n0x/Caravel/1.0.0#/).
 
 ## Stratégie & conception de test
 
@@ -512,7 +512,9 @@ Cette méthodologie implique une bonne analyse en amont des tâches à effectuer
 
 Dans cette section il s'agit d'expliquer les différentes étapes majeures qui ont permis la réalisation du projets ainsi que d'expliciter les différents choix techniques effectués.
 
-## POC
+## Choix de la base de donnée
+
+Pour le choix de la base de donnée, il y a globalement deux possibilités qui s'imposent : PostgreSQL ou MariaDB (MySQL). Un article de @choiceDB compare ces deux versions en terme de performance, il s'avère que MariaDB est plus performant sur de grande requête que PostgreSQL. Le choix s'est donc porté sur l'utilisation de MariaDB.
 
 ## Authentification
 
@@ -524,29 +526,314 @@ Le processus d'authentification un peu plus complexe dans une application où le
 
 La complexité réside dans le choix du stockage du token au niveau du client, en effet une des solutions les plus utilisées est le stockage du token au niveau du Local Storage, cependant il s'agit d'une mauvaise pratique, comme le cite cet article de @localStorage.
 
-L'autre solution consiste à utiliser les cookies ainsi que le flag "httponly" qui bloque l'accès à ce dernier dès que ce flag est paramétré à vrai et c'est la solution qui est recommandée dans la documentation de Laravel, nous y reviendront par la suite dans la section suivante.
+L'autre solution consiste à utiliser les cookies ainsi que le flag "httpOnly" qui bloque l'accès à ce dernier dès que ce flag est paramétré à vrai et c'est la solution qui est recommandée dans la documentation de Laravel, nous y reviendront par la suite dans la section suivante.
 
 ### Sanctum vs Passport
 
 Laravel propose deux systèmes d'authentifications, le premier [Sanctum](https://laravel.com/docs/8.x/sanctum) est un système léger d'authentification basé sur des tokens, le second [Passport](https://laravel.com/docs/8.x/passport) est un système d'authentification lourd qui utilise OAuth2, OAuth2 est un protocol qui permet aux utilisateurs la connection avec d'autres applications externe tel que Google ou encore GitHub. Ce dernier est donc plus lourd et présuppose une bonne connaissance du protocole OAuth2. Comme l'utilisation de OAuth2 n'est pas nécessaire, Sanctum a été choisi, c'est d'ailleurs une recommandation issue de la [documentation de Laravel](https://laravel.com/docs/8.x/passport#passport-or-sanctum).
 
-![Laravel Sanctum Explained : SPA Authentication - DEV Community @sanctum \label{figSanctum}](assets/bpekb8vyseptvpp91vdt.png){width=400}
+![Laravel Sanctum Explained : SPA Authentication @sanctum \label{figSanctum}](assets/bpekb8vyseptvpp91vdt.png){width=400}
 
-Dans la \ref{figSanctum} 
+Dans la figure \ref{figSanctum} on peut voir le fonctionnement de sanctum, les éléments les plus importants sont le CSRF token ainsi que le Session cookie. Le CSRF token permet de protéger l'utilisateur d'une cross-site request cet élément n'est pas en httpOnly. Le Session Cookie, qui est le fonctionnement normal que nous pourrions retrouver avec une session PHP, est le cookie qui garde les informations liés à l'utilisateur, cet élément est protégé par un httpOnly et n'est donc pas accessible via javascript. Ces deux paramètres de session sont placés par Laravel à l'appel de la route `/sanctum/csrf-cookie`. Il est donc important de faire un appel à cette route avant toute tentative de connexion.
+
+```{.typescript caption="Fonction de login"}
+await axios.get(process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie");
+
+const response: AxiosResponse = await axios({
+  url: process.env.VUE_APP_API_BASE_URL + "login",
+  data: { mail, password },
+  method: "POST",
+});
+
+```
+
+Nous pouvons constater en ligne 1, aucun retour particulier n'est attendu car Laravel va automatiquement inscrire les cookies nécessaires et la librairie utilisée pour les appels backend, Axios, va lui aussi de manière automatique faire les configurations nécessaires dès lors que le paramètre `axios.defaults.withCredentials = true;` est positionné.
+
+### LDAP
+
+TODO
 
 ## DevOps CI/CD
 
-A
+Cette section explique comment a été mise en place le déploiement automatique ainsi que les différentes pipeline de test. Les détails d'implémentation de configuration des différentes pip
 
-### Configuration de environnement
+### Intégration continue
 
-## Configuration de production
+L'intégration continue consiste à faire des livraisons continue ainsi que de mettre en place des tests afin de vérifier que ces livraisons soient stables. Ces livraisons continue sont en partie réalisé grâce à la méthodologie GitFlow et aux GitHub actions
 
-## Firebase Cloud Messaging
+#### Laravel
 
-* Intégration de PWA avec Vue.js, @notif1.
+Laravel possède deux pipelines de test, une qui utilise MySQL (MariaDB) et une autre SQLite, cette façon de faire nous garanti une certaine abstraction entre l'utilisation de la base de donnée et notre code, en effet chaque moteur de base de données possède des particularités en utilisant deux systèmes de base de données on peut garantir l'interpolation entre les deux différents type de base de donnée.
+
+En plus du test de connexion à la base de donnée, les tests unitaires PHPUnit sont lancés en fin de traitement pour les deux pipelines.
+
+```{.yml caption="Pipeline de test Laravel SQLite"}
+name: Laravel CI SQLite fast
+
+on:
+  push:
+
+defaults:
+  run:
+    working-directory: ./backend
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+    - name: Install composer Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Generate key
+      run: php artisan key:generate
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+    - name: Create Database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: |
+        php artisan migrate --seed
+        vendor/bin/phpunit
+```
+
+La version MySQL est similaire à cette dernière, seule la configuration de la base de donnée change.
+
+### Livraison continue
+
+La livraison est une étape qui consiste à déployer de manière automatique dès qu'une modification de code est effectuée. Ainsi notre application reflète toujours l'état actuel du code.
+
+#### Configuration du serveur
+
+Le déploiement automatique ne s'occupe que de mettre les données de l'application à jour, elle ne s'occupera pas de la configuration totale du serveur qui nécessite plusieurs composants indépendants (npm, nginx, composer, php, mariadb, etc...). Il faut donc s'atteler à créer une configuration minimale du serveur pour accueillir notre backend ainsi que notre frontend.
+
+```{.bash caption="Serveur : installation des dépendences de base}
+  #Server database mariadb
+  sudo apt install mariadb-server
+
+  # NPM pour VueJs
+  sudo apt install npm 
+
+  # PHP et de ses dépendances
+  sudo apt install php7.4 libapache2-mod-php7.4 php7.4-curl php-pear php7.4-gd php7.4-dev php7.4-zip php7.4-mbstring php7.4-mysql php7.4-xml curl php7.4-ldap -y
+
+  # Composer pour les dépendances php
+  sudo apt install composer
+```
+
+#### Configuration de MariaDB
+
+Enfin de garder la base de donnée de Caravel dans un vase clos, un utilisateur spécifique est créé pour accéder aux données de Caravel.
+
+```{.sql caption="Serveur : création de la db et d'un user particulier"}
+CREATE DATABASE Caravel;
+
+grant all privileges on Caravel.* TO 'Caravel'@'localhost' identified by 'PLACERHOLDER_PASSWORD';
+
+flush privileges;
+```
+
+#### Configuration de Nginx
+
+Dans un premier temps, il a été choisi de séparer le backend et le frontend via deux sous domaines différents à savoir `http://caravel.ing.he-arc.ch/` pour la partie frontend et `http://api.caravel.ing.he-arc.ch/` mais après plusieurs tests, il semble que cela ne soit pas possible en tout cas en l'état, car le sous domaine api.* n'est pas redirigé sur le serveur, il faudrait donc ajouter une entrée DNS supplémentaire au niveau du service informatique. Afin de ne pas perdre de temps sur la partie configuration, il a été choisi en définitive de faire passer l'api sur une route spécifique c'est-à-dire `http://caravel.ing.he-arc.ch/api`. La configuration suivante du Nginx reflète ce dernier choix.
+
+```{.bash caption="Serveur : configuration Nginx"}
+  # Caravel conf
+server {
+  index index.php index.html;
+  root /var/www/caravel/backend/public;
+  server_name caravel.ing.he-arc.ch;
+  client_max_body_size 210M;
+
+  location / {
+      root /var/www/caravel/frontend/dist;
+      try_files $uri /index.html;
+  }
+
+  location /api {
+      try_files $uri $uri/ /index.php?$query_string;
+  }
+
+  location ^~ /uploads/ {
+      root /var/www/caravel/backend/public/;
+  }
+
+  location ~ \.php$ {
+      fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+      fastcgi_index index.php;
+      fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+      include fastcgi_params;
+  }
+
+    listen 443 ssl http2; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/caravel.ing.he-arc.ch/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/caravel.ing.he-arc.ch/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+    if ($host = caravel.ing.he-arc.ch) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+  listen 80;
+  server_name caravel.ing.he-arc.ch;
+    return 404; # managed by Certbot
+}
+```
+
+La partie SSL est directement gérée par [CertBot](https://certbot.eff.org/) qui est un outil open source qui permet d'automatiquement enroller les sites issue de la configuration nginx avec des certificats Let's Encrypt et donc d'activer l'HTTPS.
+
+#### Runners GitHub
+
+Un runner GitHub est un agent qui s'installe sur un serveur distant, il permet de lancer directement des tâches sur ce dernier depuis des [GitHub Actions](https://github.com/features/actions), cela est nécessaire pour effectuer le déploiement automatique. Pour les détails d'installation voir la [page wiki dédiée](https://github.com/HE-Arc/Caravel/wiki/CI-CD-Caravel-2.0) sur le GitHub de Caravel.
+
+### Environnement de production
+
+Certaines configurations sont dépendantes de l'environnement (base de données, ldap, etc...), un fichier de configuration unique ne peut être défini pour tous les environments. De même que ces derniers fichiers peuvent contenir des informations sensibles il est donc nécessaire de faire une configuration propre à chaque environnement dont elle seul détient les informations.
+
+#### Méthode par écrasement
+
+La méthode pour gérer la configuration de la production consiste à écraser ou ajouter les fichiers nécessaires lors du déploiement automatique, pour ce faire la configuration est stockée sur un dossier spécifique `/var/www/config/caravel` et à chaque déploiement cette configuration est copié dans le répertoire de déploiement. Il suffit donc de poser le fichier de configuration nécessaire que l'on veut surcharger dans le dossier en respectant la nomenclature du dossier cible, par exemple pour le fichier `auth.php` il faut donc déposer le fichier `auth.php` dans `/var/www/config/caravel/backend/config/` il sera alors automatiquement copié lors du déploiement.
+
+#### Dossier de téléchargement
+
+Une des problématiques avec le déploiement c'est que le mise à jour passe par le remplacement de tous les fichiers de notre application par la dernière version disponible sur notre repository GitHub, cependant les dossiers de téléchargement sont propres à chaque webapp, il ne faut donc pas les remplacer lors de la mise à jour du contenu de notre webapp.
+
+Pour régler cette problématique, les deux dossiers de téléchargement :
+
+* `backend/storage`
+* `backend/public/uploads`
+
+sont, lors du déploiement, créés comme des liens symboliques sur des répertoires qui ne sont pas dans le répertoire de déploiement, ce qui évite que les dossiers ne soient à chaque fois écraser pour le déploiement d'une nouvelle version.
+
+## Système de notification
+
+Le système de notification se divise en deux parties, la première qui est le déclencheur des notifications et la seconde qui consiste à récupérer les notifications. Ce découpage en deux parties est relative au découpage back et front end.
+
+![Schéma global du système de notifications \label{schemaNotif}](assets/20210721_184742_image.png)
+
+Sur la figure \ref{schemaNotif} nous pouvons voir le schéma global des transactions effectuées lors d'une notification. Le déclenchement qui se produit avec le client 1, puis au niveau du backend nous avons deux actions qui sont effecutées, une première va enregistrer la notification en DB, l'autre va s'occuper d'envoie une notification au serveur Firebase Cloud Messaging. Et finalement les différentes notifications vont être décendues sur les différents client via un système de websocket mis en place grâce aux outils fourni par Firebase.
+
+### Déclenchement d'une notification
+
+Pour déclencher une notification au niveau du backend, il faut qu'une modification ait lieue sur une tâche, une question ou un commentaire. Pour détecter ses changements [des observers](https://laravel.com/docs/8.x/eloquent#observers) ont été mis en place au niveau du backend. Dès qu'une action parmis les types Création, Mise à jour et Supression est effectuée, ces observers sont susceptible d'être appelés. Chaque observer à sa propre mécanique pour savoir quand il doit être déclenché et à qui les notifications sont destinées.
+
+#### TaskObserver
+
+Le TaskObserver est déclenché par les actions suivantes :
+
+* Création
+* Mise à jour
+* Suppression
+
+Lorsqu'une de ces actions est effectué, le TaskObserver est alors appelé et les notifications sont envoyées directement à tous les membres du groupe auquel la tâche est rattaché.
+
+#### QuestionObserver
+
+Le QuestionObserver est déclenché par les actions suivantes :
+
+* Création
+* Mise à jour
+
+Lorsqu'une de ces actions est effectué, le QuestionObserver est alors appelé et les notifications sont envoyées directement à tous les membres du groupe auquel la question est rattachée.
+
+#### CommentObserver
+
+Le CommentObserver est déclenché par les actions suivantes :
+
+* Création
+
+Lorsqu'une de ces actions est effectué, le CommentObserver est alors appelé et les notifications sont envoyées directement à tous les participants de la question.
+
+#### Gestion de la diffusion des notifications
+
+Lorsqu'une notification est créée, elle représente une classe particulière, la classe `Action.php`, c'est elle qui va enduire le comportement de la notification, c'est à dire comment elle va être distribuée ou stockée. Elle posède donc une méthode propre qui donne les différents canaux de diffusion de la notification.
+
+```{.php caption="Notifications : canaux de diffusion"}
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        //faire le check pour le user (notifiable) si les paramètres sont ok
+        return ['database', FcmChannel::class];
+    }
+```
+
+Dans notre cas, notre action va être stockée en DB et diffusée via le Firebase Cloud Messaging. Pour le canal `database` il s'agit d'un canal disponible par défaut dans Laravel, en ce qui concerne le FCM channel il s'agit d'un [ajout externe](https://laravel-notification-channels.com/fcm/).
+
+Pour chaque canal il faut ensuite déterminer son comportement via les méthodes appropriées.
+
+```{.php caption="Notification : comportement des canaux"}
+    public function toFcm($notifiable) // Pour Firebase Cloud Messaging
+    {
+        return ...;
+    }
+
+    public function toArray($notifiable) // Pour l'enregistrement en DB
+    {
+        return ...;
+    }
+```
+
+##### Envoi asynchrone des notifications
+
+Si beaucoup de membres sont dans le groupe cette action peut prendre beaucoup de temps, il est nécessaire que cette tâche ne bloque pas la requête du client, il est possible de faire en sorte de mettre les notifications dans une queue qui sera alors executé dans un autre thread. Pour cela il suffit de rajouter le trait Queueable à notre classe ains que l'interface ShouldQueue
+
+````{.php caption="Notification : envoie asynchrone"}
+class ... implements ShouldQueue
+{
+    use Queueable;
+
+    ...
+
+}
+````
+
+A partir de là Laravel s'occupe seul de faire le travail en détectant automatiquement l'interface `ShouldQueue`.
+
+### Configuration de FCM
+
+Pour la configuration de FCM au niveau du backend la documentation officiel de @notif4 doit être suivie. En ce qui concerne la configuration au niveau du backend il faut se référer aux documents utilisés dans le cadre de ce projet :
+
+* How to add FCM to vue.js, @notif1.
 * Intégration de Firebase Cloud Message avec Laravel et Vue.js, @notif2.
 * Documentation officiel de Firebase Cloud Message, @notif3.
+
+#### Changements par rapport à la conception
+
+Par rapport à la conception les déclencheurs suivants n'ont pas été traités :
+
+* Demande d'ajout au groupe
+* Accepté dans un groupe
+* Refusé d'un groupe
+
+par manque de temps.
+
+### Récupération des notifications depuis le frontend {#fcmfront}
+
+Pour l'envoie de notification aux utilisateurs, le backend a besoin de connaitre le token FCM de l'utilisateur, ce token ne peut être obtenu que par le client, comme la notification est lancée depuis le backend pour des raisons de sécurité il faut donc transmettre ce token du front au backend. 
+
+Cette transaction se fait depuis la page de login, si l'utilisateur accepte les notifications push, alors l'enrollement du token FCM est effectué, une route au niveau de l'api `api/profile/fcmToken` est donc disponible pour enregistrer le token depuis le frontend.
+
+blabla affichage des notifs
 
 ## Frontend
 
@@ -554,11 +841,7 @@ A
 
 ### Vuex
 
-### Pagination
-
 ### Localisation
-
-### Notifications
 
 ### Composants
 
@@ -569,10 +852,6 @@ A
 ### Filtres
 
 ### Gestion des erreurs Axios
-
-### Problème de réactivité
-
-Vue.set(...)
 
 ### Gestion du chargement
 
@@ -585,10 +864,6 @@ Vue.set(...)
 `FormRequest`
 
 ### Localisation
-
-### Notifications
-
-`Observer`
 
 ### Moteur de recherche
 
@@ -624,6 +899,10 @@ En Annexe ?
 
 # Améliorations
 
+* Revoir le système de notification
+* système d'abonnement
+*
+
 \newpage
 
 # Conclusion
@@ -631,5 +910,10 @@ En Annexe ?
 \newpage
 
 # Annexes
+
+* Installation et configuration du serveur
+* Configuration de l'environnement de travail
+* Planning
+* Journal de travail
 
 \newpage
