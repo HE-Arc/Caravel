@@ -504,17 +504,13 @@ La méthodologie de travail se base sur l'utilisation GitFlow qui consiste à cr
 
 Lorsqu'une `feature` est aboutie et est validée par l'équipe de développement, elle est alors poussée sur la branche `develop` pour validation, pour une fois que la branche `develop` est considérée comme stable, celle-ci peut être poussée sur la branche `master`.
 
-Cette méthodologie implique une bonne analyse en amont des tâches à effectuer ainsi qu'une découpage minutieux des tâches afin de garder des branches `features` simple et concise. Mais permet un suivi clair de l'avancement du projet ainsi qu'une revue plus simple de chaque nouvelle fonctionnalité mais demande un effort supplémentaire (création d'une branche et d'une pull request pour chaque fonctionnalité).
+Cette méthodologie implique une bonne analyse en amont des tâches à effectuer ainsi qu'un découpage minutieux des tâches afin de garder des branches `features` simple et concise. Cela permet un suivi clair de l'avancement du projet ainsi qu'une revue plus efficace de chaque nouvelle fonctionnalité mais demande un effort supplémentaire (création d'une branche et d'une pull request pour chaque fonctionnalité).
 
 \newpage
 
 # Implémentation
 
-Dans cette section il s'agit d'expliquer les différentes étapes majeures qui ont permis la réalisation du projets ainsi que d'expliciter les différents choix techniques effectués.
-
-## Choix de la base de donnée
-
-Pour le choix de la base de donnée, il y a globalement deux possibilités qui s'imposent : PostgreSQL ou MariaDB (MySQL). Un article de @choiceDB compare ces deux versions en terme de performance, il s'avère que MariaDB est plus performant sur de grande requête que PostgreSQL. Le choix s'est donc porté sur l'utilisation de MariaDB.
+Dans cette section il s'agit d'expliquer les différentes étapes majeures qui ont permis la réalisation du projet ainsi que d'expliciter les différents choix techniques effectués.
 
 ## Authentification
 
@@ -549,9 +545,104 @@ const response: AxiosResponse = await axios({
 
 Nous pouvons constater en ligne 1, aucun retour particulier n'est attendu car Laravel va automatiquement inscrire les cookies nécessaires et la librairie utilisée pour les appels backend, Axios, va lui aussi de manière automatique faire les configurations nécessaires dès lors que le paramètre `axios.defaults.withCredentials = true;` est positionné.
 
-### LDAP
+### Authentification LDAP
 
-TODO
+Une fois la configuration simple mise en place, il s'agit d'ajouter l'authentification LDAP. Dans le cas de la he-arc il s'agit d'une connexion à un Active Directory, pour effectuer des tests en local un OpenLDAP suffit.
+
+````{.bash caption="LDAP : création d'un annuaire avec docker"}
+docker run -d --rm -p 10389:10389 -p 10636:10636 rroemhild/test-openldap 
+````
+
+Ce docker permet de rapidement mettre en place un annuaire OpenLDAP, les informations sur le contenu (utilisateurs, groupes, OUs, etc...) se trouve sur le [readme du GitHub](https://github.com/rroemhild/docker-test-openldap).
+
+#### LdapRecord vs Adldap2
+
+Il existe actuellement deux outils pour effectuer la connexion à un LDAP, [Adldap2](https://adldap2.github.io/Adldap2) système de connexion LDAP éprouvé, bien documenté mais il n'est plus mis à jour à part pour la correction de bug. De l'autre côté, il existe [LdapRecord](https://ldaprecord.com/docs/laravel/v2/), vue comme le successeur d'Adldap2, il est facile d'utilisation et il existe une documentation spécifique pour Laravel.
+
+Après discussion avec M. Nicolas Summer et du au fait que l'Adldap2 n'est plus maintenu que pour des bugfix, il a été choisi d'utiliser LdapRecord.
+
+##### Synchronisation LDAP
+
+La connexion à un annuaire à pour but de simplifier la vie de l'utilisateur, ainsi nous pouvons récupérer des informations sur l'utilisateur sans l'intervention de celui-ci. Les champs synchronisés sont données dans le fichier `auth.php`.
+
+```{.php caption="LDAP : synchronisation des champs"}
+  'driver' => 'ldap',
+  'model' => LdapRecord\Models\ActiveDirectory\User::class, // Specify Active Directory or OpenLDAP
+  'rules' => [],
+  'database' => [
+      'model' => App\Models\User::class,
+      'sync_attributes' => [ // champs synchronisés
+          'name' => 'cn',
+          'email' => 'mail',
+          'firstname' => 'givenName',
+          'lastname' => 'sn',
+          App\Ldap\AttributeHandler::class,
+      ],
+  ],
+```
+
+Les champs synchronisés se trouve sous le paramètre `sync_attributes`, à partir de la il peut s'agir d'un synchronisaiton un pour un, c'est-à-dire sans transformation, au quel cas il suffit de mettre juste le champs de la cible dans l'annuaire à synchroniser. Pour des champs plus complexe qui ne peuvent être simplement repris, dans lequel un traitement est nécessaire, il est possible de définir une classe pour gérer des cas spéciaux.
+
+C'est justement ce qui est effectuer pour la synchronisation du champs `isTeacher` car il n'existe pas de champs dans l'annuaire pour déterminer cette information directement, il faut donc la calculer à partir d'autre champs.
+
+````{.php caption="LDAP : gestion de paramètre spécifique"}
+class AttributeHandler
+{
+    public function handle(LdapUser $ldap, DatabaseUser $user)
+    {
+        //set isLdap, set isProf
+        $user->isLDAP = 1;
+        $allowedOUs = explode(";", env("LDAP_TEACHERS_OUs", ""));
+        $allowedOUs = array_filter($allowedOUs);
+
+        //check if user is in a allowedOU to
+        if (!empty($allowedOUs)) {
+            foreach ($allowedOUs as $dn) {
+                $ou = OrganizationalUnit::find($dn);
+                if ($ou && $ldap->isDescendantOf($ou)) {
+                    $user->isTeacher = 1;
+                    return;
+                }
+            }
+        }
+
+        $user->isTeacher = 0;
+    }
+}
+````
+
+C'est donc dans la classe `AttributeHandler.php` qu'on détermine si l'utilisateur est un professeur ou non. Basiquement il s'agit de vérifier la présence de l'utilisateur dans certaines OUs qui sont déterminés par le paramètre `LDAP_TEACHERS_OUs` dans le `.env`.
+
+##### Mécanisme de login
+
+Une fois que la configuration LDAP est en place, il faut paramétrer le comportement du login LDAP, en effet quel champs LdapRecord doit-il vérifier dans l'annuaire, est-ce avec le mail, le nom d'utilisateur ?
+
+Il faut donc enrichir la mécanique standard pour ajouter notre propre mécanique, cela se passe dans `AuthAPIController.php`.
+
+```{.php caption="LDAP : AuthAPIController.php"}
+    public function login(Request $request)
+    {
+        $credentials = $request->only('mail', 'password');
+        $credentials2 = [
+            'sAMAccountName' => $credentials['mail'],
+            'password' => $credentials['password'],
+            'fallback' => [
+                'email' => $request->mail,
+                'password' => $request->password,
+            ]
+        ];
+
+        if (Auth::attempt($credentials) || Auth::attempt($credentials2)) {
+            // auth successful
+            ...
+        } else {
+            // auth failed
+            ...
+        }
+    }
+```
+
+Pour le projet Caravel, il a été décidé que l'utilisateur devrait pouvoir se connecter avec son compte mail, pour des raisons pratique nous avons rajouté la possiblité de se connecter simplement avec son nom d'utilisateur. C'est la partie `$credentials2`, de plus cette partie contient un `fallback`, ceci permet de se connecter avec un compte existant uniquement sur Caravel et n'ayant pas d'existence sur le LDAP.
 
 ## DevOps CI/CD
 
@@ -618,18 +709,18 @@ La livraison est une étape qui consiste à déployer de manière automatique d�
 
 Le déploiement automatique ne s'occupe que de mettre les données de l'application à jour, elle ne s'occupera pas de la configuration totale du serveur qui nécessite plusieurs composants indépendants (npm, nginx, composer, php, mariadb, etc...). Il faut donc s'atteler à créer une configuration minimale du serveur pour accueillir notre backend ainsi que notre frontend.
 
-```{.bash caption="Serveur : installation des dépendences de base}
-  #Server database mariadb
-  sudo apt install mariadb-server
+```{.bash caption="Serveur : installation des dépendences de base"}
+#Server database mariadb
+sudo apt install mariadb-server
 
-  # NPM pour VueJs
-  sudo apt install npm 
+# NPM pour VueJs
+sudo apt install npm 
 
-  # PHP et de ses dépendances
-  sudo apt install php7.4 libapache2-mod-php7.4 php7.4-curl php-pear php7.4-gd php7.4-dev php7.4-zip php7.4-mbstring php7.4-mysql php7.4-xml curl php7.4-ldap -y
+# PHP et de ses dépendances
+sudo apt install php7.4 libapache2-mod-php7.4 php7.4-curl php-pear php7.4-gd php7.4-dev php7.4-zip php7.4-mbstring php7.4-mysql php7.4-xml curl php7.4-ldap -y
 
-  # Composer pour les dépendances php
-  sudo apt install composer
+# Composer pour les dépendances php
+sudo apt install composer
 ```
 
 #### Configuration de MariaDB
@@ -695,7 +786,7 @@ server {
 }
 ```
 
-La partie SSL est directement gérée par [CertBot](https://certbot.eff.org/) qui est un outil open source qui permet d'automatiquement enroller les sites issue de la configuration nginx avec des certificats Let's Encrypt et donc d'activer l'HTTPS.
+La partie SSL est directement gérée par [CertBot](https://certbot.eff.org/) qui est un outil open source qui permet d'automatiquement enroller les sites issue de la configuration Nginx avec des certificats Let's Encrypt et donc d'activer l'HTTPS.
 
 #### Runners GitHub
 
@@ -726,11 +817,11 @@ Le système de notification se divise en deux parties, la première qui est le d
 
 ![Schéma global du système de notifications \label{schemaNotif}](assets/20210721_184742_image.png)
 
-Sur la figure \ref{schemaNotif} nous pouvons voir le schéma global des transactions effectuées lors d'une notification. Le déclenchement qui se produit avec le client 1, puis au niveau du backend nous avons deux actions qui sont effecutées, une première va enregistrer la notification en DB, l'autre va s'occuper d'envoie une notification au serveur Firebase Cloud Messaging. Et finalement les différentes notifications vont être décendues sur les différents client via un système de websocket mis en place grâce aux outils fourni par Firebase.
+Sur la figure \ref{schemaNotif} nous pouvons voir le schéma global des transactions effectuées lors d'une notification. Le déclenchement qui se produit avec le client 1, puis au niveau du backend nous avons deux actions qui sont effectuées, une première va enregistrer la notification en DB, l'autre va s'occuper d'envoie une notification au serveur Firebase Cloud Messaging. Et finalement les différentes notifications vont être descendues sur les différents client via un système de websocket mis en place grâce aux outils fourni par Firebase.
 
 ### Déclenchement d'une notification
 
-Pour déclencher une notification au niveau du backend, il faut qu'une modification ait lieue sur une tâche, une question ou un commentaire. Pour détecter ses changements [des observers](https://laravel.com/docs/8.x/eloquent#observers) ont été mis en place au niveau du backend. Dès qu'une action parmis les types Création, Mise à jour et Supression est effectuée, ces observers sont susceptible d'être appelés. Chaque observer à sa propre mécanique pour savoir quand il doit être déclenché et à qui les notifications sont destinées.
+Pour déclencher une notification au niveau du backend, il faut qu'une modification ait lieue sur une tâche, une question ou un commentaire. Pour détecter ses changements [des observers](https://laravel.com/docs/8.x/eloquent#observers) ont été mis en place au niveau du backend. Dès qu'une action parmi les types `Création`, `Mise à jour` et `Suppression` est effectuée, ces observers sont susceptible d'être appelés. Chaque observer à sa propre mécanique pour savoir quand il doit être déclenché et à qui les notifications sont destinées.
 
 #### TaskObserver
 
@@ -761,7 +852,7 @@ Lorsqu'une de ces actions est effectué, le CommentObserver est alors appelé et
 
 #### Gestion de la diffusion des notifications
 
-Lorsqu'une notification est créée, elle représente une classe particulière, la classe `Action.php`, c'est elle qui va enduire le comportement de la notification, c'est à dire comment elle va être distribuée ou stockée. Elle posède donc une méthode propre qui donne les différents canaux de diffusion de la notification.
+Lorsqu'une notification est créée, elle représente une classe particulière, la classe `Action.php`, c'est elle qui va enduire le comportement de la notification, c'est à dire comment elle va être distribuée ou stockée. Elle possède donc une méthode propre qui donne les différents canaux de diffusion de la notification.
 
 ```{.php caption="Notifications : canaux de diffusion"}
     /**
@@ -795,9 +886,9 @@ Pour chaque canal il faut ensuite déterminer son comportement via les méthodes
 
 ##### Envoi asynchrone des notifications
 
-Si beaucoup de membres sont dans le groupe cette action peut prendre beaucoup de temps, il est nécessaire que cette tâche ne bloque pas la requête du client, il est possible de faire en sorte de mettre les notifications dans une queue qui sera alors executé dans un autre thread. Pour cela il suffit de rajouter le trait Queueable à notre classe ains que l'interface ShouldQueue
+Si beaucoup de membres sont dans le groupe cette action peut prendre beaucoup de temps, il est nécessaire que cette tâche ne bloque pas la requête du client, il est possible de faire en sorte de mettre les notifications dans une queue qui sera alors exécuté dans un autre thread. Pour cela il suffit de rajouter le trait Queueable à notre classe ainsi que l'interface ShouldQueue
 
-````{.php caption="Notification : envoie asynchrone"}
+```{.php caption="Notification : envoie asynchrone"}
 class ... implements ShouldQueue
 {
     use Queueable;
@@ -805,17 +896,17 @@ class ... implements ShouldQueue
     ...
 
 }
-````
+```
 
 A partir de là Laravel s'occupe seul de faire le travail en détectant automatiquement l'interface `ShouldQueue`.
 
 ### Configuration de FCM
 
-Pour la configuration de FCM au niveau du backend la documentation officiel de @notif4 doit être suivie. En ce qui concerne la configuration au niveau du backend il faut se référer aux documents utilisés dans le cadre de ce projet :
+Pour la configuration de FCM au niveau du backend la documentation officielle de @notif4 doit être suivie. En ce qui concerne la configuration au niveau du backend il faut se référer aux documents utilisés dans le cadre de ce projet :
 
 * How to add FCM to vue.js, @notif1.
 * Intégration de Firebase Cloud Message avec Laravel et Vue.js, @notif2.
-* Documentation officiel de Firebase Cloud Message, @notif3.
+* Documentation officielle de Firebase Cloud Message, @notif3.
 
 #### Changements par rapport à la conception
 
@@ -829,33 +920,274 @@ par manque de temps.
 
 ### Récupération des notifications depuis le frontend {#fcmfront}
 
-Pour l'envoie de notification aux utilisateurs, le backend a besoin de connaitre le token FCM de l'utilisateur, ce token ne peut être obtenu que par le client, comme la notification est lancée depuis le backend pour des raisons de sécurité il faut donc transmettre ce token du front au backend. 
+Pour l'envoie de notification aux utilisateurs, le backend a besoin de connaitre le token FCM de l'utilisateur, ce token ne peut être obtenu que par le client, comme la notification est lancée depuis le backend pour des raisons de sécurité il faut donc transmettre ce token du front au backend.
 
-Cette transaction se fait depuis la page de login, si l'utilisateur accepte les notifications push, alors l'enrollement du token FCM est effectué, une route au niveau de l'api `api/profile/fcmToken` est donc disponible pour enregistrer le token depuis le frontend.
+```{.typscript caption="Notification : enregistrement du token FCM"}
+const fcmToken = await firebase
+                       .messaging()
+                       .getToken({ vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY });
+auth.addFcmToken(fcmToken);
+```
 
-blabla affichage des notifs
+Cette transaction se fait depuis la page de login, si l'utilisateur accepte les notifications push, alors l'enrôlement du token FCM est effectué, une route au niveau de l'api `api/profile/fcmToken` est donc disponible pour enregistrer le token depuis le frontend.
+
+#### Callback FCM
+
+Une fois que le token est enregistré, on peut récupérer les appels asynchrones issue de la librairie FCM.
+
+```{.typescript caption="Notification : call asynchrone des messages"}
+fire.messaging().onMessage((payload) => {
+  userModule.loadNotifications();
+  //Create notification push
+}
+```
+
+Depuis ce message asynchrone deux opérations sont effectuées, la première consiste à rafraichir les notifications interne de l'application et l'autre opération consiste à afficher la notification push sur le système cible (Android, Windows, etc...).
 
 ## Frontend
 
-`typescript`
+Cette section décrit les détails techniques important concernant l'utilisation du frontend avec `Vue.js`.
 
-### Vuex
+### Configuration Vue.js
 
-### Localisation
+La configuration initiale du projet est importante, car il décrit les fonctions qui seront utilisées tout au long du projet.
 
-### Composants
+![Frontend: configuration vuej.js](https://user-images.githubusercontent.com/6802086/120225739-10c86580-c246-11eb-8cf6-7cc6a2aa9129.png)
 
-#### Pagination
+#### Version 2 vs version 3
 
-#### Inputs
+Au début du projet, la version 3 de Vue.js venait de faire son apparition, à cause de sa meilleure intégration de TypeScript par défaut, la question s'est posée de savoir s'il était plus pertinent de travailler avec la version 2 ou la version 3 de Vue.js.
 
-### Filtres
+L'avantage de la version 3 repose essentiellement sur l'intégration par défaut de TypeScript, cependant les changements opérés dans cette nouvelle version a rendu caduc beaucoup de projets qui fonctionnaient sur la version 2 mais nécessitent une mise à jour pour la version 3 de Vue.js. Ceci inclut par exemple Vuex (que nous verrons plus en détails dans la section \ref{vuex}) qui n'était pas disponible en version stable en début de projet.
+
+Le choix s'est donc porté sur la version 2 de Vue.js pour des raisons de stabilité avec une intégration "manuelle" de TypeScript.
+
+#### Utilisation de TypeScript
+
+L'utilisation de TypeScript dans la version 2 de Vue.js a complexifié énormément le développement de Caravel car son intégration se base en partie sur l'utilisation de modules externes qui ne sont pas officiellement supportés, en voici une liste exhaustive.
+
+* [Vue-class-component](https://class-component.vuejs.org/)
+* [Vuex-Module-decorators](https://github.com/championswimmer/vuex-module-decorators)
+* [Vue-property-decorator](https://github.com/kaorun343/vue-property-decorator)
+
+### Vuex {#vuex}
+
+Vuex est un gestionnaire d'état (state management pattern) pour Vue.js. Il est utilisé comme source centrale d'information au sein de vue, avec des modificateurs d'état permettant de garantir qu'un état n'est modifié que de façon prédictible.
+
+![Vuex : one-way data flow, voir référence @vuex](assets/flow.png){width=300}
+
+Le principe devient utile lorsque plusieurs composants dépendent de la même source d'information et que ceux-ci peuvent tous induire un changement sur le contenu. Sans Vuex la manière de modifier ce contenu peut être implémentée de manière très différente à travers les différents composants et rendre les changements incohérents. De plus il arrive souvent qu'un composant enfant nécessite les propriétés d'un de ses parents qui n'est pas directe, sans l'utilisation de Vuex il est nécessaire de faire descendre cette propriétés à travers tous les enfants avant que l'enfant puisse acquérir cette information (cette dernière problématique peut aussi être résolue avec l'utilisation des [inject/provide](https://vuejs.org/v2/api/#provide-inject)).
+
+![Vuex : détails de fonctionnement, voir référence @vuex](assets/vuex.png){width=400}
+
+En détails, lorsqu'un composant veut faire une modification, il doit forcément faire appel à une `Action` qui va s'occuper d'initier les mutations nécessaires sur l'état des éléments. Cet état est ensuite transmis dans les différents composants.
+
+Cette manière de fonctionner est un élément central de Caravel.
+
+#### Modules
+
+Les modules permettent de récupérer ainsi que de faire des interactions sur des éléments spécifiques, voici une vue d'ensemble des différents modules ainsi que de leurs dépendances.
+
+![vuex, liste des modules](assets/20210722_141038_image.png)
+
+Tous les modules peuvent communiquer entre eux, les liens de dépendances présents dans la figure précédente seront décrits dans les sections qui vont suivre.
+
+De manière général ces modules offres des options CRUD dans leur domaine respectivement.
+
+##### User module
+
+Le module `User` contient les informations sur l'utilisateur connecté, de plus il contient aussi toutes les méthodes de connexion et de déconnexion de l'utilisateur.
+
+##### Group module
+
+Le module `Groups` permet de récupérer les groupes disponibles pour l'utilisateur courant. C'est le module principale de l'application car il est le chef d'orchestre des autres modules, tant que ce module n'est par chargé avec l'action `loadGroup(id: string)` les données des modules "enfants" sont vides.
+
+```{.typescript caption="groups module : chargement des dépendances"}
+ @Action
+  loadGroup(id: string): Promise<AxiosResponse> {
+    return new Promise((resolve, reject) => {
+      this.REQUEST();
+      axios({
+        url: process.env.VUE_APP_API_BASE_URL + `groups/${id}`,
+        method: "GET",
+      })
+        .then((response) => {
+          const group: GroupExtended = response.data;
+          TaskModule.load(group.tasks);
+          SubjectModule.load(group.subjects);
+          MemberModule.load(group.members);
+          this.LOADED();
+          resolve(response);
+        })
+        .catch((err) => {
+          this.ERROR();
+          reject(err);
+        });
+    });
+  }
+```
+
+L'action `loadGroup` a pour effet de charger les données pour des autres modules "enfants" tels que les modules `Task`, `Subject` et `Member`.
+
+#### Task module
+
+Le module task est basé sur le même principe que le module de groupe, ils possèdent la liste des tâches du groupe ainsi que la tâche sélectionnée si cela a lieu d'être.
+
+##### Calcul des statistique
+
+Le module `Task` détient une particularité supplémentaire, c'est le calcul des statistiques du groupe, en effet c'est dans ce module que les statistiques, c'est à dire le WES ainsi que le WLS, sont calculés.
+
+Le choix du calcul au niveau du frontend à pour but de rendre les vues statistiques dynamiques, dès l'ajout de la moindre tâche ou changement de crédit au niveau des sujets, toutes les statistiques sont dynamiquement recalculées et mise à jour dans l'interface. La deuxième option qui consistait à faire les calcules au niveau du backend aurait démandée beaucoup plus de complexité. En effet si par exemple une nouvelle tâche est créée, alors il faut effectuer une seconde requête au backend pour récupérer les nouvelles statistiques. En utilisant l'avantage des propriétés réactives de Vue.js on s'affranchit de ses requêtes supplémentaires et de la création de route particulière au niveau du backend.
+
+##### Module members, questions et subjects
+
+Les modules suivants sont des modules "standards", ils n'ont pas de particularité spécifique et ne seront donc pas détaillé dans ce document.
+
+##### Code redondant
+
+En créant les différents modules, il s'est avéré que beaucoup de code se répétait, en profitant de typescript, une tentative de solution a été élaborée :
+
+```{.typescript caption="vuex, module générique"}
+import { Data } from "@/types/data";
+import { VuexModule, Mutation, Action } from "vuex-module-decorators";
+import Vue from "vue";
+
+// inheritance broken https://github.com/championswimmer/vuex-module-decorators/issues/125 wait for vue 3
+
+export default abstract class DataModule<T extends Data> extends VuexModule {
+  _items: T[] = [];
+  _status = "";
+  protected name = "";
+
+  get items(): T[] {
+    return this._items;
+  }
+
+  get status(): string {
+    return this._status;
+  }
+
+  @Mutation
+  protected ERROR(): void {
+    this._status = "error";
+  }
+
+  @Mutation
+  protected REQUEST(): void {
+    this._status = "loading";
+  }
+
+  @Mutation
+  protected FINISH(): void {
+    this._status = "loaded";
+  }
+
+  @Mutation
+  protected LOAD_ITEMS(items: T[]): void {
+    this._items = items;
+    this._status = "loaded";
+  }
+
+  @Mutation
+  protected UPSERT_ITEM(data: T): void {
+    const index = this._items.findIndex((item) => item.id == data.id);
+    if (index === -1) {
+      this._items.push(data);
+    } else {
+      Vue.set(this._items, index, data);
+    }
+  }
+
+  @Mutation
+  protected REMOVE_ITEM(data: T): void {
+    const index = this._items.findIndex((item) => item.id == data.id);
+    if (index !== -1) {
+      Vue.delete(this._items, index);
+    }
+  }
+
+  @Action
+  load(items: T[]): void {
+    this.LOAD_ITEMS(items);
+  }
+
+}
+
+```
+
+Malheureusement l'utilisation du module vuex-module-decorators cause une [erreur dans la gestion de l'héritage](https://github.com/championswimmer/vuex-module-decorators/issues/125) de classe et il n'est donc pas possible d'utiliser cette version générique et elle est tout de même laissée à l'appréciation du lecteur à titre posthume et pour une utilisation future si le problème viendrait à être résolu.
+
+#### Gestion du chargement
+
+La gestion du chargement un élément important pour l'utilisateur, lorsqu'une action est effectuée un feedback doit être afficher à l'utilisateur afin d'éviter de la frustration et des comportements problématique (plusieurs soumissions du même formulaire, etc...).
+
+C'est ici que les status des modules sont intéressants, en effet lorsque le module effectue une requête, son status passe en mode "loading" lorsque que ce dernier à fini il passe sur le status "loaded". C'est ce que nous allons utiliser ici pour afficher une feedback lors du chargement.
+
+```{.typescript caption="extrait du fichier GroupContainer.vue"}
+  get isGroupLoaded(): boolean {
+    return groupModule.status == "loaded";
+  }
+
+  get isTasksLoaded(): boolean {
+    return taskModule.status == "loaded";
+  }
+
+  get isLoaded(): boolean {
+    return this.isGroupLoaded && this.isTasksLoaded;
+  }
+```
+
+Le composant `GroupContainer` possède la propriété `isLoaded` qui lui permet de savoir si les différents modules sont chargés, si ce n'est pas le cas il affiche une image de chargement.
+
+Ceci est un exemple d'utilisation des status des modules, d'autres pages utilise ce système ou des système interne (comme le chargement sur le bouton dans les formulaires ![](assets/20210722_164108_image.png))
 
 ### Gestion des erreurs Axios
 
-### Gestion du chargement
+La gestion des erreurs Axios peut être faite de manière unitaire, c'est-à-dire, chaque composant qui effectue une requête s'occupe seul de gérer toutes les erreurs issues d'une requête. Or si une partie des erreurs doit être gérée par le composant lui même, il y a certaines erreurs qui devraient être gérées de manières globale et c'est justement une chose qui peut-être mise en place avec Axios en utilisant les `interceptors`.
+
+```{.typescript caption="axios, gestion des erreurs globales avec les interceptors"}
+Axios.interceptors.response.use(
+  (reponse) => reponse,
+  (error: AxiosError) => {
+    switch (error.response?.status) {
+      case 401:
+        if (router.currentRoute.name != "Login") {
+          userModule.logout();
+          router.push({
+            name: "Login",
+            query: { redirect: router.currentRoute.fullPath },
+          });
+        }
+        break;
+      case 403:
+        if (router.currentRoute.name != "Forbidden")
+          router.replace({ name: "Forbidden" });
+        break;
+    }
+    return Promise.reject(error);
+  }
+);
+```
+
+Avec les interceptors, les erreurs 401 (authentification invalide) ainsi que les erreurs 403 sont gérées de manière automatique pour toutes les appels effectués avec Axios.
+
+### Vue router
+
+Vue router est un module qui permet de gérer les différentes routes d'accès à Caravel.
+
+#### Protection des routes
+
+#### Chunck
+
+### PWA
+
+![PWA, score lighthouse](assets/20210722_172442_image.png)
 
 ## Backend
+
+### Choix de la base de donnée
+
+Pour le choix de la base de donnée, il y a globalement deux possibilités qui s'imposent : PostgreSQL ou MariaDB (MySQL). Un article de @choiceDB compare ces deux versions en terme de performance, il s'avère que MariaDB est plus performant sur de grande requête que PostgreSQL. Le choix s'est donc porté sur l'utilisation de MariaDB.
 
 ### Policies
 
