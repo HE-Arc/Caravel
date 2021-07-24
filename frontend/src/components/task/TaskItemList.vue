@@ -1,6 +1,6 @@
 <template>
   <v-list-item
-    v-if="task"
+    v-if="task && subject"
     class="task-item-list mb-2"
     :class="{ finished: task.has_finished }"
     :to="{
@@ -36,7 +36,7 @@
         <timeago :datetime="task.created_at"></timeago>
         <span class="ml-2" v-if="hasQuestions"
           ><v-icon small>mdi-message-question-outline</v-icon>
-          {{ task.questions.length }}</span
+          {{ task.questions_count }}</span
         >
         <span class="ml-2" v-if="hasReactions"
           ><v-icon small>mdi-drama-masks</v-icon> {{ countReactions }}</span
@@ -109,14 +109,14 @@ export default class TaskItemList extends Vue {
   }
 
   get hasQuestions(): boolean {
-    return this.task.questions && this.task.questions.length > 0;
+    return this.task.questions_count != "0";
   }
 
   get hasReactions(): boolean {
     return this.task.reactions_list && this.task.reactions_list.length > 0;
   }
 
-  finished(): void {
+  async finished(): Promise<void> {
     this.task.has_finished = !this.task.has_finished;
 
     const data = {
@@ -124,7 +124,12 @@ export default class TaskItemList extends Vue {
       hasFinished: this.task.has_finished,
     };
 
-    taskModule.setFinish(data);
+    try {
+      await taskModule.setFinish(data);
+      this.$toast.success(this.$t("global.success").toString());
+    } catch (err) {
+      this.$toast.error(this.$t("global.errors.unknown").toString());
+    }
   }
 }
 </script>

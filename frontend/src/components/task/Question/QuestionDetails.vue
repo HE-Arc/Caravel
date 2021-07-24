@@ -3,6 +3,7 @@
     <v-card>
       <v-card-text>
         <v-text-field
+          class="mb-5"
           :label="$t('questions.form.title')"
           v-model="questionForm.title"
           :error-messages="errors.title"
@@ -16,7 +17,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="success" @click="save">
+        <v-btn color="success" @click="save" :loading="isLoading">
           {{ questionId ? $t("global.save") : $t("global.add") }}
         </v-btn>
       </v-card-actions>
@@ -43,6 +44,7 @@ export default class QuestionDetails extends Vue {
   @Prop() title?: string;
   @Prop() description?: string;
   @Prop() task_id!: string;
+  isLoading = false;
 
   questionForm: QuestionForm = Factory.getQuestionForm();
   errors = {};
@@ -64,14 +66,16 @@ export default class QuestionDetails extends Vue {
   async save(): Promise<void> {
     this.questionForm.id = this.questionId;
     this.questionForm.task_id = this.task_id;
-
+    this.isLoading = true;
     try {
       await questionModule.upsertQuestion(this.questionForm);
       this.clean();
       this.handleSave();
     } catch (err) {
       this.errors = err.response.data.errors;
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
+    } finally {
+      this.isLoading = false;
     }
   }
 

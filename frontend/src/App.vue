@@ -28,17 +28,9 @@
     </v-app-bar>
 
     <v-main>
-      <router-view v-show="loaded" />
-      <div class="text-center" v-show="!loaded">
-        <v-progress-circular
-          :size="70"
-          :width="7"
-          color="primary"
-          indeterminate
-          class="mt-5"
-        ></v-progress-circular>
-      </div>
+      <router-view />
     </v-main>
+    <footer-app />
   </v-app>
 </template>
 
@@ -54,7 +46,7 @@ import Notificatons from "@/components/Notifications.vue";
 import groupModule from "@/store/modules/groups";
 import { Watch } from "vue-property-decorator";
 import NprogressContainer from "@/components/utility/NprogressContainer.vue";
-import firebase from "firebase";
+import FooterApp from "@/views/Footer.vue";
 
 @Component({
   components: {
@@ -63,6 +55,7 @@ import firebase from "firebase";
     QuickSearch,
     Notificatons,
     NprogressContainer,
+    FooterApp,
   },
 })
 export default class App extends Vue {
@@ -76,27 +69,8 @@ export default class App extends Vue {
     this.init();
   }
 
-  async mounted(): Promise<void> {
-    try {
-      await Notification.requestPermission();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
   async init(): Promise<void> {
     if (this.isLoggedIn && !this.loaded) {
-      firebase
-        .messaging()
-        .getToken({
-          vapidKey: process.env.VUE_APP_FIREBASE_VAPID_KEY,
-        })
-        .then((token) => {
-          auth.addFcmToken(token);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
       await groupModule.loadGroups();
     }
     this.loaded = true;

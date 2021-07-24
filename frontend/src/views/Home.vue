@@ -1,14 +1,37 @@
 <template>
   <v-container class="mt-4">
-    <v-row v-show="hasGroups">
+    <v-row v-if="!isLoaded">
+      <v-col cols="12">
+        <div class="text-center" v-show="!isLoaded">
+          <v-progress-circular
+            :size="70"
+            :width="7"
+            color="primary"
+            indeterminate
+            class="mt-5"
+          ></v-progress-circular>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row v-else-if="hasGroups">
       <v-col cols="12">
         <div class="text-h4 font-weight-light">{{ $t("groups.mygroups") }}</div>
       </v-col>
-      <v-col v-for="(group, i) in groups" :key="i" cols="12">
-        <group-item :group="group" :hasJoin="false" />
+      <v-col cols="12">
+        <paginate :items="groups" :perPage="5">
+          <template #default="{ items }">
+            <group-item
+              v-for="group in items"
+              :group="group"
+              :key="group.id"
+              :hasJoin="false"
+              class="mt-3"
+            />
+          </template>
+        </paginate>
       </v-col>
     </v-row>
-    <v-row v-show="!hasGroups">
+    <v-row v-else>
       <v-col cols="12" class="text-center" offset-md="3" md="6">
         <v-card flat>
           <v-card-title class="justify-center text-h3 font-weight-thin my-6">
@@ -23,9 +46,16 @@
             </p>
           </v-card-text>
           <v-card-actions class="justify-center">
-            <v-btn text color="primary" :to="{ name: 'GroupSearch' }">{{
-              $t("groups.search-title")
-            }}</v-btn>
+            <v-btn
+              x-large
+              color="primary"
+              class="mx-4"
+              :to="{ name: 'GetStarted' }"
+              outlined
+            >
+              {{ $t("home.bouton") }}
+              <v-icon class="ml-2"> mdi-arrow-right </v-icon>
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -34,17 +64,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import groupModule from "@/store/modules/groups";
 import { Group } from "@/types/group";
-import GroupCard from "@/components/GroupCard.vue";
-import GroupItem from "@/components/GroupItem.vue";
+import GroupItem from "@/components/group/GroupItem.vue";
+import Paginate from "@/components/utility/Paginate.vue";
 
 @Component({
   components: {
-    GroupCard,
     GroupItem,
+    Paginate,
   },
 })
 export default class Home extends Vue {
@@ -54,6 +83,10 @@ export default class Home extends Vue {
 
   get hasGroups(): boolean {
     return this.groups.length > 0;
+  }
+
+  get isLoaded(): boolean {
+    return groupModule.status == "loaded";
   }
 }
 </script>

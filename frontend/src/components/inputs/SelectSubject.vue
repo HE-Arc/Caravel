@@ -29,19 +29,14 @@
         {{ data.item.text }}
       </template>
     </v-autocomplete-filter>
-    <subject-details
-      :subjectData="subjectModal"
-      :isActive="openSubjectForm"
-      @close="openSubjectForm = false"
-      @handle-subject="handleNewSubject"
-    />
+    <subject-details ref="subjectForm" />
   </div>
 </template>
 
 <script lang="ts">
 import { Dictionary } from "@/types/helpers";
 import { Subject } from "@/types/subject";
-import { Component, Vue, VModel } from "vue-property-decorator";
+import { Component, Vue, VModel, Ref } from "vue-property-decorator";
 import subjectModule from "@/store/modules/subjects";
 import SubjectDetails from "@/components/subject/SubjectDetails.vue";
 import Factory from "@/types/Factory";
@@ -55,8 +50,7 @@ import VAutocompleteFilter from "@/components/utility/VAutocompleteFilter.vue";
 })
 export default class SelectSubject extends Vue {
   @VModel({ type: String }) subject!: string;
-  subjectModal: Subject = Factory.getSubject();
-  openSubjectForm = false;
+  @Ref() readonly subjectForm!: SubjectDetails;
 
   get subjects(): Dictionary<string | number>[] {
     const subjects: Subject[] = subjectModule.subjects;
@@ -68,12 +62,10 @@ export default class SelectSubject extends Vue {
     }));
   }
 
-  addLabel(text: string): void {
-    this.subjectModal.name = text;
-    this.openSubjectForm = true;
-  }
-
-  handleNewSubject(subject: Subject): void {
+  async addLabel(text: string): Promise<void> {
+    const subjectForm = Factory.getSubject();
+    subjectForm.name = text;
+    const subject = await this.subjectForm.open(subjectForm);
     this.subject = subject.id.toString();
   }
 }

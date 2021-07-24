@@ -4,51 +4,45 @@
       <v-toolbar-title class="text-h4 font-weight-light">
         {{ $t("group.settings.members") }}
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        v-if="group.user_id != user.id"
-        color="error"
-        small
-        @click="leaveGroup"
-      >
-        <v-icon>mdi-logout</v-icon>
-        {{ $t("global.quit") }}
-      </v-btn>
     </v-toolbar>
     <v-card-text>
       <v-list rounded>
-        <member-item
-          v-for="member in members"
-          :key="member.id"
-          :member="member"
-        >
-          <v-chip small class="text-h7" v-if="user.id == member.id">
-            {{ $t("global.itsme") }}
-          </v-chip>
-          <div v-else-if="group.user_id == user.id">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="primary"
-                  text
-                  small
-                  v-bind="attrs"
-                  v-on="on"
-                  @click="changeLeader(member)"
-                >
-                  {{ $t("group.members.give_lead.label") }}
-                </v-btn>
-              </template>
-              <span>
-                {{ $t("group.members.give_lead.help", [member.name]) }}
-              </span>
-            </v-tooltip>
+        <paginate :items="members" :perPage="10">
+          <template #default="{ items }">
+            <member-item
+              v-for="member in items"
+              :key="member.id"
+              :member="member"
+            >
+              <v-chip small class="text-h7" v-if="user.id == member.id">
+                {{ $t("global.itsme") }}
+              </v-chip>
+              <div v-else-if="group.user_id == user.id">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary"
+                      text
+                      small
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="changeLeader(member)"
+                    >
+                      {{ $t("group.members.give-lead.label") }}
+                    </v-btn>
+                  </template>
+                  <span>
+                    {{ $t("group.members.give-lead.help", [member.name]) }}
+                  </span>
+                </v-tooltip>
 
-            <v-btn color="error" text small @click="kickMember(member)">{{
-              $t("group.members.kick")
-            }}</v-btn>
-          </div>
-        </member-item>
+                <v-btn color="error" text small @click="kickMember(member)">{{
+                  $t("group.members.kick")
+                }}</v-btn>
+              </div>
+            </member-item>
+          </template>
+        </paginate>
 
         <v-divider v-if="refused.length > 0"></v-divider>
 
@@ -56,12 +50,16 @@
           <v-subheader>{{
             $tc("group.members.rejected", refused.length)
           }}</v-subheader>
-          <member-item
-            v-for="member in refused"
-            :key="member.id"
-            :member="member"
-            :isGroupAdmin="group.user_id == member.id"
-          />
+          <paginate :items="refused" :perPage="5">
+            <template #default="{ items }">
+              <member-item
+                v-for="member in items"
+                :key="member.id"
+                :member="member"
+                :isGroupAdmin="group.user_id == member.id"
+              />
+            </template>
+          </paginate>
         </div>
       </v-list>
     </v-card-text>
@@ -80,11 +78,13 @@ import { Member } from "@/types/member";
 import MemberItem from "@/components/MemberItem.vue";
 import { User } from "@/types/user";
 import ConfirmModal from "@/components/utility/ConfirmModal.vue";
+import Paginate from "@/components/utility/Paginate.vue";
 
 @Component({
   components: {
     MemberItem,
     ConfirmModal,
+    Paginate,
   },
 })
 export default class GroupMembers extends Vue {
@@ -126,22 +126,6 @@ export default class GroupMembers extends Vue {
       this.$toast.success(this.$t("global.success").toString());
     } catch (err) {
       this.$toast.error(err.response.data.message);
-    }
-  }
-
-  async leaveGroup(): Promise<void> {
-    const title = this.$t("group.dialog.leave.title").toString();
-    const message = this.$t("group.dialog.leave.message").toString();
-    const reply = await this.confirm.open(title, message, {});
-    if (reply) {
-      if (!this.group) return;
-      const group = this.group;
-      try {
-        await groupModule.leave(group);
-        this.$router.push({ name: "Home" });
-      } catch (err) {
-        this.$toast.error(err.response.data.message);
-      }
     }
   }
 }

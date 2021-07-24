@@ -57,6 +57,10 @@ export default class UserMenu extends Vue {
     return auth.user;
   }
 
+  get hasUser(): boolean {
+    return !!this.user;
+  }
+
   async logout(): Promise<void> {
     try {
       await auth.logout();

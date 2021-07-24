@@ -8,23 +8,37 @@
       <v-row>
         <v-col cols="12" md="9">
           <search-bar
-            ref="searchBar"
+            ref="search"
             class="mb-4"
             :hasFilter="true"
             @handle-tasks="loadTasks"
             @update-state="updateState"
+            @update-filters="updateFilters"
           >
             <v-btn
               color="success"
               class="float-right"
-              :to="{ name: 'newTask' }"
+              :to="{ name: 'newTask', query: { title: activeFilters.text } }"
               small
               >{{ $t("global.add") }}
             </v-btn>
           </search-bar>
         </v-col>
       </v-row>
-      <v-row v-if="tasks.length > 0">
+      <v-row v-if="!isLoaded()">
+        <v-col cols="12">
+          <div class="text-center">
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              color="primary"
+              indeterminate
+              class="mt-5"
+            ></v-progress-circular>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-else-if="tasks.length > 0">
         <v-col cols="12" md="8">
           <div class="text-h5 transition-swing"></div>
           <v-list flat v-for="(items, key) in tasksGrouped" :key="key">
@@ -33,30 +47,42 @@
             </div>
             <task-list-item v-for="task in items" :key="task.id" :task="task" />
           </v-list>
+          <div class="text-center">
+            <v-pagination
+              v-show="pages > 1"
+              v-model="page"
+              :length="pages"
+              circle
+            ></v-pagination>
+          </div>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="4" v-if="projects.length > 0">
           <div class="text-h5 font-weight-light">
             {{ $tc("task.types.3.label", projects.length) }}
           </div>
-          <v-list flat>
-            <task-list-item
-              v-for="task in projects"
-              :key="task.id"
-              :task="task"
-              :hasDueDate="true"
-            >
-            </task-list-item>
-          </v-list>
+          <paginate :items="projects" :perPage="5">
+            <template #default="{ items }">
+              <v-list flat>
+                <task-list-item
+                  v-for="task in items"
+                  :key="task.id"
+                  :task="task"
+                  :hasDueDate="true"
+                >
+                </task-list-item>
+              </v-list>
+            </template>
+          </paginate>
         </v-col>
       </v-row>
       <v-row v-else>
         <v-col cols="12" md="8">
-          <i18n path="task.no_results" tag="label">
+          <i18n path="task.no-results" tag="label">
             <router-link
               :to="{
                 name: 'newTask',
               }"
-              v-html="$t('task.create_link')"
+              v-html="$t('task.create-link')"
             />
           </i18n>
         </v-col>
@@ -66,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Ref, Vue, Watch } from "vue-property-decorator";
 import taskModule from "@/store/modules/tasks";
 import groupModule from "@/store/modules/groups";
 import { Task } from "@/types/task";
@@ -74,19 +100,36 @@ import TaskListItem from "@/components/task/TaskItemList.vue";
 import { Dictionary, TaskType } from "@/types/helpers";
 import moment from "moment";
 import SearchBar from "@/components/SearchBar.vue";
+import Paginate from "@/components/utility/Paginate.vue";
 
 @Component({
   components: {
     TaskListItem,
     SearchBar,
+    Paginate,
   },
 })
 export default class TaskList extends Vue {
+  @Ref() readonly search!: SearchBar;
   isFiltered = false;
   filteredTasks: Task[] = [];
+  page = 1;
+  perPage = 10;
+  activeFilters: Dictionary<string> = {};
 
   get groupId(): string {
     return groupModule.selectedId;
+  }
+
+  get pages(): number {
+    return Math.ceil(this.tasks.length / this.perPage);
+  }
+
+  get visibleTasks(): Task[] {
+    return this.tasks.slice(
+      (this.page - 1) * this.perPage,
+      this.page * this.perPage
+    );
   }
 
   get tasks(): Task[] {
@@ -101,9 +144,13 @@ export default class TaskList extends Vue {
     this.filteredTasks = tasks;
   }
 
+  isLoaded(): boolean {
+    return this.search ? this.search.isLoaded || !this.isFiltered : true;
+  }
+
   get tasksGrouped(): Dictionary<Task[]> {
     let tasksByDays = {};
-    this.tasks.forEach((task: Task) => {
+    this.visibleTasks.forEach((task: Task) => {
       const due = moment(task.due_at);
       const key = due.endOf("day").fromNow();
       if (tasksByDays[key] == undefined) {
@@ -119,6 +166,15 @@ export default class TaskList extends Vue {
     return this.tasks.filter(
       (item) => item.tasktype_id == TaskType.PROJECT.toString()
     );
+  }
+
+  @Watch("tasks")
+  updatePage(): void {
+    this.page = 1;
+  }
+
+  updateFilters(filters: Dictionary<string>): void {
+    this.activeFilters = filters;
   }
 }
 </script>

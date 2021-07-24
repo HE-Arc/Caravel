@@ -15,7 +15,21 @@
               prepend-icon="mdi-magnify"
               clearable
               autocomplete="off"
-            ></v-text-field>
+            >
+              <template #append-outer>
+                <v-btn
+                  :disabled="!filters.text"
+                  color="success"
+                  small
+                  :to="{
+                    name: 'GroupNew',
+                    query: { text: filters.text },
+                  }"
+                >
+                  {{ $t("global.add") }}</v-btn
+                >
+              </template>
+            </v-text-field>
           </v-card-text>
           <v-divider dark></v-divider>
           <v-expand-transition>
@@ -30,16 +44,16 @@
 
               <h4 v-else-if="hasNoResult">
                 <i18n
-                  path="groups.no_results"
+                  path="groups.no-results"
                   tag="label"
-                  for="groups.no_results_link"
+                  for="groups.no-results-link"
                 >
                   <router-link
                     :to="{
                       name: 'GroupNew',
                       query: { text: filters.text },
                     }"
-                    >{{ $t("groups.create_link", [filters.text]) }}</router-link
+                    >{{ $t("groups.create-link", [filters.text]) }}</router-link
                   >
                 </i18n>
               </h4>
@@ -72,7 +86,7 @@ import { Watch } from "vue-property-decorator";
 import Vue from "vue";
 import Component from "vue-class-component";
 import axios from "axios";
-import GroupItem from "@/components/GroupItem.vue";
+import GroupItem from "@/components/group/GroupItem.vue";
 import { Dictionary } from "node_modules/vue-router/types/router";
 
 @Component({
@@ -92,8 +106,7 @@ export default class GroupSearch extends Vue {
   delayTimer = 0;
 
   mounted(): void {
-    if (JSON.stringify(this.$route.query) !== JSON.stringify(this.params))
-      this.filters = Object.assign({}, this.filters, this.$route.query);
+    this.filters = Object.assign({}, this.filters, this.$route.query);
 
     this.enableWatcher = true;
   }
@@ -160,6 +173,11 @@ export default class GroupSearch extends Vue {
       .finally(() => {
         this.isLoading = false;
       });
+  }
+
+  @Watch("$route.query", { deep: true })
+  updateFilters(): void {
+    this.filters = Object.assign({}, this.filters, this.$route.query);
   }
 
   clear(): void {

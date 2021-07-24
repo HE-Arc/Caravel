@@ -69,12 +69,12 @@
           <v-card-text>
             <markdown-it-vue class="md-body" :content="task.description" />
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions v-if="!task.isPrivate">
             <reactions :task="task"></reactions>
           </v-card-actions>
         </v-card>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" v-if="!task.isPrivate">
         <questions></questions>
       </v-col>
       <confirm-modal ref="confirm" />
@@ -95,10 +95,10 @@ import { Subject } from "@/types/subject";
 import MarkdownItVue from "markdown-it-vue";
 import "markdown-it-vue/dist/markdown-it-vue.css";
 import TinyColor from "tinycolor2";
-import Reactions from "@/components/Reactions.vue";
+import Reactions from "@/components/task/Reactions.vue";
 import Questions from "@/components/task/Question/Questions.vue";
 import ConfirmModal from "@/components/utility/ConfirmModal.vue";
-import HistoryList from "@/components/HistoryList.vue";
+import HistoryList from "@/components/task/HistoryList.vue";
 
 @Component({
   components: {
@@ -177,20 +177,24 @@ export default class TaskDisplay extends Vue {
       await taskModule.selectTask(taskId);
     } catch (err) {
       if (err.response.status == 404) {
-        this.$router.push({ name: "NotFound" });
+        this.$router.replace({ name: "NotFound" });
       }
     }
   }
 
-  finished(): void {
+  async finished(): Promise<void> {
     if (!this.task) return;
 
     const data = {
       task_id: this.task.id,
       hasFinished: this.task.has_finished,
     };
-
-    taskModule.setFinish(data);
+    try {
+      await taskModule.setFinish(data);
+      this.$toast.success(this.$t("global.success").toString());
+    } catch (err) {
+      this.$toast.error(this.$t("global.errors.unknown").toString());
+    }
   }
 }
 </script>

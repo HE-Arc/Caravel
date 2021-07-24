@@ -73,6 +73,8 @@
                   v-if="isNewTask"
                   v-model="task.isPrivate"
                   :label="$t('task.form.private.label')"
+                  hint
+                  :messages="$t('task.form.private.hint')"
                   :error-messages="errors.isPrivate"
                   @input="errors.isPrivate = []"
                 ></v-switch>
@@ -141,6 +143,10 @@ export default class TaskDetails extends Vue {
     if (start.isAfter(due)) this.task.start_at = value;
   }
 
+  mounted(): void {
+    this.task = Object.assign({}, this.task, this.$route.query);
+  }
+
   get showStartAt(): boolean {
     return this.task.tasktype_id == TaskType.PROJECT.toString();
   }
@@ -160,7 +166,7 @@ export default class TaskDetails extends Vue {
       this.$router.push({ name: "taskDisplay", params: { task_id: task.id } });
     } catch (err) {
       this.errors = err.response.data.errors;
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
     } finally {
       this.isLoading = false;
     }

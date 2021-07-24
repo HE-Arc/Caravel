@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    :label="$t('search.label')"
+    :label="$t('groups.search-title')"
     prepend-inner-icon="mdi-magnify"
     dense
     hide-details="true"
@@ -11,13 +11,22 @@
     background-color="#5e72e422"
     class="elevation-0 search-bar"
     autocomplete="off"
+    @keydown.enter="search"
+    v-model="text"
   ></v-text-field>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 @Component
-export default class QuickSearch extends Vue {}
+export default class QuickSearch extends Vue {
+  text = "";
+
+  search(): void {
+    this.$router.push({ name: "GroupSearch", query: { text: this.text } });
+    this.text = "";
+  }
+}
 </script>
 
 <style lang="scss" scoped>

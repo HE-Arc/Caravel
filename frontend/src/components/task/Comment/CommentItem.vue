@@ -47,14 +47,15 @@
                 @click="markSolved"
                 v-bind="attrs"
                 v-on="on"
+                :loading="loadingReply"
               >
                 <v-icon small>mdi-check-decagram-outline</v-icon>
               </v-btn>
             </template>
             {{
               isSolver
-                ? $t("questions.mark_unsolved")
-                : $t("questions.mark_solved")
+                ? $t("questions.mark-unsolved")
+                : $t("questions.mark-solved")
             }}
           </v-tooltip>
           <v-btn
@@ -114,7 +115,7 @@
         :key="reply.id"
         :comment="reply"
         :question="question"
-        class="ml-5"
+        class="ml-10"
       ></comment-item>
     </div>
     <confirm-modal ref="confirm" />
@@ -147,6 +148,7 @@ export default class CommentItem extends Vue {
   @Prop() question!: Question;
   @Prop({ default: false }) selected!: boolean;
   @Ref() readonly confirm!: ConfirmModal;
+  loadingReply = false;
 
   showFormReply = false;
   showFormEdit = false;
@@ -198,6 +200,8 @@ export default class CommentItem extends Vue {
   }
 
   async markSolved(): Promise<void> {
+    this.loadingReply = true;
+
     try {
       let questionForm = this.question as unknown as QuestionForm;
       questionForm.solved = this.isSolver ? "" : this.comment.id;
@@ -206,6 +210,8 @@ export default class CommentItem extends Vue {
     } catch (err) {
       console.log(err);
     }
+
+    this.loadingReply = false;
   }
 }
 </script>
@@ -217,7 +223,7 @@ export default class CommentItem extends Vue {
     float: left;
   }
   .v-card {
-    width: 90%;
+    width: 100%;
   }
 }
 </style>

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\QuestionRequest;
 use App\Models\Group;
-use App\Models\Task;
 use App\Models\Question;
 
 class QuestionController extends Controller
@@ -21,7 +20,10 @@ class QuestionController extends Controller
 
     public function update(QuestionRequest $request, Group $group, Question $question)
     {
-        return $this->persistData($request, $group, $question);
+        if ($this->user->id == $question->user_id) {
+            return $this->persistData($request, $group, $question);
+        }
+        return response()->json(__('api.global.access_denied'), 403);
     }
 
     protected function persistData(QuestionRequest $request, Group $group, Question $question)
@@ -45,6 +47,6 @@ class QuestionController extends Controller
             return response()->json(__('api.questions.deleted'));
         }
 
-        return response()->json(__('api.questions.delete_faild'), 403);
+        return response()->json(__('api.global.access_denied'), 403);
     }
 }

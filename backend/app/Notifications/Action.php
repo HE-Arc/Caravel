@@ -8,10 +8,15 @@ use NotificationChannels\Fcm\FcmChannel;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmMessage;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\URL;
+use NotificationChannels\Fcm\Resources\AndroidConfig;
+use NotificationChannels\Fcm\Resources\AndroidNotification;
+use NotificationChannels\Fcm\Resources\WebpushConfig;
+use NotificationChannels\Fcm\Resources\WebpushFcmOptions;
 use ReflectionClass;
+use App\Models\User;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class Action extends Notification
+class Action extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -54,11 +59,22 @@ class Action extends Notification
 
     public function toFcm($notifiable)
     {
+
+        $url = env("APP_URL");
+        $appname = env("APP_NAME", "Caravel");
+        /** @var User */
+        $title = "$appname : " . $this->title;
+        $message = $this->message;
+
         return FcmMessage::create()
             ->setData(['type' => "$this->type", 'model_id' => "$this->model_id", 'model' => $this->model, "group_id" => $this->group_id])
             ->setNotification(\NotificationChannels\Fcm\Resources\Notification::create()
-                ->setTitle($this->title)
-                ->setBody($this->message));
+                ->setTitle($title)
+                ->setBody($message))
+            ->setAndroid(AndroidConfig::create()
+                ->setNotification(AndroidNotification::create()->setTag("info")))
+            ->setWebpush(WebpushConfig::create()
+                ->setFcmOptions(WebpushFcmOptions::create()->setLink($url)));
     }
 
     /**

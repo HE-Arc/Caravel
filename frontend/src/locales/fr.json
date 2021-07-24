@@ -21,7 +21,7 @@
     "open": "Ouvrir",
     "author": "Auteur",
     "success": "Action effectuée avec succès !",
-    "error_form": "Une ou plusieurs données sont invalides",
+    "error-form": "Une ou plusieurs données sont invalides",
     "errors": {
       "unknown": "Une erreur inconnue s'est produite",
       "toobig": "Le fichier est ne doit pas dépasser {0} Mb"
@@ -47,11 +47,11 @@
     "username": "Nom d'utilisateur",
     "mail": {
       "label": "Email",
-      "placerholder": "Taper votre adresse email @he-arc.ch"
+      "placerholder": "email @he-arc.ch ou nom d'utilisateur he-arc"
     },
     "password": "Mot de passe",
     "failed": "L'authentification a échouée",
-    "logged_in": "Authentification réussie",
+    "logged-in": "Authentification réussie",
     "logout": "Vous avez été deconnecté avec succès"
   },
   "appbar": {
@@ -66,14 +66,14 @@
   },
   "groups": {
     "mygroups": "Mes groupes",
-    "search-title": "Rechercher un groupe",
+    "search-title": "Rechercher ou créer un groupe",
     "search-input": "Nom du groupe",
-    "search-type": "Commencer à taper pour rechercher",
+    "search-type": "Entrez le nom du groupe",
     "join": "Demande d'adhésion",
     "pending": "En attente",
     "refused": "Demande refusée",
-    "no_results": "Aucun groupe trouvé, {0} ?",
-    "create_link": "créer {0}",
+    "no-results": "Aucun groupe trouvé, {0} ?",
+    "create-link": "créer {0}",
     "ask": "La demande a été envoyée",
     "create": {
       "title": "Création d'un groupe",
@@ -138,7 +138,7 @@
       "subjects": "Sujets"
     },
     "members": {
-      "give_lead": {
+      "give-lead": {
         "label": "Promouvoir",
         "help": "Promouvoir {0} en tant que chef du group"
       },
@@ -167,7 +167,8 @@
       "subject_id": "@.lower:task.form.subject.label",
       "due_at": "@.lower:task.form.due.label",
       "tasktype_id": "@.lower:task.form.type.label",
-      "start_at": "@.lower:task.form.startAt.label"
+      "start_at": "@.lower:task.form.startAt.label",
+      "isPrivate": "@.lower:task.form.private.label"
     },
     "icon": "mdi-format-list-checks",
     "states": {
@@ -184,8 +185,8 @@
     "create": "Créer une tâche",
     "edit": "Modifier une tâche",
     "createBy": "Ouvert par ",
-    "no_results": "Aucune tâche trouvée, créer {0} ?",
-    "create_link": "<b>une nouvelle tâche</b>",
+    "no-results": "Aucune tâche trouvée, créer {0} ?",
+    "create-link": "<b>une nouvelle tâche</b>",
     "form": {
       "subject": {
         "label": "Sujet",
@@ -207,7 +208,8 @@
         "label": "Date de début"
       },
       "private": {
-        "label": "Cette tâche est privée"
+        "label": "Cette tâche est privée",
+        "hint": "Vous seul pourrez voir cette tâche et elle ne sera pas comptabilisée dans le calcul de la charge de travail"
       }
     },
     "types": {
@@ -246,7 +248,7 @@
   },
   "autocomplete": {
     "manage": "Gérer les {0}",
-    "create": "Créer un nouveau <b>{0}</b> '{1}' ?",
+    "create": "Créer un nouveau {0} <b>{1}</b> ?",
     "nodata": "Aucune donnée trouvée"
   },
   "calendar": {
@@ -320,8 +322,8 @@
         "label": "Résolu"
       }
     },
-    "mark_solved": "Résolu avec cette réponse",
-    "mark_unsolved": "Retirer la solution",
+    "mark-solved": "Résolu avec cette réponse",
+    "mark-unsolved": "Retirer la solution",
     "solved": "Question résolue !",
     "answer": "Réponse sélectionée par l'auteur",
     "add": "Ajouter une question",
@@ -336,8 +338,9 @@
   },
   "home": {
     "title": "Bienvenue sur Caravel !",
-    "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cette outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe spécifique. Il vous permet de visualer clairement les activités qu'il faut faire ou retrouver une activité passée.",
-    "submessage": "Mais assez discuté, commencez par créer ou trouver un groupe :-)"
+    "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cette outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe spécifique. Il vous permet de visualiser clairement les activités qu'il faut faire ou retrouver une activité passée.",
+    "submessage": "Si vous ne connaissez pas Caravel, commencez par lire le guide de démarrage :-)",
+    "bouton": "Guide de démarage"
   },
   "history": {
     "label": "Historique",
@@ -360,5 +363,28 @@
     "title": "La page n'a pas été trouvée.",
     "subtitle-1": "Le page que vous essayez d'atteindre n'existe pas ou peut-être fait-elle partie d'un univers parallèle.",
     "subtitle-2": "Essayez de revenir sur la page d'accueil ou tentez de contacter votre administrateur si le problème persiste."
+  },
+  "403": {
+    "title": "Accès interdit",
+    "subtitle-1": "Vous n'avez pas les droits pour accéder à la page que vous avez demandée.",
+    "subtitle-2": "Essayez de revenir sur la page d'accueil ou tentez de contacter votre administrateur si vous pensez qu'il s'agit d'une erreur."
+  },
+  "timeline": {
+    "zoom": "Niveau de détails"
+  },
+  "stats": {
+    "trend-next": "Tendance des prochaines semaines",
+    "unit": "WES",
+    "wes": "Score de charge de travail",
+    "wes-current": "Score de charge de travail de la semaine en cours (WES : Week Effort Score)",
+    "trend-all": "Toutes les données",
+    "calendar-wes": "Score de la semaine : {0}",
+    "score": {
+      "median": "Score médian",
+      "max": "Score maximum",
+      "min": "Score minimum",
+      "current": "Score actuel"
+    },
+    "week-of": "Semaine du "
   }
 }

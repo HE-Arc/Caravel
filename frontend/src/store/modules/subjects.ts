@@ -47,6 +47,11 @@ class SubjectModule extends VuexModule {
   }
 
   @Mutation
+  private FINISH() {
+    this._status = "loaded";
+  }
+
+  @Mutation
   private LOAD_SUBJECTS(subjects: Subject[]) {
     this._subjects = subjects;
     this._status = "loaded";
@@ -57,10 +62,8 @@ class SubjectModule extends VuexModule {
     const index = this._subjects.findIndex((item) => item.id == subject.id);
     if (index === -1) {
       this._subjects.push(subject);
-      this._status = "added";
     } else {
       Vue.set(this._subjects, index, subject);
-      this._status = "modified";
     }
   }
 
@@ -69,7 +72,6 @@ class SubjectModule extends VuexModule {
     const index = this._subjects.findIndex((item) => item.id == subject.id);
     if (index !== -1) {
       Vue.delete(this._subjects, index);
-      this._status = "delete";
     }
   }
 
@@ -89,9 +91,9 @@ class SubjectModule extends VuexModule {
           resolve(data);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
-        });
+        })
+        .finally(() => this.FINISH());
     });
   }
 
@@ -113,9 +115,9 @@ class SubjectModule extends VuexModule {
           resolve(data);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
-        });
+        })
+        .finally(() => this.FINISH());
     });
   }
 
@@ -135,9 +137,9 @@ class SubjectModule extends VuexModule {
           resolve(response);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
-        });
+        })
+        .finally(() => this.FINISH());
     });
   }
 

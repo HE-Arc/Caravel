@@ -1,9 +1,13 @@
 <template>
   <div>
-    <v-container fluid v-show="!isLoading">
-      <v-row>
-        <v-col class="mb-5" cols="12">
-          <group-selector />
+    <v-container fluid v-show="isLoaded">
+      <v-row align="center" v-if="isLoaded">
+        <v-col class="mb-5 mt-4" cols="">
+          <v-row align="center">
+            <group-selector class="ml-2" />
+            <v-spacer></v-spacer>
+            <group-indicator class="mr-5 hidden-sm-and-down" :width="150" />
+          </v-row>
         </v-col>
         <v-col class="pa-0" cols="12">
           <v-tabs v-model="activeTab" show-arrows class="main-tab">
@@ -30,12 +34,23 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" v-show="isLoaded">
           <router-view />
+        </v-col>
+        <v-col cols="12">
+          <div class="text-center" v-show="!isLoaded">
+            <v-progress-circular
+              :size="70"
+              :width="7"
+              color="primary"
+              indeterminate
+              class="mt-5"
+            ></v-progress-circular>
+          </div>
         </v-col>
       </v-row>
     </v-container>
-    <div class="text-center" v-show="isLoading">
+    <div class="text-center" v-show="!isLoaded">
       <v-progress-circular
         :size="70"
         :width="7"
@@ -50,16 +65,18 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import GroupSelector from "@/components/GroupSelector.vue";
+import GroupSelector from "@/components/group/GroupSelector.vue";
 import groupModule from "@/store/modules/groups";
 import taskModule from "@/store/modules/tasks";
 import memberModule from "@/store/modules/members";
 import { Group } from "@/types/group";
 import { Dictionary } from "@/types/helpers";
+import GroupIndicator from "@/components/group/GroupIndicator.vue";
 
 @Component({
   components: {
     GroupSelector,
+    GroupIndicator,
   },
 })
 export default class GroupContainer extends Vue {
@@ -78,8 +95,16 @@ export default class GroupContainer extends Vue {
     return taskModule.tasksFuture.length ?? 0;
   }
 
-  get isLoading(): boolean {
-    return groupModule.status == "loading" || taskModule.status == "loading";
+  get isGroupLoaded(): boolean {
+    return groupModule.status == "loaded";
+  }
+
+  get isTasksLoaded(): boolean {
+    return taskModule.status == "loaded";
+  }
+
+  get isLoaded(): boolean {
+    return this.isGroupLoaded && this.isTasksLoaded;
   }
 
   // https://stackoverflow.com/questions/49721710/how-to-use-vuetify-tabs-with-vue-router
@@ -112,7 +137,7 @@ export default class GroupContainer extends Vue {
       await groupModule.selectGroup(this.groupId);
     } catch (err) {
       if (err.response.status == 404) {
-        this.$router.push({ name: "NotFound" });
+        this.$router.replace({ name: "NotFound" });
       } else {
         this.$toast.error(err.response.data.message);
       }

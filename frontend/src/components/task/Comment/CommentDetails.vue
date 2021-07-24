@@ -17,7 +17,12 @@
       @input="updateDescription"
       :errors="errors.description"
     ></v-markdown-editor>
-    <v-btn color="success" class="float-right mt-3" @click="save">
+    <v-btn
+      color="success"
+      class="float-right mt-3"
+      @click="save"
+      :loading="isLoading"
+    >
       {{ commentId ? $t("global.save") : $t("global.add") }}
     </v-btn>
   </div>
@@ -44,6 +49,7 @@ export default class CommentDetails extends Vue {
   @Prop({ required: true }) questionId!: string;
   commentForm: CommentForm = Factory.getCommentForm();
   errors = {};
+  isLoading = false;
 
   get author(): User | undefined {
     return userModule.user;
@@ -57,6 +63,7 @@ export default class CommentDetails extends Vue {
     this.commentForm.reply_to = this.replyTo;
     this.commentForm.question_id = this.questionId;
     this.commentForm.id = this.commentId;
+    this.isLoading = true;
 
     try {
       await questionModule.upsertComment(this.commentForm);
@@ -64,7 +71,9 @@ export default class CommentDetails extends Vue {
       this.handleSave();
     } catch (err) {
       this.errors = err.response.data.errors;
-      this.$toast.error(this.$t("global.error_form").toString());
+      this.$toast.error(this.$t("global.error-form").toString());
+    } finally {
+      this.isLoading = false;
     }
   }
 

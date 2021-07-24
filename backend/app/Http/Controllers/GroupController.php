@@ -13,12 +13,11 @@ use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 
 class GroupController extends Controller
 {
 
-    public const PAGINATION_LIMIT = 15;
+    public const PAGINATION_LIMIT = 10;
 
     /**
      * Display a listing of the resource.
@@ -165,21 +164,27 @@ class GroupController extends Controller
     {
         $userId = $this->user->id;
         //verification of non existence (a refused/accepter/pending user can not ask again to join a group)
+        $stateApproval = ($this->user->isTeacher && !$group->isPrivate) ? Group::ACCEPTED : Group::PENDING;
         if ($group->users()->find($userId) == null) {
-            $stateApproval = ($this->user->isTeacher && !$group->isPrivate) ? Group::ACCEPTED : Group::PENDING;
-            $group->users()->attach($userId, ['isApprouved' => $stateApproval]);
-            return response()->json(["message" => TRUE]);
+            $group->users()->attach($userId, ['isApprouved' => $stateApproval], true);
+        } else {
+            $group->users()->updateExistingPivot($userId, ['isApprouved' => $stateApproval], true);
         }
 
-        return response()->json(['message' => __('api.global.operation_failed')], 400);
+        return response()->json(['message' => true]);
     }
 
     /**
-     * @returns JSON containing groups
+     * Apply filters based on query params and
+     * return a list of groups for the logged user
      */
     public function filtered(Request $request)
     {
         $filters = $request->all();
+
+        $filters = array_filter($filters);
+
+        if (empty($filters)) return ["data" => []];
 
         $userId = $this->user->id;
 

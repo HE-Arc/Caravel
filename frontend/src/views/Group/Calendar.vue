@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="isTasksLoaded">
     <v-row>
       <v-col cols="12">
         <v-sheet tile height="54" class="d-flex">
@@ -30,12 +30,14 @@
             {{ $refs.calendar.title }}
           </span>
           <v-spacer></v-spacer>
-          <v-btn class="ml-2" icon @click="$refs.calendar.next()"
-            ><v-icon>mdi-chevron-right</v-icon>
+          <v-btn class="ml-2" icon @click="$refs.calendar.next()">
+            <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </v-sheet>
         <v-sheet :height="type == 'month' ? '800' : undefined">
           <v-calendar
+            color="primary"
+            :event-more="false"
             :weekdays="weekdays"
             v-model="focus"
             :type="type"
@@ -45,7 +47,14 @@
             @click:more="viewDay"
             @click:event="showEvent"
             @click:date="viewDay"
-          ></v-calendar>
+          >
+            <template v-slot:day-label="props">
+              <calendar-day-label :props="props" />
+            </template>
+            <template v-slot:day-label-header="props">
+              <calendar-day-label :props="props" />
+            </template>
+          </v-calendar>
         </v-sheet>
       </v-col>
     </v-row>
@@ -60,13 +69,17 @@ import taskModule from "@/store/modules/tasks";
 import subjectModule from "@/store/modules/subjects";
 import EventTask from "@/types/eventTask";
 import { TaskType } from "@/types/helpers";
+import GroupStat from "@/types/GroupStat";
+import CalendarDayLabel from "@/components/calendar/CalendarDayLabel.vue";
 
 @Component({
-  components: {},
+  components: {
+    CalendarDayLabel,
+  },
 })
 export default class GroupCalendar extends Vue {
   focus = moment().calendar();
-  weekdays = [6, 0, 1, 2, 3, 4, 5];
+  weekdays = [1, 2, 3, 4, 5, 6, 0];
   type = "month";
   typeToLabel = {
     month: "Month",
@@ -78,17 +91,25 @@ export default class GroupCalendar extends Vue {
     return moment(`${this.focus}T00:00:00`);
   }
 
+  get stats(): GroupStat[] | undefined {
+    return taskModule.stats;
+  }
+
+  get isTasksLoaded(): boolean {
+    return taskModule.status == "loaded";
+  }
+
   get events(): EventTask[] {
     let events: EventTask[] = [];
 
     taskModule.tasks.forEach((item) =>
       events.push({
         name: item.title,
-        start: moment(item.start_at).toDate(),
-        end:
+        start:
           item.tasktype_id == TaskType.PROJECT.toString()
-            ? moment(item.due_at).toDate()
-            : undefined,
+            ? moment(item.start_at).toDate()
+            : moment(item.due_at).toDate(),
+        end: moment(item.due_at).toDate(),
         color: subjectModule.getSubject(item.subject_id)?.color,
         timed: false,
         id: item.id,
@@ -117,5 +138,14 @@ export default class GroupCalendar extends Vue {
 <style lang="scss">
 .v-calendar-daily__head {
   min-height: 200px;
+}
+
+.v-calendar-weekly__day-label {
+  margin-bottom: 5px !important;
+  margin-top: 0px !important;
+}
+
+.v-calendar-weekly__day {
+  margin-bottom: 5px;
 }
 </style>
