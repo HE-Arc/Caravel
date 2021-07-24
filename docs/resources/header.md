@@ -3,12 +3,12 @@ title: "Projet N°227 : Caravel"
 author: [Mendes Reis Steve]
 date: \today
 subject: "Travail de Bachelor"
-keywords: [Laravel, VueJS, TypeScript]
+keywords: [Laravel, Vue.js, TypeScript, Homework, Students, Teachers]
 subtitle: | 
           |  Rapport
           |  Travail de Bachelor
           |  A l'attention de MM. XXX
-version: 1.0.0
+version: 0.1.0
 lang: "fr"
 titlepage: true
 titlepage-text-color: "000000"
