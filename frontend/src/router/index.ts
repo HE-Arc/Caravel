@@ -163,8 +163,9 @@ router.beforeEach((to: Route, from: Route, next: NavigationGuardNext) => {
         redirect: to.fullPath,
       },
     });
+  } else {
+    next();
   }
-  next();
 });
 
 export default router;
