@@ -12,8 +12,6 @@ use App\Models\Group;
  **/
 class CheckGroup
 {
-    const SESSION_LAST_GROUP_ID = 'lastGroupId';
-
     /**
      * Handle an incoming request.
      *

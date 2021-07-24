@@ -10,7 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 class AuthAPIController extends BaseController
 {
     /**
-     * Method to handle user json token auth
+     * Method to handle LDAP user connexion
      */
 
     public function login(Request $request)

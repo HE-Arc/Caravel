@@ -123,6 +123,10 @@ class UserModule extends VuexModule {
   }
 
   //ACTIONS
+  /**
+   * This function allow to login into the Laravel backend Sanctum
+   * @param data Array<string>
+   */
   @Action
   async login({ mail, password }: Credentials): Promise<void> {
     this.REQUEST();
@@ -136,6 +140,7 @@ class UserModule extends VuexModule {
     });
 
     const user: User = response.data.user;
+
     this.SUCCESS(user);
   }
 

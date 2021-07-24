@@ -1,5 +1,6 @@
 import { Data } from "@/types/data";
 import { VuexModule, Mutation, Action } from "vuex-module-decorators";
+import Vue from "vue";
 
 // inherance broken https://github.com/championswimmer/vuex-module-decorators/issues/125 wait for vue 3
 
@@ -27,6 +28,11 @@ export default abstract class DataModule<T extends Data> extends VuexModule {
   }
 
   @Mutation
+  protected FINISH(): void {
+    this._status = "loaded";
+  }
+
+  @Mutation
   protected LOAD_ITEMS(items: T[]): void {
     this._items = items;
     this._status = "loaded";
@@ -37,10 +43,8 @@ export default abstract class DataModule<T extends Data> extends VuexModule {
     const index = this._items.findIndex((item) => item.id == data.id);
     if (index === -1) {
       this._items.push(data);
-      this._status = "added";
     } else {
-      this._items[index] = data;
-      this._status = "modified";
+      Vue.set(this._items, index, data);
     }
   }
 
@@ -48,8 +52,7 @@ export default abstract class DataModule<T extends Data> extends VuexModule {
   protected REMOVE_ITEM(data: T): void {
     const index = this._items.findIndex((item) => item.id == data.id);
     if (index !== -1) {
-      this._items.splice(index, 1);
-      this._status = "delete";
+      Vue.delete(this._items, index);
     }
   }
 

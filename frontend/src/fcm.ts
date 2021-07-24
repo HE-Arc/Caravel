@@ -22,7 +22,7 @@ try {
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
       body: payload.notification.body,
-      icon: "/android-chrome-144x144.png",
+      icon: "/img/icons/android-chrome-192x192.png",
     };
 
     if (!("Notification" in window)) {
