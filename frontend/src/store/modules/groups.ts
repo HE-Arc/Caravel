@@ -132,7 +132,6 @@ class GroupModule extends VuexModule {
           resolve(response);
         })
         .catch((err) => {
-          this.ERROR();
           reject(err);
         });
     });
@@ -146,8 +145,8 @@ class GroupModule extends VuexModule {
 
   @Action
   updateGroup(group: Group): Promise<AxiosResponse> {
-    this.REQUEST();
     return new Promise((resolve, reject) => {
+      this.REQUEST();
       axios({
         url: process.env.VUE_APP_API_BASE_URL + `groups/${group.id}`,
         method: "PATCH",
@@ -165,7 +164,8 @@ class GroupModule extends VuexModule {
         })
         .catch((err) => {
           reject(err);
-        });
+        })
+        .finally(() => this.LOADED());
     });
   }
 
