@@ -15,6 +15,7 @@ class AuthAPIController extends BaseController
 
     public function login(Request $request)
     {
+        // This allow login with LDAP (mail or username) or fallback to internal login 
         $credentials = $request->only('mail', 'password');
         $credentials2 = [
             'sAMAccountName' => $credentials['mail'],
