@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2021-02-28" view-index="0" gantt-divider-location="456" resource-divider-location="300" version="2.8.11" locale="fr">
+    <description/>
+    <view zooming-state="default:7" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="228" order="0"/>
+        <field id="tpd4" name="Date de début" width="60" order="1"/>
+        <field id="tpd5" name="Date de fin" width="78" order="2"/>
+        <field id="tpc0" name="heures" width="71" order="3"/>
+        <option id="color.recent">
+            <![CDATA[#000000 #0066ff #00ff00 #cccccc #33ff00 #ff9900 #ff0033 #ccccff #ffff00 #00ccff]]>
+        </option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="210" order="0"/>
+        <field id="1" name="Rôle par défaut" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+            <taskproperty id="tpc0" name="heures" type="custom" valuetype="double" defaultvalue="0.0"/>
+        </taskproperties>
+        <task id="490" name="Autres" color="#000000" meeting="false" start="2021-04-05" duration="35" complete="0" thirdDate="2021-04-05" thirdDate-constraint="0" expand="true">
+            <customproperty taskproperty-id="tpc0" value="0.0"/>
+            <task id="3" name="Vacances d'avril" color="#cccccc" meeting="false" start="2021-04-05" duration="5" complete="0" thirdDate="2021-03-08" thirdDate-constraint="0" expand="true"/>
+            <task id="7" name="Preparation examens" color="#cccccc" meeting="false" start="2021-05-10" duration="5" complete="0" thirdDate="2021-03-08" thirdDate-constraint="0" expand="true"/>
+            <task id="10" name="Examens" color="#cccccc" meeting="false" start="2021-05-17" duration="5" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="0" name="Conception" color="#ff9900" meeting="false" start="2021-02-23" duration="51" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true">
+            <task id="12" name="Cahier des charges" color="#8cb6ce" meeting="false" start="2021-02-23" duration="1" complete="0" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true"/>
+            <task id="1106" name="Etat de l'art" color="#8cb6ce" meeting="false" start="2021-02-23" duration="1" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true"/>
+            <task id="14" name="Planning" color="#8cb6ce" meeting="false" start="2021-03-02" duration="1" complete="12" thirdDate="2021-04-09" thirdDate-constraint="0" expand="true"/>
+            <task id="421" name="Gestion de l'authentification" color="#8cb6ce" meeting="false" start="2021-03-09" duration="1" complete="0" thirdDate="2021-02-01" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="2.0"/>
+            </task>
+            <task id="3130" name="Test Vuejs+typescript" color="#8cb6ce" meeting="false" start="2021-03-09" duration="1" complete="0" thirdDate="2021-03-08" thirdDate-constraint="0" expand="true">
+                <notes>
+                    <![CDATA[Déterminé complexité d'inclure typescript ]]>
+                </notes>
+                <customproperty taskproperty-id="tpc0" value="6.0"/>
+            </task>
+            <task id="383" name="Définir les rôles et actions" color="#8cb6ce" meeting="false" start="2021-03-16" duration="1" complete="0" thirdDate="2021-02-01" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="1.0"/>
+            </task>
+            <task id="1869" name="Définir les use case" color="#8cb6ce" meeting="false" start="2021-03-16" duration="1" complete="0" thirdDate="2021-03-15" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="5.0"/>
+            </task>
+            <task id="344" name="Définir les types de filtres" color="#8cb6ce" meeting="false" start="2021-03-23" duration="1" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="4.0"/>
+            </task>
+            <task id="435" name="Définir le système de réactions" color="#8cb6ce" meeting="false" start="2021-03-23" duration="1" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="3.0"/>
+            </task>
+            <task id="592" name="Système de notification" color="#8cb6ce" meeting="false" start="2021-03-30" duration="1" complete="0" thirdDate="2021-02-15" thirdDate-constraint="0" expand="true">
+                <notes>
+                    <![CDATA[* Décrire les types de notifications possible
+* Recherche sur PUSH + PWA faisabilité, compatibilité
+* Gestion des paramètres de notifications
+  * S'abonner au notif d'une branche ou d'une tâche ?]]>
+                </notes>
+                <customproperty taskproperty-id="tpc0" value="4.0"/>
+            </task>
+            <task id="3430" name="Gestion de la charge de travail" meeting="false" start="2021-03-30" duration="1" complete="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="3.0"/>
+            </task>
+            <task id="594" name="Modélisation base de donnée" color="#8cb6ce" meeting="false" start="2021-04-13" duration="1" complete="0" thirdDate="2021-04-26" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="5.0"/>
+            </task>
+            <task id="26" name="Définir les routes (swagger)" color="#8cb6ce" meeting="false" start="2021-04-20" duration="1" complete="0" thirdDate="2020-12-14" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="4.0"/>
+            </task>
+            <task id="483" name="Analyse &amp; tri des feedback" color="#8cb6ce" meeting="false" start="2021-04-20" duration="1" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="2.0"/>
+            </task>
+            <task id="29" name="Mockup des vues" color="#8cb6ce" meeting="false" start="2021-04-27" duration="1" complete="0" thirdDate="2021-04-12" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="6.0"/>
+            </task>
+            <task id="989" name="Stratégie de test" color="#8cb6ce" meeting="false" start="2021-05-04" duration="1" complete="0" thirdDate="2021-05-03" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="3.0"/>
+            </task>
+            <task id="1319" name="Initialisation projet front &amp; backend" color="#8cb6ce" meeting="false" start="2021-05-04" duration="1" complete="0" thirdDate="2021-05-03" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="3.0"/>
+            </task>
+        </task>
+        <task id="1" name="Implémentation" color="#00ff00" meeting="false" start="2021-05-24" duration="45" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true">
+            <task id="666" name="Sprint 1 - Backend" color="#000000" meeting="false" start="2021-05-24" duration="5" complete="0" thirdDate="2021-05-24" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="38.0"/>
+                <task id="991" name="Implémentation de la base de donnée" color="#000000" meeting="false" start="2021-05-24" duration="5" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="false">
+                    <customproperty taskproperty-id="tpc0" value="12.0"/>
+                    <task id="3132" name="Créer/modifier les modèles" color="#8cb6ce" meeting="false" start="2021-05-24" duration="5" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="5.0"/>
+                    </task>
+                    <task id="3134" name="Créer et faire les migrations" color="#8cb6ce" meeting="false" start="2021-05-24" duration="5" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="4.0"/>
+                    </task>
+                    <task id="3136" name="Ajuster les feeds" color="#8cb6ce" meeting="false" start="2021-05-24" duration="5" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="3.0"/>
+                    </task>
+                </task>
+                <task id="992" name="Migration des fonctionalités API" color="#8cb6ce" meeting="false" start="2021-05-24" duration="5" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="16.0"/>
+                </task>
+                <task id="1866" name="Système d'authentification" meeting="false" start="2021-05-24" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="10.0"/>
+                </task>
+            </task>
+            <task id="675" name="Sprint 2 - Frontend" color="#000000" meeting="false" start="2021-05-31" duration="5" complete="0" thirdDate="2021-05-31" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="40.0"/>
+                <task id="1204" name="Migration des vues" meeting="false" start="2021-05-31" duration="5" complete="0" expand="false">
+                    <customproperty taskproperty-id="tpc0" value="30.0"/>
+                    <task id="3146" name="Page Login" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="2.0"/>
+                    </task>
+                    <task id="3147" name="Page Ajout groupe" color="#8cb6ce" meeting="false" start="2021-05-31" duration="5" complete="0" thirdDate="2021-05-31" thirdDate-constraint="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="4.0"/>
+                    </task>
+                    <task id="3281" name="Page Upcoming" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="2.0"/>
+                    </task>
+                    <task id="3284" name="Page Sidebar + header" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="2.0"/>
+                    </task>
+                    <task id="3288" name="Page Subject" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="4.0"/>
+                    </task>
+                    <task id="3290" name="Page Settings (Groupe)" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="2.0"/>
+                    </task>
+                    <task id="3296" name="Page Members" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="3.0"/>
+                    </task>
+                    <task id="3298" name="Page Requests" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="2.0"/>
+                    </task>
+                    <task id="3299" name="Page Profile" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="4.0"/>
+                    </task>
+                    <task id="3367" name="Page Task" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="5.0"/>
+                    </task>
+                </task>
+                <task id="1103" name="Vue mois" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="10.0"/>
+                    <task id="3140" name="Modification API" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="3.0"/>
+                    </task>
+                    <task id="3141" name="Ajout component vuejs" meeting="false" start="2021-05-31" duration="5" complete="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="7.0"/>
+                    </task>
+                </task>
+            </task>
+            <task id="944" name="Sprint 3" meeting="false" start="2021-06-07" duration="5" complete="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="42.0"/>
+                <task id="1202" name="Système de notifications" meeting="false" start="2021-06-07" duration="5" complete="0" expand="false">
+                    <customproperty taskproperty-id="tpc0" value="20.0"/>
+                    <task id="3569" name="Envoi de mails" meeting="false" start="2021-06-07" duration="5" complete="0" expand="true"/>
+                    <task id="3570" name="Envoi interne" meeting="false" start="2021-06-07" duration="5" complete="0" expand="true"/>
+                    <task id="3571" name="Envoi PWA" meeting="false" start="2021-06-07" duration="5" complete="0" expand="true"/>
+                    <task id="3572" name="Gestion des paramètres" meeting="false" start="2021-06-07" duration="5" complete="0" expand="true"/>
+                </task>
+                <task id="2082" name="Intégration des rôles" meeting="false" start="2021-06-07" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="8.0"/>
+                </task>
+                <task id="3304" name="Gestion des filtres" meeting="false" start="2021-06-07" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="15.0"/>
+                </task>
+            </task>
+            <task id="942" name="Sprint 4" meeting="false" start="2021-06-14" duration="5" complete="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="39.0"/>
+                <task id="2277" name="Système de réactions" color="#8cb6ce" meeting="false" start="2021-06-14" duration="5" complete="0" thirdDate="2021-06-14" thirdDate-constraint="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="16.0"/>
+                </task>
+                <task id="2333" name="Ajout notion de crédit ECTS" color="#8cb6ce" meeting="false" start="2021-06-14" duration="5" complete="0" thirdDate="2021-06-14" thirdDate-constraint="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="8.0"/>
+                </task>
+                <task id="2334" name="Représentation visuelle charge de travail" color="#8cb6ce" meeting="false" start="2021-06-14" duration="5" complete="0" thirdDate="2021-06-14" thirdDate-constraint="0" expand="true">
+                    <notes>
+                        <![CDATA[Ajout dans les différentes vues d'un indicateur pour la charge de travail
+]]>
+                    </notes>
+                    <customproperty taskproperty-id="tpc0" value="15.0"/>
+                </task>
+            </task>
+            <task id="940" name="Sprint 5" meeting="false" start="2021-06-21" duration="5" complete="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="34.0"/>
+                <task id="2445" name="Système de fils dans les tâches" meeting="false" start="2021-06-21" duration="5" complete="0" expand="false">
+                    <customproperty taskproperty-id="tpc0" value="18.0"/>
+                    <task id="3475" name="Modification API" color="#8cb6ce" meeting="false" start="2021-06-21" duration="5" complete="0" thirdDate="2021-06-21" thirdDate-constraint="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="8.0"/>
+                    </task>
+                    <task id="3568" name="Vue" color="#8cb6ce" meeting="false" start="2021-06-21" duration="5" complete="0" thirdDate="2021-06-21" thirdDate-constraint="0" expand="true">
+                        <customproperty taskproperty-id="tpc0" value="10.0"/>
+                    </task>
+                </task>
+                <task id="2446" name="Fonctionalité &quot;tâche terminée&quot;" color="#8cb6ce" meeting="false" start="2021-06-21" duration="5" complete="0" thirdDate="2021-06-21" thirdDate-constraint="0" expand="true">
+                    <notes>
+                        <![CDATA[Faire attention à l'impacte sur les notifications 
+]]>
+                    </notes>
+                    <customproperty taskproperty-id="tpc0" value="8.0"/>
+                </task>
+                <task id="2740" name="Edition des commentaires" meeting="false" start="2021-06-21" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="8.0"/>
+                </task>
+            </task>
+            <task id="2444" name="Sprint 6" meeting="false" start="2021-06-28" duration="5" complete="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="32.0"/>
+                <task id="3063" name="Vue &quot;mes tâches&quot;" meeting="false" start="2021-06-28" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="10.0"/>
+                </task>
+                <task id="3066" name="Contrôle édition simultanée" color="#8cb6ce" meeting="false" start="2021-06-28" duration="5" complete="0" thirdDate="2021-06-28" thirdDate-constraint="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="8.0"/>
+                </task>
+                <task id="3067" name="Enrichir l'éditeur de texte" meeting="false" start="2021-06-28" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="14.0"/>
+                </task>
+            </task>
+            <task id="2443" name="Sprint 7" meeting="false" start="2021-07-05" duration="5" complete="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="36.0"/>
+                <task id="2966" name="PWA + Push notification" color="#8cb6ce" meeting="false" start="2021-07-05" duration="5" complete="0" thirdDate="2021-07-05" thirdDate-constraint="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="16.0"/>
+                </task>
+                <task id="3064" name="Paramètres de notifications utilisateur" meeting="false" start="2021-07-05" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="8.0"/>
+                </task>
+                <task id="3065" name="Partage des tâches privées" meeting="false" start="2021-07-05" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="12.0"/>
+                </task>
+            </task>
+            <task id="2675" name="Sprint 8" meeting="false" start="2021-07-12" duration="5" complete="0" expand="true">
+                <task id="3061" name="Vue Semestrielle" meeting="false" start="2021-07-12" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="8.0"/>
+                </task>
+                <task id="3128" name="Vue statistique pour un groupe" meeting="false" start="2021-07-12" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="12.0"/>
+                </task>
+                <task id="3303" name="Intégration des feedbacks" meeting="false" start="2021-07-12" duration="5" complete="0" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="0.0"/>
+                </task>
+            </task>
+            <task id="487" name="Déploiement final &amp; tests" color="#8cb6ce" meeting="false" start="2021-07-19" duration="5" complete="0" thirdDate="2021-01-18" thirdDate-constraint="0" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0.0"/>
+            </task>
+        </task>
+        <task id="2" name="Documentation" color="#0066ff" meeting="false" start="2021-02-22" duration="115" complete="0" thirdDate="2021-02-22" thirdDate-constraint="0" expand="true">
+            <customproperty taskproperty-id="tpc0" value="999999.0"/>
+            <task id="2676" name="Support de présentation" color="#8cb6ce" meeting="false" start="2021-07-26" duration="5" complete="0" thirdDate="2021-03-22" thirdDate-constraint="0" expand="true"/>
+            <task id="2738" name="Finalisation du rapport" meeting="false" start="2021-07-26" duration="5" complete="0" expand="true"/>
+            <task id="485" name="Rapport" meeting="false" start="2021-03-22" duration="95" complete="0" expand="true"/>
+            <task id="484" name="Journal" meeting="false" start="2021-02-22" duration="115" complete="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>

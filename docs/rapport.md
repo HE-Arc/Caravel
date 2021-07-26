@@ -404,7 +404,7 @@ Le score de certaines semaines risque de poser des problèmes, il faut donc évi
 
 ### Modélisation de la base de données
 
-![Modélisation de la base de données](assets/117077549-9e449280-ad38-11eb-9a7e-5beaba01432c.png)
+![Modélisation de la base de données](assets/DB-caravel-update.jpg)
 
 ### Système d'authentification
 
@@ -521,7 +521,7 @@ L'autre solution consiste à utiliser les cookies ainsi que le flag "httpOnly" q
 
 ### Sanctum vs Passport
 
-Laravel propose deux systèmes d'authentifications, le premier [Sanctum](https://laravel.com/docs/8.x/sanctum) est un système léger d'authentification basé sur des tokens, le second [Passport](https://laravel.com/docs/8.x/passport) est un système d'authentification lourd qui utilise OAuth2, OAuth2 est un protocol qui permet aux utilisateurs la connection avec d'autres applications externe tel que Google ou encore GitHub. Ce dernier est donc plus lourd et présuppose une bonne connaissance du protocole OAuth2. Comme l'utilisation de OAuth2 n'est pas nécessaire, Sanctum a été choisi, c'est d'ailleurs une recommandation issue de la [documentation de Laravel](https://laravel.com/docs/8.x/passport#passport-or-sanctum).
+Laravel propose deux systèmes d'authentification, le premier [Sanctum](https://laravel.com/docs/8.x/sanctum) est un système léger d'authentification basé sur des tokens, le second [Passport](https://laravel.com/docs/8.x/passport) est un système d'authentification plus lourd qui utilise OAuth2, OAuth2 est un protocol qui permet aux utilisateurs la connection avec d'autres applications externe tel que Google ou encore GitHub. Ce dernier est donc plus lourd et présuppose une bonne connaissance du protocole OAuth2. Comme l'utilisation de OAuth2 n'est pas nécessaire, Sanctum a été choisi, c'est d'ailleurs une recommandation issue de la [documentation de Laravel](https://laravel.com/docs/8.x/passport#passport-or-sanctum).
 
 ![Laravel Sanctum Explained : SPA Authentication @sanctum \label{figSanctum}](assets/bpekb8vyseptvpp91vdt.png){width=400}
 
@@ -947,7 +947,9 @@ Cette section décrit les détails techniques importants concernant frontend ave
 
 La configuration initiale du projet est importante, car il décrit les fonctions qui seront utilisées tout au long du projet.
 
-![Frontend : configuration vuej.js](https://user-images.githubusercontent.com/6802086/120225739-10c86580-c246-11eb-8cf6-7cc6a2aa9129.png)
+![Frontend : configuration Vue.js](https://user-images.githubusercontent.com/6802086/120225739-10c86580-c246-11eb-8cf6-7cc6a2aa9129.png)
+
+
 
 #### Version 2 vs version 3
 
@@ -1034,9 +1036,9 @@ Le module `Task` détient une particularité supplémentaire, c'est le calcul de
 
 Le choix du calcul au niveau du frontend à pour but de rendre les vues statistiques dynamiques, dès l'ajout de la moindre tâche ou changement de crédit au niveau des sujets, toutes les statistiques sont dynamiquement recalculées et mise à jour dans l'interface. La deuxième option qui consistait à faire les calcules au niveau du backend aurait demandé beaucoup plus de complexité. En effet si par exemple une nouvelle tâche est créée, alors il faut effectuer une seconde requête au backend pour récupérer les nouvelles statistiques. En utilisant l'avantage des propriétés réactives de Vue.js on s'affranchit de ses requêtes supplémentaires et de la création de route particulière au niveau du backend.
 
-##### Module members, questions et subjects
+##### Modules : members, questions et subjects
 
-Les modules suivants sont des modules "standards", ils n'ont pas de particularité spécifique et ne seront donc pas détaillé dans ce document.
+Les modules `members`, `questions` ainsi que `subjects` sont des modules "standards", ils n'ont pas de particularité spécifique et ne seront donc pas détaillés dans ce document.
 
 ##### Code redondant
 
@@ -1216,6 +1218,59 @@ La mise en place d'une application PWA est assez simple avec Vue.js, du moment q
 
 ![PWA : score lighthouse](assets/20210722_172442_image.png)
 
+### Composants
+Plusieurs composant ont été développés dans le cadre du projet, dans cette section décrit quelques composants remarquables.
+
+#### Input spécifiques
+Plusieurs inputs spécifique ont été développé afin d'être utilisés à plusieurs endroits de l'application, c'est notamment le cas des inputs type et sujet qui sont présent dans le filtre de recherche d'une tâche ainsi que dans le formulaire d'une tâche. 
+
+![Vue.js : composant sélection du type](assets/input-type.png)
+
+![Vue.js : composant sélection du sujet](assets/input-subject.png)
+
+Le composant pour le sélectionner est un peu plus complexe que les autres composants car il possède la possibilité de créer directement un nouveau sujet. Grâce au système de composants, il a été possible de réutilisé la modale de création d'un sujet : 
+
+![Vue.js : modale de création d'une fenêtre](assets/modal-subject.png)
+
+Ce composant est donc présent directement depuis la sélection des sujets mais est aussi présent dans la page de gestion de sujet via les boutons `Ajouter` et `Modifier`.
+
+#### Pagination générique
+La pagination est élément assez redondant dans l'application, elle nécessite souvent les mêmes paramètres en utilisant la force de vue.js il est facile de créer un composant générique afin de d'éviter de créer trop de code inutile.
+
+Un composant `Paginate.vue` a donc été créé en alliant le système de composant et le système de [slot](https://vuejs.org/v2/guide/components-slots.html), ce composant peut-être utilisé comme ce suit 
+
+```{.vue caption="Vue.js : utilisation du composant paginate"}
+<paginate :items="groups" :perPage="5">
+  <template #default="{ items }">
+    <group-item
+      v-for="group in items"
+      :group="group"
+      :key="group.id"
+      :hasJoin="false"
+      class="mt-3"
+    />
+  </template>
+</paginate>
+```
+
+Le principe est assez simple, l'élément pagination prend en entrée une liste d'éléments qu'il faut paginer, ici une liste de groupes, en interne il effectue le système de pagination nécessaire et ré-émet une liste des éléments visibles par rapport à la pagination actuelle, il suffit donc simplement d'explicité comment ces items vont s'afficher dans le corps de l'élément `paginate` et le travail de pagination est terminé. 
+
+Pour voir la simplicité de la pagination il suffit de voir le code nécessaire à l'affichage de notre exemple sans la partie pagination : 
+
+```{.vue caption="Vue.js : code requis sans l'utilisation de la pagination "}
+<group-item
+  v-for="group in groups"
+  :group="group"
+  :key="group.id"
+  :hasJoin="false"
+  class="mt-3"
+/>
+```
+
+Le éléments nécessaires afin de créer une pagination sont donc très simple et basique.
+
+ Le composant `paginate` s'occupe lui même d'afficher la pagination (Vuetify) à la fin de la liste des éléments.
+
 ## Backend
 
 Cette section décrit les éléments importants dans l'utilisation de Laravel.
@@ -1226,16 +1281,16 @@ Pour le choix de la base de donnée, il y a globalement deux possibilités qui s
 
 ### Middleware
 
-Les middleware sont un composant de Laravel qui permet de d'introduire des mécaniques en entrée ou sortie de requête.
+Un middleware est un composant de Laravel qui permet de d'introduire des mécaniques en entrée (agir sur la requête) ou en sortie (agir sur la réponse).
 
 ![Laravel : schéma de fonctionnement d'un middleware](https://miro.medium.com/max/1200/1*Fnreje0WgqdBjjLXop9L0A.png){width=400}
 
 Sur ce [schéma](https://blog.maqe.com/dealing-with-spaces-in-form-inputs-using-middleware-in-laravel-5-4-ffb37cd019e6) nous pouvons voir le fonctionnement global d'un middleware, il peut agir à l'entrée ou à la sortie d'une réponse, dans notre cas c'est l'entrée qui va nous être utile. En effet pour certaines routes nous avons besoin de deux choses :
 
 * Vérifier que l'utilisateur est bien authentifié
-* Vérifier que l'utilisateur a bien accès au groupe demander
+* Vérifier que l'utilisateur a bien accès au groupe (si cela a lieu d'être)
 
-Ces deux cas peuvent facilement être gérés avec des middlewares, pour le login sanctum fourni un middleware "out of the box" `App\Http\Middleware\Authenticate:sanctum` et pour l'accès au groupe, un middleware a été créé, `CheckGroup` celui-ci vérifie de manière basique si un utilisateur a accès à un groupe ou non.
+Ces deux cas peuvent facilement être gérés avec des middlewares, pour le login sanctum fourni un middleware "out of the box" `App\Http\Middleware\Authenticate:sanctum`. En ce qui concerne l'accès au groupe, un middleware a été créé, `CheckGroup`, celui-ci vérifie de manière basique si un utilisateur a accès à un groupe ou non si le paramètre est positionné.
 
 ```{.php caption="Laravel : vérification des droits de groupe"}
 class CheckGroup
@@ -1396,18 +1451,9 @@ Il y a eu au total 6 personnes interrogées dans le cadre de ce user test, les r
 12. D'ailleurs vous décidez que le groupe "INF DLM-B 2019" est beaucoup mieux que le groupe que vous avez créé, comme ce dernier n'est plus utile et qu'il n'y a que vous, vous décidez alors de supprimer le groupe.
 13. Finalement vous avez décidé de changer de classe, vous préférez donc quitter le groupe "INF DLM-B 2019".
 
-### Résultats
-
-En Annexe ?
-
 \newpage
 
-# Problématiques rencontrées
-
-## Editeur p
-
 # Améliorations
-
 Cette section décrit les possibles améliorations qui pourraient être apportées à Caravel.
 
 ## Améliorer le système de notification
@@ -1422,9 +1468,9 @@ Avec ceci il serait intéressant d'avoir un système d'abonnement sur les diffé
 Actuellement les filtres sont gérés au niveau backend, l'idée initiale était de laisser la possibilité de faire une recherche transversale (à travers tous les groupes), cependant cette fonctionnalité n'est pas présente sur Caravel. La recherche d'une tâche se limite à un groupe. Dès lors effectuer une recherche en frontend serait plus judicieux car lors de la sélection d'un groupe toutes les tâches doivent être chargées car elles sont nécessaire dans certaines vues, comme les données sont donc déjà présente un filtre en frontend serait plus rapide et plus adaptée.
 
 ## Editeur markdown
-L'éditeur markdown est issue d'un plugin vue.js : [mavonEditor](https://github.com/hinesboy/mavonEditor). Cet éditeur, bien que flexible, est très limité sur les fonctionnalités disponibles de plus il ne permet pas de faire uniquement du rendu, il faut impérativement rendre le composant en entier pour charger toutes les dépendances externes ce qui rend le composant très lourd pour uniquement faire de l'affichage. Une solution rapide qui est actuellement utilisée repose sur deux composants différents : un pour l'affichage et un pour l'édition du markdown. Les deux sont basé sur le plugin [markdown-it](https://github.com/markdown-it/markdown-it). Cependant qu'ils utilisent les deux markdown-it comment moteur de rendu, les options qu'ils utilisent dans markdown-it diffère légèrement, ce qui est pour cause de créer des différence entre l'affichage à l'édition par rapport au rendu réel sur une page. 
+L'éditeur markdown est issu d'un plugin vue.js : [mavonEditor](https://github.com/hinesboy/mavonEditor). Cet éditeur, bien que flexible, est très limité sur les fonctionnalités disponibles de plus il ne permet pas de faire uniquement du rendu, il faut impérativement rendre le composant en entier pour charger toutes les dépendances externes ce qui rend le composant très lourd pour uniquement faire de l'affichage. Une solution rapide qui est actuellement utilisée repose sur deux composants différents : un pour l'affichage et un pour l'édition du markdown. Les deux sont basé sur le plugin [markdown-it](https://github.com/markdown-it/markdown-it). Cependant qu'ils utilisent les deux markdown-it comment moteur de rendu, les options qu'ils utilisent dans markdown-it diffère légèrement, ce qui est pour cause de créer des différence entre l'affichage à l'édition par rapport au rendu réel sur une page. 
 
-Il faudrait donc trouver une solution pour uniformiser le rendu dans l'éditeur markdown et dans celui dans le rendu final.
+Il faudrait donc une solution pour uniformiser le rendu dans l'éditeur markdown et celui dans le rendu final.
 
 ### Ajout de balises spécifiques
 Une fonctionnalité intéressante dans l'éditeur markdown serait celle de pouvoir ajouter des mentions à d'autre contenu comme par exemple le fait de mentionner un autre membre avec un \@Member ou encore mentionner une autre tâche avec un #123 à la manière de ce que permet déjà GitHub.
@@ -1440,6 +1486,7 @@ Actuellement les paramètres de l'utilisateur sont figés par les informations d
 ## Gestion des suppressions 
 Actuellement Caravel ne s'occupe pas de nettoyer toutes les dépendances lorsqu'une tâche est supprimée. En effet tous les fichiers liées à la tâche sont conservés dans le dossier du groupe dans le `storage`. La question est délicate car lorsqu'un fichier est uploadé au sein d'une tâche, cela créer une url au niveau du markdown pour ce fichier précis, ce lien peut alors être utilisée dans d'autres points de l'application, il faut donc faire en sorte d'être que le fichier n'est plus mentionné dans aucun message avant de le supprimer sans quoi des "liens morts" pourraient apparaitre. 
 
+\newpage
 
 # Conclusion
 
@@ -1450,7 +1497,7 @@ Actuellement Caravel ne s'occupe pas de nettoyer toutes les dépendances lorsqu'
 # Glossaire
 
 * **SPA** : Single Page Application
-* **PWA** : Progressive WebApp
+* **PWA** : Progressive Web App
 * **WLS** : Work Load Score
 * **WES** : Week Effort Score
 
@@ -1458,9 +1505,11 @@ Actuellement Caravel ne s'occupe pas de nettoyer toutes les dépendances lorsqu'
 
 # Annexes
 
-* Installation et configuration du serveur
-* Configuration de l'environnement de travail
-* Planning
+* Installation et configuration
+* Planning (au format GanttProject)
 * Journal de travail
+* Poster A3
 
 \newpage
+
+# Références
