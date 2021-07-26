@@ -26,11 +26,11 @@ Ce projet fait suite à un travail réalisé par trois étudiants dans le cadre 
 
 Avec Caravel l'idée est que les devoirs soient gérés par les membres d'une classe, chaque membre de la classe a donc la possibilité de renseigner un devoir sur la plateforme. Si celui-ci manque de précision, le professeur ou un élève peut y apporter une modification en tout temps afin d'éclaircir son contenu. Dans cette optique autant les professeurs que les élèves peuvent être une source de devoirs ce qui change la dynamique des élèves par rapport aux applications habituelles.
 
-Un des but de Caravel est de réunir tous les devoirs en un seul endroit, avec l'apparition des différents outils comme Moodle, Teams, l'intranet ou encore les dossiers partagés, il est parfois très difficile de savoir où chercher l'information concernant un devoir. L'idée est donc de permettre aux membres d'une classe de réunir les informations pertinentes en un seul endroit afin de gagner du temps. La contribution collaborative permet de faciliter la transition à l'utilisation de Caravel, si par exemple un prof continue de distribuer ses exercices sous format PDF par des canaux différents, il suffit qu'un seul élève soit au courant de l'information pour la transmettre aux autres en les ajoutant sur Caravel.
+Un des buts de Caravel est de réunir tous les devoirs en un seul endroit, avec l'apparition des différents outils comme Moodle, Teams, l'intranet ou encore les dossiers partagés, il est parfois très difficile de savoir où chercher l'information concernant un devoir. L'idée est donc de permettre aux membres d'une classe de réunir les informations pertinentes en un seul endroit afin de gagner du temps. La contribution collaborative permet de faciliter la transition à l'utilisation de Caravel, si par exemple un prof continue de distribuer ses exercices sous format PDF par des canaux différents, il suffit qu'un seul élève soit au courant de l'information pour la transmettre aux autres en les ajoutant sur Caravel.
 
 De plus Caravel pourra permettre d'ouvrir des fils de discussion au sein d'une tâche afin de demander de l'aide ou des éclaircissement sur une tâche, l'idée est de permettre aux élèves de s'entraider et de partager en un seul lieu les différentes informations (questions/réponses).
 
-Enfin, l'outil devra permettre d'avoir une vue de la charge de travail d'une classe afin de placer au mieux les prochains CP/devoirs, également il sera possible pour un élève de réagir sur les différentes tâches pour alerter les professeurs sur un devoir qui serait inadapté (temps de travail, complexité, manque d'informations, etc...)
+Enfin, l'outil devra permettre d'avoir une vue de la charge de travail d'une classe afin de placer au mieux les prochains CP/devoirs, il sera également possible pour un élève de réagir sur les différentes tâches pour alerter les professeurs sur un devoir qui serait inadapté (temps de travail, complexité, manque d'informations, etc...)
 
 Succinctement les buts sont les suivants :
 
@@ -39,13 +39,9 @@ Succinctement les buts sont les suivants :
 * Aider les élèves à mieux s'organiser en ayant une place qui réuni toutes les informations nécessaires à l'exécution de leur travail
 * Proposer une plateforme de collaboration entre étudiants et professeurs sur des tâches via des échanges questions/réponses
 
-### Contraintes éventuelles
-
-Pas de contraintes
-
 ### Priorisation des tâches
 
-Une priorisation des tâches a été effectuée enfin de déterminer les éléments importants du projet. Cette priorisation est basée sur la méthode de MoSCoW @MoScoW.
+Une priorisation des tâches a été effectuée enfin de déterminer les éléments importants du projet. Cette priorisation est basée sur la méthode de MoSCoW [voir @MoScoW].
 
 #### Must have
 
@@ -61,7 +57,7 @@ Une priorisation des tâches a été effectuée enfin de déterminer les éléme
 * Analyse & intégration des feedbacks reçus pendant le semestre de printemps
 * Réactions aux différentes tâches
   * Pouvoir réagir une tâche (trop long, trop complexe, etc...)
-* Ajout de notion de crédit sur les sujets
+* Ajout de notion de crédits ects sur les sujets
 
 #### Should have
 
@@ -138,41 +134,87 @@ Cette section décrit l'état des applications dans le domaine de gestion des t�
 
 ### Applications testées
 
-* Google Classroom (https://classroom.google.com/)
-* MyHomework (https://myhomeworkapp.com/home)
-* MyStudyLife (https://app.mystudylife.com/)
+* [Google Classroom](https://classroom.google.com/)
+* [MyHomework](https://myhomeworkapp.com/home)
+* [MyStudyLife](https://app.mystudylife.com/)
 
 #### Google Classroom
 
-L'outil Google Classroom est très axé cours, les professeurs créent leur cours et les élèves suivent les cours qui leurs sont nécessaires (principe universitaire où les élèves peuvent choisir leur cours). L'idée est que les ajouts tels que les devoirs soient introduits uniquement par le professeur. La notion de classe à proprement parler n'existe pas.
+L'outil Google Classroom est très axé cours, les professeurs créent leur cours et les élèves suivent les cours qui leur sont nécessaires (principe universitaire où les élèves peuvent choisir leur cours). L'idée est que les ajouts tels que les devoirs soient introduits uniquement par le professeur. La notion de classe à proprement parler n'existe pas.
 
-![Google Classroom : liste des types de devoirs](assets/108860975-06675180-75ef-11eb-816e-bf46913694e6.png){width=250}
+##### Type de publication
+Il existe une liste de publication possible dans classroom.
 
-![Google Classroom : gestion de liste d'élèves](assets/108861533-9b6a4a80-75ef-11eb-914c-976bde9a6695.png){width=250}
+![Google Classroom : liste des types de devoirs \label{classroom1}](assets/108860975-06675180-75ef-11eb-816e-bf46913694e6.png){width=250}
 
-![Google Classroom : permet de faire des annonces](assets/108861613-b5a42880-75ef-11eb-9eba-af0017bea98e.png){width=400}
+Comme le montre la figure \ref{classroom1}, celle-ci ne se limite pas seulement au dévoir mais aussi à des questions.
 
-![Google Classroom : vue limité à la semaine](assets/108861942-0d429400-75f0-11eb-97ac-7555cf34c23d.png){width=400}
+
+##### Gestion des accès
+Les accès peuvent être gérés finement dans Google Classroom
+
+![Google Classroom : gestion de liste d'élèves \label{classroom2}](assets/108861533-9b6a4a80-75ef-11eb-914c-976bde9a6695.png){width=250}
+
+Ainsi il est possible de créer des groupes d'élèves afin de faire des partages spécifiques, comme dans la figure \ref{classroom2}.
+
+
+##### Annonces
+Des annonces peuvent être émises par tous au sein de la classe.
+
+![Google Classroom : permet de faire des annonces \label{classroom3}](assets/108861613-b5a42880-75ef-11eb-9eba-af0017bea98e.png){width=400}
+
+Comme le montre la figure \ref{classroom3}, ces annonces apparaissent dans la vue centrale de l'application, ce qui peut être pratique pour faire des rappels rapides.
+
+##### Vue calendrier
+La vue calendrier disponible pour les différentes tâches est limitée à la semaine.
+
+![Google Classroom : vue limité à la semaine \label{classroom4}](assets/108861942-0d429400-75f0-11eb-97ac-7555cf34c23d.png){width=400}
+
+###### Conclusion
+
+Comme le montre la figure \ref{classroom4}, cela donne une bonne idée de la charge de la semaine, il est cependant dommage de ne pas trouver une vue mensuelle.
 
 Fonctionnalités intéressantes :
 
 * Des annonces peuvent être faites pour la classe
 * Il y a une notion de groupes, les devoirs peuvent être distribués à toute la classe ou alors à un groupe plus restreint
-* **Les devoirs sont synchronisés directement avec l'agenda Google**
+* Les devoirs sont synchronisés directement avec l'agenda Google
 
 #### MyHomework
 
 MyHomework est une WebApp qui permet la gestion des devoirs personnels.
 
-![MyHomework : ajout d'un devoir](assets/108901513-404e4d00-761b-11eb-8924-6487a2137068.png){width=300}
+##### Ajout de devoir
+L'interface d'ajout d'un devoir est très lourde.
 
-![MyHomework : vue centrale simple et efficace](assets/108901691-7986bd00-761b-11eb-9ea9-803365636ba8.png){width=400}
+![MyHomework : ajout d'un devoir \label{myhomework1}](assets/108901513-404e4d00-761b-11eb-8924-6487a2137068.png){width=300}
 
-![MyHomework : vue calendrier (mensuelle)](assets/108901732-87d4d900-761b-11eb-82e4-f8c2be4f5d42.png){width=400}
+Il y a beaucoup d'options qui, la plupart du temps, ne sont pas nécessaire, voir la figure \ref{myhomework1}.
 
-![MyHomework : vue semaine](assets/108901820-a3d87a80-761b-11eb-9dc1-5b3bf28ff36b.png){width=400}
+##### Vue centrale simple
+La vue centrale de l'application est claire et efficace.
 
-L'application rend le service minimum (ajout de devoirs) mais ne permet pas la collaboration, il y a beaucoup d'options qui se relèvent pas très utiles dans la majorité des cas.
+![MyHomework : vue centrale simple et efficace \label{myhomework2}](assets/108901691-7986bd00-761b-11eb-9ea9-803365636ba8.png){width=400}
+
+Elle permet de voir simplement les tâches qui doivent être effectuées, comme on peut le voir dans la figure \ref{myhomework2}.
+
+##### Vue mois 
+La vue mois est très basique, elle ne permet pas de voir directement les tâches à effectuer.
+
+![MyHomework : vue calendrier (mensuelle) \label{myhomework3}](assets/108901732-87d4d900-761b-11eb-82e4-f8c2be4f5d42.png){width=400}
+
+Il faut cliquer sur le jour pour avoir des détails sur les tâches, comme sur la figure \ref{myhomework3}.
+
+###### Vue semaine
+Cette vue semaine permet de clairement voir les tâches à effectuer pour la semaine en cours.
+
+![MyHomework : vue semaine \label{myhomework4}](assets/108901820-a3d87a80-761b-11eb-9dc1-5b3bf28ff36b.png){width=400}
+
+Elle contient assez de détails pour ne pas être obligé d'ouvrir la tâche, comme le montre la figure \ref{myhomework4}.
+
+###### Conclusion
+
+L'application rend le service minimum (ajout de devoirs) mais ne permet pas la collaboration, il y a beaucoup d'options qui peuvent perdre l'utilisateur.
 
 Fonctionnalités intéressantes :
 
@@ -180,15 +222,32 @@ Fonctionnalités intéressantes :
 * Possibilité de rajouter des rappels
 * Ajout d'une notion "terminé"
 
-### MyStudyLife
+#### MyStudyLife
 
 MyStudyLife est une WebApp (disponible aussi sur mobile) qui permet la gestion des horaires de cours ainsi que la gestion des tâches à effectuer.
 
-![MyStudyLife : gestion des tâches](assets/108906096-cb7e1180-7620-11eb-9f05-3580c77d39b3.png){width=400}
+##### Vue centrale
+La vue centrale de l'application permet de visualiser clairement les différentes tâches à effectuer.
 
-![MyStudyLife : gestion des différents sujets](assets/108906133-d638a680-7620-11eb-8034-b9398d023f81.png){width=300}
+![MyStudyLife : gestion des tâches \label{mystudy1}](assets/108906096-cb7e1180-7620-11eb-9f05-3580c77d39b3.png){width=400}
 
-![MyStudyLife : gestion des cours](assets/108906275-fe280a00-7620-11eb-94ea-af56b245a805.png){width=400}
+Comme le montre la figure \ref{mystudy1}, celle-ci et très simple, de plus il est possible de directement marqué les tâches comme terminées.
+
+##### Gestion des sujets
+La gestion des sujets a l'avantage d'apparaitre très simple.
+
+![MyStudyLife : gestion des différents sujets \label{mystudy2}](assets/108906133-d638a680-7620-11eb-8034-b9398d023f81.png){width=300}
+
+Il est possible de facilement ajouter un nouveau sujet depuis la création d'une tâche, comme le montre la figure \ref{mystudy2}.
+
+##### Gestion des cours
+Il est possible de gérer son horaire de cours de manière très fine, par exemple on peut donner des cours avec des rotations (une semaine sur deux) ou sur un semestre.
+
+![MyStudyLife : gestion des cours \label{mystudy3}](assets/108906275-fe280a00-7620-11eb-94ea-af56b245a805.png){width=400}
+
+Comme on peut le voir sur la figure \ref{mystudy3}. Ceci permet d'automatiquement pré-remplir certains champs, par exemple lors d'un ajout d'une tâche si un cours est en cours alors la tâche sera pré-rempli avec ce cours.
+
+###### Conclusion
 
 Fonctionnalités intéressantes :
 
@@ -209,17 +268,17 @@ Pour la seconde catégorie, il existe quelques applications qui permettent à un
 
 ### Positionnement de Caravel
 
-Dans Caravel l'idée est de se positionner entre les deux mondes, les devoirs seront gérés par les membres d'une classe, chaque membre de la classe a donc la possibilité de renseigner un devoir sur la plateforme. Si celui-ci manque de précision, le professeur ou un élève peut y apporter une modification en tout temps afin d'éclaircir son contenu. Dans cette optique autant les profs que les élèves peuvent être une source de devoir ce qui change la dynamique des élèves par rapport aux applications habituelles.
+Dans Caravel l'idée est de se positionner entre les deux mondes, les devoirs seront gérés par les membres d'une classe, chaque membre de la classe a donc la possibilité de renseigner un devoir sur la plateforme. Si celui-ci manque de précision, le professeur ou un élève peut y apporter une modification en tout temps afin d'éclaircir son contenu. Dans cette optique autant les profs que les élèves peuvent être une source de devoirs ce qui change la dynamique des élèves par rapport aux applications habituelles.
 
-Un des souhaits de Caravel est aussi de réunir tous les devoirs en un seul endroit, avec l'apparition des différents outils comme Moodle, Teams, l'intranet ou encore les dossiers partagés, il est parfois très difficile de savoir où chercher l'information concernant un devoir. L'idée est donc de permettre aux membres de la classe de réunir les informations pertinentes en un seul endroit afin de gagner du temps.
+Un des souhaits de Caravel est aussi de réunir tous les devoirs en un seul endroit. Avec l'apparition des différents outils comme Moodle, Teams, l'intranet ou encore les dossiers partagés, il est parfois très difficile de savoir où chercher l'information concernant un devoir. L'idée est donc de permettre aux membres de la classe de réunir les informations pertinentes en un seul endroit afin de gagner du temps.
 
 De plus Caravel pourra permettre d'ouvrir des fils de discussion au sein d'une tâche afin de demander de l'aide ou des éclaircissement sur un détail spécifique, l'idée est de permettre aux élèves de s'entraider sur une question et de partager en un seul lieu les différentes informations sur un devoir, évidemment les professeurs peuvent aussi répondre aux différents fils de discussion.
 
-Enfin, l'outil permet aux élèves de toujours être à jour quant aux tâches à faire, en effet il arrive souvent qu'un élève oubli de noter un devoir ou de détailler certains éléments, Caravel permet de réunir les connaissances des différents élèves et des professeurs pour obtenir une base solide d'informations.
+Enfin, l'outil permet aux élèves de toujours être à jour quant aux tâches à faire, en effet il arrive souvent qu'un élève oublie de noter un devoir ou de détailler certains éléments, Caravel permet de réunir les connaissances des différents élèves et des professeurs pour obtenir une base solide d'informations.
 
 ## Conception
 
-Cette partie va s'atteler à décrire les problématiques ainsi que les solutions qui ont été trouvées.
+Cette partie décrit les problématiques ainsi que les solutions qui ont été trouvées.
 
 ### Rôles et use cases
 
@@ -227,7 +286,7 @@ Cette partie explicite les différents rôles disponibles au sein de caravel ain
 
 #### Rôles fonctionnels
 
-Il y a un seul rôle fonctionnel qui donc celui d'administrateur du groupe, en général il s'agit du créateur du groupe mais ce droit peut être transmis.
+Il y a un seul rôle fonctionnel qui est celui d'administrateur du groupe, en général il s'agit du créateur du groupe mais ce droit peut être transmis.
 
 ##### Administrateur du groupe
 
@@ -235,13 +294,12 @@ Permet de gérer les paramètres du groupe (suppression, renommage, etc...) ains
 
 #### Rôles sémantiques
 
-Les rôles suivants n'auront pas de droits particuliers le but de l'application étant de permettre la collaboration directe entre les deux différents rôles, cependant les actions des professeurs seront mises en avant typiquement dans les fils de discussions. De plus les professeurs seront admis d'office dans les groupes dit de "classe" lors d'une demande d'adhésion.
+Les rôles suivants n'auront pas de droits particuliers, le but de l'application étant de permettre la collaboration directe entre eux, cependant les actions des professeurs seront mises en avant, typiquement dans les fils de discussions. De plus les professeurs seront admis d'office dans les groupes dit de "classe" lors d'une demande d'adhésion.
 
 Les deux rôles seront donc les suivants :
 
 * Professeur
 * Elève
-  * Rôle par défaut
 
 Il a été décidé de ne pas appliquer de droit spécifique pour l'un ou l'autre des rôles car un historique des actions de chaque utilisateur sera mis en place et donc il possible en tout temps de trouver qui a effectué la moindre modification sur une tâche, tout utilisateur est libre de modifier une tâche même s'il en est pas l'auteur. Ceci afin d'encourager la collaboration sur les différentes tâches.
 
@@ -306,7 +364,7 @@ Il sera possible en tout temps de réinitialiser les filtres appliqués pour ret
 
 ### Système de réactions
 
-Le système de réactions sur les tâches a pour but de signaler la présence d'un problème sur cette dernière. L'idée derrière ces réactions est de donner une direction sur la réflexion à entreprendre pour évaluer la problématique d'une tâche dans cette optique les réactions ont pour but de juger de manière qualitative (en terme méthodologique) une tâche.
+Le système de réactions sur les tâches a pour but de signaler la présence d'un problème sur ces dernières. L'idée derrière ces réactions est de donner une direction sur la réflexion à entreprendre pour évaluer la problématique d'une tâche dans cette optique les réactions ont pour but de juger de manière qualitative (en terme méthodologique) une tâche.
 
 Pour ce faire nous allons définir une base de réactions qui sera la même sur toutes les tâches et que les élèves pourront utiliser. Il est important que cette base soit commune à toutes les tâches afin que les élèves puissent appréhender correctement leur utilisation. En effet des réactions spécifiques à chaque sujet ou groupe demanderait un effort d'assimilation trop conséquent et placerait l'élève dans une situation d'incertitude quant au choix de la réaction ce qui serait contre productif. Le système doit rester simple et pouvoir être assimiler facilement.
 
@@ -535,7 +593,6 @@ const response: AxiosResponse = await axios({
   data: { mail, password },
   method: "POST",
 });
-
 ```
 
 Nous pouvons constater en ligne 1, aucun retour particulier n'est attendu car Laravel va automatiquement inscrire les cookies nécessaires et la librairie utilisée pour les appels backend, Axios, va lui aussi de manière automatique faire les configurations nécessaires dès lors que le paramètre `axios.defaults.withCredentials = true;` est positionné.
@@ -544,9 +601,9 @@ Nous pouvons constater en ligne 1, aucun retour particulier n'est attendu car La
 
 Une fois la configuration simple mise en place, il s'agit d'ajouter l'authentification LDAP. Dans le cas de la he-arc il s'agit d'une connexion à un Active Directory, pour effectuer des tests en local un OpenLDAP suffit.
 
-````{.bash caption="LDAP : création d'un annuaire avec docker"}
+```{.bash caption="LDAP : création d'un annuaire avec docker"}
 docker run -d --rm -p 10389:10389 -p 10636:10636 rroemhild/test-openldap 
-````
+```
 
 Ce docker permet de rapidement mettre en place un annuaire OpenLDAP, les informations sur le contenu (utilisateurs, groupes, OUs, etc...) se trouve sur le [readme du GitHub](https://github.com/rroemhild/docker-test-openldap).
 
@@ -580,7 +637,7 @@ Les champs synchronisés se trouve sous le paramètre `sync_attributes`, à part
 
 C'est justement ce qui est effectuer pour la synchronisation du champs `isTeacher` car il n'existe pas de champs dans l'annuaire pour déterminer cette information directement, il faut donc la calculer à partir d'autre champs.
 
-````{.php caption="LDAP : gestion de paramètre spécifique"}
+```{.php caption="LDAP : gestion de paramètre spécifique"}
 class AttributeHandler
 {
     public function handle(LdapUser $ldap, DatabaseUser $user)
@@ -604,7 +661,7 @@ class AttributeHandler
         $user->isTeacher = 0;
     }
 }
-````
+```
 
 C'est donc dans la classe `AttributeHandler.php` qu'on détermine si l'utilisateur est un professeur ou non. Basiquement il s'agit de vérifier la présence de l'utilisateur dans certaines OUs qui sont déterminés par le paramètre `LDAP_TEACHERS_OUs` dans le `.env`.
 
@@ -1458,9 +1515,9 @@ Actuellement Caravel ne s'occupe pas de nettoyer toutes les dépendances lorsqu'
 
 # Annexes
 
-* Installation et configuration du serveur
-* Configuration de l'environnement de travail
-* Planning
-* Journal de travail
+1. Installation et configuration du serveur
+1. Configuration de l'environnement de travail
+1. Planning
+1. Journal de travail
 
 \newpage
