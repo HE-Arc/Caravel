@@ -16,6 +16,9 @@ use ReflectionClass;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * This class is used to notify users 
+ */
 class Action extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -57,6 +60,13 @@ class Action extends Notification implements ShouldQueue
         return ['database', FcmChannel::class];
     }
 
+    /**
+     * Specify how to send FCM notification
+     * 
+     * @param   mixed   $notifiable
+     * 
+     * @return NotificationChannels\Fcm\FcmMessage
+     */
     public function toFcm($notifiable)
     {
 

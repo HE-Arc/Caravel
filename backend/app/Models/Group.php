@@ -136,6 +136,9 @@ class Group extends Model
         }
     }
 
+    /**
+     * Get specific folder for the current group
+     */
     public function getStorageFolder()
     {
         return config('caravel.groups.pictureFolder') . $this->id;
@@ -217,6 +220,11 @@ class Group extends Model
         return $this->getWeekScore(CarbonImmutable::now());
     }
 
+    /**
+     * This function allow to calculate the score week for the given date
+     * 
+     * @param   string  $date in format "Y-m-d"
+     */
     public function getWeekScore($date)
     {
         $now = $date;
@@ -230,7 +238,7 @@ class Group extends Model
         $div = 0;
 
         foreach ($tasks as $task) {
-            $coef = $task->tasktype_id == Tasktype::PROJECT ? 1.5 : 1;
+            $coef = $task->tasktype_id == Tasktype::PROJECT ? 2 : 1;
             $sum += $task->subject->ects * $coef;
             array_push($subjects, $task->subject);
         }
@@ -240,17 +248,6 @@ class Group extends Model
             array_push($subjects, $project->subject);
         }
 
-        $subjects = array_unique($subjects);
-
-        $div = array_reduce($subjects, function ($carry, $subject) {
-            $carry += $subject->ects;
-            return $carry;
-        }, 0);
-
-        if ($sum > 0) {
-            return intval(($sum * 10) / $div);
-        } else {
-            return 0;
-        }
+        return $sum > 0 ? $sum : 0;
     }
 }

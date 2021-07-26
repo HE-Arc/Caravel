@@ -34,7 +34,8 @@ class CheckGroup
 
         $group->loadMissing('usersAccepted'); // load users accepted if not already loaded
 
-        if (empty($group) || !$group->usersAccepted->contains($user)) {
+        //Check group access, if not authorized send error to the user
+        if (empty($group) || !$group->usersAccepted->contains($user)) { 
             abort(403, __("api.global.403"));
         }
 
