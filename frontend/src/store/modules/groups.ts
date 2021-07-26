@@ -19,8 +19,6 @@ import {
   dynamic: true,
   store,
   name: "groups",
-  //preserveState:
-  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class GroupModule extends VuexModule {
   _groups: Group[] = [];
@@ -45,13 +43,13 @@ class GroupModule extends VuexModule {
 
   //Mutation
   @Mutation
-  private REQUEST() {
+  protected REQUEST() {
     this._status = "loading";
   }
 
   //Mutation
   @Mutation
-  private LOADED() {
+  protected LOADED() {
     this._status = "loaded";
   }
 
@@ -66,11 +64,8 @@ class GroupModule extends VuexModule {
     const index = this._groups.findIndex((item) => item.id == data.id);
     if (index === -1) {
       this._groups.push(data);
-      this._status = "added";
     } else {
-      //see : https://gist.github.com/DawidMyslak/2b046cca5959427e8fb5c1da45ef7748
-      Vue.set(this._groups, index, data);
-      this._status = "modified";
+      Vue.set(this._groups, index, data); //reactive data
     }
   }
 
@@ -78,23 +73,25 @@ class GroupModule extends VuexModule {
   protected REMOVE_GROUP(groupId: string): void {
     const index = this._groups.findIndex((item) => item.id == groupId);
     if (index !== -1) {
-      Vue.delete(this._groups, index);
-      this._status = "delete";
+      Vue.delete(this._groups, index); //reactive data
     }
   }
 
   @Mutation
-  private SET_GROUP(groupId: string) {
-    this._status = "selected";
+  protected SET_GROUP(groupId: string) {
     this._groupId = groupId;
   }
 
   @Mutation
-  private ERROR() {
+  protected ERROR() {
     this._status = "error";
   }
 
-  //Actions
+  /**
+   * This function set and load a group
+   * @param id the group's id
+   * @returns the response sended by the backend
+   */
   @Action
   loadGroup(id: string): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
@@ -118,6 +115,10 @@ class GroupModule extends VuexModule {
     });
   }
 
+  /**
+   * This function allow to load all groups for the logged user
+   * @returns API's response 
+   */
   @Action
   loadGroups(): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
@@ -137,12 +138,22 @@ class GroupModule extends VuexModule {
     });
   }
 
+  /**
+   * Select the current group
+   * @param groupId 
+   */
   @Action
   async selectGroup(groupId: string): Promise<void> {
     this.SET_GROUP(groupId);
     await this.loadGroup(groupId);
   }
 
+  /**
+   * Update the given group via API call
+   * if the call is a success then update group internally
+   * @param group 
+   * @returns API's Response
+   */
   @Action
   updateGroup(group: Group): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
@@ -169,6 +180,11 @@ class GroupModule extends VuexModule {
     });
   }
 
+  /**
+   * Leave the given group for the current logged user
+   * @param group 
+   * @returns API's Response
+   */
   @Action
   leave(group: Group): Promise<AxiosResponse> {
     this.REQUEST();
@@ -193,6 +209,11 @@ class GroupModule extends VuexModule {
     });
   }
 
+  /**
+   * Add a group
+   * @param formData 
+   * @returns the newly created group
+   */
   @Action
   add(formData: FormData): Promise<Group> {
     return new Promise((resolve, reject) => {
@@ -209,6 +230,11 @@ class GroupModule extends VuexModule {
     });
   }
 
+  /**
+   * Delete group
+   * @param groupId the group's id to delete
+   * @returns void promise
+   */
   @Action
   removeGroup(groupId: string): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -224,6 +250,11 @@ class GroupModule extends VuexModule {
     });
   }
 
+  /**
+   * Upload a file to a group
+   * @param file the file to upload
+   * @returns File's full path 
+   */
   @Action
   async uploadFile(file: File): Promise<string> {
     const form = new FormData();

@@ -51,36 +51,36 @@ class UserModule extends VuexModule {
     return this._user ? this._user.notifications : [];
   }
 
-  // MUTATION
+  //MUTATION
   @Mutation
-  REQUEST() {
+  protected REQUEST() {
     this._status = "loading";
   }
 
   @Mutation
-  SUCCESS(user: User) {
+  protected SUCCESS(user: User) {
     this._user = user;
     this._status = "success";
   }
 
   @Mutation
-  ERROR() {
+  protected ERROR() {
     this._status = "error";
   }
 
   @Mutation
-  DISCONNECT() {
+  protected DISCONNECT() {
     this._status = "";
     this._user = undefined;
   }
 
   @Mutation
-  UPDATE_FCM(token: string) {
+  protected UPDATE_FCM(token: string) {
     this._fcm_token = token;
   }
 
   @Mutation
-  UPDATE_NOTIFS(notifs: Notification[]) {
+  protected UPDATE_NOTIFS(notifs: Notification[]) {
     if (!this._user) return;
     Vue.set(this._user, "notifications", notifs);
   }
@@ -91,6 +91,11 @@ class UserModule extends VuexModule {
     return { _user: user };
   }
 
+  /**
+   * Attach FCM Token to the user
+   * @param fcm 
+   * @returns 
+   */
   @Action
   async addFcmToken(fcm: string) {
     if (!fcm || fcm == "") return;
@@ -106,6 +111,9 @@ class UserModule extends VuexModule {
     }
   }
 
+  /**
+   * Remove attached token for the logged user
+   */
   @Action
   async removeFcmToken() {
     if (this._fcm_token) {
@@ -122,10 +130,9 @@ class UserModule extends VuexModule {
     }
   }
 
-  //ACTIONS
   /**
    * This function allow to login into the Laravel backend Sanctum
-   * @param data Array<string>
+   * @param data 
    */
   @Action
   async login({ mail, password }: Credentials): Promise<void> {
@@ -144,6 +151,9 @@ class UserModule extends VuexModule {
     this.SUCCESS(user);
   }
 
+  /**
+   * Logout the user, remove the fcm token too
+   */
   @Action
   async logout(): Promise<void> {
     await this.removeFcmToken();
@@ -151,6 +161,10 @@ class UserModule extends VuexModule {
     localStorage.removeItem(process.env.VUE_APP_TOKEN_NAME);
   }
 
+  /**
+   * Load notification for the logged user
+   * @returns void when request done 
+   */
   @Action
   async loadNotifications(): Promise<void> {
     if (!this.isLoggedIn) return;
@@ -164,6 +178,11 @@ class UserModule extends VuexModule {
     this.UPDATE_NOTIFS(notifs);
   }
 
+  /**
+   * Mark notifications in array as read
+   * @param notif 
+   * @returns void when request is done
+   */
   @Action
   async markAsRead(notif: Notification[]): Promise<void> {
     if (!this.isLoggedIn) return;

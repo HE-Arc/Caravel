@@ -19,8 +19,6 @@ import QuestionForm from "@/types/QuestionForm";
   dynamic: true,
   store,
   name: "questions",
-  //preserveState:
-  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class QuestionModule extends VuexModule {
   _questions: Question[] = [];
@@ -40,23 +38,23 @@ class QuestionModule extends VuexModule {
   }
 
   @Mutation
-  ERROR() {
+  protected ERROR() {
     this._status = "error";
   }
 
   @Mutation
-  REQUEST() {
+  protected REQUEST() {
     this._status = "loading";
   }
 
   @Mutation
-  LOAD_QUESTIONS(questions: Question[]) {
+  protected LOAD_QUESTIONS(questions: Question[]) {
     this._questions = questions;
     this._status = "loaded";
   }
 
   @Mutation
-  UPSERT_QUESTION(question: Question) {
+  protected UPSERT_QUESTION(question: Question) {
     const index = this._questions.findIndex((item) => item.id == question.id);
     if (index === -1) {
       this._questions.push(question);
@@ -68,7 +66,7 @@ class QuestionModule extends VuexModule {
   }
 
   @Mutation
-  REMOVE_QUESTION(question: Question) {
+  protected REMOVE_QUESTION(question: Question) {
     const index = this._questions.findIndex((item) => item.id == question.id);
     if (index !== -1) {
       Vue.delete(this._questions, index);
@@ -76,6 +74,11 @@ class QuestionModule extends VuexModule {
     }
   }
 
+  /**
+   * Save question to the backend (used for both create and update)
+   * @param question form to send
+   * @returns the newly created Question
+   */
   @Action
   upsertQuestion(question: QuestionForm): Promise<Question> {
     const groupId = groupModule.selectedId;
@@ -103,6 +106,11 @@ class QuestionModule extends VuexModule {
     });
   }
 
+  /**
+   * Add a comment for a question
+   * @param comment form data
+   * @returns Question with updated comments
+   */
   @Action
   upsertComment(comment: CommentForm): Promise<Question> {
     const groupId = groupModule.selectedId;
@@ -130,6 +138,11 @@ class QuestionModule extends VuexModule {
     });
   }
 
+  /**
+   * Delete comment
+   * @param comment 
+   * @returns update question
+   */
   @Action
   deleteComment(comment: Comment): Promise<Question> {
     const groupId = groupModule.selectedId;
@@ -153,6 +166,11 @@ class QuestionModule extends VuexModule {
     });
   }
 
+  /**
+   * Delete question
+   * @param question 
+   * @returns API's response
+   */
   @Action
   deleteQuestion(question: Question): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
@@ -175,6 +193,10 @@ class QuestionModule extends VuexModule {
     });
   }
 
+  /**
+   * List questions in the module
+   * @param questions 
+   */
   @Action
   load(questions: Question[]) {
     this.LOAD_QUESTIONS(questions);
