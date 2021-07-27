@@ -27,8 +27,6 @@ interface payloadChange {
   dynamic: true,
   store,
   name: "members",
-  //preserveState:
-  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class MemberModule extends VuexModule {
   _items: Member[] = [];
@@ -80,10 +78,8 @@ class MemberModule extends VuexModule {
     const index = this._items.findIndex((item) => item.id == data.id);
     if (index === -1) {
       this._items.push(data);
-      this._status = "added";
     } else {
       Vue.set(this._items, index, data);
-      this._status = "modified";
     }
   }
 
@@ -96,6 +92,11 @@ class MemberModule extends VuexModule {
     }
   }
 
+  /**
+   * Change the group status of the member, state can be found in under GroupState
+   * @param param0 payload data to send
+   * @returns API's response
+   */
   @Action
   changeStatus({ groupId, member, status }: payloadChange) {
     return new Promise<AxiosResponse>((resolve, reject) => {
@@ -120,6 +121,11 @@ class MemberModule extends VuexModule {
     });
   }
 
+  /**
+   * Remove the member of from the group
+   * @param param0 payload data to send
+   * @returns API's Response
+   */
   @Action
   removeMember({ groupId, member }: payloadRemove) {
     return new Promise<AxiosResponse>((resolve, reject) => {
@@ -142,6 +148,10 @@ class MemberModule extends VuexModule {
     });
   }
 
+  /**
+   * Load the list of users in module 
+   * @param items list of users
+   */
   @Action
   load(items: Member[]): void {
     this.LOAD_ITEMS(items);

@@ -6,14 +6,18 @@ use App\Http\Requests\ProfileRequest;
 use App\Services\UploadFileService;
 use Illuminate\Http\Request;
 
+/**
+ * This classe is used to manage user profile's settings 
+ */
 class ProfileController extends Controller
 {
 
     /**
      * Update the profile
      *
-     * @param  \App\Http\Requests\ProfileRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param   ProfileRequest   $request
+     * @param   UploadService   $fileService
+     * @return  \Illuminate\Http\Response
      */
     public function update(ProfileRequest $request, UploadFileService $fileService)
     {
@@ -31,11 +35,20 @@ class ProfileController extends Controller
         return response()->json($this->user);
     }
 
+    /**
+     * This function retrieve user's notifications
+     * @param   Request $request
+     * @return  \Illuminate\Http\Response
+     */
     public function getNotifications(Request $request)
     {
         return $request->has('all') ? $this->user->notifications : $this->user->unreadNotifications;
     }
 
+    /**
+     * This function register user's FCM Token
+     * @param   ProfileRequest  $request
+     */
     public function registerFCMToken(ProfileRequest $request)
     {
         $data = $request->validated();
@@ -44,6 +57,10 @@ class ProfileController extends Controller
         }
     }
 
+    /**
+     * This function delete user's FCM token
+     * @param   ProfileRequest $request
+     */
     public function deleteFCMToken(ProfileRequest $request)
     {
         $data = $request->validated();
@@ -52,6 +69,10 @@ class ProfileController extends Controller
         }
     }
 
+    /**
+     * This function is used to mark notification as read
+     * @param   ProfileRequest  $request
+     */
     public function markAsRead(ProfileRequest $request)
     {
         $data = $request->validated();

@@ -30,7 +30,13 @@ class QuestionObserver extends AbstractActionObserver
         $this->sendNotification($question, 'update', ActionType::UPDATE);
     }
 
-
+    /**
+     * Handle sending notification to users
+     * 
+     * @param   Question $question
+     * @param   string  $action
+     * @param   string  $type
+     */
     private function sendNotification(Question $question, $action, $type)
     {
         $question->load('task.group');

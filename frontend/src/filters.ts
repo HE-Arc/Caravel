@@ -1,10 +1,12 @@
 import Vue from "vue";
 
+//This filter is used to display the first letter Capitalized
 Vue.filter("capitalize", function (value: string) {
   if (!value) return "";
   return value.toString().charAt(0).toUpperCase() + value.slice(1);
 });
 
+// used to create initial from word "Super Test" => "ST"
 Vue.filter("initials", function (value: string) {
   if (value === undefined) return "";
 
@@ -20,6 +22,7 @@ Vue.filter("initials", function (value: string) {
   return name.toUpperCase();
 });
 
+//Limite the number of characters 
 Vue.filter("limit", function (value: string, size: number) {
   if (!value) return "";
   value = value.toString();

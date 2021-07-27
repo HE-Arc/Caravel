@@ -7,15 +7,21 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
+
+/**
+ * This class is a service to manage file upload 
+ */
 class UploadFileService
 {
 
     /**
      * Upload file and resize needed (if it's an image) 
      * @param string $folder specify the folder where to put the image 
-     * @param UploadedFile $file file to uplaod 
+     * @param File $file file to uplaod 
      * @param int $size set size to -1 to prevent resizing and squaring
      * @param bool $sqaureIt true to square image 
+     * @param string $disk specify storage point
+     * @return string relative path to the file
      * 
      */
     public function uploadFileToFolder(string $folder, File $file, $size = 250, $squareIt = true, $disk = 'public_uploads'): string

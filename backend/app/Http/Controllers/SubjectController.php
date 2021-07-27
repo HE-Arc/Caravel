@@ -7,11 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Subject;
 use App\Models\Group;
 
+/**
+ * This class manage subjects
+ */
 class SubjectController extends Controller
 {
     /**
      * Show subjects of a group.
      *
+     * @param   Group   $group
      * @return \Illuminate\View\View
      */
     public function index(Group $group)
@@ -23,8 +27,9 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param   SubjectRequest  $request
+     * @param   Group   $group
+     * @return  \Illuminate\Http\Response
      */
     public function store(SubjectRequest $request, Group $group)
     {
@@ -38,9 +43,9 @@ class SubjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Group $group
-     * @param Subject $subject
+     * @param   SubjectRequest  $request
+     * @param   Group   $group
+     * @param   Subject $subject
      * @return \Illuminate\Http\Response
      */
     public function update(SubjectRequest $request, Group $group, Subject $subject)
@@ -52,7 +57,7 @@ class SubjectController extends Controller
     /**
      * Persist data to db the specified resource in storage.
      *
-     * @param Request $request
+     * @param SubjectRequest $request
      * @param Group $group
      * @param Subject $subject
      * @return \Illuminate\Http\Response

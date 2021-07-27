@@ -2,6 +2,9 @@
 
 namespace App\Notifications;
 
+/**
+ * Define all action types
+ */
 abstract class ActionType
 {
     const CREATE = 1;
