@@ -9,7 +9,7 @@
 
 ## Remerciements {-}
 
-Merci à Luca Truscello (truscello.luca@gmail.com) étudiant à L'HEPIA de Genève qui a produit le logo de Caravel.
+Merci à [Luca Truscello](truscello.luca@gmail.com) étudiant à L'HEPIA de Genève qui a produit le logo de Caravel.
 
 Merci à MM. Grunenwald, Wohlfahrt et M'Poy, pour le suivi et les conseils avisés ainsi que les débats animés.
 
@@ -22,7 +22,7 @@ Le projet Caravel fait suite à un travail réalisé par trois étudiants dans l
 
 Le but de ce projet est donc de pousser Caravel plus loin en y ajoutant de nouvelles fonctionnalités pour le rendre utilisable par la He-Arc. 
 
-Le projet s'articule autours des problématiques suivantes :
+Le projet s'articule autours des objectifs suivantes :
 
 * Placer au mieux les devoirs et CP pour lisser la charge et savoir si la charge de travail est correcte
 * Réunir en un seul endroit toutes les informations relatives au travail qui doit être effectué par l'étudiant et ainsi éviter l'utilisation de différents canaux
@@ -1412,7 +1412,9 @@ La mise en place d'une application PWA est assez simple avec Vue.js, du moment q
 ![PWA : score lighthouse \label{lighthouse}](assets/20210722_172442_image.png)
 
 Sur la figure \ref{lighthouse}, il est possible de voir le résultat du score [Lighthouse](https://developers.google.com/web/tools/lighthouse).
+
 ### Composants
+
 Plusieurs composants ont été développés dans le cadre du projet, dans cette section décrit quelques composants remarquables.
 
 #### Input spécifiques
@@ -1470,6 +1472,14 @@ Pour voir la simplicité de la pagination il suffit de voir le code nécessaire 
 Le éléments nécessaires afin de créer une pagination sont donc très simples et basiques.
 
 Le composant `paginate` s'occupe lui même d'afficher la pagination via l'utilisation de [Vuetify](https://vuetifyjs.com/en/) à la fin de la liste des éléments.
+
+### Editeur markdown
+L'éditeur markdown était un élément déjà présent dans l'ancienne version de Caravel, avec l'ajout du frontend Vue.js il a fallut changer d'éditeur, heureusement un éditeur similaire pour Vue.js est disponible : [mavonEditor](https://github.com/hinesboy/mavonEditor).
+
+Cette éditeur, cependant, n'est pas prévu pour l'utilisation de TypeScript ce qui a engendré pas mal de problématiques lors de son implémentation.
+
+#### Gestion des uploads
+De base l'éditeur markdown mavonEditor ne permet que la gestion de téléchargement d'images, le composant a donc été modifié pour laisser la possibilité à l'utilisateur de pouvoir ajouter des fichiers de tous les types depuis le markdown. De plus il est maintenant possible de directement coller une image ou un fichier qui se trouve dans le presse-papier avec le raccourci `CTRL+V`.
 
 ## Backend
 
@@ -1698,6 +1708,19 @@ Actuellement Caravel ne s'occupe pas de nettoyer toutes les dépendances lorsqu'
 \newpage
 
 # Conclusion
+Par rapport au premier objectif qui concernait le placement des devoirs et une meilleure visibilité de la charge de travail, l'implémentation du calcul de charge ainsi que l'affichage de ce dernier dans les différentes vues comme la vue chronologique ou encore la vue mensuelle, rendent possible une meilleure gestion du placement des devoirs et donc devrait permettre d'avoir une charge plus homogène. 
+
+Concernant le second objectif, qui est de réunir toutes les informations relatives au travail qui doit être effectué, 
+
+Le troisième objectif, qui est d'aider les élèves à mieux s'organiser, il est amplement rempli par les différentes vues qui permettent d'avoir un affichage clair des tâches à faire, de plus l'ajout du système de notification permet d'être constamment à jour sur ces dernières.
+
+En fin le dernier objectif, qui était de proposer une plateforme de collaboration entre élèves et étudiants, l'objectif a été remplis grâce à l'implémentation d'un système de réactions ainsi que la possibilité de créer des questions dans les différentes tâches.
+
+Nous avons donc une application fonctionnelle qui permet une meilleure gestion des devoirs au sein de l'He-Arc mais aussi une meilleure collaboration entre élèves et professeurs. 
+
+Pour conclure, l'application est loin d'être parfaite, il reste des points d'améliorations notables, notamment une meilleure gestion des notifications mais dans l'ensemble le projet Caravel a su répondre aux des objectifs principaux requis.
+
+\newpage
 
 # Glossaire
 

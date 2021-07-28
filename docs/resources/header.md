@@ -12,10 +12,10 @@ subtitle: |
 version: 0.1.0
 lang: "fr"
 titlepage: true
-titlepage-text-color: "000000"
-titlepage-rule-color: "5e72e4"
-titlepage-rule-height: 7
-titlepage-background: "resources/background-front.pdf"
+titlepage-text-color: "ffffff"
+titlepage-rule-color: "ffffff"
+titlepage-rule-height: 17
+titlepage-background: "resources/background-front2.pdf"
 caption-justification: centering
 page-background: "resources/background-pages.pdf"
 links-as-notes: true
