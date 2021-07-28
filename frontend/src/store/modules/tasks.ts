@@ -123,10 +123,11 @@ class TasksModule extends VuexModule {
     );
   }
 
+
   get medianWeekScore(): number {
     //https://stackoverflow.com/questions/45309447/calculating-median-javascript
     if (!this.stats) return 0;
-    const values = this.stats.map((item) => item.wes).filter((wes) => wes != 0);
+    const values = this.stats.filter(item => moment(item.create_at).isBefore(moment())).map((item) => item.wes).filter((wes) => wes != 0);
     const v = values.sort((a, b) => a - b);
     const mid = Math.floor(v.length / 2);
     const median = v.length % 2 !== 0 ? v[mid] : (v[mid - 1] + v[mid]) / 2;

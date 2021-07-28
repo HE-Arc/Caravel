@@ -174,7 +174,7 @@ class GroupModule extends VuexModule {
     this.REQUEST();
     return new Promise((resolve, reject) => {
       axios({
-        url: process.env.VUE_APP_API_BASE_URL + `profile`,
+        url: process.env.VUE_APP_API_BASE_URL + `profile/group`,
         method: "DELETE",
         data: {
           group_id: group.id,
