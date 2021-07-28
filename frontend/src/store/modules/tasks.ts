@@ -22,8 +22,6 @@ import subjectModule from "@/store/modules/subjects";
   dynamic: true,
   store,
   name: "tasks",
-  //preserveState:
-  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class TasksModule extends VuexModule {
   _tasks: Task[] = [];
@@ -38,20 +36,32 @@ class TasksModule extends VuexModule {
     return this._taskId;
   }
 
+  /**
+   * Get selected task
+   */
   get getCurrentTask(): Task | undefined {
     return this._tasks.find((item) => item.id == this._taskId);
   }
 
+  /**
+   * Get tasks that are due 
+   */
   get tasksFuture(): Task[] {
     return this._tasks.filter((task) =>
       moment(task.due_at).isSameOrAfter(moment())
     );
   }
 
+  /**
+   * Get only public tasks (get rid of private tasks)
+   */
   get publicTasks(): Task[] {
     return this._tasks.filter((item) => !item.isPrivate);
   }
 
+  /**
+   * Get all WES score for the current selected group
+   */
   get stats(): GroupStat[] | undefined {
     if (this.publicTasks.length == 0) return undefined;
 
@@ -111,6 +121,9 @@ class TasksModule extends VuexModule {
     return stats;
   }
 
+  /**
+   * Get min and max score for the current selected group
+   */
   get minMaxWeekScore(): number[] {
     if (!this.stats) return [0, 0];
     return this.stats.reduce(
@@ -124,6 +137,9 @@ class TasksModule extends VuexModule {
   }
 
 
+  /**
+   * Get median WES score
+   */
   get medianWeekScore(): number {
     //https://stackoverflow.com/questions/45309447/calculating-median-javascript
     if (!this.stats) return 0;
@@ -134,6 +150,9 @@ class TasksModule extends VuexModule {
     return median;
   }
 
+  /**
+   * Retrieve the current week effort score
+   */
   get currentWeekScore(): number | undefined {
     return this.stats?.find((item) =>
       moment(item.create_at).isSame(moment(), "isoWeek")
@@ -156,28 +175,28 @@ class TasksModule extends VuexModule {
   }
 
   @Mutation
-  private ERROR() {
+  protected ERROR() {
     this._status = "error";
   }
 
   @Mutation
-  private REQUEST() {
+  protected REQUEST() {
     this._status = "loading";
   }
 
   @Mutation
-  private FINISH() {
+  protected FINISH() {
     this._status = "loaded";
   }
 
   @Mutation
-  private LOAD_TASKS(tasks: Task[]) {
+  protected LOAD_TASKS(tasks: Task[]) {
     this._tasks = tasks;
     this._status = "loaded";
   }
 
   @Mutation
-  private UPSERT_TASK(task: Task) {
+  protected UPSERT_TASK(task: Task) {
     const index = this._tasks.findIndex((item) => item.id == task.id);
     if (index === -1) {
       this._tasks.push(task);
@@ -187,7 +206,7 @@ class TasksModule extends VuexModule {
   }
 
   @Mutation
-  private REMOVE_TASK(task: Task) {
+  protected REMOVE_TASK(task: Task) {
     const index = this._tasks.findIndex((item) => item.id == task.id);
     if (index !== -1) {
       Vue.delete(this._tasks, index);
@@ -195,10 +214,15 @@ class TasksModule extends VuexModule {
   }
 
   @Mutation
-  private SET_TASK(task: TaskExtended) {
+  protected SET_TASK(task: TaskExtended) {
     this._taskId = task.id;
   }
 
+  /**
+   * Add a task
+   * @param task 
+   * @returns the newly created Task
+   */
   @Action
   add(task: Task): Promise<Task> {
     const groupId = groupModule.selectedId;
@@ -219,6 +243,11 @@ class TasksModule extends VuexModule {
     });
   }
 
+  /**
+   * Update a task
+   * @param task 
+   * @returns Updated task
+   */
   @Action
   update(task: Task): Promise<Task> {
     const groupId = groupModule.selectedId;
@@ -241,6 +270,10 @@ class TasksModule extends VuexModule {
     });
   }
 
+  /**
+   * Set a task as done
+   * @param data form data
+   */
   @Action
   async setFinish(data: Dictionary<unknown>) {
     const groupId = groupModule.selectedId;
@@ -250,6 +283,11 @@ class TasksModule extends VuexModule {
     );
   }
 
+  /**
+   * Delete a task
+   * @param task 
+   * @returns API's response
+   */
   @Action
   delete(task: Task): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
@@ -271,11 +309,20 @@ class TasksModule extends VuexModule {
     });
   }
 
+  /**
+   * Load a list of tasks
+   * @param tasks 
+   */
   @Action
   load(tasks: Task[]) {
     this.LOAD_TASKS(tasks);
   }
 
+  /**
+   * Unifome task's save (update or create)
+   * @param task 
+   * @returns 
+   */
   @Action
   async save(task: Task): Promise<Task> {
     if (task.id == "" || task.id == "-1") {
@@ -285,6 +332,10 @@ class TasksModule extends VuexModule {
     }
   }
 
+  /**
+   * On/Off a reaction on a task
+   * @param param0 
+   */
   @Action
   async postReaction({
     taskId,
@@ -306,7 +357,11 @@ class TasksModule extends VuexModule {
     this.UPSERT_TASK(task);
   }
 
-  //Actions
+  /**
+   * Load a specific task
+   * @param id task's id
+   * @returns API's response
+   */
   @Action
   loadTask(id: string): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
@@ -332,6 +387,11 @@ class TasksModule extends VuexModule {
     });
   }
 
+  /**
+   * Set current selected task
+   * @param taskId 
+   * @returns 
+   */
   @Action
   async selectTask(taskId: string): Promise<AxiosResponse> {
     return await this.loadTask(taskId);

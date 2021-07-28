@@ -140,6 +140,12 @@ class Task extends Model
         return $this->subscriptions()->wherePivot('user_id', $user_id)->wherePivot('hasFinished', "1")->count() > 0;
     }
 
+    /**
+     * This function allow to update finish status for a specified user
+     * 
+     * @param   int $user_id
+     * @param   boolean $hasFinished
+     */
     public function updateFinish($user_id, $hasFinished)
     {
         $data = ['hasFinished' => $hasFinished];
@@ -150,6 +156,9 @@ class Task extends Model
         }
     }
 
+    /**
+     * This function is used for the history 
+     */
     public function getModelLabel()
     {
         return $this->title;

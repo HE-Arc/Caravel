@@ -36,7 +36,7 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  GroupRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(GroupRequest $request)
@@ -101,6 +101,9 @@ class GroupController extends Controller
 
     /**
      * Delete the given member from the group
+     * @param MemberGroupRequest $request
+     * @param Group $group
+     * @return \Illuminate\Http\Response
      */
     public function removeMember(MemberGroupRequest $request, Group $group)
     {
@@ -122,7 +125,7 @@ class GroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Group $group
      * @return \Illuminate\Http\Response
      */
     public function destroy(Group $group)
@@ -140,6 +143,10 @@ class GroupController extends Controller
     /**
      * Change status of user in a group
      * status can be found under Group::REQUESTSTATUS
+     * 
+     * @param MemberStatusRequest $request
+     * @param Group $group
+     * @return \Illuminate\Http\Response
      */
     public function updateMemberStatus(MemberStatusRequest $request, Group $group)
     {
@@ -160,12 +167,19 @@ class GroupController extends Controller
         return response()->json(['message' => __('api.groups.member_updated')]);
     }
 
+    /**
+     * This function is used to ask join to a group
+     * @param Group $group
+     * @return \Illuminate\Http\Response
+     */
     public function join(Group $group)
     {
         $userId = $this->user->id;
-        //verification of non existence (a refused/accepter/pending user can not ask again to join a group)
+
+        // If the groups is public and member is a teacher, the access is directly granted
         $stateApproval = ($this->user->isTeacher && !$group->isPrivate) ? Group::ACCEPTED : Group::PENDING;
-        if ($group->users()->find($userId) == null) {
+
+        if ($group->users()->find($userId) == null) { // create a new link or update an existing one
             $group->users()->attach($userId, ['isApprouved' => $stateApproval], true);
         } else {
             $group->users()->updateExistingPivot($userId, ['isApprouved' => $stateApproval], true);
@@ -177,18 +191,21 @@ class GroupController extends Controller
     /**
      * Apply filters based on query params and
      * return a list of groups for the logged user
+     * @param Request $request
+     * @return \Illuminate\Http\Response
      */
     public function filtered(Request $request)
     {
         $filters = $request->all();
 
-        $filters = array_filter($filters);
+        $filters = array_filter($filters); // get rid of empty values, array_filter doesnt allow the use of $request->all() so that why the function is split
 
-        if (empty($filters)) return ["data" => []];
+        if (empty($filters)) return ["data" => []]; // if filters is empty return empty array
 
         $userId = $this->user->id;
 
-        //get all groups corresponding to the requested string (regex) excluding the one already containing the user
+        //Apply filters engine, here special case we need only groups that the user can see so we pre-build
+        //the query for the searchEngine
         $query = SearchEngine::applyFilters(Group::getQueryForUser($userId), $filters, "Group");
 
         $groups = $query->paginate(GroupController::PAGINATION_LIMIT);
@@ -199,8 +216,8 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param   Group   $group
+     * @return  \Illuminate\Http\Response
      */
     public function show(Group $group)
     {
@@ -212,8 +229,9 @@ class GroupController extends Controller
     /**
      * Retrieve uploaded file
      *
-     * @param int $group 
-     * @return \Illuminate\Http\Response
+     * @param   Group   $group
+     * @param   string  $file
+     * @return  \Illuminate\Http\Response
      */
     public function getFile(Group $group, $file)
     {

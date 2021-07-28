@@ -166,6 +166,12 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this->fcm_tokens;
     }
 
+    /**
+     * Add fcm token for the user
+     * 
+     * @param   string  $fcm
+     * @return  boolean true if operation success, false otherwise
+     */
     public function addFcmToken($fcm)
     {
         if (empty($fcm)) return false;
@@ -181,6 +187,11 @@ class User extends Authenticatable implements LdapAuthenticatable
         return false;
     }
 
+    /**
+     * Remove the specified fcm token
+     * 
+     * @param   string  $fcm
+     */
     public function removeFcmToken($fcm)
     {
         if (empty($fcm)) return false;

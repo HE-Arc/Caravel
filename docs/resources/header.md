@@ -39,4 +39,5 @@ listingtitle: "Extrait de code"
 bibliography: "biblio.bib"
 csl: "resources/iso690.csl"
 biblio-title: "Bibliographie"
+link-citations: true
 ...

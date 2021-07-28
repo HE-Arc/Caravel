@@ -7,9 +7,18 @@ use App\Models\Comment;
 use App\Models\Group;
 use App\Models\Question;
 
-
+/**
+ * This class manage comments
+ */
 class CommentController extends Controller
 {
+    /**
+     * This function is used to store a comment
+     * 
+     * @param CommentRequest $request
+     * @param Group $group
+     * @return Question question linked with the comment
+     */
     public function store(CommentRequest $request, Group $group)
     {
         $max = Comment::where('question_id', $request->question_id)->max('comment_question_id');
@@ -19,6 +28,14 @@ class CommentController extends Controller
         return $this->persistData($request, $group, $comment);
     }
 
+    /**
+     * this function allow updating a comment
+     * 
+     * @param CommentRequest $request
+     * @param Group $group
+     * @param Comment $comment
+     * @return Question return question if ok, 403 if not
+     */
     public function update(CommentRequest $request, Group $group, Comment $comment)
     {
         if ($this->user->id == $comment->user->id) {
@@ -27,6 +44,13 @@ class CommentController extends Controller
         return response()->json(__('api.global.access_denied'), 403);
     }
 
+    /**
+     * This is an upsert function allow to create or update a comment
+     * @param CommentRequest $request
+     * @param Group $group
+     * @param Comment $comment
+     * @return Question question linked with the comment
+     */
     protected function persistData(CommentRequest $request, Group $group, Comment $comment)
     {
         if ($comment->removed) return response(
