@@ -1,1 +1,1 @@
-pandoc .\resources\header.md .\rapport.md -o "Rapport - Caravel v1.0.pdf" --from markdown --template eisvogel-code --listings --citeproc --pdf-engine=xelatex
+pandoc .\resources\header.md .\rapport.md -o "Rapport - Caravel v1.0.pdf" --from markdown --template eisvogel-code --listings --citeproc --pdf-engine=xelatex -V lang=fr

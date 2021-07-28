@@ -7,7 +7,8 @@ keywords: [Laravel, Vue.js, TypeScript, Homework, Students, Teachers]
 subtitle: | 
           |  Rapport
           |  Travail de Bachelor
-          |  A l'attention de MM. XXX
+          |  **Professeurs** : David GRUNENWALD, Alexander WOHLFAHRT
+          |  **Expert** : Julien M'POY
 version: 0.1.0
 lang: "fr"
 titlepage: true
@@ -37,7 +38,7 @@ codes-title: "Liste des codes"
 code-abrev: "Code"
 listingtitle: "Extrait de code"
 bibliography: "biblio.bib"
-csl: "resources/iso690.csl"
+csl: "resources/iso690-numeric-fr.csl"
 biblio-title: "Bibliographie"
 link-citations: true
 ...
