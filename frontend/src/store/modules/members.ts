@@ -149,7 +149,7 @@ class MemberModule extends VuexModule {
   }
 
   /**
-   * Load the list of users in module 
+   * Load the list of users in module
    * @param items list of users
    */
   @Action

@@ -22,7 +22,7 @@ Vue.filter("initials", function (value: string) {
   return name.toUpperCase();
 });
 
-//Limite the number of characters 
+//Limite the number of characters
 Vue.filter("limit", function (value: string, size: number) {
   if (!value) return "";
   value = value.toString();

@@ -117,7 +117,7 @@ class GroupModule extends VuexModule {
 
   /**
    * This function allow to load all groups for the logged user
-   * @returns API's response 
+   * @returns API's response
    */
   @Action
   loadGroups(): Promise<AxiosResponse> {
@@ -140,7 +140,7 @@ class GroupModule extends VuexModule {
 
   /**
    * Select the current group
-   * @param groupId 
+   * @param groupId
    */
   @Action
   async selectGroup(groupId: string): Promise<void> {
@@ -151,7 +151,7 @@ class GroupModule extends VuexModule {
   /**
    * Update the given group via API call
    * if the call is a success then update group internally
-   * @param group 
+   * @param group
    * @returns API's Response
    */
   @Action
@@ -182,7 +182,7 @@ class GroupModule extends VuexModule {
 
   /**
    * Leave the given group for the current logged user
-   * @param group 
+   * @param group
    * @returns API's Response
    */
   @Action
@@ -211,7 +211,7 @@ class GroupModule extends VuexModule {
 
   /**
    * Add a group
-   * @param formData 
+   * @param formData
    * @returns the newly created group
    */
   @Action
@@ -253,7 +253,7 @@ class GroupModule extends VuexModule {
   /**
    * Upload a file to a group
    * @param file the file to upload
-   * @returns File's full path 
+   * @returns File's full path
    */
   @Action
   async uploadFile(file: File): Promise<string> {

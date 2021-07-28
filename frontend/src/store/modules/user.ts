@@ -93,8 +93,7 @@ class UserModule extends VuexModule {
 
   /**
    * Attach FCM Token to the user
-   * @param fcm 
-   * @returns 
+   * @param fcm
    */
   @Action
   async addFcmToken(fcm: string) {
@@ -132,7 +131,7 @@ class UserModule extends VuexModule {
 
   /**
    * This function allow to login into the Laravel backend Sanctum
-   * @param data 
+   * @param data
    */
   @Action
   async login({ mail, password }: Credentials): Promise<void> {
@@ -163,7 +162,7 @@ class UserModule extends VuexModule {
 
   /**
    * Load notification for the logged user
-   * @returns void when request done 
+   * @returns void when request done
    */
   @Action
   async loadNotifications(): Promise<void> {
@@ -180,7 +179,7 @@ class UserModule extends VuexModule {
 
   /**
    * Mark notifications in array as read
-   * @param notif 
+   * @param notif
    * @returns void when request is done
    */
   @Action
