@@ -1,1 +1,0 @@
-pandoc .\resources\header.md .\installation.md -o "Installation et configuration.pdf" --from markdown --template eisvogel-code --listings --citeproc --pdf-engine=xelatex

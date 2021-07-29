@@ -7,14 +7,15 @@ keywords: [Laravel, Vue.js, TypeScript, Homework, Students, Teachers]
 subtitle: | 
           |  Rapport
           |  Travail de Bachelor
-          |  A l'attention de MM. XXX
+          |  **Professeurs** : David GRUNENWALD, Alexander WOHLFAHRT
+          |  **Expert** : Julien M'POY
 version: 0.1.0
 lang: "fr"
 titlepage: true
-titlepage-text-color: "000000"
-titlepage-rule-color: "5e72e4"
-titlepage-rule-height: 7
-titlepage-background: "resources/background-front.pdf"
+titlepage-text-color: "ffffff"
+titlepage-rule-color: "ffffff"
+titlepage-rule-height: 17
+titlepage-background: "resources/background-front2.pdf"
 caption-justification: centering
 page-background: "resources/background-pages.pdf"
 links-as-notes: true
@@ -37,7 +38,7 @@ codes-title: "Liste des codes"
 code-abrev: "Code"
 listingtitle: "Extrait de code"
 bibliography: "biblio.bib"
-csl: "resources/iso690.csl"
+csl: "resources/iso690-numeric-fr.csl"
 biblio-title: "Bibliographie"
 link-citations: true
 ...

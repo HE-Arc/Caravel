@@ -1,0 +1,2 @@
+pandoc .\resources\header.md .\userguide.md -o "Guide d'installation.pdf" --from markdown --template eisvogel-code --listings --citeproc --pdf-engine=xelatex
+pandoc .\resources\header.md .\journal.md -o "Journal de travail.pdf" --from markdown --template eisvogel-code --listings --citeproc --pdf-engine=xelatex
