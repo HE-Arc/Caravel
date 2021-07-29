@@ -44,7 +44,7 @@ class TasksModule extends VuexModule {
   }
 
   /**
-   * Get tasks that are due 
+   * Get tasks that are due
    */
   get tasksFuture(): Task[] {
     return this._tasks.filter((task) =>
@@ -142,7 +142,10 @@ class TasksModule extends VuexModule {
   get medianWeekScore(): number {
     //https://stackoverflow.com/questions/45309447/calculating-median-javascript
     if (!this.stats) return 0;
-    const values = this.stats.map((item) => item.wes).filter((wes) => wes != 0);
+    const values = this.stats
+      .filter((item) => moment(item.create_at).isBefore(moment()))
+      .map((item) => item.wes)
+      .filter((wes) => wes != 0);
     const v = values.sort((a, b) => a - b);
     const mid = Math.floor(v.length / 2);
     const median = v.length % 2 !== 0 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
@@ -219,7 +222,7 @@ class TasksModule extends VuexModule {
 
   /**
    * Add a task
-   * @param task 
+   * @param task
    * @returns the newly created Task
    */
   @Action
@@ -244,7 +247,7 @@ class TasksModule extends VuexModule {
 
   /**
    * Update a task
-   * @param task 
+   * @param task
    * @returns Updated task
    */
   @Action
@@ -284,7 +287,7 @@ class TasksModule extends VuexModule {
 
   /**
    * Delete a task
-   * @param task 
+   * @param task
    * @returns API's response
    */
   @Action
@@ -310,7 +313,7 @@ class TasksModule extends VuexModule {
 
   /**
    * Load a list of tasks
-   * @param tasks 
+   * @param tasks
    */
   @Action
   load(tasks: Task[]) {
@@ -319,8 +322,7 @@ class TasksModule extends VuexModule {
 
   /**
    * Unifome task's save (update or create)
-   * @param task 
-   * @returns 
+   * @param task
    */
   @Action
   async save(task: Task): Promise<Task> {
@@ -333,7 +335,7 @@ class TasksModule extends VuexModule {
 
   /**
    * On/Off a reaction on a task
-   * @param param0 
+   * @param param0
    */
   @Action
   async postReaction({
@@ -388,8 +390,7 @@ class TasksModule extends VuexModule {
 
   /**
    * Set current selected task
-   * @param taskId 
-   * @returns 
+   * @param taskId
    */
   @Action
   async selectTask(taskId: string): Promise<AxiosResponse> {

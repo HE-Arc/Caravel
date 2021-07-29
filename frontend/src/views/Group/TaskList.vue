@@ -150,15 +150,17 @@ export default class TaskList extends Vue {
 
   get tasksGrouped(): Dictionary<Task[]> {
     let tasksByDays = {};
-    this.visibleTasks.forEach((task: Task) => {
-      const due = moment(task.due_at);
-      const key = due.endOf("day").fromNow();
-      if (tasksByDays[key] == undefined) {
-        Vue.set(tasksByDays, key, [task]);
-      } else {
-        tasksByDays[key].push(task);
-      }
-    });
+    this.visibleTasks
+      .sort((a: Task, b: Task) => moment(a.due_at).diff(moment(b.due_at)))
+      .forEach((task: Task) => {
+        const due = moment(task.due_at);
+        const key = due.endOf("day").fromNow();
+        if (tasksByDays[key] == undefined) {
+          Vue.set(tasksByDays, key, [task]);
+        } else {
+          tasksByDays[key].push(task);
+        }
+      });
     return tasksByDays;
   }
 
