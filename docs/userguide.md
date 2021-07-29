@@ -58,6 +58,9 @@ Il faut donc éditer le fichier `config\auth.php` et adapter la ligne model
 ...
 ```
 
+Attention il ne faut pas oublier d'activer le module ldap dans le `php.ini` utilisé par votre système.
+
+
 ### Installation
 Dans un premier temps il faut installer toutes les dépendances nécessaires au bon fonctionnement du backend avec composer
 
