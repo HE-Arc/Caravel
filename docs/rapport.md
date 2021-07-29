@@ -1775,6 +1775,8 @@ Pour conclure, l'application est loin d'être parfaite, il reste des points d'am
 
 ## Journal de travail {#an3}
 
+## Documentation API Swagger {#an4}
+
 \newpage
 
 # Références
