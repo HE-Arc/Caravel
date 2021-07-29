@@ -1,0 +1,2 @@
+New-Item -Force -ItemType directory -Path output | Out-Null
+pandoc .\resources\header.md .\rapport.md -o "output/Rapport - Caravel v1.0.pdf" --from markdown --template eisvogel-code --listings --citeproc --pdf-engine=xelatex -V lang=fr

@@ -1,41 +1,60 @@
 name: Continus Delivery
 
-on: 
-  push:
-    branches:
-      - master
+on: workflow_dispatch
 
 jobs:
   deliver-main:
     runs-on: self-hosted
     env:
-      path: /var/www/app/
+      configdir: /var/www/config/caravel
+      rootdir: /var/www/caravel
+      backend: /var/www/caravel/backend
+      frontend: /var/www/caravel/frontend
+      share: /var/www/shared
 
     steps:
       - name: stop server during deployment
-        run: sudo sv stop nginx
+        run: sudo service nginx stop
 
       - name: checkout main branch
         uses: actions/checkout@v2
-        #with:
-          #ref: develop
-          #in case we want to deploy a certain branch (ex : serve main and develop at different points)
+        
+      - name: Copy configuration files
+        run: rsync --recursive ${{ env.configdir }}/* .
           
-      - name: copy repo at good place
-        run: |
-          rsync --recursive . ${{ env.path }}
-          cd ${{ env.path }}
-          sudo chmod -R a+rw public/
+      - name: Install composer Dependencies for Laravel
+        run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
+        working-directory: ./backend
+        
+      - name: Apply modifications on DB if needed for laravel
+        run: yes | php artisan migrate
+        working-directory: ./backend
           
-      - name: Install composer Dependencies
-        run: sudo composer install -q --no-interaction --no-scripts --no-progress --prefer-dist
-        working-directory: ${{ env.path }}
-
-      - name: Install NPM Dependencies
+      - name: Copy backend Laravel 
         run: |
-          sudo npm install --production --unsafe-perm=true --allow-root
-          sudo npm run prod
-        working-directory: ${{ env.path }}
+          sudo rm -r ./backend/storage
+          sudo rsync --recursive ./backend ${{ env.rootdir }}
 
-      - name: restart server :-)
-        run: sudo sv restart nginx
+      - name: Install dependencies frontend
+        run: npm install
+        working-directory: ./frontend
+      
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./frontend
+
+      - name: Copy frontend  
+        run: sudo rsync --recursive ./frontend/dist ${{ env.frontend }}
+        
+      - name: Create symlinks
+        run: |
+           sudo ln -s ${{ env.share }}/storage ${{ env.backend }} -f
+           sudo ln -s ${{ env.share }}/uploads ${{ env.backend }}/public -f
+          
+      - name: Set global permissions
+        run: |
+           sudo chown www-data:www-data -R ${{ env.rootdir }}
+           sudo chmod -R 755 ${{ env.rootdir }}
+
+      - name: Restart server (last step)
+        run: sudo service nginx start

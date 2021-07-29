@@ -1,0 +1,390 @@
+{
+  "global": {
+    "clear": "Effacer",
+    "new": "nouveau",
+    "add": "Ajouter",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "finish": "Terminer",
+    "resume": "Continuer",
+    "cancel": "Annuler",
+    "back": "Revenir",
+    "submit": "Envoyer",
+    "quit": "Quitter",
+    "close": "Fermer",
+    "accept": "Accepter",
+    "refuse": "Refuser",
+    "reset": "Réinitialiser",
+    "save": "Sauvegarder",
+    "confirm": "Confirmer",
+    "insert": "Insérer",
+    "open": "Ouvrir",
+    "author": "Auteur",
+    "success": "Action effectuée avec succès !",
+    "error-form": "Une ou plusieurs données sont invalides",
+    "errors": {
+      "unknown": "Une erreur inconnue s'est produite",
+      "toobig": "Le fichier est ne doit pas dépasser {0} Mb"
+    },
+    "itsme": "Oh c'est toi :-)",
+    "roles": {
+      "student": "Etudiant",
+      "teacher": "Professeur"
+    },
+    "dialog": {
+      "confirm": {
+        "title": "Confirmer la suppression",
+        "message": "Voulez vous vraiment supprimer cet élément ?"
+      },
+      "upload": {
+        "title": "Insérer un fichier ou une image",
+        "label": "Fichier ou image"
+      }
+    }
+  },
+  "login": {
+    "connexion": "Se connecter",
+    "username": "Nom d'utilisateur",
+    "mail": {
+      "label": "Email",
+      "placerholder": "email @he-arc.ch ou nom d'utilisateur he-arc"
+    },
+    "password": "Mot de passe",
+    "failed": "L'authentification a échouée",
+    "logged-in": "Authentification réussie",
+    "logout": "Vous avez été deconnecté avec succès"
+  },
+  "appbar": {
+    "signout": "Déconnexion",
+    "notifs": "Notifications",
+    "settings": "Paramètres"
+  },
+  "search": {
+    "label": "Rechercher une tâche",
+    "author": "Auteur",
+    "type": "Type"
+  },
+  "groups": {
+    "mygroups": "Mes groupes",
+    "search-title": "Rechercher ou créer un groupe",
+    "search-input": "Nom du groupe",
+    "search-type": "Entrez le nom du groupe",
+    "join": "Demande d'adhésion",
+    "pending": "En attente",
+    "refused": "Demande refusée",
+    "no-results": "Aucun groupe trouvé, {0} ?",
+    "create-link": "créer {0}",
+    "ask": "La demande a été envoyée",
+    "create": {
+      "title": "Création d'un groupe",
+      "name": {
+        "name": "Définissez le nom du groupe et une image",
+        "example": "ex.: INF XXX b 2020-2021",
+        "label": "Nom de groupe",
+        "placeholder": "Taper le nom de votre groupe",
+        "help": "Le nom du groupe doit être assez spécifique afin de le retrouver facilement",
+        "image": "Image du groupe"
+      },
+      "description": {
+        "name": "Description du groupe",
+        "example": "ex. Super groupe d'informatique",
+        "label": "Description du groupe",
+        "placeholder": "Taper la description du groupe",
+        "help": "Une description qui explique à qui s'adresse ce groupe"
+      },
+      "type": {
+        "name": "Type du groupe",
+        "type1": {
+          "icon": "mdi-lock",
+          "title": "Groupe privé",
+          "subtitle": "Ce groupe est privé, tous les membres devront être co-optés pour pouvoir y accéder"
+        },
+        "type2": {
+          "icon": "mdi-book-variant",
+          "title": "Groupe de classe",
+          "subtitle": "Ce groupe représente une classe, les professeurs peuvent s'y inscrire sans co-optage"
+        }
+      },
+      "resume": "Résumé du groupe",
+      "success": "Le groupe a été créé !"
+    }
+  },
+  "group": {
+    "label": "Groupe | Groupes",
+    "icon": "mdi-account-supervisor-circle",
+    "delete": "Supprimer le groupe",
+    "private": "Privé",
+    "dialog": {
+      "confirm": {
+        "title": "Suppression du groupe",
+        "message": "Voulez vous vraiment supprimer le groupe ?"
+      },
+      "leave": {
+        "title": "Quitter le groupe",
+        "message": "Voulez vous vraiment quitter ce groupe ?"
+      }
+    },
+    "tabs": {
+      "tasks": "Tâches",
+      "calendar": "Calendrier",
+      "timeline": "Chronologique",
+      "stats": "Statistiques",
+      "settings": "Paramètres"
+    },
+    "settings": {
+      "manage": "Options",
+      "members": "Membres",
+      "requests": "Requêtes",
+      "subjects": "Sujets"
+    },
+    "members": {
+      "give-lead": {
+        "label": "Promouvoir",
+        "help": "Promouvoir {0} en tant que chef du group"
+      },
+      "kick": "expulser",
+      "quit": "Quitter le groupe",
+      "leader": "{0} est le chef du groupe",
+      "rejected": "Membre refusé | Membres refusés",
+      "accepted": "Membre du group | Membres du groupe"
+    },
+    "request": {
+      "pending": "Membre en attente | Membres en attente",
+      "empty": "Aucun membre en attente"
+    }
+  },
+  "profile": {
+    "info": "Informations utilisateur",
+    "email": "Adresse mail",
+    "name": "Nom complet",
+    "update": "Le profile a été mis à jour."
+  },
+  "task": {
+    "label": "Tâche | Tâches",
+    "fields": {
+      "title": "@.lower:task.form.title.label",
+      "description": "description",
+      "subject_id": "@.lower:task.form.subject.label",
+      "due_at": "@.lower:task.form.due.label",
+      "tasktype_id": "@.lower:task.form.type.label",
+      "start_at": "@.lower:task.form.startAt.label",
+      "isPrivate": "@.lower:task.form.private.label"
+    },
+    "icon": "mdi-format-list-checks",
+    "states": {
+      "open": "A faire",
+      "close": "Fermé"
+    },
+    "history": {
+      "label": "Modifié"
+    },
+    "finish": {
+      "tooltip": "Marquer cette tâche comme terminée pour moi",
+      "label": "Terminer pour moi"
+    },
+    "create": "Créer une tâche",
+    "edit": "Modifier une tâche",
+    "createBy": "Ouvert par ",
+    "no-results": "Aucune tâche trouvée, créer {0} ?",
+    "create-link": "<b>une nouvelle tâche</b>",
+    "form": {
+      "subject": {
+        "label": "Sujet",
+        "placeholder": "Sélectionner le sujet de la tâche"
+      },
+      "type": {
+        "label": "Type",
+        "placeholder": "Sélectionner le type de la tâche"
+      },
+      "due": {
+        "label": "Date prévue",
+        "placeholder": "Sélectionner la date d'échéance pour la tâche"
+      },
+      "title": {
+        "label": "Titre",
+        "placeholder": "Taper le nom de la tâche"
+      },
+      "startAt": {
+        "label": "Date de début"
+      },
+      "private": {
+        "label": "Cette tâche est privée",
+        "hint": "Vous seul pourrez voir cette tâche et elle ne sera pas comptabilisée dans le calcul de la charge de travail"
+      }
+    },
+    "types": {
+      "1": {
+        "label": "Devoir | Devoirs",
+        "icon": "mdi-format-list-checks"
+      },
+      "2": {
+        "label": "Examen | Examens",
+        "icon": "mdi-file-certificate"
+      },
+      "3": {
+        "label": "Projet | Projets",
+        "icon": "mdi-folder-open"
+      }
+    }
+  },
+  "subject": {
+    "new": "Nouveau sujet",
+    "edit": "Modifier le sujet",
+    "manage": "Gérer les sujets",
+    "label": "Sujet | Sujets",
+    "empty": "Aucun sujet",
+    "icon": "mdi-format-list-bulleted-square",
+    "form": {
+      "name": {
+        "label": "Nom du sujet",
+        "placeholder": "Taper le nom du sujet"
+      },
+      "ects": {
+        "label": "Nombre de crédit",
+        "placeholder": "Entrer le nombre de crédit",
+        "help": "Le nombre de crédits permet de pondérer la valeur du cours"
+      }
+    }
+  },
+  "autocomplete": {
+    "manage": "Gérer les {0}",
+    "create": "Créer un nouveau {0} <b>{1}</b> ?",
+    "nodata": "Aucune donnée trouvée"
+  },
+  "calendar": {
+    "type": {
+      "month": "Mensuel",
+      "week": "Semaine",
+      "day": "Jour"
+    }
+  },
+  "inputs": {
+    "selectmember": {
+      "label": "Membres",
+      "placeholder": "Sélectionner un membre"
+    },
+    "selectstate": {
+      "label": "Etat",
+      "placeholder": "Sélectionner un état"
+    },
+    "private": {
+      "label": "Privé"
+    }
+  },
+  "notifications": {
+    "1": {
+      "icon": "mdi-plus-thick"
+    },
+    "2": {
+      "icon": "mdi-pencil"
+    },
+    "3": {
+      "icon": "mdi-delete"
+    },
+    "empty": "Pas de notifications",
+    "readAll": "Marquer tout comme lu"
+  },
+  "reactions": {
+    "types": {
+      "1": {
+        "icon": "⏲️",
+        "label": "Trop long"
+      },
+      "2": {
+        "icon": "🧠",
+        "label": "Trop complexe"
+      },
+      "3": {
+        "icon": "🎯",
+        "label": "Manque d'informations"
+      },
+      "4": {
+        "icon": "📍",
+        "label": "Je suis perdu"
+      },
+      "5": {
+        "icon": "🤷",
+        "label": "Pas clair"
+      },
+      "6": {
+        "icon": "📑",
+        "label": "Peu d'intêrét"
+      }
+    }
+  },
+  "questions": {
+    "label": "{0} Question | {0} Questions",
+    "states": {
+      "0": {
+        "label": "Non résolu"
+      },
+      "1": {
+        "label": "Résolu"
+      }
+    },
+    "mark-solved": "Résolu avec cette réponse",
+    "mark-unsolved": "Retirer la solution",
+    "solved": "Question résolue !",
+    "answer": "Réponse sélectionée par l'auteur",
+    "add": "Ajouter une question",
+    "comments": {
+      "add": "Ajouter un commentaire",
+      "delete": "Le commentaire a été supprimée"
+    },
+    "form": {
+      "title": "Titre de la question"
+    },
+    "delete": "La question a été supprimée"
+  },
+  "home": {
+    "title": "Bienvenue sur Caravel !",
+    "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cette outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe spécifique. Il vous permet de visualiser clairement les activités qu'il faut faire ou retrouver une activité passée.",
+    "submessage": "Si vous ne connaissez pas Caravel, commencez par lire le guide de démarrage :-)",
+    "bouton": "Guide de démarage"
+  },
+  "history": {
+    "label": "Historique",
+    "change": "Changement de ",
+    "states": {
+      "1": "Création",
+      "2": "Mise à jour",
+      "3": "Suppression",
+      "4": "Restauration"
+    }
+  },
+  "markdown": {
+    "toolbar": {
+      "uploadfile": {
+        "label": "Charger un fichier"
+      }
+    }
+  },
+  "404": {
+    "title": "La page n'a pas été trouvée.",
+    "subtitle-1": "Le page que vous essayez d'atteindre n'existe pas ou peut-être fait-elle partie d'un univers parallèle.",
+    "subtitle-2": "Essayez de revenir sur la page d'accueil ou tentez de contacter votre administrateur si le problème persiste."
+  },
+  "403": {
+    "title": "Accès interdit",
+    "subtitle-1": "Vous n'avez pas les droits pour accéder à la page que vous avez demandée.",
+    "subtitle-2": "Essayez de revenir sur la page d'accueil ou tentez de contacter votre administrateur si vous pensez qu'il s'agit d'une erreur."
+  },
+  "timeline": {
+    "zoom": "Niveau de détails"
+  },
+  "stats": {
+    "trend-next": "Tendance des prochaines semaines",
+    "unit": "WES",
+    "wes": "Score de charge de travail",
+    "wes-current": "Score de charge de travail de la semaine en cours (WES : Week Effort Score)",
+    "trend-all": "Toutes les données",
+    "calendar-wes": "Score de la semaine : {0}",
+    "score": {
+      "median": "Score médian",
+      "max": "Score maximum",
+      "min": "Score minimum",
+      "current": "Score actuel"
+    },
+    "week-of": "Semaine du "
+  }
+}

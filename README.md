@@ -1,29 +1,43 @@
 # Caravel
-Caravel is an open-source collaborative group-sharing site.\
-It has been made to help the students organize and structure their work, and their shared deadlines.\
-It is done as a Web Developpement project for the [He-Arc Neuchâtel](https://www.he-arc.ch/) engineering school.\
-\
-![brand image](public/assets/img/brand/brand.png)
+Caravel - Le site web des élèves qui rament !
 
-## Authors
-The project has been made by a team of 3 software students :
-* [Steve Mendes Reis](https://github.com/M4n0x)
-* [Joris Monnet](https://github.com/JorisMonnet)
-* [Maxime Welcklen](https://github.com/maximewel)
+[![Continus Delivery](https://github.com/HE-Arc/Caravel/actions/workflows/delivery.yml/badge.svg)](https://github.com/HE-Arc/Caravel/actions/workflows/delivery.yml)
+[![VueJs CI](https://github.com/HE-Arc/Caravel/actions/workflows/vuejs.yml/badge.svg)](https://github.com/HE-Arc/Caravel/actions/workflows/vuejs.yml)
+[![Laravel CI MySQL complete](https://github.com/HE-Arc/Caravel/actions/workflows/caravelCI.yml/badge.svg)](https://github.com/HE-Arc/Caravel/actions/workflows/caravelCI.yml)
 
-The logo was made by [Luca Truscello](mailto:truscello.luca@gmail.com) from HEPIA (Haute école du paysage, d'ingénierie et d'architecture de Genève)
+## Informations
+Le projet Caravel est un projet inité par des étudiants à la He-arc [Maxime Welcklen](https://github.com/maximewel), [Joris Monnet](https://github.com/JorisMonnet) et [Steve Mendes Reis](https://github.com/M4n0x) dans le cadre du cours de Développement Web. Le projet, bien reçu par l'école, a été promu en Travail de Bachelor et a été mené par Steve Mendes Reis.
 
-## Developpement
-All the conception phase is available publicly on the wiki of the Github project.
+Le but de ce projet est de garder les étudiants à jour sur les tâches qu’ils ont à faire et favoriser l’entraide entre étudiants avec la possiblité de poser des questions sur les différentes tâches à effectuer.
 
-## Technology
-Caravel is made using [Laravel](https://laravel.com/) & [Argon](https://argon-dashboard-laravel.creative-tim.com/) in PHP.
+D’autre part, son but est de permettre aux professeurs d’avoir une vision claire de la charge de travail des étudiants et donc de mieux répartir les tâches sur les différentes semaines.
 
-## Production
-You can enjoy [Caravel here !](https://caravel.srvz-webapp.he-arc.ch/groups)\
-The site is always up-to-date with the last version of the main branch.
+![image](https://user-images.githubusercontent.com/6802086/126867461-44f9db76-f131-4dde-b059-acdb9c27a463.png)
 
-## Clone repo
-A lot of files are not commited on the repo ! To have a functioning project, see [this little tuto for a laravel clone project setup](https://devmarketer.io/learn/setup-laravel-project-cloned-github-com/)
+![image](https://user-images.githubusercontent.com/6802086/126867445-2d8a1c2d-5944-4d14-895b-2e2c95b3881f.png)
 
+![image](https://user-images.githubusercontent.com/6802086/126867137-dc7ff263-10bf-4a8c-b112-74181485d2da.png)
 
+![image](https://user-images.githubusercontent.com/6802086/126867102-f738e569-52fb-4d29-8198-d7d035329557.png)
+
+![image](https://user-images.githubusercontent.com/6802086/126867110-e7f5491e-2b87-4bf4-a4a6-a6b563e0eb1e.png)
+
+## Dépendances 
+### Laravel
+* [LdapRecord](https://ldaprecord.com/)
+* [Laravel Firebase](https://github.com/kreait/laravel-firebase)
+* [Laravel Notification Channel FCM](https://github.com/laravel-notification-channels/fcm)
+* [Laravel History](https://github.com/seancheung/history)
+* [BelongsToThrough](https://github.com/staudenmeir/belongs-to-through)
+
+### Vue.js
+* [Vuetify](https://vuetifyjs.com/en/)
+* [Gantt Schedule Timeline Calendar (GSTC)](https://github.com/neuronetio/gantt-schedule-timeline-calendar)
+* [Markdown-it-vue](https://github.com/ravenq/markdown-it-vue)
+* [MavonEditor](https://github.com/hinesboy/mavonEditor)
+* [TinyColor2](https://www.npmjs.com/package/tinycolor2)
+* [Vue Avatar Cropper](https://github.com/overtrue/vue-avatar-cropper)
+* [Nprogress](https://www.npmjs.com/package/vue-nprogress)
+* [Toast Notification](https://www.npmjs.com/package/vue-toast-notification)
+* [Chartjs](https://vue-chartjs.org/)
+* [Timeago](https://www.npmjs.com/package/vue-timeago)
