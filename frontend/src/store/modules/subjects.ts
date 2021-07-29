@@ -75,7 +75,7 @@ class SubjectModule extends VuexModule {
 
   /**
    * Add a subject
-   * @param subject 
+   * @param subject
    * @returns the newly created subject
    */
   @Action
@@ -102,7 +102,7 @@ class SubjectModule extends VuexModule {
 
   /**
    * Update the subject
-   * @param subject 
+   * @param subject
    * @returns the updated subject
    */
   @Action
@@ -131,7 +131,7 @@ class SubjectModule extends VuexModule {
 
   /**
    * Delete subject
-   * @param subject 
+   * @param subject
    * @returns API's response
    */
   @Action
@@ -167,8 +167,7 @@ class SubjectModule extends VuexModule {
 
   /**
    * Uniform function to save or update a subject
-   * @param subject 
-   * @returns 
+   * @param subject
    */
   @Action
   async save(subject: Subject): Promise<Subject> {

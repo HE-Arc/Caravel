@@ -17,7 +17,8 @@ const firebaseConfig = {
 const fire = firebase.initializeApp(firebaseConfig);
 
 try {
-  fire.messaging().onMessage((payload) => { //on message received
+  fire.messaging().onMessage((payload) => {
+    //on message received
     userModule.loadNotifications(); // reload internal notifications
     const notificationTitle = payload.notification.title;
     const notificationOptions = {

@@ -140,7 +140,7 @@ class QuestionModule extends VuexModule {
 
   /**
    * Delete comment
-   * @param comment 
+   * @param comment
    * @returns update question
    */
   @Action
@@ -168,7 +168,7 @@ class QuestionModule extends VuexModule {
 
   /**
    * Delete question
-   * @param question 
+   * @param question
    * @returns API's response
    */
   @Action
@@ -195,7 +195,7 @@ class QuestionModule extends VuexModule {
 
   /**
    * List questions in the module
-   * @param questions 
+   * @param questions
    */
   @Action
   load(questions: Question[]) {

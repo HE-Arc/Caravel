@@ -35,12 +35,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResources([
             'groups' => GroupController::class,
             'groups.tasks' => TaskController::class,
-            'groups.subjects' => SubjectController::class,
-            'groups.questions' => QuestionController::class,
-            'groups.comments' => CommentController::class,
         ]);
 
-        #members of groups (get, delete, no post as this is the role of the "join" mecanisum)
+        Route::apiResource('groups.subjects', SubjectController::class)->except(['show']);
+        Route::apiResource('groups.questions', QuestionController::class)->except(['show', 'index']);
+        Route::apiResource('groups.comments', CommentController::class)->except(['show', 'index']);
+
         Route::get('groups/{group}/members', [GroupController::class, 'members']);
         Route::patch('groups/{group}/members', [GroupController::class, 'updateMemberStatus']);
         Route::delete('groups/{group}/members', [GroupController::class, 'removeMember']);
@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::patch('groups/{group}/finished', [TaskController::class, 'setFinished']);
     });
 
-    Route::delete('profile', [UserController::class, 'removeGroup']);
+    Route::delete('profile/group', [UserController::class, 'removeGroup']);
     Route::get('profile/notifications', [ProfileController::class, 'getNotifications']);
     Route::post('profile/fcmToken', [ProfileController::class, 'registerFCMToken']);
     Route::delete('profile/fcmToken', [ProfileController::class, 'deleteFCMToken']);
