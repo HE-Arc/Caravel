@@ -1,9 +1,13 @@
 ## Résumé {-}
+Caravel est un projet initié par des trois étudiants lors du cours de "Développement web" mené à la He-Arc, il a été ensuite promu en travail de Bachelor afin d'obtenir un produit réellement utilisable au sein de la he-arc.
 
+Le but de cette application est de permettre la collaboration étroite entre professeurs et élèves concernant les devoirs, tests, examens ou projets. Elle répond à une problématique souvent soulevée par les élèves qui est la mauvaise répartition de la charge de travail dans les différentes semaines. Caravel permet donc une meilleure visibilité de la charge de travail des différentes semaines afin que les professeurs puissent placer au mieux leur devoirs.
 
 ## Abstract {-}
+Caravel is a project initiated by three students during the "Web Development" course at He-Arc, it was then promoted to a Bachelor work in order to obtain a product really usable within He-Arc.
 
-//TODO
+The goal of this application is to allow close collaboration between teachers and students concerning assignments, tests, exams or projects. It responds to a problem often raised by students which is the poor distribution of the workload in the different weeks. Caravel allows a better visibility of the workload of the different weeks so that the teachers can place their homework in the best possible way.
+
 
 \newpage
 
@@ -11,25 +15,25 @@
 
 Merci à [Luca Truscello](truscello.luca@gmail.com) étudiant à L'HEPIA de Genève qui a produit le logo de Caravel.
 
-Merci à MM. Grunenwald, Wohlfahrt et M'Poy, pour le suivi et les conseils avisés ainsi que les débats animés.
+Merci à MM. Grunenwald, Wohlfahrt et M'Poy, pour le suivi et les conseils avisés.
 
 Et un merci particulier à Joris Monnet et Maxime Welcklen sans qui ce projet n'aurait pu exister.
 
 \newpage
 
 # Introduction
-Le projet Caravel fait suite à un travail réalisé par trois étudiants dans le cadre du cours de *Développement Web*. Lors de ce projet les trois étudiants ont réalisé une plateforme web permettant aux élèves d'inscrire de manière collaborative les différents tâches (devoirs/CP/Projet) à faire. 
+Le projet Caravel fait suite à un travail réalisé par trois étudiants dans le cadre du cours de *Développement Web*. Lors de ce projet les trois étudiants ont réalisé une plateforme web permettant aux élèves d'inscrire de manière collaborative les différents tâches (devoirs/CP/Projet) à faire pour leur classe. 
 
 Le but de ce projet est donc de pousser Caravel plus loin en y ajoutant de nouvelles fonctionnalités pour le rendre utilisable par la He-Arc. 
 
-Le projet s'articule autours des objectifs suivantes :
+Le projet s'articule autours des objectifs suivants :
 
-* Placer au mieux les devoirs et CP pour lisser la charge et savoir si la charge de travail est correcte
-* Réunir en un seul endroit toutes les informations relatives au travail qui doit être effectué par l'étudiant et ainsi éviter l'utilisation de différents canaux
-* Aider les élèves à mieux s'organiser en ayant une place qui réuni toutes les informations nécessaires à l'exécution de leur travail
-* Proposer une plateforme de collaboration entre étudiants et professeurs sur des tâches via des échanges questions/réponses
+* Placer au mieux les devoirs pour lisser la charge et pouvoir voir si la charge de travail est correcte.
+* Réunir en un seul endroit toutes les informations relatives au travail qui doit être effectué par les étudiants et ainsi éviter l'utilisation de différents canaux.
+* Aider les élèves à mieux s'organiser en ayant une place qui réuni toutes les informations nécessaires à l'exécution de leur travail.
+* Proposer une plateforme de collaboration entre étudiants et professeurs sur des tâches via des échanges questions/réponses.
 
-Dans la suite du document nous allons voir en détails les objectifs de Caravel. Puis à partir de ces objectifs une analyse des différents problématiques sera proposée. Une fois exposées, la place sera laissée à la conception dans laquelle nous verrons de manière abstraite comment résoudre ces différentes problématiques. Ces aspects éclaircis, nous pourrons passer à l'implémentation de la solution. Finalement nous verrons certains points d'amélioration au sein de la solution proposée.
+Dans la suite du document nous allons voir en détails les objectifs de Caravel. Puis à partir de ces objectifs, une analyse des différents problématiques sera proposée. Une fois l'analyse exposée, la place sera laissée à la conception dans laquelle nous verrons de manière abstraite comment résoudre les différentes problématiques relatives au projet. Ces aspects éclaircis, nous pourrons passer à l'implémentation de la solution. Finalement nous verrons certains points d'amélioration au sein de la solution proposée, pour finir par une conclusion dans laquelle nous reviendrons sur les objectifs introduits préalablement.
 
 \newpage
 
@@ -39,9 +43,9 @@ Cette section décrit le cadre du projet ainsi que ses buts visés à la fin du 
 
 ## Buts visés
 
-Avec Caravel l'idée est que les devoirs soient gérés par les membres d'une classe, chaque membre de la classe a donc la possibilité de renseigner un devoir sur la plateforme. Si celui-ci manque de précision, le professeur ou un élève peut y apporter une modification en tout temps afin d'éclaircir son contenu. Dans cette optique autant les professeurs que les élèves peuvent être une source de devoirs ce qui change la dynamique des élèves par rapport aux applications habituelles.
+Avec Caravel l'idée est que les devoirs soient gérés par les membres d'une classe, chaque membre de la classe a donc la possibilité de renseigner un devoir sur la plateforme. Si celui-ci manque de précision, le professeur ou un élève peut y apporter une modification en tout temps afin d'éclaircir son contenu. Dans cette optique autant les professeurs que les élèves peuvent être une source de devoirs ce qui change la dynamique par rapport aux applications habituelles.
 
-Un des buts de Caravel est de réunir tous les devoirs en un seul endroit, avec l'apparition des différents outils comme Moodle, Teams, l'intranet ou encore les dossiers partagés, il est parfois très difficile de savoir où chercher l'information concernant un devoir. L'idée est donc de permettre aux membres d'une classe de réunir les informations pertinentes en un seul endroit afin de gagner du temps. La contribution collaborative permet de faciliter la transition à l'utilisation de Caravel, si par exemple un prof continue de distribuer ses exercices sous format PDF par des canaux différents, il suffit qu'un seul élève soit au courant de l'information pour la transmettre aux autres en les ajoutant sur Caravel.
+Un des buts de Caravel est de réunir tous les devoirs en un seul endroit, avec l'apparition des différents outils comme Moodle, Teams, l'intranet ou encore les dossiers partagés, il est parfois très difficile de savoir où chercher l'information concernant un devoir. L'idée est donc de permettre aux membres d'une classe de réunir les informations pertinentes en un seul endroit afin de gagner du temps. La contribution collaborative permet de faciliter la transition à l'utilisation de Caravel, si par exemple un professeur continue de distribuer ses exercices sous format PDF par des canaux différents, il suffit qu'un seul élève soit au courant de l'information pour la transmettre aux autres en les ajoutant sur Caravel.
 
 De plus Caravel pourra permettre d'ouvrir des fils de discussion au sein d'une tâche afin de demander de l'aide ou des éclaircissement sur une tâche, l'idée est de permettre aux élèves de s'entraider et de partager en un seul lieu les différentes informations (questions/réponses).
 
@@ -61,7 +65,7 @@ Une priorisation des tâches a été effectuée enfin de déterminer les éléme
 #### Must have
 
 * Traduction en français
-  Prévoir la possibilité d'ajouter d'autres langues facilement (localisation)
+  * Prévoir la possibilité d'ajouter d'autres langues facilement (localisation)
 * Filtres sur les tâches dans les différentes vues
   * Filtres par titre, par sujet, par auteur
 * Rôles étudiant/professeur
@@ -77,9 +81,9 @@ Une priorisation des tâches a été effectuée enfin de déterminer les éléme
 #### Should have
 
 * Système de notifications
-  * par ex. une tâche a été ajoutée ou modifiée, réponse à un commentaire
+  * Par exemple, une tâche a été ajoutée ou modifiée, réponse à un commentaire
 * Authentification interne (LDAP)
-* Système de sujets (fil) dans les commentaires au niveau des tâches
+* Système de sujets (fils) dans les commentaires au niveau des tâches
   * Possibilité d'éditer les commentaires
 * Ajout de la représentation de la charge de travail
 
@@ -96,8 +100,8 @@ Une priorisation des tâches a été effectuée enfin de déterminer les éléme
 * Contrôle édition d'une tâche simultanée (simpliste)
   * Empêcher la soumissions d'un formulaire si la date de modification a changé entre temps
 * Approvisionnement automatique des groupes de classes (étudier la faisabilité)
-  * Préremplis avec certains professeurs comme membre
-* Vue Semestrielle (voir Gantt)
+  * Préremplis avec certains professeurs comme membres
+* Vue Semestrielle (type Gantt)
 * Une vue récap/statistique globale pour un groupe
 
 #### Won't have
@@ -137,7 +141,7 @@ Possibilité de déléguer cette tâche aux élèves (ex. le devoir peut être d
 
 #### Problème
 
-Les devoirs sont notés et éparpillés sur plusieurs supports (physique ou digital) parmi les élèves, on se retrouve souvent avec un élève qui détient une partie de l'information et non toute l'information. Les élèves ont donc du mal à visualiser tous les devoirs à faire. Il est alors compliqué de prévoir sa charge de travail avec des informations incomplètes
+Les devoirs sont notés et éparpillés sur plusieurs supports (physique ou digital) parmi les élèves, nous nous retrouvons souvent avec un élève qui détient une partie de l'information et non toute l'information. Les élèves ont donc du mal à visualiser tous les devoirs à faire. Il est alors compliqué de prévoir sa charge de travail avec des informations incomplètes.
 
 ##### Solution
 
@@ -145,7 +149,7 @@ Apporter une vue centralisée dans laquelle il est facile de visualiser les tâc
 
 ## Etat de l'art
 
-Cette section décrit l'état des applications dans le domaine de gestion des tâches liés au monde estudiantin, elle décrit notamment quelques tests effectués sur certaines de ces applications et ultimement le positionnement de Caravel par rapport à l'état de l'art.
+Cette section décrit l'état des applications dans le domaine de gestion des tâches liés au monde estudiantin, elle décrit notamment quelques tests effectués et fonctionnalités intéressantes sur certaines de ces applications et ultimement le positionnement de Caravel par rapport à l'état de l'art.
 
 ### Applications testées
 
@@ -155,12 +159,12 @@ Cette section décrit l'état des applications dans le domaine de gestion des t�
 
 #### Google Classroom
 
-L'outil Google Classroom est très axé cours, les professeurs créent leur cours et les élèves suivent les cours qui leur sont nécessaires (principe universitaire où les élèves peuvent choisir leur cours). L'idée est que les ajouts tels que les devoirs soient introduits uniquement par le professeur. La notion de classe à proprement parler n'existe pas.
+L'outil Google Classroom est très axé cours, les professeurs créent leur cours et les élèves suivent les cours qui leur sont nécessaires (principe universitaire où les élèves peuvent choisir leurs cours). L'idée est que les ajouts tels que les devoirs soient introduits uniquement par le professeur. La notion de classe à proprement parler n'existe pas.
 
 ##### Type de publication
-Il existe une liste de publication possible dans classroom.
+Il est possible de publier différents types de contenu dans Classroom.
 
-![Google Classroom : liste des types de devoirs \label{classroom1}](assets/108860975-06675180-75ef-11eb-816e-bf46913694e6.png){width=250}
+![Google Classroom : liste des types de contenu \label{classroom1}](assets/108860975-06675180-75ef-11eb-816e-bf46913694e6.png){width=250}
 
 Comme le montre la figure \ref{classroom1}, celle-ci ne se limite pas seulement à des devoirs mais aussi à des questions.
 
@@ -170,7 +174,7 @@ Les accès peuvent être gérés finement dans Google Classroom.
 
 ![Google Classroom : gestion de liste d'élèves \label{classroom2}](assets/108861533-9b6a4a80-75ef-11eb-914c-976bde9a6695.png){width=250}
 
-Ainsi il est possible de créer des groupes d'élèves afin de faire des partages spécifiques, comme dans la figure \ref{classroom2}.
+Ainsi il est possible de créer des groupes d'élèves afin de faire des partages spécifiques, comme le montre la figure \ref{classroom2}.
 
 
 ##### Annonces
@@ -178,16 +182,16 @@ Des annonces peuvent être émises par tous au sein de la classe.
 
 ![Google Classroom : permet de faire des annonces \label{classroom3}](assets/108861613-b5a42880-75ef-11eb-9eba-af0017bea98e.png){width=400}
 
-Comme le montre la figure \ref{classroom3}, ces annonces apparaissent dans la vue centrale de l'application, ce qui peut être pratique pour faire des rappels rapides.
+Comme le montre la figure \ref{classroom3}, ces annonces apparaissent dans la vue centrale de l'application, ce qui peut être pratique pour faire des rappels.
 
 ##### Vue calendrier
 La vue calendrier disponible pour les différentes tâches est limitée à la semaine.
 
 ![Google Classroom : vue limité à la semaine \label{classroom4}](assets/108861942-0d429400-75f0-11eb-97ac-7555cf34c23d.png){width=400}
 
-##### Conclusion
-
 Comme le montre la figure \ref{classroom4}, cela donne une bonne idée de la charge de la semaine, il est cependant dommage de ne pas trouver une vue mensuelle.
+
+##### Conclusion
 
 Fonctionnalités intéressantes :
 
@@ -204,28 +208,28 @@ L'interface d'ajout d'un devoir est très lourde.
 
 ![MyHomework : ajout d'un devoir \label{myhomework1}](assets/108901513-404e4d00-761b-11eb-8924-6487a2137068.png){width=300}
 
-Il y a beaucoup d'options qui, la plupart du temps, ne sont pas nécessaire, voir la figure \ref{myhomework1}.
+Il y a beaucoup d'options qui, la plupart du temps, ne sont pas nécessaires, voir la figure \ref{myhomework1}.
 
 ##### Vue centrale simple
 La vue centrale de l'application est claire et efficace.
 
 ![MyHomework : vue centrale simple et efficace \label{myhomework2}](assets/108901691-7986bd00-761b-11eb-9ea9-803365636ba8.png){width=400}
 
-Elle permet de voir simplement les tâches qui doivent être effectuées, comme on peut le voir dans la figure \ref{myhomework2}.
+Elle permet de voir simplement les tâches qui doivent être effectuées, comme nous pouvons le voir dans la figure \ref{myhomework2}.
 
 ##### Vue mois 
 La vue mois est très basique, elle ne permet pas de voir directement les tâches à effectuer.
 
 ![MyHomework : vue calendrier (mensuelle) \label{myhomework3}](assets/108901732-87d4d900-761b-11eb-82e4-f8c2be4f5d42.png){width=400}
 
-Il faut cliquer sur le jour pour avoir des détails sur les tâches, comme sur la figure \ref{myhomework3}.
+Il faut cliquer sur le jour pour avoir des détails sur les tâches, comme nous pouvons le voir sur la figure \ref{myhomework3}.
 
 ##### Vue semaine
-Cette vue semaine permet de clairement voir les tâches à effectuer pour la semaine en cours.
+La vue semaine permet de clairement voir les tâches à effectuer pour la semaine en cours.
 
 ![MyHomework : vue semaine \label{myhomework4}](assets/108901820-a3d87a80-761b-11eb-9dc1-5b3bf28ff36b.png){width=400}
 
-Elle contient assez de détails pour ne pas être obligé d'ouvrir la tâche, comme le montre la figure \ref{myhomework4}.
+Elle contient assez de détails pour ne pas être obligé d'ouvrir la tâche, comme le montre la figure \ref{myhomework4}, ce qui est très pratique.
 
 ##### Conclusion
 
@@ -246,21 +250,21 @@ La vue centrale de l'application permet de visualiser clairement les différente
 
 ![MyStudyLife : gestion des tâches \label{mystudy1}](assets/108906096-cb7e1180-7620-11eb-9f05-3580c77d39b3.png){width=400}
 
-Comme le montre la figure \ref{mystudy1}, celle-ci et très simple, de plus il est possible de directement marqué les tâches comme terminées.
+Comme le montre la figure \ref{mystudy1}, celle-ci et très simple, de plus il est possible de directement marquer les tâches comme terminées.
 
 ##### Gestion des sujets
-La gestion des sujets a l'avantage d'apparaitre très simple.
+La gestion des sujets a l'avantage d'être très simple.
 
 ![MyStudyLife : gestion des différents sujets \label{mystudy2}](assets/108906133-d638a680-7620-11eb-8034-b9398d023f81.png){width=300}
 
 Il est possible de facilement ajouter un nouveau sujet depuis la création d'une tâche, comme le montre la figure \ref{mystudy2}.
 
 ##### Gestion des cours
-Il est possible de gérer son horaire de cours de manière très fine, par exemple on peut donner des cours avec des rotations (une semaine sur deux) ou sur un semestre.
+Il est possible de gérer son horaire de cours de manière très fine, par exemple il est possible d'inscrire un cours avec des rotations (une semaine sur deux) ou uniquement sur un semestre.
 
 ![MyStudyLife : gestion des cours \label{mystudy3}](assets/108906275-fe280a00-7620-11eb-94ea-af56b245a805.png){width=400}
 
-Comme on peut le voir sur la figure \ref{mystudy3}. Ceci permet d'automatiquement pré-remplir certains champs, par exemple lors d'un ajout d'une tâche si un cours est en cours alors la tâche sera pré-rempli avec ce cours.
+Comme il est possible de voir sur la figure \ref{mystudy3}. Ceci permet d'automatiquement pré-remplir certains champs, par exemple lors d'un ajout d'une tâche si un cours est en cours alors la tâche sera pré-rempli avec ce cours.
 
 ##### Conclusion
 
@@ -279,7 +283,7 @@ Le marché est partagé en deux catégories : les applications de gestion de dev
 
 Pour la première catégorie, il existe actuellement beaucoup d'applications (surtout mobile) qui permettent à un étudiant de gérer ses devoirs mais celles-ci ne permettent pas la collaboration entre étudiants, en outre il n'est pas possible de partager les devoirs avec quelqu'un d'autre.
 
-Pour la seconde catégorie, il existe quelques applications qui permettent à un professeur d'entrer des devoirs pour un groupe d'élèves, ceux-ci peuvent alors tous consulter les devoirs. Le problème repose sur le fait que seul le professeur peut entrer les devoirs, cela limite la marge de manœuvre des élèves ainsi que leur implication. Dans ces applications un professeur est souvent responsable de sa matière et ne peut donc pas forcément rajouter des devoirs dans une autre matière (voir Google Classroom).
+Pour la seconde catégorie, il existe quelques applications qui permettent à un professeur d'entrer des devoirs pour un groupe d'élèves, ceux-ci peuvent alors tous consulter les devoirs. Le problème repose sur le fait que seul le professeur peut entrer les devoirs, cela limite la marge de manœuvre des élèves ainsi que leur implication. Dans ces applications un professeur est souvent responsable de sa matière et ne peut donc pas forcément rajouter des devoirs dans une autre matière.
 
 ### Positionnement de Caravel
 
@@ -301,11 +305,11 @@ Cette partie explicite les différents rôles disponibles au sein de caravel ain
 
 #### Rôles fonctionnels
 
-Il y a un seul rôle fonctionnel qui est celui d'administrateur du groupe, en général il s'agit du créateur du groupe mais ce droit peut être transmis.
+Il y a un seul rôle fonctionnel qui est celui d'administrateur du groupe, en général il s'agit du créateur de ce dernier mais ce droit peut être transmis.
 
 ##### Administrateur du groupe
 
-Permet de gérer les paramètres du groupe (suppression, renommage, etc...) ainsi que de gérer les différents membres du groupes (suppression d'un membre).
+Permet de gérer les paramètres du groupe (suppression) ainsi que de gérer les différents membres du groupes (suppression d'un membre).
 
 #### Rôles sémantiques
 
@@ -316,53 +320,53 @@ Les deux rôles seront donc les suivants :
 * Professeur
 * Elève
 
-Il a été décidé de ne pas appliquer de droit spécifique pour l'un ou l'autre des rôles car un historique des actions de chaque utilisateur sera mis en place et donc il possible en tout temps de trouver qui a effectué la moindre modification sur une tâche, tout utilisateur est libre de modifier une tâche même s'il en est pas l'auteur. Ceci afin d'encourager la collaboration sur les différentes tâches.
+Il a été décidé de ne pas appliquer de droit spécifique pour l'un ou l'autre des rôles car un historique des actions de chaque utilisateur sera mis en place et donc il possible en tout temps de trouver qui a effectué la moindre modification sur une tâche, tout utilisateur est libre de modifier une tâche même s'il en est pas l'auteur. Ceci afin d'encourager la collaboration.
 
-### Use cases
+### *Use cases*
 
-Pour la bonne compréhension des schémas qui vont suivre, il tenir compte du fait qu'un `Utilisateur` est un `Membre du groupe`. De plus l'utilisateur est aussi considéré comme un `auteur`.
+Pour la bonne compréhension des schémas qui vont suivre, il tenir compte du fait qu'un `Utilisateur` est un `Membre du groupe`. De plus l'utilisateur est aussi considéré comme un `Auteur`.
 
 #### Tâche
 
-Use case concernant les différentes actions possibles sur les tâches.
+*Use case* concernant les différentes actions possibles sur les tâches.
 
-![Use case : gestion des tâches](assets/112157598-a8c32680-8be7-11eb-85b6-6a07eaa12ff4.png)
+![*Use case* : gestion des tâches](assets/112157598-a8c32680-8be7-11eb-85b6-6a07eaa12ff4.png)
 
 #### Sujet
 
-Use case concernant les différentes actions possibles sur les sujets.
+*Use case* concernant les différentes actions possibles sur les sujets.
 
-![Use case : gestion des sujets](assets/111871279-5e446e80-8989-11eb-996f-35bf6b6afe45.png)
+![*Use case* : gestion des sujets](assets/111871279-5e446e80-8989-11eb-996f-35bf6b6afe45.png)
 
 #### Fil de discussion
 
-Use case concernant les différentes actions possibles sur les fils de discussion.
+*Use case* concernant les différentes actions possibles sur les fils de discussion.
 
-![Use case : gestion des fils de discussion](assets/111871717-efb4e000-898b-11eb-94bb-bb041c166cf8.png)
+![*Use case* : gestion des fils de discussion](assets/111871717-efb4e000-898b-11eb-94bb-bb041c166cf8.png)
 
 #### Notification
 
 Les paramètres de notifications seront globaux et non spécifique à une tâche ou groupe
 
-![Use case : gestion des notifications](assets/111880242-927c5700-89aa-11eb-9156-614bebfd27a0.png)
+![*Use case* : gestion des notifications](assets/111880242-927c5700-89aa-11eb-9156-614bebfd27a0.png)
 
 #### Filtre
 
-Use case concernant les différentes actions possibles avec les filtres.
+*Use case* concernant les différentes actions possibles avec les filtres.
 
-![Use case : gestion des filtres](assets/111908970-96b47d00-8a5b-11eb-8eb6-e88bdbc9e12b.png){width=300}
+![*Use case* : gestion des filtres](assets/111908970-96b47d00-8a5b-11eb-8eb6-e88bdbc9e12b.png){width=300}
 
 #### Login
 
-Use case concernant les différentes actions possibles lors de l'authentification.
+*Use case* concernant les différentes actions possibles lors de l'authentification.
 
-![Use case : gestion du login](assets/111917134-a0031100-8a7e-11eb-9688-709244b89570.png){width=300}
+![*Use case* : gestion du login](assets/111917134-a0031100-8a7e-11eb-9688-709244b89570.png){width=300}
 
 *Les différents schémas ont été produits avec l'outil [Visual Paradigm community edition](https://www.visual-paradigm.com/).*
 
 ### Gestion des filtres
 
-Les filtres permettent de d'affiner la liste des tâches disponibles. Ils permettent de retrouver une tâche aisément et de retrouver une tâche passée ce qui n'est pas possible sur l'ancienne de version de Caravel.
+Les filtres permettent d'affiner la liste des tâches disponibles. Ils permettent de retrouver une tâche aisément et de retrouver une tâche passée ce qui n'est pas possible sur l'ancienne de version de Caravel.
 
 #### Liste des filtres
 
@@ -379,7 +383,7 @@ Il sera possible en tout temps de réinitialiser les filtres appliqués pour ret
 
 ### Système de réactions
 
-Le système de réactions sur les tâches a pour but de signaler la présence d'un problème sur ces dernières. L'idée derrière ces réactions est de donner une direction sur la réflexion à entreprendre pour évaluer la problématique d'une tâche dans cette optique les réactions ont pour but de juger de manière qualitative (en terme méthodologique) une tâche.
+Le système de réactions sur les tâches a pour but de signaler la présence d'un problème sur ces dernières. L'idée derrière ces réactions est de donner une direction sur la réflexion à entreprendre pour évaluer la problématique d'une tâche. Dans cette optique les réactions ont pour but de juger de manière qualitative (en terme méthodologique) une tâche.
 
 Pour ce faire nous allons définir une base de réactions qui sera la même sur toutes les tâches et que les élèves pourront utiliser. Il est important que cette base soit commune à toutes les tâches afin que les élèves puissent appréhender correctement leur utilisation. En effet des réactions spécifiques à chaque sujet ou groupe demanderait un effort d'assimilation trop conséquent et placerait l'élève dans une situation d'incertitude quant au choix de la réaction, ce qui serait contre productif. Le système doit rester simple et pouvoir être assimiler facilement.
 
@@ -400,7 +404,7 @@ La liste exhaustives des réactions :
 Plusieurs références ont été utilisées pour déterminer ces réactions :
 
 * Un article de journal écrit dans le American Journal of Engineering Education (AJEE)  [voir @reaction1].
-* Ainsi que deux autres articles en ligne de [voir @reaction2] et de [voir @reaction3].
+* Ainsi que deux autres articles en ligne voir références @reaction2 et @reaction3.
 
 #### Inciter à réagir {#goreact}
 
@@ -437,7 +441,9 @@ La liste exhaustive des actions qui peuvent déclencher une notification :
 
 Les différentes notifications peuvent être paramétrables depuis le compte de l'utilisateur.
 
-![Maquette des paramètres de notifications](assets/113505354-86fa6580-953e-11eb-8eaf-ce3290dca0f9.png){width=350}
+![Maquette des paramètres de notifications \label{notifsparams}](assets/113505354-86fa6580-953e-11eb-8eaf-ce3290dca0f9.png){width=350}
+
+La figure \ref{notifsparams} donne une possible de représentation des paramètres.
 
 ### Gestion de la charge de travail
 
@@ -469,7 +475,7 @@ Les projets sont calculés de manières différentes car on comptabilise un proj
 
 #### Normalisation
 
-Le nombre de crédit n'est pas normalisé car tous les cours ne seront pas forcément présents en tout temps et donc il n'est pas possible d'avoir une normalisation homogène si des sujets viennent s'ajouter au fur et à mesure (dans le cadre où ces informations ne sont pas calculées en temps réel).
+Le nombre de crédit n'est pas normalisé car tous les cours ne seront pas forcément présents en tout temps et donc il n'est pas possible d'avoir une normalisation homogène si des sujets viennent s'ajouter au fur et à mesure (dans le cas où ces informations ne sont pas calculées en temps réel).
 
 #### Gestion des extrema
 
@@ -503,6 +509,8 @@ Cette partie décrit la stratégie ainsi que la conception des tests nécessaire
 ### Objectifs de tests
 
 Le but des différents tests est de s'assurer que le code produit est de bonne qualité tant dans sa réalisation que dans son fonctionnement, en outre il permet de mettre en place des tests qui permettent de ne pas régresser d'une version à l'autre en maintenant une qualité de produit constante entre les différentes phases de développement.
+
+Voici la liste des objectifs :
 
 * Avoir un code maintenable
 * Avoir un bon temps de réponse
@@ -549,7 +557,7 @@ La version cloud de SonarQube sera utilisée afin d’analyser la qualité du co
 
 ## Maquettes
 
-Cette section regroupe les différentes maquettes créées pour la nouvelle version de Caravel. Ces maquettes ont été réalisées avec l'outil Figma avec une licence étudiante.
+Cette section regroupe les différentes maquettes créées pour la nouvelle version de Caravel. Ces maquettes ont été réalisées avec l'outil [Figma](https://www.figma.com/) avec une licence étudiante.
 
 ### Page de login
 Cette maquette présente la page avec laquelle l'utilisateur pourra se connecter.
@@ -557,12 +565,12 @@ Cette maquette présente la page avec laquelle l'utilisateur pourra se connecter
 ![Maquette : page de login](assets/20210720_133107_image.png){width=600}
 
 ### Page des tâches
-Cette page a pour but d'afficher de chronologique les différentes tâches à faire, ainsi en un coup d'œil il est possible de voir quels sont les tâches les plus pressantes.
+Cette page a pour but d'afficher de manière chronologique les différentes tâches à faire, ainsi en un coup d'œil il est possible de voir quelles sont les tâches les plus prioritaires.
 
 ![Maquette : page liste des tâches](assets/20210720_133302_image.png){width=600}
 
 ### Page d'affichage d'une tâche 
-Cette maquette présente l'affichage d'une tâche et des éléments qui la compose.
+Cette maquette présente l'affichage d'une tâche et des éléments qui la composent.
 
 ![Maquette : page affichage d'une tâche](assets/20210720_134056_image.png){width=450}
 
@@ -572,7 +580,7 @@ Cette maquette présente la vue mensuelle sur laquelle la charge de travail peut
 ![Maquette : page vue mensuelle](assets/20210720_134130_image.png){width=500}
 
 ### Page chronologique
-Cette maquette représente la vue "Gantt" ou encore appelée vue "chronologique", elle permet de voir l'ensemble des tâches à l'année.
+Cette maquette représente la vue "Gantt" ou encore appelée vue "chronologique", elle permet de voir l'ensemble des tâches futures.
 
 ![Maquette : page vue timeline](assets/20210720_134149_image.png){width=500}
 
@@ -590,13 +598,15 @@ Voir annexe \ref{an2}.
 
 ## Méthodologie de travail
 
-La méthodologie de travail se base sur l'utilisation GitFlow qui consiste à créer 3 différentes canaux :
+La méthodologie de travail se base sur l'utilisation GitFlow.
 
-![Méthodologie : GitFlow workflow feature branches](assets/gitflow-workflow-feature-branches.png)
+![Méthodologie : GitFlow workflow feature branches \label{gitflow}](assets/gitflow-workflow-feature-branches.png)
 
-1. La branche `master` qui est une branche qui est toujours fonctionnelle et stable (release candidate)
+Cette méthodologie, représentée par la figure \ref{gitflow}, consiste à créer 3 différentes canaux :
+
+1. La branche `master` qui est une branche toujours fonctionnelle et stable (release candidate)
 2. La branche `develop` qui possède les dernières fonctionnalités mais n'est pas forcément stable
-3. Les branches dites `features` qui sont créées pour chaque nouvelle fonctionnalité.
+3. Les branches dites `features` sont créées pour chaque nouvelle fonctionnalité.
 
 Lorsqu'une `feature` est aboutie et est validée par l'équipe de développement, elle est alors poussée sur la branche `develop` pour validation, pour une fois que la branche `develop` est considérée comme stable, celle-ci peut être poussée sur la branche `master`.
 
@@ -620,7 +630,7 @@ L'intégration continue consiste à faire des livraisons continues ainsi que de 
 
 Laravel possède deux pipelines de test, une qui utilise MySQL (MariaDB) et une autre SQLite, cette façon de faire nous garantit une certaine abstraction entre l'utilisation de la base de donnée et notre code, en effet chaque moteur de base de données possède des particularités en utilisant deux systèmes de base de données on peut garantir l'interpolation entre les deux différents types de base de donnée.
 
-En plus du test de connexion à la base de donnée, les tests unitaires PHPUnit sont lancés en fin de traitement pour les deux pipelines.
+En plus du test de connexion à la base de donnée, les tests unitaires PHPUnit sont lancés en fin de traitement pour les deux pipelines, comme nous pouvons le constater dans le code suivant :
 
 ```{.yml caption="DevOps : pipeline de test Laravel SQLite"}
 # Fichier : .github\workflows\laravel.yml
@@ -673,9 +683,9 @@ La livraison est une étape qui consiste à déployer de manière automatique d�
 
 #### Configuration du serveur
 
-Le déploiement automatique ne s'occupe que de mettre les données de l'application à jour, elle ne s'occupera pas de la configuration totale du serveur qui nécessite plusieurs composants indépendants (NPM, Nginx, Compoter, PHP, MariaDB, etc...). Il faut donc s'atteler à créer une configuration minimale du serveur pour accueillir notre backend ainsi que notre frontend.
+Le déploiement automatique ne s'occupe que de mettre les données de l'application à jour, elle ne s'occupera pas de la configuration totale du serveur qui nécessite plusieurs composants indépendants (NPM, Nginx, Composer, PHP, MariaDB, etc...). Il faut donc s'atteler à créer une configuration minimale du serveur pour accueillir notre backend ainsi que notre frontend.
 
-```{.bash caption="Serveur : installation des dépendences de base"}
+```{.bash caption="Serveur : installation des dépendences de base" label="basicinstall"}
 #Server database mariadb
 sudo apt install mariadb-server
 
@@ -688,6 +698,8 @@ sudo apt install php7.4 libapache2-mod-php7.4 php7.4-curl php-pear php7.4-gd php
 # Composer pour les dépendances php
 sudo apt install composer
 ```
+
+Le code \ref{basicinstall} installe les différentes composants nécessaires pour le lancement de Caravel.
 
 #### Configuration de MariaDB
 
@@ -703,9 +715,9 @@ flush privileges;
 
 #### Configuration de Nginx
 
-Dans un premier temps, il a été choisi de séparer le backend et le frontend via deux sous domaines différents à savoir `caravel.ing.he-arc.ch/` pour la partie frontend et `api.caravel.ing.he-arc.ch/` mais après plusieurs tests, il semble que cela ne soit pas possible en tout cas en l'état, car le sous domaine api.* n'est pas redirigé sur le serveur, il faudrait donc ajouter une entrée DNS supplémentaire au niveau du service informatique. Afin de ne pas perdre de temps sur la partie configuration, il a été choisi en définitive de faire passer l'api sur une route spécifique c'est-à-dire `caravel.ing.he-arc.ch/api`. La configuration suivante du Nginx reflète ce dernier choix.
+Dans un premier temps, il a été choisi de séparer le backend et le frontend via deux sous domaines différents à savoir `caravel.ing.he-arc.ch` pour la partie frontend et `api.caravel.ing.he-arc.ch` pour la partie backend mais après plusieurs tests, il semble que cela ne soit pas possible en tout cas en l'état, car le sous domaine `api` n'est pas redirigé sur le serveur, il faudrait donc ajouter une entrée DNS supplémentaire au niveau du service informatique. Afin de ne pas perdre de temps sur la partie configuration, il a été choisi en définitive de faire passer l'api sur une route spécifique c'est-à-dire `caravel.ing.he-arc.ch/api`. La configuration suivante du Nginx reflète ce dernier choix.
 
-```{.bash caption="Serveur : configuration Nginx"}
+```{.bash caption="Serveur : configuration Nginx" label="nginx"}
   # Caravel conf
 server {
   index index.php index.html;
@@ -752,7 +764,7 @@ server {
 }
 ```
 
-La partie SSL est directement gérée par [CertBot](https://certbot.eff.org/) qui est un outil open source qui permet d'automatiquement enroller les sites issues de la configuration Nginx avec des certificats [Let's Encrypt](https://letsencrypt.org/) et donc d'activer l'HTTPS.
+Dans le code \ref{nginx}, la partie SSL est directement gérée par [CertBot](https://certbot.eff.org/) qui est un outil open source qui permet d'automatiquement enroller les sites issues de la configuration Nginx avec des certificats [Let's Encrypt](https://letsencrypt.org/) et donc d'activer l'HTTPS.
 
 #### Runners GitHub
 
@@ -768,36 +780,38 @@ La méthode pour gérer la configuration de la production consiste à écraser o
 
 #### Dossier de téléchargement
 
-Une des problématiques avec le déploiement c'est que le mise à jour passe par le remplacement de tous les fichiers de notre application par la dernière version disponible sur notre repository GitHub, cependant les dossiers de téléchargement sont propres à chaque webapp, il ne faut donc pas les remplacer lors de la mise à jour du contenu de notre webapp.
+Une des problématiques avec le déploiement c'est que le mise à jour passe par le remplacement de tous les fichiers de notre application par la dernière version disponible sur le repository GitHub, cependant les dossiers de téléchargement sont propres à chaque webapp, il ne faut donc pas les remplacer lors de la mise à jour du contenu de notre webapp.
 
 Pour régler cette problématique, les deux dossiers de téléchargement :
 
 * `backend/storage`
 * `backend/public/uploads`
 
-sont, lors du déploiement, créés comme des liens symboliques sur des répertoires qui ne sont pas dans le répertoire de déploiement, ce qui évite que les dossiers ne soient à chaque fois écrasés pour le déploiement d'une nouvelle version.
+sont, lors du déploiement, créés comme des liens symboliques sur des répertoires qui ne sont pas dans le répertoire de déploiement, ce qui évite que les dossiers ne soient à chaque fois écrasés par le déploiement d'une nouvelle version.
 
 ## Authentification
 
 Le processus d'authentification est un peu plus complexe dans une application où le frontend et le backend sont séparés, le processus peut être résumé simplement par le schéma suivant :
 
-![Authentification : schéma d'interaction](assets/20210720_160251_image.png)
+![Authentification : schéma d'interaction \label{authproc}](assets/20210720_160251_image.png)
+
+Dans la figure \ref{authproc}, le processus apparait de manière assez simple, dans un premier temps une requête est effectuée sur `api/login` afin d'authentifier l'utilisateur, si la validation est correcte alors un token est retourné à l'utilisateur, en fin ce token est enregistré au niveau du client pour authentifier les prochains appels à l'API.
 
 ### Local Storage vs Cookies
 
-La complexité réside dans le choix du stockage du token au niveau du client, en effet une des solutions les plus utilisées est le stockage du token au niveau du Local Storage, cependant il s'agit d'une mauvaise pratique, [voir référence @localStorage].
+La complexité réside dans le choix du stockage du token au niveau du client, en effet une des solutions les plus utilisées est le stockage du token au niveau du Local Storage, cependant il s'agit d'une mauvaise pratique [voir référence @localStorage].
 
-L'autre solution consiste à utiliser les cookies ainsi que le flag "httpOnly" qui bloque l'accès à ce dernier dès que ce flag est paramétré à vrai et c'est la solution qui est recommandée dans la documentation de Laravel, nous y reviendrons dans la section suivante.
+L'autre solution consiste à utiliser les cookies ainsi que le flag `httpOnly` qui bloque l'accès javascript à ce dernier dès que ce flag est paramétré à `true` et c'est la solution qui est recommandée dans la documentation de Laravel, nous y reviendrons dans la section suivante.
 
 ### Sanctum vs Passport
 
-Laravel propose deux systèmes d'authentification, le premier [Sanctum](https://laravel.com/docs/8.x/sanctum) est un système léger d'authentification basé sur des tokens, le second [Passport](https://laravel.com/docs/8.x/passport) est un système d'authentification plus lourd qui utilise OAuth2. OAuth2 est un protocole qui permet aux utilisateurs la connection avec d'autres applications externe tel que Google ou encore GitHub. Ce dernier est donc plus lourd et présuppose une bonne connaissance du protocole OAuth2. Comme l'utilisation de OAuth2 n'est pas nécessaire, Sanctum a été choisi, c'est d'ailleurs une recommandation issue de la [documentation de Laravel](https://laravel.com/docs/8.x/passport#passport-or-sanctum).
+Laravel propose deux systèmes d'authentification, le premier [Sanctum](https://laravel.com/docs/8.x/sanctum) est un système léger d'authentification basé sur des tokens, le second [Passport](https://laravel.com/docs/8.x/passport) est un système d'authentification plus lourd qui utilise OAuth2. OAuth2 est un protocole qui permet aux utilisateurs la connection avec d'autres applications externe tels que Google ou encore GitHub. Ce dernier est donc plus lourd et pré-suppose une bonne connaissance du protocole OAuth2. Comme l'utilisation de OAuth2 n'est pas nécessaire, Sanctum a été choisi, c'est d'ailleurs une recommandation issue de la [documentation de Laravel](https://laravel.com/docs/8.x/passport#passport-or-sanctum).
 
 ![Laravel Sanctum Explained : SPA Authentication [voir @sanctum \label{figSanctum}]](assets/bpekb8vyseptvpp91vdt.png){width=400}
 
-Dans la figure \ref{figSanctum} on peut voir le fonctionnement de sanctum, les éléments les plus importants sont le CSRF token ainsi que le Session cookie. Le CSRF token permet de protéger l'utilisateur d'une cross-site request cet élément n'est pas en httpOnly. Le Session Cookie, qui est le fonctionnement normal que nous pourrions retrouver avec une session PHP, est le cookie qui garde les informations liés à l'utilisateur, cet élément est protégé par un httpOnly et n'est donc pas accessible via javascript. Ces deux paramètres de session sont placés par Laravel à l'appel de la route `/sanctum/csrf-cookie`. Il est donc important de faire un appel à cette route avant toute tentative de connexion.
+Dans la figure \ref{figSanctum} on peut voir le fonctionnement de sanctum, les éléments les plus importants sont le CSRF token ainsi que le Session cookie. Le CSRF token permet de protéger l'utilisateur d'une cross-site request cet élément n'est pas en `httpOnly`. Le Session Cookie, qui est le fonctionnement normal que nous pourrions retrouver avec une session PHP, est le cookie qui garde les informations liés à l'utilisateur, cet élément est protégé par un `httpOnly` et n'est donc pas accessible via javascript. Ces deux paramètres de session sont placés par Laravel à l'appel de la route `/sanctum/csrf-cookie`. Il est donc important de faire un appel à cette route avant toute tentative de connexion.
 
-```{.typescript caption="Authentification : fonction de login"}
+```{.typescript caption="Authentification : fonction de login" label="authcode"}
 //Fichier : frontend\src\store\modules\user.ts
 
 await axios.get(process.env.VUE_APP_API_BASE_URL + "sanctum/csrf-cookie");
@@ -809,7 +823,9 @@ const response: AxiosResponse = await axios({
 });
 ```
 
-Nous pouvons constater en ligne 1, aucun retour particulier n'est attendu car Laravel va automatiquement inscrire les cookies nécessaires et la librairie utilisée pour les appels backend, Axios, va lui aussi de manière automatique faire les configurations nécessaires dès lors que le paramètre `axios.defaults.withCredentials = true` est positionné.
+Le code \ref{authcode} illustre la paragraphe précédant, nous pouvons voir qu'un appel à `sanctum/csrf-cookie` est effectué avant la tentative de connexion.
+
+Nous pouvons constater en ligne 3, aucun retour particulier n'est attendu car Laravel va automatiquement inscrire les cookies nécessaires et la librairie utilisée pour les appels backend, Axios, va lui aussi de manière automatique faire les configurations nécessaires dès lors que le paramètre `axios.defaults.withCredentials = true` est positionné.
 
 ### Authentification LDAP
 
@@ -829,7 +845,7 @@ Après discussion avec M. Nicolas Sommer et du au fait que l'Adldap2 n'est plus 
 
 ##### Synchronisation LDAP
 
-La connexion à un annuaire a pour but de simplifier la vie de l'utilisateur, ainsi nous pouvons récupérer des informations sur l'utilisateur sans l'intervention de celui-ci. Les champs synchronisés sont données dans le fichier `auth.php`.
+La connexion à un annuaire a pour but de simplifier la vie de l'utilisateur, ainsi nous pouvons récupérer des informations sur l'utilisateur sans l'intervention de celui-ci. Les champs synchronisés sont donnés dans le fichier `auth.php`.
 
 ```{.php caption="LDAP : synchronisation des champs"}
 // Fichier : backend\config\auth.php
@@ -849,11 +865,11 @@ La connexion à un annuaire a pour but de simplifier la vie de l'utilisateur, ai
   ],
 ```
 
-Les champs synchronisés se trouvent sous le paramètre `sync_attributes`, à partir de la il peut s'agir d'une synchronisation un pour un, c'est-à-dire sans transformation, auquel cas il suffit de mettre juste le champ de la cible dans l'annuaire à synchroniser. Pour des champs plus complexe qui ne peuvent être simplement repris, dans lequel un traitement est nécessaire, il est possible de définir une classe pour gérer des cas spéciaux.
+Les champs synchronisés se trouvent sous le paramètre `sync_attributes`, à partir de là il peut s'agir d'une synchronisation un pour un, c'est-à-dire sans transformation, auquel cas il suffit de mettre juste le champ de la cible dans l'annuaire à synchroniser. Pour des champs plus complexe qui ne peuvent être simplement repris, dans lequel un traitement est nécessaire, il est possible de définir une classe pour gérer des cas spéciaux.
 
 C'est justement ce qui est effectué pour la synchronisation du champ `isTeacher` car il n'existe pas de champ dans l'annuaire pour déterminer cette information directement, il faut donc la calculer à partir d'autres champs.
 
-```{.php caption="LDAP : gestion de paramètre spécifique"}
+```{.php caption="LDAP : gestion de paramètre spécifique" label="ldapteacher"}
 // Fichier : backend\app\Ldap\AttributeHandler.php
 
 class AttributeHandler
@@ -881,15 +897,15 @@ class AttributeHandler
 }
 ```
 
-C'est donc dans la classe `AttributeHandler.php` qu'on détermine si l'utilisateur est un professeur ou non. Basiquement il s'agit de vérifier la présence de l'utilisateur dans certaines OUs qui sont déterminés par le paramètre `LDAP_TEACHERS_OUs` dans le `.env`.
+C'est donc avec le code \ref{ldapteacher} que nous déterminons si l'utilisateur est un professeur ou non. Basiquement il s'agit de vérifier la présence de l'utilisateur dans certaines OUs qui sont déterminées par le paramètre `LDAP_TEACHERS_OUs` dans le fichier de configuration `backend\.env`.
 
 ##### Mécanisme de login
 
-Une fois que la configuration LDAP est en place, il faut paramétrer le comportement du login LDAP, en effet quel champ LdapRecord doit-il vérifier dans l'annuaire, est-ce avec le mail, le nom d'utilisateur ?
+Une fois que la configuration LDAP est en place, il faut paramétrer le comportement du login LDAP, en effet quel champ LdapRecord doit-il vérifier dans l'annuaire, est-ce avec le mail, le nom d'utilisateur, etc...
 
 Il faut donc enrichir la mécanique standard pour ajouter notre propre mécanique, cela se passe dans `AuthAPIController.php`.
 
-```{.php caption="LDAP : gestion du login et du fallback"}
+```{.php caption="LDAP : gestion du login et du fallback" label="ldapconn"}
 // Fichier : backend\app\Http\Controllers\Auth\AuthAPIController.php
 
 public function login(Request $request)
@@ -914,10 +930,10 @@ public function login(Request $request)
 }
 ```
 
-Pour le projet Caravel, il a été décidé que l'utilisateur devrait pouvoir se connecter avec son compte mail, pour des raisons pratiques nous avons ajouté la possibilité de se connecter simplement avec son nom d'utilisateur. C'est la partie `$credentials2`, de plus cette partie contient un `fallback`, ceci permet de se connecter avec un compte existant uniquement sur Caravel et n'ayant pas d'existence sur le LDAP.
+Pour le projet Caravel, il a été décidé que l'utilisateur devrait pouvoir se connecter avec son compte mail, pour des raisons pratiques nous avons ajouté la possibilité de se connecter simplement avec son nom d'utilisateur. Depuis le code \ref{ldapconn}, c'est la partie `$credentials2`, de plus cette partie contient un `fallback`, ceci permet de se connecter avec un compte existant uniquement sur Caravel et n'ayant pas d'existence sur le LDAP.
 
 ## Intégration des routes
-Dans le cas d'un frontend et d'un backend séparé, le travail au niveau des routes doit se faire deux fois. Basiquement les routes liés au backend sont toutes préfixées par `/api/*`, toutes les autres routes concernent le frontend.
+Dans le cas d'un frontend et d'un backend séparés, le travail au niveau des routes doit se faire deux fois. Basiquement les routes liés au backend sont toutes préfixées par `/api/*`, toutes les autres routes concernent le frontend.
 
 ### Routes backend
 Les routes qui ont été réellement implémentées diffèrent quelque peu des routes qui ont été conceptualisées, les routes suivantes ont été ajoutées :
@@ -928,21 +944,21 @@ Les routes qui ont été réellement implémentées diffèrent quelque peu des r
 * `/api/groups/{group}/finished` [POST]
 * `/api/profile/notifications` [GET]
 
-La nouvelle documentation des routes à jour est disponible sur [swagger](https://app.swaggerhub.com/apis-docs/M4n0x/Caravel/FINAL).
+La nouvelle documentation des routes à jour est disponible sur [Swagger](https://app.swaggerhub.com/apis-docs/M4n0x/Caravel/FINAL).
 
 ### Routes frontend
 Les routes concernant le frontend ne sont pas très intéressantes à développer, elles concernent uniquement les URLs telles qu'elles apparaissent au niveau du navigateur de l'utilisateur. Elles peuvent être directement consultées depuis le fichier `frontend/src/router/index.ts`.
 
 ## Gestion des réactions
-Cette section décrit comment sont gérer les réactions sur les tâches. 
+Cette section décrit comment sont gérés les réactions sur les tâches. 
 
 ### Gestion de l'identifiant
-Chaque réaction est liée par un type, un utilisateur et une tâche, ces 3 éléments constituent le clé composée de cet élément, pour des raisons de simplicité les réactions possèdent tout de même une notion d'identifiant (les clés composées n'étant pas gérée dans Laravel).
+Chaque réaction est liée par un type, un utilisateur et une tâche, ces 3 éléments constituent le clé composée de cet élément, pour des raisons de simplicité les réactions possèdent tout de même une notion d'identifiant (les clés composées n'étant pas gérées dans Laravel).
 
 ### Représentation des réactions
 Les réactions sont anonymes il n'est donc pas possible de transmettre les réactions comme tels sans quoi les identifiants des différents utilisateurs apparaitraient, un attribut personnalisé a été créé dans le model `Task.php` afin d'anonymiser les différentes réponses au niveau de l'API. 
 
-```{.php caption="Gestion de la serialisation des réactions" }
+```{.php caption="Gestion de la serialisation des réactions" label="reactlist"}
 // Fichier : backend\app\Models\Task.php
 
 /**
@@ -971,7 +987,7 @@ public function getReactionsListAttribute()
     return $reactionList;
 }
 ```
-Cependant il faut être en mesure de savoir si l'utilisateur courant a effectué une des réactions, c'est exactement le rôle du champ `hasReact` qui indique si l'utilisateur courant a effectué la réaction, ce champ est propre à chaque utilisateur.
+Dans le code \ref{reactlist}, nous pouvons voir comment sont sérialisés les réactions pour chaque tâche. L'identifiant de l'utilisateur n'est donc plus transmis cependant il faut être en mesure de savoir si l'utilisateur a effectué une des réactions, c'est exactement le rôle du champ `hasReact` qui indique si l'utilisateur courant a effectué la réaction, ce champ est propre à chaque utilisateur (requête).
 
 ### Affichage des réactions
 L'affichage des réactions est très simple, il est basé essentiellement sur le fichier de langue `frontend\src\locales\fr.json` et sur le fichier `frontend\src\components\task\Reactions.vue`. Il suffit donc simplement de rajouter ou de supprimer une réaction dans le fichier et d'adapter le nombre de réactions disponibles dans le fichier `Reactions.vue` pour changer les réactions qui seront affichées.
@@ -985,11 +1001,11 @@ Le système de notification se divise en deux parties, la première qui est le d
 
 ![Notification : schéma global du système de notifications \label{schemaNotif}](assets/20210721_184742_image.png)
 
-Sur la figure \ref{schemaNotif} nous pouvons voir le schéma global des transactions effectuées lors d'une notification. Le déclenchement qui se produit avec le client 1, puis au niveau du backend nous avons deux actions qui sont effectuées, une première va enregistrer la notification en DB, l'autre va s'occuper d'envoyer une notification au serveur Firebase Cloud Messaging. Et finalement les différentes notifications vont être descendues sur les différents client via un système de [WebPush](https://developers.google.com/web/fundamentals/push-notifications) mis en place grâce aux outils fourni par Firebase.
+Sur la figure \ref{schemaNotif} nous pouvons voir le schéma global des transactions effectuées lors d'une notification. Le déclenchement se produit avec le client 1, puis au niveau du backend nous avons deux actions qui sont effectuées, une première va enregistrer la notification en DB, l'autre va s'occuper d'envoyer une notification au serveur Firebase Cloud Messaging. Et finalement les différentes notifications vont être descendues sur les différents client via un système de [WebPush](https://developers.google.com/web/fundamentals/push-notifications) mis en place grâce aux outils fournis par Firebase.
 
 ### Déclenchement d'une notification
 
-Pour déclencher une notification au niveau du backend, il faut qu'une modification ait lieue sur une tâche, une question ou un commentaire. Pour détecter ces changements [des observers](https://laravel.com/docs/8.x/eloquent#observers) ont été mis en place au niveau du backend. Dès qu'une action parmi les types `Création`, `Mise à jour` et `Suppression` est effectuée, ces observers sont susceptible d'être appelés. Chaque observer a sa propre mécanique pour savoir quand il doit être déclenché et à qui les notifications sont destinées.
+Pour déclencher une notification au niveau du backend, il faut qu'une modification ait lieue sur une tâche, une question ou un commentaire. Pour détecter ces changements [des observers](https://laravel.com/docs/8.x/eloquent#observers) ont été mis en place au niveau du backend. Dès qu'une action parmis les types *Création*, *Mise à jour* et *Suppression* est effectuée, ces observers sont susceptible d'être appelés. Chaque observer a sa propre mécanique pour savoir quand il doit être déclenché et à qui les notifications doivent être envoyées.
 
 #### TaskObserver
 
@@ -999,7 +1015,7 @@ Le TaskObserver est déclenché par les actions suivantes :
 * Mise à jour
 * Suppression
 
-Lorsqu'une de ces actions est effectuée, le TaskObserver est alors appelé et les notifications sont envoyées directement à tous les membres du groupe auquel la tâche est rattaché.
+Lorsqu'une de ces actions est effectuée, le TaskObserver est alors appelé et les notifications sont envoyées directement à tous les membres du groupe auquel la tâche est rattachée.
 
 #### QuestionObserver
 
@@ -1022,7 +1038,7 @@ Lorsqu'une de ces actions est effectuée, le CommentObserver est alors appelé e
 
 Lorsqu'une notification est créée, elle représente une classe particulière, la classe `Action.php`, c'est elle qui va induire le comportement de la notification, c'est à dire comment elle va être distribuée ou stockée. Elle possède donc une méthode propre qui donne les différents canaux de diffusion de la notification.
 
-```{.php caption="Notifications : canaux de diffusion"}
+```{.php caption="Notifications : canaux de diffusion" label="cannot"}
 // Fichier : backend\app\Notifications\Action.php
 
 /**
@@ -1038,20 +1054,20 @@ public function via($notifiable)
 }
 ```
 
-Dans notre cas, notre action va être stockée en DB et diffusée via le Firebase Cloud Messaging. Pour le canal `database` il s'agit d'un canal disponible par défaut dans Laravel, en ce qui concerne le FCM channel il s'agit d'un [ajout externe](https://laravel-notification-channels.com/fcm/).
+Dans le code \ref{cannot} nous pouvons voir que notre action va être stockée en DB et diffusée via le Firebase Cloud Messaging. Pour le canal `database` il s'agit d'un canal disponible par défaut dans Laravel, en ce qui concerne le FCM channel il s'agit d'un [ajout externe](https://laravel-notification-channels.com/fcm/).
 
-Pour chaque canal il faut ensuite déterminer son comportement via les méthodes appropriées.
+Pour chaque canal il faut ensuite déterminer son comportement via les méthodes appropriées, via les méthodes décrites dans le code suivant.
 
 ```{.php caption="Notification : comportement des canaux"}
-    public function toFcm($notifiable) // Pour Firebase Cloud Messaging
-    {
-        return ...;
-    }
+public function toFcm($notifiable) // Pour Firebase Cloud Messaging
+{
+    return ...;
+}
 
-    public function toArray($notifiable) // Pour l'enregistrement en DB
-    {
-        return ...;
-    }
+public function toArray($notifiable) // Pour l'enregistrement en DB
+{
+    return ...;
+}
 ```
 
 ##### Envoi asynchrone des notifications
@@ -1072,11 +1088,11 @@ A partir de là Laravel s'occupe seul de faire le travail en détectant automati
 
 ### Configuration de FCM
 
-Pour la configuration de FCM au niveau du backend la documentation officielle [voir référence @notif4] doit être suivie. En ce qui concerne la configuration au niveau du backend il faut se référer aux documents utilisés dans le cadre de ce projet :
+Pour la configuration de FCM au niveau du backend la documentation officielle [voir référence @notif4] doit être suivie. En ce qui concerne la configuration au niveau du frontend il faut se référer aux documents utilisés dans le cadre de ce projet :
 
-* How to add FCM to vue.js, [voir référence @notif1].
-* Intégration de Firebase Cloud Message avec Laravel et Vue.js, [voir référence @notif2].
-* Documentation officielle de Firebase Cloud Message, [voir référence @notif3].
+* How to add FCM to vue.js [voir référence @notif1].
+* Intégration de Firebase Cloud Message avec Laravel et Vue.js [voir référence @notif2].
+* Documentation officielle de Firebase Cloud Message [voir référence @notif3].
 
 #### Changements par rapport à la conception
 
@@ -1090,7 +1106,7 @@ par manque de temps.
 
 ### Récupération des notifications depuis le frontend
 
-Pour l'envoi de notification aux utilisateurs, le backend a besoin de connaitre le token FCM de l'utilisateur, ce token ne peut être obtenu que par le client, comme la notification est lancée depuis le backend pour des raisons de sécurité il faut donc transmettre ce token du front au backend.
+Pour l'envoi de notifications aux utilisateurs, le backend a besoin de connaitre le token FCM de l'utilisateur, ce token ne peut être obtenu que par le client, comme la notification est lancée depuis le backend pour des raisons de sécurité il faut donc transmettre ce token du front au backend.
 
 ```{.typscript caption="Notification : enregistrement du token FCM"}
 const fcmToken = await firebase
@@ -1099,20 +1115,22 @@ const fcmToken = await firebase
 auth.addFcmToken(fcmToken);
 ```
 
-Cette transaction se fait depuis la page de login, si l'utilisateur accepte les notifications push, alors l'enrôlement du token FCM est effectué, une route au niveau de l'api `api/profile/fcmToken` est donc disponible pour enregistrer le token depuis le frontend.
+Cette transaction se fait depuis la page de login, si l'utilisateur accepte les notifications push, alors l'enrôlement du token FCM est effectué. Une route au niveau de l'api `api/profile/fcmToken` est donc disponible pour enregistrer le token depuis le frontend.
 
 #### Callback FCM
 
-Une fois que le token est enregistré, on peut récupérer les appels asynchrones issue de la librairie FCM.
+Une fois que le token est enregistré, nous pouvons récupérer les appels asynchrones issues de la librairie FCM.
 
-```{.typescript caption="Notification : call asynchrone des messages"}
+```{.typescript caption="Notification : call asynchrone des messages" label="fcmasync"}
+// Fichier : frontend\src\fcm.ts
+
 fire.messaging().onMessage((payload) => {
   userModule.loadNotifications();
   //Create notification push
 }
 ```
 
-Depuis ce message asynchrone deux opérations sont effectuées, la première consiste à rafraichir les notifications interne de l'application et l'autre opération consiste à afficher la notification push sur le système cible (Android, Windows, etc...).
+Depuis ce message asynchrone dans le code \ref{fcmasync} deux opérations sont effectuées, la première consiste à rafraichir les notifications interne de l'application et l'autre opération consiste à afficher la notification push sur le système cible (Android, Windows, etc...).
 
 ## Frontend
 
@@ -1122,7 +1140,7 @@ Cette section décrit les détails techniques importants concernant frontend ave
 
 La configuration initiale du projet est importante, car elle décrit les fonctions qui seront utilisées tout au long du projet.
 
-![Frontend : configuration Vue.js \label{confvue}](https://user-images.githubusercontent.com/6802086/120225739-10c86580-c246-11eb-8cf6-7cc6a2aa9129.png).
+![Frontend : configuration Vue.js \label{confvue}](assets/120225739-10c86580-c246-11eb-8cf6-7cc6a2aa9129.png)
 
 Dans la figure \ref{confvue}, il est possible de voir la configuration utilisée pour ce projet.
 
@@ -1144,15 +1162,17 @@ L'utilisation de TypeScript dans la version 2 de Vue.js a complexifié énormém
 
 ### Vuex {#vuex}
 
-Vuex est un gestionnaire d'état (state management pattern) pour Vue.js. Il est utilisé comme source centrale d'information au sein de vue, avec des modificateurs d'état permettant de garantir qu'un état n'est modifié que de façon prédictible.
+Vuex est un gestionnaire d'états (state management pattern) pour Vue.js. Il est utilisé comme source centrale d'informations au sein de vue, avec des modificateurs d'état permettant de garantir qu'un état n'est modifié que de façon prédictible.
 
-![Vuex : one-way data flow, voir référence @vuex](assets/flow.png){width=300}
+![Vuex : one-way data flow, voir référence @vuex \label{vuexoneway}](assets/flow.png){width=300}
 
-Le principe devient utile lorsque plusieurs composants dépendent de la même source d'information et que ceux-ci peuvent tous induire un changement sur le contenu. Sans Vuex la manière de modifier ce contenu peut être implémentée de manière très différente à travers les différents composants et rendre les changements incohérents. De plus il arrive souvent qu'un composant enfant nécessite les propriétés d'un de ses parents qui n'est pas direct, sans l'utilisation de Vuex il est nécessaire de faire descendre cette propriétés à travers tous les enfants avant que l'enfant puisse acquérir cette information (cette dernière problématique peut aussi être résolue avec l'utilisation des [inject/provide](https://vuejs.org/v2/api/#provide-inject)).
+Dans la figure \ref{vuexoneway}, nous pouvons voir le principe de fonctionnement global de Vuex, une vue déclenche une action, qui elle même déclenche un changement d'état d'une donnée qui sera de nouveau utilisée par une vue.
 
-![Vuex : détails de fonctionnement, voir référence @vuex](assets/vuex.png){width=400}
+Le principe devient utile lorsque plusieurs composants dépendent de la même source d'informations et que ceux-ci peuvent tous induire un changement sur le contenu. Sans Vuex la manière de modifier ce contenu peut être implémentée de manière très différente à travers les différents composants et rendre les changements incohérents. De plus il arrive souvent qu'un composant enfant nécessite les propriétés d'un de ses parents qui n'est pas direct, sans l'utilisation de Vuex il est nécessaire de faire descendre cette propriété à travers tous les composants intermédiaire avant que l'enfant puisse acquérir cette information (cette dernière problématique peut aussi être résolue avec l'utilisation des [inject/provide](https://vuejs.org/v2/api/#provide-inject)).
 
-En détails, lorsqu'un composant veut faire une modification, il doit forcément faire appel à une `Action` qui va s'occuper d'initier les mutations nécessaires sur l'état des éléments. Cet état est ensuite transmis dans les différents composants.
+![Vuex : détails de fonctionnement, voir référence @vuex \label{vuexdetails}](assets/vuex.png){width=400}
+
+Dans la figure \ref{vuexdetails}, lorsqu'un composant veut faire une modification, il doit forcément faire appel à une action qui va s'occuper d'initier les mutations nécessaires sur l'état des éléments. Cet état est ensuite transmis dans les différents composants pour être utilisé/affiché.
 
 Cette manière de fonctionner est un élément central de Caravel.
 
@@ -1174,7 +1194,7 @@ Le module `User` contient les informations sur l'utilisateur connecté, de plus 
 
 Le module `Groups` permet de récupérer les groupes disponibles pour l'utilisateur courant. C'est le module principale de l'application car il est le chef d'orchestre des autres modules, tant que ce module n'est par chargé avec l'action `loadGroup(id: string)` les données des modules "enfants" sont vides.
 
-```{.typescript caption="Vuex : chargement des dépendances"}
+```{.typescript caption="Vuex : chargement des dépendances" label="loadgroup"}
  @Action
   loadGroup(id: string): Promise<AxiosResponse> {
     return new Promise((resolve, reject) => {
@@ -1199,7 +1219,7 @@ Le module `Groups` permet de récupérer les groupes disponibles pour l'utilisat
   }
 ```
 
-L'action `loadGroup` a pour effet de charger les données pour des autres modules "enfants" tels que les modules `Task`, `Subject` et `Member`.
+L'action `loadGroup`, qui est visible dans le code \ref{loadgroup}, a pour effet de charger les données pour des autres modules "enfants" tels que les modules `Task`, `Subject` et `Member`.
 
 #### Task module
 
@@ -1211,7 +1231,7 @@ Le module `Task` détient une particularité supplémentaire, c'est le calcul de
 
 Le choix du calcul au niveau du frontend à pour but de rendre les vues statistiques dynamiques, dès l'ajout de la moindre tâche ou changement de crédit au niveau des sujets, toutes les statistiques sont dynamiquement recalculées et mise à jour dans l'interface. La deuxième option qui consistait à faire les calculs au niveau du backend aurait demandé beaucoup plus de complexité. En effet si par exemple une nouvelle tâche est créée, alors il faut effectuer une seconde requête au backend pour récupérer les nouvelles statistiques. En utilisant l'avantage des propriétés réactives de Vue.js on s'affranchit de ces requêtes supplémentaires et de la création de route particulière au niveau du backend.
 
-###### Récupération des projets pour une semaine
+**Récupération des projets**
 Nous ne reviendrons pas sur les détails qui sont présents dans la section \ref{theorywes}. Cependant une problématique qui peut être intéressante à soulever est la récupération des projets pour une semaine spécifique. En effet pour calculer la charge d'une semaine, il est nécessaire de récupérer les projets en cours.
 
 ![Charge de travail: gestion des projets traversants \label{overlap}](assets/tasks-overlaps.png)
@@ -1296,9 +1316,7 @@ export default abstract class DataModule<T extends Data> extends VuexModule {
   load(items: T[]): void {
     this.LOAD_ITEMS(items);
   }
-
 }
-
 ```
 
 Malheureusement l'utilisation du module vuex-module-decorators cause une [erreur dans la gestion de l'héritage](https://github.com/championswimmer/vuex-module-decorators/issues/125) de classe et il n'est donc pas possible d'utiliser cette version générique et elle est tout de même laissée à l'appréciation du lecteur à titre posthume et pour une utilisation future si le problème venait à être résolu.
@@ -1309,7 +1327,7 @@ La gestion du chargement est un élément important pour l'utilisateur, lorsqu'u
 
 C'est ici que les status des modules sont intéressants, en effet lorsque le module effectue une requête, son status passe en mode "loading" lorsque que ce dernier a fini il passe sur le status "loaded". C'est ce que nous allons utiliser ici pour afficher un feedback lors du chargement.
 
-```{.typescript caption="Vue.js : gestion du chargement"}
+```{.typescript caption="Vuex : gestion du chargement"}
  // Fichier : frontend\src\views\GroupContainer.vue
 
 get isGroupLoaded(): boolean {
@@ -1333,7 +1351,7 @@ Ceci est un exemple d'utilisation des status des modules, d'autres pages utilise
 
 La gestion des erreurs Axios peut être faite de manière unitaire, c'est-à-dire, chaque composant qui effectue une requête s'occupe seul de gérer toutes les erreurs issues d'une requête. Or si une partie des erreurs doit être gérée par le composant lui même, il y a certaines erreurs qui devraient être gérées de manière globale et c'est justement une chose qui peut-être mise en place avec Axios en utilisant les `interceptors`.
 
-```{.typescript caption="Axios : gestion des erreurs globales avec les interceptors"}
+```{.typescript caption="Axios : gestion des erreurs globales avec les interceptors" label="axiosintercept"}
 Axios.interceptors.response.use(
   (reponse) => reponse,
   (error: AxiosError) => {
@@ -1357,7 +1375,7 @@ Axios.interceptors.response.use(
 );
 ```
 
-Avec les interceptors, les erreurs 401 (Unauthorized) ainsi que les erreurs 403 (Forbidden) sont gérées de manière automatique pour tous les appels effectués avec Axios.
+Avec les interceptors, utilisé dans le code \ref{axiosintercept}, les erreurs 401 (Unauthorized) ainsi que les erreurs 403 (Forbidden) sont gérées de manière automatique pour tous les appels effectués avec Axios.
 
 ### Vue router
 
@@ -1415,7 +1433,7 @@ Sur la figure \ref{lighthouse}, il est possible de voir le résultat du score [L
 
 ### Composants
 
-Plusieurs composants ont été développés dans le cadre du projet, dans cette section décrit quelques composants remarquables.
+Plusieurs composants ont été développés dans le cadre du projet, cette section décrit quelques composants remarquables.
 
 #### Input spécifiques
 Plusieurs inputs spécifiques ont été développé afin d'être utilisés à plusieurs endroits de l'application, c'est notamment le cas des inputs : `type` et `sujet` qui sont présents dans le filtre de recherche d'une tâche ainsi que dans le formulaire d'une tâche. 
@@ -1428,7 +1446,7 @@ Sur la figure \ref{inputtype}, il est possible de voir le rendu de l'input `type
 
 Sur la figure \ref{inputsubject}, il est possible de voir le rendu de l'input `sujet` dans le filtre de recherche.
 
-Le composant pour le sélectionner le sujet est un peu plus complexe que les autres composants car il possède la possibilité de créer directement un nouveau sujet. Grâce au système de composants, il a été possible de réutiliser la modale de création d'un sujet qui a été développer dans le cadre des paramètres du groupe : 
+Le composant pour le sélectionner le sujet est un peu plus complexe que les autres composants car il possède la possibilité de créer directement un nouveau sujet. Grâce au système de composants, il a été possible de réutiliser la modale de création d'un sujet qui a été développée dans le cadre des paramètres du groupe : 
 
 ![Vue.js : modale de création d'une fenêtre \label{modalsubject}](assets/modal-subject.png){width=300}
 
@@ -1500,7 +1518,7 @@ Sur la figure \ref{middleware} ([source](https://blog.maqe.com/dealing-with-spac
 * Vérifier que l'utilisateur est bien authentifié
 * Vérifier que l'utilisateur a bien accès au groupe (si cela a lieu d'être)
 
-Ces deux cas peuvent facilement être gérés avec des middlewares. Pour le login sanctum fournit un middleware "out of the box" `App\Http\Middleware\Authenticate:sanctum`. En ce qui concerne l'accès au groupe, un middleware a été créé, `CheckGroup`, celui-ci vérifie de manière basique si un utilisateur a accès à un groupe ou non.
+Ces deux cas peuvent facilement être gérés avec des middlewares. Pour le login Sanctum fournit un middleware "out of the box" `App\Http\Middleware\Authenticate:sanctum`. En ce qui concerne l'accès au groupe, un middleware a été créé, `CheckGroup`, celui-ci vérifie de manière basique si un utilisateur a accès à un groupe ou non.
 
 ```{.php caption="Laravel : vérification des droits de groupe"}
 // Fichier : backend\app\Http\Middleware\CheckGroup.php
@@ -1570,13 +1588,15 @@ Nous pouvons constater que pour le code ci-dessus, qui concerne la création d'u
 
 ### Moteur de recherche
 
-Afin de simplifier et de rendre plus flexible les différentes recherches, un pseudo moteur de recherche a été créé, basé sur l'article "Writing advanced Eloquent search query filters" @searchEngine.
+Afin de simplifier et de rendre plus flexible les différentes recherches, un pseudo moteur de recherche a été créé, basé sur l'article "Writing advanced Eloquent search query filters" [voir référence @searchEngine].
 
-![Laravel : structure des fichiers du moteur de recherche](assets/20210723_112337_image.png){width=150}
+![Laravel : structure des fichiers du moteur de recherche \label{searchfiles}](assets/20210723_112337_image.png){width=150}
+
+Dans la figure \ref{searchfiles}, il est possible de voir la structure des fichiers mise en place pour la recherche sur Caravel.
 
 Par rapport à l'article, un système de filtre spécifique a été ajouté. Dans l'article la recherche concerne uniquement un type, ici il est plus flexible nous pouvons spécifiquement ajouter un filtre pour un type. Ce dernier est particulièrement utile car la recherche est utilisée pour filtrer des tâches ainsi que pour rechercher de groupes.
 
-```{.php caption="Laravel : exemple d'utilisation du moteur dans un contrôleur"}
+```{.php caption="Laravel : exemple d'utilisation du moteur dans un contrôleur" label="taskcontroller"}
 // Fichier : backend\app\Http\Controllers\TaskController.php
 
 /**
@@ -1598,7 +1618,7 @@ public function index(Request $request, Group $group)
 }
 ```
 
-Le code est donc beaucoup plus léger et toute la vraie complexité est cloisonnée dans les différents filtres.
+Le code \ref{taskcontroller} est donc beaucoup plus léger car toute la vraie complexité est cloisonnée dans les différents filtres.
 
 #### Filtre
 
@@ -1608,7 +1628,7 @@ Par exemple, pour l'url `/groups/1/tasks?isOpen=1`, le moteur va chercher un fil
 
 L'ajout d'un nouveau filtre est donc très simple, il suffit d'ajouter une nouvelle classe avec le nom voulu dans le dossier `Filters` si on souhaite un filtre global ou dans le dossier qui concerne le modèle si l'on souhaite un filtre spécifique.
 
-```{.php caption="Laravel :  exemple de filtre"}
+```{.php caption="Laravel :  exemple de filtre" label="searchfilter"}
 class Text implements Filter
 // Fichier : backend\app\Http\Search\Filters\Task\Text.php
 {
@@ -1630,7 +1650,7 @@ class Text implements Filter
 }
 ```
 
-La classe doit implémenter l'interface `Filter` pour pouvoir être prise en compte.
+La classe doit implémenter l'interface `Filter`, comme nous pouvons le voir dans le code \ref{searchfilter}, pour pouvoir être prise en compte.
 
 # Tests et validation
 
@@ -1646,7 +1666,7 @@ La mise en place de la qualité de code avec SonarCloud n'a pas pu être mise en
 
 ## Test d'utilisabilité
 
-Afin de tester globalement l'application, la réalisation d'un test utilisateur à eu lieu à St-Imier, le 07 juillet 2021.
+Afin de tester globalement l'application, la réalisation d'un test utilisateur a eu lieu à St-Imier, le 07 juillet 2021.
 
 Il y a eu au total 6 personnes interrogées dans le cadre de ce user test, les résultats des différents retours par les utilisateurs sont décrits dans le paragraphe qui suit, il s'agit essentiellement de données brutes.
 
@@ -1684,18 +1704,18 @@ Le système de notification est actuellement très basique, il ne contient pas d
 Avec ceci il serait intéressant d'avoir un système d'abonnement sur les différents types, par exemple lorsqu'un utilisateur répond à une question il serait automatiquement "abonné" à la question, un bouton serait alors disponible sur le contenu en question pour lui permettre de se désabonner de ce dernier et donc de ne plus recevoir de notification liées.
 
 ## Gestion des filtres en frontend
-Actuellement les filtres sont gérés au niveau backend, l'idée initiale était de laisser la possibilité de faire une recherche transversale (à travers tous les groupes), cependant cette fonctionnalité n'est pas présente sur Caravel. La recherche d'une tâche se limite à un groupe. Dès lors effectuer une recherche en frontend serait plus judicieux car lors de la sélection d'un groupe toutes les tâches doivent être chargées car elles sont nécessaire dans certaines vues, comme les données sont donc déjà présente un filtre en frontend serait plus rapide et plus adaptée.
+Actuellement les filtres sont gérés au niveau backend, l'idée initiale était de laisser la possibilité de faire une recherche transversale (à travers tous les groupes), cependant cette fonctionnalité n'est pas présente sur Caravel. La recherche d'une tâche se limite à un groupe. Dès lors effectuer une recherche en frontend serait plus judicieux car lors de la sélection d'un groupe toutes les tâches doivent être chargées car elles sont nécessaires dans certaines vues, comme les données sont donc déjà présentes un filtre en frontend serait plus rapide et plus adapté.
 
 ## Editeur markdown
-L'éditeur markdown est issu d'un plugin vue.js : [mavonEditor](https://github.com/hinesboy/mavonEditor). Cet éditeur, bien que flexible, est très limité sur les fonctionnalités disponibles de plus il ne permet pas de faire uniquement du rendu, il faut impérativement rendre le composant en entier pour charger toutes les dépendances externes ce qui rend le composant très lourd pour uniquement faire de l'affichage. Une solution rapide qui est actuellement utilisée repose sur deux composants différents : un pour l'affichage et un pour l'édition du markdown. Les deux sont basé sur le plugin [markdown-it](https://github.com/markdown-it/markdown-it). Cependant qu'ils utilisent les deux markdown-it comment moteur de rendu, les options qu'ils utilisent dans markdown-it diffère légèrement, ce qui est pour cause de créer des différence entre l'affichage à l'édition par rapport au rendu réel sur une page. 
+L'éditeur markdown est issu d'un plugin vue.js : [mavonEditor](https://github.com/hinesboy/mavonEditor). Cet éditeur, bien que flexible, est très limité sur les fonctionnalités disponibles de plus il ne permet pas de faire uniquement du rendu, il faut impérativement rendre le composant en entier pour charger toutes les dépendances externes ce qui rend le composant très lourd pour uniquement faire de l'affichage. Une solution rapide qui est actuellement utilisée repose sur deux composants différents : un pour l'affichage et un pour l'édition du markdown. Les deux sont basés sur le plugin [markdown-it](https://github.com/markdown-it/markdown-it). Cependant qu'ils utilisent les deux markdown-it comme moteur de rendu, les options qu'ils utilisent dans markdown-it diffèrent légèrement, ce qui a pour cause de créer des différences entre l'affichage et l'édition. 
 
-Il faudrait donc une solution pour uniformiser le rendu dans l'éditeur markdown et celui dans le rendu final.
+Il faudrait donc une solution pour uniformiser le rendu dans l'éditeur markdown et celui dans le rendu final d'une tâche.
 
 ### Ajout de balises spécifiques
 Une fonctionnalité intéressante dans l'éditeur markdown serait celle de pouvoir ajouter des mentions à d'autre contenu comme par exemple le fait de mentionner un autre membre avec un \@Member ou encore mentionner une autre tâche avec un #123 à la manière de ce que permet déjà GitHub.
 
 ## Ajout des groupes de manière automatique
-La création de groupe est uniquement manuelle, il serait intéressante de développer une fonctionnalité qui permet de créer automatique une liste des groupes avec des membres basé sur des groupes AD ou bien sur un simple fichier plat.
+La création de groupe est uniquement manuelle, il serait intéressant de développer une fonctionnalité qui permette de créer automatiquement une liste des groupes avec des membres basé sur des groupes AD ou bien sur un simple fichier plat.
 
 ## Ajout de paramètres de synchronisation avec LDAP
 La synchronisation LDAP offre plusieurs avantages qui ne sont pas utilisés actuellement, typiquement la photo de l'utilisateur est disponible dans l'Active Directory mais n'est pas utilisée. Il serait intéressant de regarde s'il n'y a pas d'autres champs disponible qui pourrait être utiles.
@@ -1703,18 +1723,18 @@ La synchronisation LDAP offre plusieurs avantages qui ne sont pas utilisés actu
 Actuellement les paramètres de l'utilisateur sont figés par les informations disponibles sur le LDAP, avec l'ajout de la photo, il faudrait laisser la possibilité à l'utilisateur de gérer ses paramètres de manière manuelle.
 
 ## Gestion des suppressions 
-Actuellement Caravel ne s'occupe pas de nettoyer toutes les dépendances lorsqu'une tâche est supprimée. En effet tous les fichiers liées à la tâche sont conservés dans le dossier du groupe dans le `storage`. La question est délicate car lorsqu'un fichier est uploadé au sein d'une tâche, cela créer une url au niveau du markdown pour ce fichier précis, ce lien peut alors être utilisée dans d'autres points de l'application, il faut donc faire en sorte d'être que le fichier n'est plus mentionné dans aucun message avant de le supprimer sans quoi des "liens morts" pourraient apparaitre. 
+Actuellement Caravel ne s'occupe pas de nettoyer toutes les fichiers liés lorsqu'une tâche est supprimée. En effet tous les fichiers liées à la tâche sont conservés dans le dossier du groupe dans le `storage`. La question est délicate car lorsqu'un fichier est uploadé au sein d'une tâche, cela crée une url au niveau du markdown pour ce fichier précis, ce lien peut alors être utilisé dans d'autres points de l'application, il faut donc faire en sorte d'être sûr que le fichier n'est plus mentionné dans aucun message avant de le supprimer sans quoi des "liens morts" pourraient apparaitre. 
 
 \newpage
 
 # Conclusion
 Par rapport au premier objectif qui concernait le placement des devoirs et une meilleure visibilité de la charge de travail, l'implémentation du calcul de charge ainsi que l'affichage de ce dernier dans les différentes vues comme la vue chronologique ou encore la vue mensuelle, rendent possible une meilleure gestion du placement des devoirs et donc devrait permettre d'avoir une charge plus homogène. 
 
-Concernant le second objectif, qui est de réunir toutes les informations relatives au travail qui doit être effectué, 
+Concernant le second objectif, qui est de réunir toutes les informations relatives au travail qui doit être effectué, cela est rendu possible par la création de tâches, ainsi que par la possibilité de charger des fichiers dans l'application mais aussi par la contribution collaborative sur ces tâches.
 
-Le troisième objectif, qui est d'aider les élèves à mieux s'organiser, il est amplement rempli par les différentes vues qui permettent d'avoir un affichage clair des tâches à faire, de plus l'ajout du système de notification permet d'être constamment à jour sur ces dernières.
+Le troisième objectif, qui est d'aider les élèves à mieux s'organiser, il est amplement rempli par les différentes vues qui permettent d'avoir un affichage clair des tâches à faire, de plus l'ajout du système de notifications permet d'être constamment à jour sur ces dernières.
 
-En fin le dernier objectif, qui était de proposer une plateforme de collaboration entre élèves et étudiants, l'objectif a été remplis grâce à l'implémentation d'un système de réactions ainsi que la possibilité de créer des questions dans les différentes tâches.
+Enfin le dernier objectif, qui était de proposer une plateforme de collaboration entre élèves et étudiants, l'objectif a été remplis grâce à l'implémentation d'un système de réactions ainsi que la possibilité de créer des questions dans les différentes tâches.
 
 Nous avons donc une application fonctionnelle qui permet une meilleure gestion des devoirs au sein de l'He-Arc mais aussi une meilleure collaboration entre élèves et professeurs. 
 
@@ -1742,17 +1762,18 @@ Pour conclure, l'application est loin d'être parfaite, il reste des points d'am
 [DRY](#DRY)
 : Don't Repeat yourself
 
+[CRUD](#CRUD)
+: Create Read Update Delete
+
 \newpage
 
 # Annexes
 
-## Installation et configuration {#an1}
+## Guide d'installation {#an1}
 
-## Planning (au format GanttProject) {#an2}
+## Planning (au format GanttProject et PNG) {#an2}
 
 ## Journal de travail {#an3}
-
-## Poster A3 {#an4}
 
 \newpage
 

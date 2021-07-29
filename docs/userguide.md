@@ -1,8 +1,11 @@
 ---
-title: "Caravel : installation et configuration"
-subject: "Caravel : installation et configuration"
+title: "Caravel : guide d'installation"
 keywords: [Laravel, Vue.js, TypeScript, Homework, Students, Teachers]
 subtitle: Document annexe
+titlepage-background: "resources/background-front.pdf"
+titlepage-text-color: "000000"
+lof: false
+lot: false
 version: 1.0.0
 ...
 
@@ -101,7 +104,7 @@ Selon la taille configurée depuis le frontend (`VUE_APP_MARKDOWN_FILE_MAX_SIZE`
 > post_max_size
 > upload_max_filesize
 
-# Lancement normal
+# Lancement des applications 
 Une fois l'installation terminée le lancement de l'application se résume à 2-3 commandes : 
 
 > cd backend \
