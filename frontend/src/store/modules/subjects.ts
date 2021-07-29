@@ -16,8 +16,6 @@ import groupModule from "@/store/modules/groups";
   dynamic: true,
   store,
   name: "subjects",
-  //preserveState:
-  //localStorage.getItem(process.env.VUE_APP_VUEX_VERSION_NAME) !== null,
 })
 class SubjectModule extends VuexModule {
   _subjects: Subject[] = [];
@@ -37,28 +35,28 @@ class SubjectModule extends VuexModule {
   }
 
   @Mutation
-  private ERROR() {
+  protected ERROR() {
     this._status = "error";
   }
 
   @Mutation
-  private REQUEST() {
+  protected REQUEST() {
     this._status = "loading";
   }
 
   @Mutation
-  private FINISH() {
+  protected FINISH() {
     this._status = "loaded";
   }
 
   @Mutation
-  private LOAD_SUBJECTS(subjects: Subject[]) {
+  protected LOAD_SUBJECTS(subjects: Subject[]) {
     this._subjects = subjects;
     this._status = "loaded";
   }
 
   @Mutation
-  private UPSERT_SUBJECT(subject: Subject) {
+  protected UPSERT_SUBJECT(subject: Subject) {
     const index = this._subjects.findIndex((item) => item.id == subject.id);
     if (index === -1) {
       this._subjects.push(subject);
@@ -68,13 +66,18 @@ class SubjectModule extends VuexModule {
   }
 
   @Mutation
-  private REMOVE_SUBJECT(subject: Subject) {
+  protected REMOVE_SUBJECT(subject: Subject) {
     const index = this._subjects.findIndex((item) => item.id == subject.id);
     if (index !== -1) {
       Vue.delete(this._subjects, index);
     }
   }
 
+  /**
+   * Add a subject
+   * @param subject 
+   * @returns the newly created subject
+   */
   @Action
   add(subject: Subject): Promise<Subject> {
     const groupId = groupModule.selectedId;
@@ -97,6 +100,11 @@ class SubjectModule extends VuexModule {
     });
   }
 
+  /**
+   * Update the subject
+   * @param subject 
+   * @returns the updated subject
+   */
   @Action
   update(subject: Subject): Promise<Subject> {
     const groupId = groupModule.selectedId;
@@ -121,6 +129,11 @@ class SubjectModule extends VuexModule {
     });
   }
 
+  /**
+   * Delete subject
+   * @param subject 
+   * @returns API's response
+   */
   @Action
   delete(subject: Subject): Promise<AxiosResponse> {
     const groupId = groupModule.selectedId;
@@ -143,11 +156,20 @@ class SubjectModule extends VuexModule {
     });
   }
 
+  /**
+   * Load list of subjects in the module
+   * @param subjects list of subject
+   */
   @Action
   load(subjects: Subject[]) {
     this.LOAD_SUBJECTS(subjects);
   }
 
+  /**
+   * Uniform function to save or update a subject
+   * @param subject 
+   * @returns 
+   */
   @Action
   async save(subject: Subject): Promise<Subject> {
     if (subject.id == "" || subject.id == "-1") {

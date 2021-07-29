@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RemoveGroupRequest;
 use App\Models\Group;
 
+/**
+ * This class is used to manage user
+ */
 class UserController extends Controller
 {
     /**

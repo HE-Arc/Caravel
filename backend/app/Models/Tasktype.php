@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Utility class to get the tasktype, this class is used to fill database type
+ */
 class Tasktype
 {
     public const ASSIGNMENT = 1;

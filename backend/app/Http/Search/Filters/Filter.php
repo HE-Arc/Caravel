@@ -4,6 +4,9 @@ namespace App\Http\Search\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * This interface is used to implements a filter for the search engine
+ */
 interface Filter
 {
     /**

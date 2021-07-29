@@ -60,6 +60,13 @@ class TaskObserver extends AbstractActionObserver
         $this->sendNotification($task, 'delete', ActionType::DELETE);
     }
 
+    /**
+     * Handle sending notification to users
+     * 
+     * @param   Task $task
+     * @param   string  $action
+     * @param   string  $type
+     */
     private function sendNotification($task, $action, $type)
     {
         /** @var Group */

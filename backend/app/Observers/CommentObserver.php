@@ -20,6 +20,13 @@ class CommentObserver extends AbstractActionObserver
     }
 
 
+    /**
+     * Handle sending notification to users
+     * 
+     * @param   Comment $comment
+     * @param   string  $action
+     * @param   string  $type
+     */
     private function sendNotification(Comment $comment, $action, $type)
     {
         $comment->load('question.task.group', 'question.task.author', 'question.commentsFlat');

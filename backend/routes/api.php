@@ -40,7 +40,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
             'groups.comments' => CommentController::class,
         ]);
 
-        #members of groups (get, delete, no post as this is the role of the "join" mecanic)
+        #members of groups (get, delete, no post as this is the role of the "join" mecanisum)
         Route::get('groups/{group}/members', [GroupController::class, 'members']);
         Route::patch('groups/{group}/members', [GroupController::class, 'updateMemberStatus']);
         Route::delete('groups/{group}/members', [GroupController::class, 'removeMember']);

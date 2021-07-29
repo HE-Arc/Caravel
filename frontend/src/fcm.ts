@@ -17,8 +17,8 @@ const firebaseConfig = {
 const fire = firebase.initializeApp(firebaseConfig);
 
 try {
-  fire.messaging().onMessage((payload) => {
-    userModule.loadNotifications();
+  fire.messaging().onMessage((payload) => { //on message received
+    userModule.loadNotifications(); // reload internal notifications
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
       body: payload.notification.body,
@@ -28,7 +28,7 @@ try {
     if (!("Notification" in window)) {
       console.log("This browser does not support system notifications");
     } else if (Notification.permission === "granted") {
-      const notification = new Notification(
+      const notification = new Notification( // if notification permission granted, we display one
         notificationTitle,
         notificationOptions
       );

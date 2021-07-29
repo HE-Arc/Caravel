@@ -13,6 +13,10 @@ use App\Models\Group;
 use App\Models\Comment;
 use App\Http\Search\SearchEngine;
 
+
+/**
+ * This class manage tasks
+ */
 class TaskController extends Controller
 {
     /**
@@ -36,8 +40,9 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param   TaskRequest $request
+     * @param   Group $group
+     * @return  \Illuminate\Http\Response
      */
     public function store(TaskRequest $request, Group $group)
     {
@@ -52,6 +57,10 @@ class TaskController extends Controller
     /**
      * Create a comment
      *
+     * @param   CommentRequest  $request
+     * @param   Group   $group
+     * @param   Task    $task
+     * @return  \Illuminate\Http\Response
      */
     public function comment(CommentRequest $request, Group $group, Task $task)
     {
@@ -68,11 +77,10 @@ class TaskController extends Controller
      *
      * @param Request $request
      * @param Group $group
-     * @param Task $task
      * @param Comment $comment
      * @return \Illuminate\Http\Response
      */
-    public function delComment(Request $request, Group $group, Task $task, Comment $comment)
+    public function delComment(Request $request, Group $group, Comment $comment)
     {
         if ($this->user->id == $comment->user->id) {
             $comment->delete();
@@ -91,7 +99,7 @@ class TaskController extends Controller
      */
     public function show(Group $group, Task $task)
     {
-        return $task->load('questions.comments');
+        return $task->loadMissing('questions.comments');
     }
 
     /**
@@ -115,7 +123,7 @@ class TaskController extends Controller
      * @param Request $request
      * @param Group $group
      * @param Task $task
-     * @return \Illuminate\Http\Response
+     * @return Task
      */
     private function persistData(TaskRequest $request, Group $group, Task $task): Task
     {
@@ -128,7 +136,8 @@ class TaskController extends Controller
     /**
      * Remove the specified task.
      *
-     * @param  int  $id
+     * @param Group $group
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
     public function destroy(Group $group, Task $task)
@@ -143,6 +152,10 @@ class TaskController extends Controller
 
     /**
      * Update on/off on reaction
+     * 
+     * @param ReactionRequest $request
+     * @param Group $group
+     * @return Task
      */
     public function updateReaction(ReactionRequest $request, Group $group)
     {
@@ -163,6 +176,13 @@ class TaskController extends Controller
         return $task;
     }
 
+    /**
+     * Set a task has finished for the user
+     * 
+     * @param TaskFinsishRequest $request
+     * @param Group $group
+     * @return Task
+     */
     public function setFinished(TaskFinishRequest $request, Group $group)
     {
         /** @var Task */
