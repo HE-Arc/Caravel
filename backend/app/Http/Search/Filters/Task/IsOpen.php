@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 use App\Http\Search\Filters\Filter;
 
-class isOpen implements Filter
+class IsOpen implements Filter
 {
     /**
      * Apply a given search value to the builder instance.
