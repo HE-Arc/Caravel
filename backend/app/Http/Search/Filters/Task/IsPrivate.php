@@ -5,7 +5,7 @@ namespace App\Http\Search\Filters\Task;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Search\Filters\Filter;
 
-class isPrivate implements Filter
+class IsPrivate implements Filter
 {
     /**
      * Apply a given search value to the builder instance.
