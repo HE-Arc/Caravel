@@ -11,7 +11,12 @@
     </template>
 
     <template #prepend-item>
-      <v-list-item v-if="canCreate" @click="create">
+      <v-list-item
+        v-if="canCreate"
+        :to="{
+          name: 'newSubject',
+        }"
+      >
         <v-list-item-content>
           <v-list-item-title
             v-html="$t('autocomplete.create', [labelLower, searchText])"

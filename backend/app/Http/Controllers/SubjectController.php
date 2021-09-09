@@ -35,6 +35,7 @@ class SubjectController extends Controller
     {
         $subject = new Subject();
         $subject->group_id = $group->id;
+     
 
         $updatedInstance = $this->persistData($request, $subject);
         return response()->json($updatedInstance);
@@ -51,6 +52,8 @@ class SubjectController extends Controller
     public function update(SubjectRequest $request, Group $group, Subject $subject)
     {
         $updatedInstance = $this->persistData($request, $subject);
+
+
         return response()->json($updatedInstance);
     }
 

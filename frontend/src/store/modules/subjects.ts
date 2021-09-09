@@ -20,14 +20,22 @@ import groupModule from "@/store/modules/groups";
 class SubjectModule extends VuexModule {
   _subjects: Subject[] = [];
   _status = "";
+  _subjectId = "";
 
   get subjects(): Subject[] {
     return this._subjects;
   }
 
-  get getSubject() {
+  get getSubject(): (id: string) => Subject | undefined {
     return (id: string): Subject | undefined =>
       this._subjects.find((item) => item.id == id);
+  }
+
+  /**
+   * Get selected subject
+   */
+  get getCurrentSubject(): Subject | undefined {
+    return this._subjects.find((item) => item.id == this._subjectId);
   }
 
   get status(): string {
@@ -71,6 +79,11 @@ class SubjectModule extends VuexModule {
     if (index !== -1) {
       Vue.delete(this._subjects, index);
     }
+  }
+
+  @Mutation
+  protected SET_SUBJECT(subjectId: string) {
+    this._subjectId = subjectId;
   }
 
   /**
@@ -177,8 +190,16 @@ class SubjectModule extends VuexModule {
       return this.update(subject);
     }
   }
-}
 
+  /**
+   * Set current selected subject
+   * @param subjectId
+   */
+  @Action
+  selectSubject(subjectId: string) {
+    this.SET_SUBJECT(subjectId);
+  }
+}
 const instance = getModule(SubjectModule);
 
 export default instance;

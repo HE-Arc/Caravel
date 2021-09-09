@@ -126,6 +126,7 @@
     },
     "tabs": {
       "tasks": "Tâches",
+      "subjects": "Sujets",
       "calendar": "Calendrier",
       "timeline": "Chronologique",
       "stats": "Statistiques",
@@ -234,6 +235,8 @@
     "label": "Sujet | Sujets",
     "empty": "Aucun sujet",
     "icon": "mdi-format-list-bulleted-square",
+    "credit": "Crédits:",
+    "description": "Description",
     "form": {
       "name": {
         "label": "Nom du sujet",

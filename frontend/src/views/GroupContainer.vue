@@ -115,6 +115,9 @@ export default class GroupContainer extends Vue {
         count: this.tasksCount,
         color: "",
       },
+      subjects: {
+        icon: this.$t("subject.icon").toString(),
+      },
       calendar: {
         icon: "mdi-calendar",
       },
