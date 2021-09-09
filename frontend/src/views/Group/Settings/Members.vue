@@ -57,7 +57,15 @@
                 :key="member.id"
                 :member="member"
                 :isGroupAdmin="group.user_id == member.id"
-              />
+              >
+                <v-btn
+                  color="success"
+                  small
+                  class="mx-2"
+                  @click="changeStatus(member, status.ACCEPTED)"
+                  >{{ $t("global.accept") }}</v-btn
+                >
+              </member-item>
             </template>
           </paginate>
         </div>
@@ -79,6 +87,7 @@ import MemberItem from "@/components/MemberItem.vue";
 import { User } from "@/types/user";
 import ConfirmModal from "@/components/utility/ConfirmModal.vue";
 import Paginate from "@/components/utility/Paginate.vue";
+import { GroupStatus } from "@/types/helpers";
 
 @Component({
   components: {
@@ -89,6 +98,8 @@ import Paginate from "@/components/utility/Paginate.vue";
 })
 export default class GroupMembers extends Vue {
   @Ref() readonly confirm!: ConfirmModal;
+
+  status = GroupStatus;
 
   get user(): User | undefined {
     return authModule.user;
@@ -123,6 +134,17 @@ export default class GroupMembers extends Vue {
     const groupId = this.group.id;
     try {
       await memberModule.removeMember({ groupId, member });
+      this.$toast.success(this.$t("global.success").toString());
+    } catch (err) {
+      this.$toast.error(err.response.data.message);
+    }
+  }
+
+  async changeStatus(member: Member, status: number): Promise<void> {
+    if (!this.group) return;
+    const groupId = this.group.id;
+    try {
+      await memberModule.changeStatus({ groupId, member, status });
       this.$toast.success(this.$t("global.success").toString());
     } catch (err) {
       this.$toast.error(err.response.data.message);
