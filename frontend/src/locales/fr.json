@@ -70,11 +70,13 @@
     "search-input": "Nom du groupe",
     "search-type": "Entrez le nom du groupe",
     "join": "Demande d'adhésion",
+    "teacherJoin": "Rejoindre le groupe",
     "pending": "En attente",
     "refused": "Demande refusée",
     "no-results": "Aucun groupe trouvé, {0} ?",
     "create-link": "créer {0}",
     "ask": "La demande a été envoyée",
+    "joined": "Vous avez rejoint le groupe",
     "create": {
       "title": "Création d'un groupe",
       "name": {

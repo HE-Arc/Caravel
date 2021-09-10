@@ -42,6 +42,7 @@
           <v-btn v-if="isMember" text color="success">
             {{ $t("global.open") }}
           </v-btn>
+
           <v-btn
             v-else-if="group.status == status.PENDING"
             class="ml-2 mt-5"
@@ -59,6 +60,16 @@
             disabled
           >
             {{ $t("groups.refused") }}
+          </v-btn>
+          <v-btn
+            v-else-if="authUser.isTeacher && !group.isPrivate"
+            class="ml-2 mt-5"
+            small
+            color="success"
+            :loading="isLoading"
+            @click.prevent="askJoin"
+          >
+            {{ $t("groups.teacherJoin") }}
           </v-btn>
           <v-btn
             v-else
@@ -86,6 +97,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { GroupStatus } from "@/types/helpers";
 import axios from "axios";
 import groupModule from "@/store/modules/groups";
+import auth from "@/store/modules/user";
+import { User } from "@/types/user";
 
 @Component
 export default class GroupItem extends Vue {
@@ -98,6 +111,10 @@ export default class GroupItem extends Vue {
     return groupModule.groups.some((item) => item.id == this.group.id);
   }
 
+  get authUser(): User | undefined {
+    return auth.user;
+  }
+
   askJoin(): void {
     this.isLoading = true;
     axios({
@@ -105,8 +122,17 @@ export default class GroupItem extends Vue {
       method: "POST",
     })
       .then(() => {
-        this.$toast.info(this.$t("groups.ask").toString());
-        groupModule.loadGroups();
+        if (auth.user && auth.user.isTeacher && !this.group.isPrivate) {
+          this.$toast.success(this.$t("groups.joined").toString());
+          groupModule.loadGroups();
+          this.$router.push({
+            name: "tasks",
+            params: { group_id: this.group.id },
+          });
+        } else {
+          this.$toast.info(this.$t("groups.ask").toString());
+          groupModule.loadGroups();
+        }
       })
       .catch((err) => {
         this.$toast.error(err.response.data.message);
