@@ -57,6 +57,28 @@ const routes: Array<RouteConfig> = [
         ],
       },
       {
+        path: "subjects",
+        name: "subjects",
+        component: () => import("../views/Group/Subjects.vue"),
+        children: [
+          {
+            path: "new",
+            name: "newSubject",
+            component: () => import("../views/Subject/SubjectCreateOrEdit.vue"),
+          },
+          {
+            path: ":subject_id",
+            name: "subjectDisplay",
+            component: () => import("../views/Subject/SubjectDisplay.vue"),
+          },
+          {
+            path: ":subject_id/edit",
+            name: "subjectEdit",
+            component: () => import("../views/Subject/SubjectCreateOrEdit.vue"),
+          },
+        ],
+      },
+      {
         path: "calendar",
         name: "calendar",
         component: () => import("../views/Group/Calendar.vue"),
@@ -91,11 +113,6 @@ const routes: Array<RouteConfig> = [
             path: "requests",
             name: "requests",
             component: () => import("../views/Group/Settings/Requests.vue"),
-          },
-          {
-            path: "subjects",
-            name: "subjects",
-            component: () => import("../views/Group/Settings/Subjects.vue"),
           },
         ],
       },

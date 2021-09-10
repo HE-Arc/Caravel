@@ -12,6 +12,12 @@
                 small
                 class="mr-1"
                 :dark="isTextDark"
+                :to="{
+                  name: 'subjectDisplay',
+                  params: {
+                    subject_id: subject.id,
+                  },
+                }"
               />
               <v-chip
                 :color="isDue ? 'success' : 'error'"

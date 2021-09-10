@@ -18,6 +18,7 @@ class Subject extends Model
         'name',
         'color',
         'ects',
+        'description',
     ];
 
     public function group()

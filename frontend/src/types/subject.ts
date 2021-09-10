@@ -5,4 +5,5 @@ export interface Subject extends Data {
   name: string;
   color: string;
   ects: number;
+  description: string | undefined;
 }

@@ -63,7 +63,17 @@
         <span>{{ $t("task.finish.tooltip") }}</span>
       </v-tooltip>
       <v-icon v-if="task.isPrivate" class="mr-1">mdi-lock</v-icon>
-      <v-chip small :color="subject.color" :dark="isTextDark">
+      <v-chip
+        small
+        :color="subject.color"
+        :dark="isTextDark"
+        :to="{
+          name: 'subjectDisplay',
+          params: {
+            subject_id: subject.id,
+          },
+        }"
+      >
         {{ subject.name }}
       </v-chip>
     </v-list-item-action-text>

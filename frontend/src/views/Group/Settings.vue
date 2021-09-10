@@ -82,9 +82,6 @@ export default class GroupSettings extends Vue {
         icon: "mdi-account-multiple-plus",
         count: this.pendingCount,
       },
-      subjects: {
-        icon: this.$t("subject.icon").toString(),
-      },
     };
   }
 }
