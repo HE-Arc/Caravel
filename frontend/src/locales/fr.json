@@ -24,7 +24,7 @@
     "error-form": "Une ou plusieurs données sont invalides",
     "errors": {
       "unknown": "Une erreur inconnue s'est produite",
-      "toobig": "Le fichier est ne doit pas dépasser {0} Mb"
+      "toobig": "Le fichier ne doit pas dépasser {0} Mb"
     },
     "itsme": "Oh c'est toi :-)",
     "roles": {
@@ -52,7 +52,7 @@
     "password": "Mot de passe",
     "failed": "L'authentification a échouée",
     "logged-in": "Authentification réussie",
-    "logout": "Vous avez été deconnecté avec succès"
+    "logout": "Vous avez été déconnecté avec succès"
   },
   "appbar": {
     "signout": "Déconnexion",
@@ -128,7 +128,6 @@
     },
     "tabs": {
       "tasks": "Tâches",
-      "subjects": "Sujets",
       "calendar": "Calendrier",
       "timeline": "Chronologique",
       "stats": "Statistiques",
@@ -143,13 +142,13 @@
     "members": {
       "give-lead": {
         "label": "Promouvoir",
-        "help": "Promouvoir {0} en tant que chef du group"
+        "help": "Promouvoir {0} en tant que chef du groupe"
       },
       "kick": "expulser",
       "quit": "Quitter le groupe",
       "leader": "{0} est le chef du groupe",
       "rejected": "Membre refusé | Membres refusés",
-      "accepted": "Membre du group | Membres du groupe"
+      "accepted": "Membre du groupe | Membres du groupe"
     },
     "request": {
       "pending": "Membre en attente | Membres en attente",
@@ -160,7 +159,7 @@
     "info": "Informations utilisateur",
     "email": "Adresse mail",
     "name": "Nom complet",
-    "update": "Le profile a été mis à jour."
+    "update": "Le profil a été mis à jour."
   },
   "task": {
     "label": "Tâche | Tâches",
@@ -237,8 +236,6 @@
     "label": "Sujet | Sujets",
     "empty": "Aucun sujet",
     "icon": "mdi-format-list-bulleted-square",
-    "credit": "Crédits:",
-    "description": "Description",
     "form": {
       "name": {
         "label": "Nom du sujet",
@@ -334,7 +331,7 @@
     "add": "Ajouter une question",
     "comments": {
       "add": "Ajouter un commentaire",
-      "delete": "Le commentaire a été supprimée"
+      "delete": "Le commentaire a été supprimé"
     },
     "form": {
       "title": "Titre de la question"
@@ -343,9 +340,9 @@
   },
   "home": {
     "title": "Bienvenue sur Caravel !",
-    "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cette outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe spécifique. Il vous permet de visualiser clairement les activités qu'il faut faire ou retrouver une activité passée.",
+    "message": "Caravel est un outil de collaboration entre étudiants et professeurs, cet outil vous permet de mieux gérer les différentes tâches au sein d'une classe ou d'un groupe. Il vous permet de visualiser clairement les activités qu'il faut faire ou retrouver une activité passée.",
     "submessage": "Si vous ne connaissez pas Caravel, commencez par lire le guide de démarrage :-)",
-    "bouton": "Guide de démarage"
+    "bouton": "Guide de démarrage"
   },
   "history": {
     "label": "Historique",

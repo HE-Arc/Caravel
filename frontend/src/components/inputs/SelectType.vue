@@ -28,7 +28,7 @@ export default class SelectType extends Vue {
       .filter((key) => Number.isInteger(key))
       .map((key) => ({
         value: key.toString(),
-        text: this.$tc(`task.types.${key}.label`, 0).toString(),
+        text: this.$tc(`task.types.${key}.label`, 1).toString(),
         icon: this.$t(`task.types.${key}.icon`).toString(),
       }));
   }
