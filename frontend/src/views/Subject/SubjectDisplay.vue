@@ -90,7 +90,7 @@ export default class SubjectDisplay extends Vue {
         this.$router.push({ name: "subjects" });
         this.$toast.success(this.$t("global.success").toString());
       } catch (err) {
-        this.$toast.error(this.$t("global.errors.unknown").toString());
+        this.$toast.error(err.response.data);
       }
     }
   }
