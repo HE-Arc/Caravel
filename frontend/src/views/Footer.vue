@@ -21,6 +21,29 @@
         </v-btn>
       </v-card-text>
 
+      <v-card-text class="white--text">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <a
+              class="no-style"
+              href="https://github.com/HE-Arc/Caravel/issues/new"
+              target="_blank"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon
+                size="24px"
+                class="mx-4 white--text"
+                style="margin-left: 0px !important"
+              >
+                {{ "mdi-flag" }}
+              </v-icon>
+              Feedback
+            </a>
+          </template>
+          <span>Report an issue or propose a new feature</span>
+        </v-tooltip>
+      </v-card-text>
       <v-divider></v-divider>
 
       <v-card-text class="white--text">
