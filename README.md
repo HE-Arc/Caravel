@@ -22,6 +22,9 @@ D’autre part, son but est de permettre aux professeurs d’avoir une vision cl
 
 ![image](https://user-images.githubusercontent.com/6802086/126867110-e7f5491e-2b87-4bf4-a4a6-a6b563e0eb1e.png)
 
+## API
+* [Doc Swagger](https://app.swaggerhub.com/apis-docs/M4n0x/Caravel/)
+
 ## Dépendances 
 ### Laravel
 * [LdapRecord](https://ldaprecord.com/)
