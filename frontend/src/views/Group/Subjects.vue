@@ -7,11 +7,19 @@
           <v-toolbar-title class="text-h4 font-weight-light">
             {{ $tc("subject.label", subjects.length) }}
           </v-toolbar-title>
+
           <v-spacer></v-spacer>
           <v-btn color="success" :to="{ name: 'newSubject' }" small>{{
             $t("global.add")
           }}</v-btn>
         </v-toolbar>
+        <v-row class="pl-8">
+          <span class="pt-8">{{ $t("global.sort") }}</span>
+
+          <v-col cols="auto">
+            <v-select v-model="sortby" :items="items"> </v-select>
+          </v-col>
+        </v-row>
         <v-card-text v-if="subjects.length > 0">
           <paginate :items="subjects" :perPage="10">
             <template #default="{ items }">
@@ -80,9 +88,34 @@ export default class Subjects extends Vue {
   @Ref() readonly subjectForm!: SubjectDetails;
   @Ref() readonly confirm!: ConfirmModal;
   subject = Factory.getSubject();
+  sortby = "alphabet↓";
+  get items(): string[] {
+    return ["alphabet↓", "alphabet↑", "date↓", "date↑"];
+  }
 
   get subjects(): Subject[] {
-    return subjectModule.subjects;
+    let subjects = subjectModule.subjects;
+    if (this.sortby == "alphabet↑") {
+      subjects.sort(function (a, b) {
+        return a.name < b.name ? 1 : -1;
+      });
+      return subjects;
+    } else if (this.sortby == "alphabet↓") {
+      subjects.sort(function (a, b) {
+        return a.name > b.name ? 1 : -1;
+      });
+      return subjects;
+    } else if (this.sortby == "date↑") {
+      subjects.sort(function (a, b) {
+        return a.created_at < b.created_at ? 1 : -1;
+      });
+      return subjects;
+    } else {
+      subjects.sort(function (a, b) {
+        return a.created_at > b.created_at ? 1 : -1;
+      });
+      return subjects;
+    }
   }
 
   async remove(subject: Subject): Promise<void> {

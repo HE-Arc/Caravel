@@ -21,6 +21,7 @@ export default class Factory {
       ects: 4,
       color: "#1976D2",
       description: "",
+      created_at: "",
     };
   }
 

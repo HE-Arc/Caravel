@@ -37,7 +37,12 @@
                   </template>
                   <v-card>
                     <v-card-text class="pa-0">
-                      <v-color-picker v-model="subject.color" flat />
+                      <v-color-picker
+                        v-model="subject.color"
+                        flat
+                        :swatches="swatches"
+                        show-swatches
+                      />
                     </v-card-text>
                   </v-card>
                 </v-menu>
@@ -94,6 +99,13 @@ export default class SubjectDetails extends Vue {
   errors: Dictionary<string | string[]> = {};
   menu = false;
   subject = Factory.getSubject();
+  swatches = [
+    ["#FF0000", "#A52A2A"],
+    ["#FFA500", "#FFFF00"],
+    ["#0000FF", "#00FFFF"],
+    ["#800080", "#FF00FF"],
+    ["#008000", "#00FF00"],
+  ];
 
   mounted(): void {
     this.loadSubject();

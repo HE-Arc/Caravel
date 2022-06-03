@@ -6,4 +6,5 @@ export interface Subject extends Data {
   color: string;
   ects: number;
   description: string | undefined;
+  created_at: string;
 }

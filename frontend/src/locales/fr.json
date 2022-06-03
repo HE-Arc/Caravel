@@ -20,6 +20,7 @@
     "insert": "Insérer",
     "open": "Ouvrir",
     "author": "Auteur",
+    "sort": "Trier par",
     "success": "Action effectuée avec succès !",
     "error-form": "Une ou plusieurs données sont invalides",
     "errors": {

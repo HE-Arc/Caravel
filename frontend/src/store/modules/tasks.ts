@@ -77,12 +77,12 @@ class TasksModule extends VuexModule {
     const stats: GroupStat[] = [];
     let id = 1;
 
-    while (start.isBefore(finishLine)) {
+    while (start.isSameOrBefore(finishLine)) {
       const end = moment(start).endOf("isoWeek");
       let sum = 0;
 
       const tasks = this.publicTasks.filter((task) =>
-        moment(task.due_at).isBetween(start, end)
+        moment(task.due_at).isBetween(start, end, undefined, "[]")
       );
 
       const projects = this.publicTasks.filter(
