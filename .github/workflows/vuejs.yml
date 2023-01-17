@@ -16,7 +16,7 @@ jobs:
     - name: Run Vuejs installation
       run: npm ci
     - name: Run Vuejs Build
-      run: npm build
+      run: npm run build
     - name: Run Vuejs unit test
       run: npm run test:unit
     - name: Run VueJS Linter
