@@ -113,8 +113,7 @@ export default class Gantt extends Vue {
   mounted(): void {
     const label = this.$tc("subject.label", this.subjects.size);
     const config = {
-      licenseKey:
-        "====BEGIN LICENSE KEY====\nkKGnTfBkOCgV00pm13Vabkb/bcfVNAoD0FrXNS635ifpJqX/5rTTayzbheZ7npsRUZyIJ5UyFDXbNfDIlJ4eXUE9UUfVmBWPxXxxW8fEp/03qobtNcFwHbihYZDJyLSRvFCXasmNptQMa9CKS2PmMIAZmZ5XPj1ryi9v29ckZIsYhMJXpYUsH+YctfbyV2Jl8tg4l83xcaSYdKoEh6JiZkaoXJ97ko6BfdC3Gig8wG71AGbnqTllnKQQod63h0w3Gx806bCp5AsSlkq2Ey/WvHySh9pGKtJMEwcU1w/QwYcj0SjMlM5PBhXI6j8SQ28/ctbE/mzCcTnBypj/jLqhWQ==||U2FsdGVkX19vvIAkay65lgC/zNBsd/W0fGC6EO7VmCV1iPIZ3VwvjndlINzfyqsg4M1NahoqQ0cLXLKtsBJUgTBdj788jdMpvT4+YHYtQSg=\nO8B0mG0CaVhDFHESjjVTzIKoPahj4RgYqZBmZwjiJxpWe5JQH0hIOHys28UgdnM03Jmh7yURSpuWfqbGyG2ZfpoitCJji6rz/w4VRiaSnYrtPf8U44X/U6G9u0ph/VypuVCh6Yc8/QYrmhnBO11olfBRsNYvWQU80oWDyK6MxfOKcklBEeWfPCeR+LpvsQYZgRJOD/uGcldO/qA5niok4B4RfByd3DGPcXyElGcjfb6uAK9atW7/CwLEOvu5x03IxtXgkEdWdQSOvFX7aZiqMXiIn+yPXjowC0bidrxrqglV8E9Ph7xDRMVCSwUSbhPjlGb4IFxjH9RJSCxKb34s4A==\n====END LICENSE KEY====",
+      licenseKey: process.env.GSTC_LICENSE_KEY,
       plugins: [TimelinePointer(), CalendarScroll()],
       locale: frch,
       list: {
