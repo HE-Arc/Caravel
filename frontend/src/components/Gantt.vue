@@ -113,7 +113,7 @@ export default class Gantt extends Vue {
   mounted(): void {
     const label = this.$tc("subject.label", this.subjects.size);
     const config = {
-      licenseKey: process.env.GSTC_LICENSE_KEY,
+      licenseKey: process.env.VUE_APP_GSTC_LICENSE_KEY,
       plugins: [TimelinePointer(), CalendarScroll()],
       locale: frch,
       list: {
