@@ -184,7 +184,7 @@ export default class Gantt extends Vue {
         ],
       },
     };
-
+    console.log(config.licenseKey);
     this.state = GSTC.api.stateFromConfig(config);
     this.state.update("config.chart.time.zoom", this.zoom);
 

@@ -1,5 +1,7 @@
 <template>
   <v-container fluid fill-height>
+    {{ licenseKey }}
+
     <v-layout align-center justify-center>
       <v-flex xs12 sm6 md3>
         <v-card
@@ -77,6 +79,7 @@ export default class Login extends Vue {
   username = "";
   password = "";
   isLoading = false;
+  licenseKey = process.env.VUE_APP_GSTC_LICENSE_KEY;
 
   async login(): Promise<void> {
     let mail = this.username;
