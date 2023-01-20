@@ -114,7 +114,7 @@ export default class GroupManage extends Vue {
       await groupModule.updateGroup(this.group);
       this.$toast.success(this.$t("global.success").toString());
       this.errors = {};
-    } catch (err) {
+    } catch (err: any) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error-form").toString());
     }
@@ -147,7 +147,7 @@ export default class GroupManage extends Vue {
       try {
         this.$router.push({ name: "Home" });
         await groupModule.leave(group);
-      } catch (err) {
+      } catch (err: any) {
         this.$toast.error(err.response.data.message);
       }
     }

@@ -111,7 +111,7 @@ export default class SubjectDetails extends Vue {
       if (subjectId) {
         this.subject = subjectModule.getCurrentSubject!;
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.response.status == 404) {
         this.$router.replace({ name: "NotFound" });
       }
@@ -135,7 +135,7 @@ export default class SubjectDetails extends Vue {
         params: { subject_id: subject.id },
       });
       this.$toast.success(this.$t("global.success").toString());
-    } catch (err) {
+    } catch (err: any) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error-form").toString());
     }

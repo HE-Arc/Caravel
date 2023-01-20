@@ -138,7 +138,7 @@ export default class GroupContainer extends Vue {
   async created(): Promise<void> {
     try {
       await groupModule.selectGroup(this.groupId);
-    } catch (err) {
+    } catch (err: any) {
       if (err.response.status == 404) {
         this.$router.replace({ name: "NotFound" });
       } else {

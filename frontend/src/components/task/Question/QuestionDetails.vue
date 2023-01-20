@@ -71,7 +71,7 @@ export default class QuestionDetails extends Vue {
       await questionModule.upsertQuestion(this.questionForm);
       this.clean();
       this.handleSave();
-    } catch (err) {
+    } catch (err: any) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error-form").toString());
     } finally {

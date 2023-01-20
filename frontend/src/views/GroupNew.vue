@@ -219,7 +219,7 @@ export default class GroupNew extends Vue {
         params: { group_id: group.id },
       });
       this.$toast.success(this.$t("groups.create.success").toString());
-    } catch (err) {
+    } catch (err: any) {
       //console.log("err", err);
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error-form").toString());
