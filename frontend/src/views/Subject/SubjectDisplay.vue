@@ -74,7 +74,7 @@ export default class SubjectDisplay extends Vue {
     try {
       const subjectId = this.$route.params.subject_id;
       await subjectModule.selectSubject(subjectId);
-    } catch (err) {
+    } catch (err: any) {
       if (err.response.status == 404) {
         this.$router.replace({ name: "NotFound" });
       }
@@ -89,7 +89,7 @@ export default class SubjectDisplay extends Vue {
         await subjectModule.delete(this.subject);
         this.$router.push({ name: "subjects" });
         this.$toast.success(this.$t("global.success").toString());
-      } catch (err) {
+      } catch (err: any) {
         this.$toast.error(err.response.data);
       }
     }

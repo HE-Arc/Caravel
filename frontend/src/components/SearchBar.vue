@@ -185,7 +185,7 @@ export default class SearchBar extends Vue {
         const tasks: Task[] = response.data;
         if (tasks) this.handleTasks(tasks);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         this.$toast.error(err.response.data.message);
       })
       .finally(() => {

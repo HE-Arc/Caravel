@@ -69,7 +69,7 @@ export default class CommentDetails extends Vue {
       await questionModule.upsertComment(this.commentForm);
       this.commentForm.description = "";
       this.handleSave();
-    } catch (err) {
+    } catch (err: any) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error-form").toString());
     } finally {

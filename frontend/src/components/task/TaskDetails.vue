@@ -164,7 +164,7 @@ export default class TaskDetails extends Vue {
       this.$toast.success(this.$t("global.success").toString());
       this.errors = {};
       this.$router.push({ name: "taskDisplay", params: { task_id: task.id } });
-    } catch (err) {
+    } catch (err: any) {
       this.errors = err.response.data.errors;
       this.$toast.error(this.$t("global.error-form").toString());
     } finally {

@@ -134,7 +134,7 @@ export default class GroupItem extends Vue {
           groupModule.loadGroups();
         }
       })
-      .catch((err) => {
+      .catch((err: any) => {
         this.$toast.error(err.response.data.message);
       })
       .finally(() => {

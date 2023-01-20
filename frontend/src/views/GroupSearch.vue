@@ -167,7 +167,7 @@ export default class GroupSearch extends Vue {
         this.results = groups;
         this.pages = response.data.last_page;
       })
-      .catch((err) => {
+      .catch((err: any) => {
         this.$toast.error(err.response.data.message);
       })
       .finally(() => {

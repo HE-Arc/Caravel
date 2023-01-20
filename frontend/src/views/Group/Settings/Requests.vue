@@ -78,7 +78,7 @@ export default class GroupMembers extends Vue {
     try {
       await memberModule.changeStatus({ groupId, member, status });
       this.$toast.success(this.$t("global.success").toString());
-    } catch (err) {
+    } catch (err: any) {
       this.$toast.error(err.response.data.message);
     }
   }

@@ -92,7 +92,7 @@ export default class Subjects extends Vue {
         await subjectModule.delete(subject);
         this.$toast.success(this.$t("global.success").toString());
       }
-    } catch (err) {
+    } catch (err: any) {
       this.$toast.error(err.response.data);
     }
   }
