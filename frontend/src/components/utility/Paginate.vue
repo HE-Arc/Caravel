@@ -1,6 +1,7 @@
 <template>
   <div>
     <slot v-bind:items="visibleItems"></slot>
+
     <div class="text-center mt-4">
       <v-pagination
         v-show="pages > 1"
@@ -20,7 +21,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 @Component
 export default class Paginate extends Vue {
   @Prop() items!: unknown[];
-  @Prop({ default: 10, validator: (val) => val > 0 }) perPage!: number;
+  @Prop({ default: 10, validator: (val) => (val as any) > 0 }) perPage!: number;
   page = 1;
 
   get pages(): number {
